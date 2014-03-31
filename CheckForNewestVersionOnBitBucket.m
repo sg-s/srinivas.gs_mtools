@@ -34,4 +34,6 @@ online_vn = str2double(lookhere(a+2:z-1));
 
 if online_vn > old_vn
 	warning('A newer version of Kontroller is available. It is a really good idea to upgrade. Download it  <a href="https://bitbucket.org/srinivasgs/kontroller">here</a> .')
+else
+	disp('Checked for updates, no updates available.')
 end
