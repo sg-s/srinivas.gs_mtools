@@ -1,18 +1,19 @@
 % checks is a newer version is available on bitbucket
 % created by Srinivas Gorur-Shandilya at 15:16 on 31-March-2014. Contact me at http://srinivas.gs/
 % part of srinivas.gs_mtools
-function [m] = CheckForNewestVersionOnBitBucket(filename,VersionName)
+function [m] = CheckForNewestVersionOnBitBucket(filename,VersionName,fullname)
 a = strfind(VersionName,'v_');
 z = strfind(VersionName,'_');
 z = setdiff(z,a+1);
 old_vn = str2double(VersionName(a+2:z-1));
 
-h = urlread(strcat('https://bitbucket.org/srinivasgs/',lower(filename),'/'));
+h = urlread(strcat('https://bitbucket.org/srinivasgs/',lower(filename),'/src/'));
 
 % get links
 [a,ra]=GetLinks(h);
-fullname = strcat(filename,'.m');
-
+if nargin < 3
+	fullname = strcat(filename,'.m');
+end
 for i = 1:length(ra)
 	if ~isempty(strfind(ra{i},fullname))
 		h = ra{i};

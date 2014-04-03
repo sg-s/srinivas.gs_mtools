@@ -24,6 +24,19 @@ end
 nChannels = nargin - 1; 
 n = length(varargin{1});
 
+% parse options
+options.LineWidth = 2;
+options.Color = 'k';
+options.font_size = 24;
+for i = 1:length(varargin)
+	if isstruct(varargin{i})
+		options = varargin{3};
+		nChannels = nChannels - 1;
+		varargin(i) = [];
+	end
+end
+clear i
+
 if nChannels > 1
 	% check that all data channels have the same length
 	for i = 2:nChannels
@@ -97,24 +110,27 @@ if combine
 	legend(inputnames)
 else
 	% plot each on a different subplot, and link plots
-	figure, hold on
+	
 	nplots= length(unique(T));
 	a = zeros(1,nplots);
 	for i = 1:nplots
 		a(i) = subplot(nplots,1,i); hold on; set(gca,'box','on')
 		plotthese = find(T == i); 
 		for j = plotthese
-			plot(t,x(:,j));
+			plot(t,x(:,j),'LineWidth',options.LineWidth,'Color',options.Color);
 		end
 		inputnames = {};
 		plotthese = plotthese + 1; 
 		for j = 1:length(plotthese)
 			inputnames{j} = inputname(plotthese(j));
 		end
-		legend(inputnames)
+		legend(inputnames,'FontSize',options.font_size)
 	end
 	linkaxes(a,'x');
 end
 
-
+% xlabel
+if t(1)~=1
+	xlabel('Time (s)','FontSize',options.font_size)
+end
 
