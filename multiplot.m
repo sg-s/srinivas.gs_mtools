@@ -100,7 +100,6 @@ end
 
 if combine
 	% just plot all on the same figure
-	figure, hold all
 	for i = 1:nChannels
 		plot(t,x(:,i))
 	end
