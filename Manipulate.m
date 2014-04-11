@@ -59,7 +59,9 @@ function [] = EvaluateModel()
 	cla(respplot);
 	figure(plotfig);
 	axis(respplot); hold on;
-	plot(R)
+	try
+		plot(R)
+	end
 	plot(r,'r','LineWidth',2);
 	hold off
 	if xl(1) ~= 0

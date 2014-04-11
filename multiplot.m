@@ -20,6 +20,9 @@ if ~any(strcmp('Statistics Toolbox', {v.Name}))
 	error('You need to get the Statistics Toolbox to run multiplot')
 end
 
+% color order for many plots on the same axes
+c = {'r','g','b','k','m','r','g','b','k','m'};
+
 % get number of inputs
 nChannels = nargin - 1; 
 n = length(varargin{1});
@@ -101,7 +104,7 @@ end
 if combine
 	% just plot all on the same figure
 	for i = 1:nChannels
-		plot(t,x(:,i))
+		plot(t,x(:,i),'Color',c{i})
 	end
 	for i = 2:nargin
 		inputnames{i-1} = inputname(i);
