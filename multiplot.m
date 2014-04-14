@@ -20,12 +20,19 @@ if ~any(strcmp('Statistics Toolbox', {v.Name}))
 	error('You need to get the Statistics Toolbox to run multiplot')
 end
 
+
 % color order for many plots on the same axes
 c = {'r','g','b','k','m','r','g','b','k','m'};
 
 % get number of inputs
 nChannels = nargin - 1; 
 n = length(varargin{1});
+
+% make sure all vectors point the right way
+if ~isempty(t)
+	t = t(:);
+end
+
 
 % parse options
 options.LineWidth = 2;
@@ -39,6 +46,17 @@ for i = 1:length(varargin)
 	end
 end
 clear i
+
+
+% create a figure if none exists
+if isempty(findall(0,'Type','Figure'))
+	figure, hold on
+else
+	% check if hold is on
+	if ~ishold
+		figure, hold on
+	end
+end
 
 if nChannels > 1
 	% check that all data channels have the same length
