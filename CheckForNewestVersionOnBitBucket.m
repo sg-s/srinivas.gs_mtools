@@ -1,13 +1,21 @@
-% checks is a newer version is available on bitbucket
-% created by Srinivas Gorur-Shandilya at 15:16 on 31-March-2014. Contact me at http://srinivas.gs/
-% part of srinivas.gs_mtools
+% checks is a newer version of a given files is available on bitbucket
+% checks for a pattern containing version number in the source code.
+% assumes open source code on bitbucket.org
+% this is of rather limited use right now
+% 
+% 
+% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [m] = CheckForNewestVersionOnBitBucket(filename,VersionName,fullname)
 a = strfind(VersionName,'v_');
 z = strfind(VersionName,'_');
 z = setdiff(z,a+1);
 old_vn = str2double(VersionName(a+2:z-1));
 
-h = urlread(strcat('https://bitbucket.org/srinivasgs/',lower(filename),'/src/'));
+u = strcat('https://bitbucket.org/srinivasgs/',lower(filename),'/src/');
+h = urlread(u);
 
 % get links
 [a,ra]=GetLinks(h);
@@ -34,7 +42,8 @@ z = setdiff(z,a+1);
 online_vn = str2double(lookhere(a+2:z-1));
 
 if online_vn > old_vn
-	warning('A newer version of Kontroller is available. It is a really good idea to upgrade. Download it  <a href="https://bitbucket.org/srinivasgs/kontroller">here</a> .')
+	warningtext = strkat('A newer version of:',filename,' is available. It is a really good idea to upgrade. Download it  <a href="',u,'>here</a> .');
+	warning(warningtext)
 else
 	disp('Checked for updates, no updates available.')
 end

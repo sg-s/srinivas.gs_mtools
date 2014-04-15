@@ -1,6 +1,13 @@
 % GetLinks
-% created by Srinivas Gorur-Shandilya at 16:12 , 19 February 2014. Contact me at http://srinivas.gs/contact/
-% gets links from a snippet of HTML
+% gets links from a snippet of HTML text (h)
+% a returns links, and 
+% ra returns relative links
+% % 
+% 
+% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [a,ra] = GetLinks(h) 
 
 linkstarts = strfind(h,'href="http://');

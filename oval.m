@@ -1,10 +1,12 @@
 % oval.m
-% created by G S Srinivas ( http://srinivas.gs ) @ 14:29 on Wednesday the
-% 23th of February, 2011
-% oval is a better version of round, which rounds to how manyever
-% significant digits you want
-% % created by Srinivas Gorur-Shandilya at 12:09 on 31-March-2014. Contact me at http://srinivas.gs/
-% now with support for fractions
+% oval is a better version of round, which rounds to how many ever
+% significant digits you want and returns a string, so you can directly use it in your plots
+% 
+% 
+% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [r] = oval(a,s)
 % fix for negative numbers
 if ischar(s)

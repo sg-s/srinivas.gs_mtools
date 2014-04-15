@@ -1,0 +1,1620 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ploth",
+				"plotthese"
+			],
+			[
+				"Manua",
+				"ManualControlButton"
+			],
+			[
+				"Met",
+				"MetadataButton"
+			],
+			[
+				"Start",
+				"StartScopes"
+			],
+			[
+				"Pause",
+				"PauseProgramButton"
+			],
+			[
+				"RunPro",
+				"RunProgramButton"
+			],
+			[
+				"Confi",
+				"ConfigureOutputChannelButton"
+			],
+			[
+				"DA_",
+				"DA_integrate"
+			],
+			[
+				"ensemble",
+				"ensemblep"
+			],
+			[
+				"filter",
+				"filter_length"
+			],
+			[
+				"Cost",
+				"CostFunctionHandle"
+			],
+			[
+				"axes",
+				"axesHandles"
+			],
+			[
+				"font",
+				"font_size"
+			],
+			[
+				"fon",
+				"font_size"
+			],
+			[
+				"low",
+				"low_gof"
+			],
+			[
+				"Gain",
+				"GainAnalysisData"
+			],
+			[
+				"filt",
+				"filter_length"
+			],
+			[
+				"mar",
+				"marker_size2"
+			],
+			[
+				"marker",
+				"marker_size"
+			],
+			[
+				"shift",
+				"shift_input"
+			],
+			[
+				"hi",
+				"history_lengths"
+			],
+			[
+				"filter_le",
+				"filter_length+2:end"
+			],
+			[
+				"these",
+				"thesepoints"
+			],
+			[
+				"diag",
+				"diagnostics2"
+			],
+			[
+				"filter_",
+				"filter_length"
+			],
+			[
+				"Chich",
+				"Chichilnisky"
+			],
+			[
+				"mark",
+				"marker_size"
+			],
+			[
+				"Chci",
+				"Chichlinsky's"
+			],
+			[
+				"Fit",
+				"FitFilter2Data"
+			],
+			[
+				"shif",
+				"shift_input"
+			],
+			[
+				"Line",
+				"LineWidth"
+			],
+			[
+				"LNFit",
+				"LNFitQualityLow"
+			],
+			[
+				"high",
+				"high_slopes"
+			],
+			[
+				"Slope",
+				"SlopeRatios"
+			],
+			[
+				"output",
+				"output_data"
+			],
+			[
+				"summ",
+				"summ_fig"
+			],
+			[
+				"model",
+				"model_values"
+			],
+			[
+				"histo",
+				"history_lengths"
+			],
+			[
+				"low_s",
+				"low_slopes_err"
+			],
+			[
+				"Shelf",
+				"ShelfFilesList"
+			],
+			[
+				"XTick",
+				"XTickLabel"
+			],
+			[
+				"Odour",
+				"OdourDuration"
+			],
+			[
+				"File",
+				"FileName2GenoDate"
+			],
+			[
+				"V",
+				"Valve"
+			],
+			[
+				"Th",
+				"Thrusto"
+			],
+			[
+				"Cluster",
+				"ClusterDataButton"
+			],
+			[
+				"Thru",
+				"Thrustc"
+			],
+			[
+				"Thr",
+				"Thrusto"
+			],
+			[
+				"THR",
+				"Thrusto"
+			],
+			[
+				"WB",
+				"WBFc"
+			],
+			[
+				"WBF",
+				"WBFo"
+			],
+			[
+				"Tri",
+				"TrialVariabilityCallback"
+			],
+			[
+				"font-",
+				"font-weight"
+			],
+			[
+				"background",
+				"background	background: color image repeat attachment position"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "AngularDifference.m",
+			"settings":
+			{
+				"buffer_size": 295,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "autoplot.m",
+			"settings":
+			{
+				"buffer_size": 885,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "CheckForNewestVersionOnBitBucket.m",
+			"settings":
+			{
+				"buffer_size": 1194,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "CutImage.m",
+			"settings":
+			{
+				"buffer_size": 1071,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "cv.m",
+			"settings":
+			{
+				"buffer_size": 115,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "GetLinks.m",
+			"settings":
+			{
+				"buffer_size": 1020,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Manipulate.m",
+			"settings":
+			{
+				"buffer_size": 3230,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "multiplot.m",
+			"settings":
+			{
+				"buffer_size": 3456,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "oss.m",
+			"settings":
+			{
+				"buffer_size": 136,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "oval.m",
+			"settings":
+			{
+				"buffer_size": 929,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ParseHTML.m",
+			"settings":
+			{
+				"buffer_size": 900,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "PrettyFig.m",
+			"settings":
+			{
+				"buffer_size": 1134,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "rsquare.m",
+			"settings":
+			{
+				"buffer_size": 425,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SaturationPlane.m",
+			"settings":
+			{
+				"buffer_size": 317,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "spiketimes2f.m",
+			"settings":
+			{
+				"buffer_size": 639,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "StripPath.m",
+			"settings":
+			{
+				"buffer_size": 259,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "strkat.m",
+			"settings":
+			{
+				"buffer_size": 572,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "struct2mat.m",
+			"settings":
+			{
+				"buffer_size": 61,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "textbar.m",
+			"settings":
+			{
+				"buffer_size": 3188,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "TrialPlot.m",
+			"settings":
+			{
+				"buffer_size": 7927,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "triangle.m",
+			"settings":
+			{
+				"buffer_size": 1161,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"lint",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"Package",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"packag",
+				"Package Control: List Packages"
+			],
+			[
+				"Pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"disab",
+				"Package Control: Disable Package"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"save",
+				"File: Save All"
+			],
+			[
+				"newfile",
+				"File: New View into File"
+			],
+			[
+				"sidebar",
+				"View: Toggle Side Bar"
+			],
+			[
+				"syntax js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"syntax matlb",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"Package Control: Install",
+				"Package Control: Install Package"
+			],
+			[
+				"disp",
+				"Snippet: disp"
+			],
+			[
+				"error",
+				"Snippet: error"
+			],
+			[
+				"Snippet: error",
+				"Snippet: error"
+			]
+		],
+		"width": 633.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/code/srinivas.gs_mtools/multiplot.m",
+		"/Users/sigbhu/code/DA/MinL1Solution.m",
+		"/Users/sigbhu/code/DA/FitFilter2Data.m",
+		"/Users/sigbhu/code/DA/Cost.m",
+		"/Users/sigbhu/code/DA/DA_integrate.m",
+		"/Users/sigbhu/code/DA/DynamicalAdaptation.m",
+		"/Users/sigbhu/code/DA/ValidateDAParameters.m",
+		"/Users/sigbhu/code/DA/GammaDist.m",
+		"/Users/sigbhu/code/DA/dgm.m",
+		"/Users/sigbhu/code/DA/PrepData3.m",
+		"/Users/sigbhu/code/DA/PrepData2.m",
+		"/Users/sigbhu/code/DA/html/DynamicalAdaptation.aux",
+		"/Users/sigbhu/code/DA/html/DynamicalAdaptation.html",
+		"/Users/sigbhu/code/DA/html/DynamicalAdaptation.log",
+		"/Users/sigbhu/code/DA/html/DynamicalAdaptation.tex",
+		"/Users/sigbhu/code/DA/html/DynamicalAdaptation.synctex.gz",
+		"/Users/sigbhu/code/tracking/ConvertVideo.sh",
+		"/Users/sigbhu/code/srinivas.gs_mtools/Manipulate.m",
+		"/Users/sigbhu/code/DA/html/Analysis_February.aux",
+		"/Users/sigbhu/code/DA/alldata.mat",
+		"/Users/sigbhu/code/DA/DA_integrate_euler.m",
+		"/Users/sigbhu/code/DA/DA_model_script.m",
+		"/Users/sigbhu/code/DA/DA_cost_function_dummy.m",
+		"/Users/sigbhu/code/DA/sample_data.mat",
+		"/Users/sigbhu/code/DA/DA.sublime-project",
+		"/Users/sigbhu/code/DA/DA_cost_function.m",
+		"/Users/sigbhu/code/b/TFAViewer2.m",
+		"/Users/sigbhu/code/Kontroller/Kontroller.m"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"AnalyseLinearPrediction.m,/Users/sigbhu/code/DA",
+			"AnalyseLinearPrediction.m",
+			"FitFilter2Data.m",
+			"FitFitler2Data.m"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"plot",
+			"figure",
+			"Save",
+			"Write to",
+			"Color",
+			"filtertime",
+			"FindBestFilter",
+			"figure",
+			"f",
+			"shift_input",
+			"axis",
+			"FindBest",
+			"History Length ",
+			"History Length (s)",
+			"filtfilt",
+			"GainAnalysis",
+			"shat",
+			"filter",
+			"FindBestFilter",
+			"return",
+			"plot(filtertime",
+			"s",
+			"daq",
+			"FitFilter2Data",
+			"FindBestFilter",
+			"FitFilter2Data",
+			"FindBestFilter",
+			"gain",
+			"r-s",
+			"r-square",
+			"fit",
+			"plot(time,",
+			"S is the",
+			"diagnostics.C.",
+			"FindBest",
+			"marker_size",
+			"PLotFil",
+			"fall",
+			"Slope of fp/f",
+			"= fit",
+			"[fall",
+			"gain",
+			"diagnostics_gain",
+			"diagnostics_fake",
+			"FindBestFil",
+			"FitFilter2Data",
+			"search algo",
+			"gain = ",
+			"gain",
+			"return",
+			"fp",
+			"FindBestFilter",
+			"fit",
+			"filter_length+1",
+			"STA",
+			"title",
+			"STA",
+			"filter(Kdamon",
+			"fpd =",
+			"fp=",
+			"Kdamon",
+			"[350 350]",
+			"[0 0 500 500]",
+			"[500 500]",
+			"'outerposition',[700 700]",
+			"'outerposition',[1000 700]",
+			"figure, hold on",
+			"latex",
+			"ylabel",
+			"disp",
+			"gain",
+			"filter",
+			"k",
+			"MakerFaceColor",
+			"MarkerSize",
+			"fit",
+			"fir",
+			"thisfp",
+			"hl",
+			"history_lengths",
+			"memory",
+			"f",
+			"a",
+			"lambda_i",
+			"fitfun",
+			"figon",
+			"stim",
+			"memory",
+			"a_notnormalised",
+			"D",
+			"v",
+			"fp1",
+			"fitfun",
+			"D_final",
+			"hist",
+			"past_window",
+			"marker_size",
+			"scatter",
+			"15",
+			"fsd",
+			"reg_vec",
+			"response",
+			"f",
+			"files",
+			"33",
+			"35",
+			"time",
+			"collision",
+			"stats",
+			"nfig",
+			"figure",
+			"Turns",
+			"Thrust",
+			"Thrusts",
+			"allfiles",
+			"sem",
+			"line",
+			"equalise",
+			"figure",
+			"thesetrials",
+			"thesetrials =",
+			"thesetrials",
+			"TrialPlot",
+			"plottrials",
+			"plotthis",
+			"plot",
+			"/dt",
+			"3"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"diagnostics.",
+			"Gain",
+			"diagnostics_fake",
+			"diagnostics_gain",
+			"filter_length+2",
+			"[800 350]",
+			"[0 0 350 350]",
+			"[350 350]",
+			"'outerposition',[10 10 1000 700]",
+			"fp",
+			"filter_length",
+			"response",
+			"thisfp",
+			"history_lengths",
+			"marker_size",
+			"rs",
+			"reg",
+			"f",
+			"response",
+			"31",
+			"33",
+			"t",
+			"PID",
+			"",
+			"s2",
+			"s3",
+			"PY",
+			"LP",
+			"AB"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 20,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "AngularDifference.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 295,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "autoplot.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "CheckForNewestVersionOnBitBucket.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1194,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "CutImage.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1071,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "cv.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 115,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "GetLinks.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1020,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "Manipulate.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "multiplot.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3456,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "oss.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 136,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "oval.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 929,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "ParseHTML.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 900,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "PrettyFig.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1134,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "rsquare.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 425,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "SaturationPlane.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 317,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "spiketimes2f.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 639,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "StripPath.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 259,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "strkat.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 572,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "struct2mat.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 61,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "textbar.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3188,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "TrialPlot.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "triangle.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "mtools.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"find",
+				"FindBestFilter.m"
+			],
+			[
+				"cost",
+				"Cost.m"
+			],
+			[
+				"da_cost_function",
+				"DA_cost_function.m"
+			],
+			[
+				"da_",
+				"DA_integrate.m"
+			],
+			[
+				"prep",
+				"PrepData3.m"
+			],
+			[
+				"p",
+				"PrepData3.m"
+			],
+			[
+				"prepdata3",
+				"PrepData3.m"
+			],
+			[
+				"da",
+				"DynamicalAdaptation.m"
+			],
+			[
+				"dgm",
+				"dgm.m"
+			],
+			[
+				"dynam",
+				"DynamicalAdaptation.m"
+			],
+			[
+				"da_i",
+				"DA_integrate.m"
+			],
+			[
+				"da_sc",
+				"DA_model_script.m"
+			],
+			[
+				"validatedaparameters",
+				"ValidateDAParameters.m"
+			],
+			[
+				"da_integrate",
+				"DA_integrate.m"
+			],
+			[
+				"scr",
+				"DA_model_script.m"
+			],
+			[
+				"gain",
+				"GainAnalysis.m"
+			],
+			[
+				"dyna",
+				"DynamicalAdaptation.m"
+			],
+			[
+				"fit",
+				"FitFilter2Data.m"
+			],
+			[
+				"fitfi",
+				"FitFilter2Data.m"
+			],
+			[
+				"bin_",
+				"bin_traces.m"
+			],
+			[
+				"prepdata2",
+				"PrepData2.m"
+			],
+			[
+				"filter",
+				"FilterEstimation.m"
+			],
+			[
+				"mult",
+				"/Users/sigbhu/code/core/multiplot.m"
+			],
+			[
+				"build_lnmodel_optreg",
+				"build_LNmodel_optreg.m"
+			],
+			[
+				"pre",
+				"PrepData2.m"
+			],
+			[
+				"all",
+				"build_LNmodel_allvalues.m"
+			],
+			[
+				"build_lnmodel_reg",
+				"build_LNmodel_reg.m"
+			],
+			[
+				"build_lnmodel_allvalues",
+				"build_LNmodel_allvalues.m"
+			],
+			[
+				"bin",
+				"bin_traces.m"
+			],
+			[
+				"",
+				"DA_integrate_tubro.m"
+			],
+			[
+				"trial",
+				"core/TrialPlot.m"
+			],
+			[
+				"filenam",
+				"b/FileName2GenoDate.m"
+			],
+			[
+				"plot",
+				"b/PlotTFAResponses2.m"
+			],
+			[
+				"plottfa",
+				"b/PlotTFAResponses2.m"
+			],
+			[
+				"conver",
+				"b/Convert2v2.m"
+			],
+			[
+				"pid",
+				"b/PlotTFAPIDAirspeeds.m"
+			],
+			[
+				"tria",
+				"core/TrialPlot.m"
+			],
+			[
+				"tuns",
+				"b/PlotTFATurns.m"
+			],
+			[
+				"plotdose",
+				"b/PlotDoseResponses.m"
+			],
+			[
+				"file",
+				"b/FileName2GenoDate.m"
+			],
+			[
+				"oval",
+				"core/oval.m"
+			],
+			[
+				"anlysepi",
+				"b/AnalysePIDMultiPuffs.m"
+			],
+			[
+				"analysepid",
+				"b/AnalysePIDMultiPuffs3.m"
+			],
+			[
+				"analyseair",
+				"b/AnalyseAirspeedsMultiPuffs.m"
+			],
+			[
+				"plotres2",
+				"b/PlotTFAResponses2.m"
+			],
+			[
+				"plottr",
+				"PlotTrialVariability.m"
+			],
+			[
+				"plotdos",
+				"PlotDoseResponses.m"
+			],
+			[
+				"tfa",
+				"TFAViewer2.m"
+			],
+			[
+				"plottf",
+				"PlotTFAResponses2.m"
+			],
+			[
+				"plottri",
+				"PlotTrialVariability.m"
+			],
+			[
+				"error",
+				"/Users/sigbhu/code/b/PlotDoseResponses.m"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/code/tracking/flytrack.sublime-project"
+			],
+			[
+				"Ko",
+				"~/code/Kontroller/Kontroller.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 215.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
