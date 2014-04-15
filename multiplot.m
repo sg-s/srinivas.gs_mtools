@@ -136,9 +136,14 @@ else
 	for i = 1:nplots
 		a(i) = subplot(nplots,1,i); hold on; set(gca,'box','on')
 		plotthese = find(T == i); 
-		for j = plotthese
-			plot(t,x(:,j),'LineWidth',options.LineWidth,'Color',options.Color);
-		end
+		if length(plotthese) > 1
+			plot(t,x(:,plotthese),'LineWidth',options.LineWidth)
+		else
+			plot(t,x(:,plotthese),'LineWidth',options.LineWidth,'Color',options.Color);
+		end	
+		
+			
+		
 		inputnames = {};
 		plotthese = plotthese + 1; 
 		for j = 1:length(plotthese)
