@@ -12,8 +12,8 @@
 % multiplot([],x,y,z)
 %
 % created by Srinivas Gorur-Shandilya at 13:54 , 24 January 2014. Contact me at http://srinivas.gs/contact/
-function [] = multiplot(t,varargin)
-
+function [a] = multiplot(t,varargin)
+a = [];
 % check if statistics toolbox exists
 v = ver;
 if ~any(strcmp('Statistics Toolbox', {v.Name}))
@@ -68,7 +68,7 @@ if nChannels > 1
     end
 else
     % only one channel, just plot it
-    plot(t,varargin{1})
+    a = plot(t,varargin{1});
     return
 end
 
@@ -137,7 +137,7 @@ else
 		a(i) = subplot(nplots,1,i); hold on; set(gca,'box','on')
 		plotthese = find(T == i); 
 		if length(plotthese) > 1
-			plot(t,x(:,plotthese),'LineWidth',options.LineWidth)
+			plot(t,x(:,plotthese),'LineWidth',options.LineWidth);
 		else
 			plot(t,x(:,plotthese),'LineWidth',options.LineWidth,'Color',options.Color);
 		end	
