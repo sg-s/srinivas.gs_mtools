@@ -20,7 +20,7 @@ if ~any(strcmp('Statistics Toolbox', {v.Name}))
 	error('You need to get the Statistics Toolbox to run multiplot')
 end
 
-
+warning off
 % color order for many plots on the same axes
 c = {'r','g','b','k','m','r','g','b','k','m'};
 
@@ -33,20 +33,28 @@ if ~isempty(t)
 	t = t(:);
 end
 
-
+newoptions = struct();
 % parse options
 options.LineWidth = 2;
 options.Color = 'k';
 options.font_size = 24;
+options.legend = 1;
 for i = 1:length(varargin)
 	if isstruct(varargin{i})
-		options = varargin{3};
+		newoptions = varargin{i};
 		nChannels = nChannels - 1;
 		varargin(i) = [];
 	end
 end
 clear i
 
+% add to default options
+
+fn = fieldnames(newoptions);
+for i = 1:length(fn)
+	eval(strcat('options.',fn{i},'=getfield(newoptions,',char(39),fn{i},char(39),');'));
+end
+clear i
 
 % create a figure if none exists
 if isempty(findall(0,'Type','Figure'))
@@ -127,7 +135,9 @@ if combine
 	for i = 2:nargin
 		inputnames{i-1} = inputname(i);
 	end
-	legend(inputnames)
+	if options.legend
+		legend(inputnames)
+	end
 else
 	% plot each on a different subplot, and link plots
 	
@@ -149,7 +159,9 @@ else
 		for j = 1:length(plotthese)
 			inputnames{j} = inputname(plotthese(j));
 		end
-		legend(inputnames,'FontSize',options.font_size)
+		if options.legend
+			legend(inputnames,'FontSize',options.font_size)
+		end
 	end
 	linkaxes(a,'x');
 end
@@ -159,3 +171,4 @@ if t(1)~=1
 	xlabel('Time (s)','FontSize',options.font_size)
 end
 
+warning on
