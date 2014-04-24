@@ -56,6 +56,7 @@ for i = 1:length(fn)
 end
 clear i
 
+
 % create a figure if none exists
 if isempty(findall(0,'Type','Figure'))
 	figure, hold on
@@ -130,7 +131,7 @@ end
 if combine
 	% just plot all on the same figure
 	for i = 1:nChannels
-		plot(t,x(:,i),'Color',c{i})
+		plot(t,x(:,i),'Color',c{i},'LineWidth',options.LineWidth)
 	end
 	for i = 2:nargin
 		inputnames{i-1} = inputname(i);
