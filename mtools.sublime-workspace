@@ -332,17 +332,18 @@
 	},
 	"file_history":
 	[
+		"/Users/sigbhu/code/srinivas.gs_mtools/CheckForNewestVersionOnGitHub.m",
+		"/Users/sigbhu/code/srinivas.gs_mtools/CutImage.m",
+		"/Users/sigbhu/code/srinivas.gs_mtools/CheckForNewestVersionOnBitBucket.m",
+		"/Users/sigbhu/code/srinivas.gs_mtools/autoplot.m",
+		"/Users/sigbhu/code/srinivas.gs_mtools/AngularDifference.m",
+		"/Users/sigbhu/code/srinivas.gs_mtools/cv.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/oval.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/oss.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/multiplot.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/mtools.sublime-project",
 		"/Users/sigbhu/code/srinivas.gs_mtools/Manipulate.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/GetLinks.m",
-		"/Users/sigbhu/code/srinivas.gs_mtools/cv.m",
-		"/Users/sigbhu/code/srinivas.gs_mtools/CutImage.m",
-		"/Users/sigbhu/code/srinivas.gs_mtools/CheckForNewestVersionOnBitBucket.m",
-		"/Users/sigbhu/code/srinivas.gs_mtools/autoplot.m",
-		"/Users/sigbhu/code/srinivas.gs_mtools/AngularDifference.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/ParseHTML.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/PrettyFig.m",
 		"/Users/sigbhu/code/srinivas.gs_mtools/rsquare.m",
@@ -629,7 +630,11 @@
 		[
 			[
 				"",
-				"oval.m"
+				"CheckForNewestVersionOnGitHub.m"
+			],
+			[
+				"check",
+				"CheckForNewestVersionOnGitHub.m"
 			],
 			[
 				"find",
@@ -841,7 +846,7 @@
 		[
 			[
 				"",
-				"~/code/DA/DA.sublime-project"
+				"~/code/Kontroller/Kontroller.sublime-project"
 			],
 			[
 				"Ko",
