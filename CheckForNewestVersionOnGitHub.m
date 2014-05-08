@@ -27,7 +27,9 @@ online_vn = str2double(lookhere(a+2:z-1));
 if online_vn > old_vn
 	warningtext = strkat('A newer version of ',filename,' is available. It is a really good idea to upgrade.');
 	disp(warningtext)
+	m = 1;
 else
 	disp('Checked for updates, no updates available.')
+	m = 0;
     
 end
