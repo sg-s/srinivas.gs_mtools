@@ -9,6 +9,10 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [r] = oval(a,s)
 % fix for negative numbers
+if a == 0
+	r = '0';
+	return
+end
 if ischar(s)
 	% a is a fraction, and we should parse it appropriately
 	denom = 1;
