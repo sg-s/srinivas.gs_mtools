@@ -16,6 +16,9 @@
 
 function [p] = Manipulate(fname,p,stimulus,response,time)
 
+stimulus = stimulus(:);
+response = response(:);
+
 if nargin < 4
 	response = NaN*stimulus;
 end
@@ -23,10 +26,14 @@ if nargin < 5
 	time = 1:length(stimulus)
 end
 
-plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off');
-stimplot = subplot(2,1,1);
-respplot = subplot(2,1,2);
+plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m');
 
+nplots= nargout(fname) + 1;
+
+stimplot = autoplot(nplots,1,1);
+for i = 2:nplots
+	respplot(i-1) = autoplot(nplots,i,1);
+end
 
 
 % link plots
@@ -34,7 +41,7 @@ linkaxes([stimplot respplot],'x');
 Height = 440;
 controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off');
 
-r = [];
+r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
 pp = struct2mat(p);
 lb = (pp/2);
 ub = (pp*2);
@@ -66,21 +73,31 @@ EvaluateModel;
             
 function [] = EvaluateModel()
 	% get the XLim 
-	xl = get(respplot,'XLim');
-	eval(strcat('[r]=',fname,'(time,stimulus,p);'));
-	% update plot
-	cla(respplot);
-	figure(plotfig);
-	axis(respplot); hold on;
-	try
-		plot(time,response)
-	catch
+	xl = get(stimplot,'XLim');
+	
+	es = '[';
+	for j = 1:nplots-1
+		es=strcat(es,'r',mat2str(j),',');
 	end
-	plot(time,r,'r','LineWidth',2);
-	hold off
-	if xl(1) ~= 0
-		set(respplot,'XLim',xl);
+	clear j
+	es(end) = ']';
+	es= strcat(es,'=',fname,'(time,stimulus,p);');
+	eval(es);
+
+	% update all the response plots
+	for j = 1:length(respplot)
+		cla(respplot(j));
+		es='plot(respplot(j),time,r';
+		es = strcat(es,mat2str(j),');');	
+		eval(es);
+		if xl(1) ~= 0
+			set(respplot(j),'XLim',xl);
+		end
 	end
+
+	
+		
+	
 end
 
 function [] = RedrawSlider(src,event)
