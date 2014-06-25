@@ -50,7 +50,7 @@ if imax < 100
         for bs = 1:dop
             printthis = strcat(printthis,'\b');
         end
-        printthis = strcat(printthis,'DONE\n');
+        
     end
 else
     %% show percentage

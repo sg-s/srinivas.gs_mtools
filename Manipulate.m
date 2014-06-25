@@ -14,7 +14,15 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 
-function [p] = Manipulate(fname,p,x,R)
+function [p] = Manipulate(fname,p,stimulus,response,time)
+
+if nargin < 4
+	response = NaN*stimulus;
+end
+if nargin < 5
+	time = 1:length(stimulus)
+end
+
 plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off');
 stimplot = subplot(2,1,1);
 respplot = subplot(2,1,2);
@@ -28,12 +36,17 @@ controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar'
 
 r = [];
 pp = struct2mat(p);
-lb = abs(pp/2);
-ub = abs(pp*2);
+lb = (pp/2);
+ub = (pp*2);
 for i = 1:length(lb)
 	if lb(i) == ub(i)
 		lb(i) = 0;
 		ub(i) = 1;
+	end
+	if lb(i) > ub(i)
+		temp = ub(i);
+		ub(i) = lb(i);
+		lb(i) = temp;
 	end
 end
 clear i
@@ -44,9 +57,9 @@ controllabel = [];
 nspacing = [];
 
 % plot the stimulus
-plot(stimplot,x)
+plot(stimplot,time,stimulus)
 
-RedrawSlider;
+RedrawSlider(NaN,NaN);
 EvaluateModel;
 
 
@@ -54,59 +67,69 @@ EvaluateModel;
 function [] = EvaluateModel()
 	% get the XLim 
 	xl = get(respplot,'XLim');
-	eval(strcat('[r]=',fname,'(x,p);'));
+	eval(strcat('[r]=',fname,'(time,stimulus,p);'));
 	% update plot
 	cla(respplot);
 	figure(plotfig);
 	axis(respplot); hold on;
 	try
-		plot(R)
+		plot(time,response)
+	catch
 	end
-	plot(r,'r','LineWidth',2);
+	plot(time,r,'r','LineWidth',2);
 	hold off
 	if xl(1) ~= 0
 		set(respplot,'XLim',xl);
 	end
 end
 
-function [] = RedrawSlider(eo,ed)
-	% reset lower and upper bounds
-	f = fieldnames(p);
-	for i = 1:length(lbcontrol)
-		lb(i)=str2num(get(lbcontrol(i),'String'));
-		ub(i)=str2num(get(ubcontrol(i),'String'));
-	end
-	clear i
+function [] = RedrawSlider(src,event)
 
-	delete(lbcontrol);
-	delete(control);
-	delete(ubcontrol);
-	delete(controllabel);
-	
-	nspacing = Height/(length(f)+1);
-	for i = 1:length(f)
-		control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',(lb(i)+ub(i))/2);
-		thisstring = strkat(f{i},'=',mat2str(eval(strcat('p.',f{i}))));
-		controllabel(i) = uicontrol(controlfig,'Position',[10 Height-i*nspacing 50 20],'style','text','String',thisstring);
-		lbcontrol(i) = uicontrol(controlfig,'Position',[300 Height-i*nspacing 40 20],'style','edit','String',mat2str(lb(i)),'Callback',@RedrawSlider);
-		ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
+	if isnan(src)
+
+		% draw for the first time
+		f = fieldnames(p);
+		for i = 1:length(lbcontrol)
+			lb(i)=str2num(get(lbcontrol(i),'String'));
+			ub(i)=str2num(get(ubcontrol(i),'String'));
+		end
+		clear i
+		
+		nspacing = Height/(length(f)+1);
+		for i = 1:length(f)
+			control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',(lb(i)+ub(i))/2);
+			thisstring = strkat(f{i},'=',mat2str(eval(strcat('p.',f{i}))));
+			controllabel(i) = uicontrol(controlfig,'Position',[10 Height-i*nspacing 50 20],'style','text','String',thisstring);
+			lbcontrol(i) = uicontrol(controlfig,'Position',[300 Height-i*nspacing 40 20],'style','edit','String',mat2str(lb(i)),'Callback',@RedrawSlider);
+			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
+		end
+		clear i
+	else
+		% find the control that is being changed
+		this_control=[find(lbcontrol==src) find(ubcontrol==src)];
+
+		% change the upper and lower bounds of this slider
+		set(control(this_control),'Min',str2num(get(lbcontrol(this_control),'String')));
+		set(control(this_control),'Max',str2num(get(ubcontrol(this_control),'String')));
+
 	end
-	clear i
 end            
 
-function  [] = SliderCallback(eo,ed)
+function  [] = SliderCallback(src,ed)
+
+	% figure out which slider was moved
+	this_slider = find(control == src);
+
 	% update the value
 	f = fieldnames(p);
-	delete(controllabel)
-	
-	for i = 1:length(f)
-		thisval = get(control(i),'Value');
-		eval((strcat('p.',f{i},'=thisval;')));
-		thisstring = strkat(f{i},'=',oval(eval(strcat('p.',f{i})),2));
-		controllabel(i) = uicontrol(controlfig,'Position',[10 Height-i*nspacing 50 20],'style','text','String',thisstring);
+	thisval = get(control(this_slider),'Value');
+	eval((strcat('p.',f{this_slider},'=thisval;')));
+	thisstring = strkat(f{this_slider},'=',oval(eval(strcat('p.',f{this_slider})),2));
 
-	end
-	clear i
+	% update the label
+	controllabel(this_slider) = uicontrol(controlfig,'Position',[10 Height-this_slider*nspacing 50 20],'style','text','String',thisstring);
+
+
 
 	% evalaute the model and update the plot
 	EvaluateModel;
