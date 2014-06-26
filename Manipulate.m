@@ -26,7 +26,7 @@ if nargin < 5
 	time = 1:length(stimulus)
 end
 
-plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m');
+plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
 
 nplots= nargout(fname) + 1;
 
@@ -39,7 +39,7 @@ end
 % link plots
 linkaxes([stimplot respplot],'x');
 Height = 440;
-controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off');
+controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off','CloseRequestFcn',@QuitManipulateCallback);
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
 pp = struct2mat(p);
@@ -69,6 +69,17 @@ plot(stimplot,time,stimulus)
 RedrawSlider(NaN,NaN);
 EvaluateModel;
 
+
+function  [] = QuitManipulateCallback(~,~)
+	try
+		delete(plotfig)
+	catch
+	end
+	try
+		delete(controlfig)
+	catch
+	end
+end
 
             
 function [] = EvaluateModel()
