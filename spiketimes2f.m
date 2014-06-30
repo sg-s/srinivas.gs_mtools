@@ -7,10 +7,11 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [f] =  spiketimes2f(spiketimes,time,dt,window,algo)
-
+f=NaN;
 switch nargin 
 case 0
 	help spiketimes2f
+	return
 case 1
 	error('Need to define a time vector:')
 	help spiketimes2f
@@ -20,9 +21,9 @@ case 2
 	algo = 'gauss';
 case 3
 	window = 30*dt;
-	algo = 'gauss';
+	
 case 4
-	window = 30*dt;
+	algo = 'gauss';
 end
 
 % validate spiketimes 
@@ -50,7 +51,6 @@ end
 
 
 switch algo
-
 	case 'gauss'
 		t=min(time):dt:max(time);
 		f = zeros(length(t),ntrials);
@@ -64,4 +64,5 @@ switch algo
 
 		end
 	case 'isi'
+	end
 end

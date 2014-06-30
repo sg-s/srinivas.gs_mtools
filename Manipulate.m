@@ -1,11 +1,16 @@
 % Manipulate.m
 % Mathematica-stype model manipulation
 % usage: 
-% Manipulate('function.m',p,x,R)
-% where p is a structure containining the parameters of the model you want to manipulate 
-% function should accept two inputs, time and x, and a third input which is a structure specifying parameters
+% Manipulate(fname,p,stimulus,response,time)
+% where p is a structure containing the parameters of the model you want to manipulate 
+% The function to be manipulated (fname) should conform to the following standard: should accept two inputs, time and stimulus, and a third input which is a structure specifying parameters (p)
 % x is the stimulus input
-% and R is an optional reference output that will be plotted with the model output
+%
+% and response is an optional reference output that will be plotted with the model output (useful if you want to manually tune some parameters to fit data)
+% time is an optional time vector
+% 
+% Minimal Usage: 
+% Manipulate(fname,p,stimulus);
 % 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
@@ -15,15 +20,25 @@
 
 
 function [p] = Manipulate(fname,p,stimulus,response,time)
-
-stimulus = stimulus(:);
-response = response(:);
-
-if nargin < 4
+switch nargin
+case 0
+	help Manipulate
+	return
+case 1
+	error('Not enough input arguments. Must supply a second argument, which is a structure containing the parameters, and a third argument which is the stimulus')	
+case 2
+	error('Not enough input arguments. Must supply a third argument which is the stimulus')	
+case 3 
+	stimulus = stimulus(:);
 	response = NaN*stimulus;
-end
-if nargin < 5
-	time = 1:length(stimulus)
+	time = 1:length(stimulus);
+case 4
+	stimulus = stimulus(:);
+	response = response(:);
+	time = 1:length(stimulus);
+case 5
+	stimulus = stimulus(:);
+	response = response(:);
 end
 
 plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
@@ -83,17 +98,35 @@ end
 
             
 function [] = EvaluateModel()
+	% try to figure out if the model we are evaluating requires a time vector 
 	% get the XLim 
 	xl = get(stimplot,'XLim');
-	
-	es = '[';
-	for j = 1:nplots-1
-		es=strcat(es,'r',mat2str(j),',');
+
+	if nargin(fname) == 2
+		% ignore time 
+		es = '[';
+		for j = 1:nplots-1
+			es=strcat(es,'r',mat2str(j),',');
+		end
+		clear j
+		es(end) = ']';
+		es= strcat(es,'=',fname,'(stimulus,p);');
+		eval(es);
+
+	elseif nargin(fname) == 3
+		% assume time is required 
+		es = '[';
+		for j = 1:nplots-1
+			es=strcat(es,'r',mat2str(j),',');
+		end
+		clear j
+		es(end) = ']';
+		es= strcat(es,'=',fname,'(time,stimulus,p);');
+		eval(es);
+	else
+		error('The function you are trying to manipualte has too many inputs, so I dont know what to do')
 	end
-	clear j
-	es(end) = ']';
-	es= strcat(es,'=',fname,'(time,stimulus,p);');
-	eval(es);
+
 
 	% update all the response plots
 	for j = 1:length(respplot)
