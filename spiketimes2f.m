@@ -64,5 +64,4 @@ switch algo
 
 		end
 	case 'isi'
-	end
 end

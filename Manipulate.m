@@ -103,7 +103,7 @@ function [] = EvaluateModel()
 	xl = get(stimplot,'XLim');
 
 	if nargin(fname) == 2
-		% ignore time 
+		%disp('ignoring time')
 		es = '[';
 		for j = 1:nplots-1
 			es=strcat(es,'r',mat2str(j),',');
@@ -114,7 +114,8 @@ function [] = EvaluateModel()
 		eval(es);
 
 	elseif nargin(fname) == 3
-		% assume time is required 
+		%disp('assume time is required')
+
 		es = '[';
 		for j = 1:nplots-1
 			es=strcat(es,'r',mat2str(j),',');
@@ -127,6 +128,8 @@ function [] = EvaluateModel()
 		error('The function you are trying to manipualte has too many inputs, so I dont know what to do')
 	end
 
+	% label the plots using names from the function we are manipulating 
+	names = argoutnames(fname);
 
 	% update all the response plots
 	for j = 1:length(respplot)
@@ -137,7 +140,20 @@ function [] = EvaluateModel()
 		if xl(1) ~= 0
 			set(respplot(j),'XLim',xl);
 		end
+		title(respplot(j),names{j});
+		hold(respplot(j),'on')
 	end
+
+	% intelligently try to figure out where to plot the reference response
+	rr = zeros(1,length(respplot));
+	for j = 1:length(respplot)
+		es=strcat('rr(j)=  rsquare(response,r',mat2str(j),');');
+		eval(es)
+
+	end
+	[~,plot_here] = max(rr);
+	plot(respplot(plot_here),time,response,'r'); 
+	clear j
 
 	
 		
