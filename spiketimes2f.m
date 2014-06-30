@@ -33,18 +33,25 @@ if isvector(spiketimes)
 	if length(unique(spiketimes)) == 2
 		% this is binary data
 		spiketimes = find(spiketimes);
+	else
+		spiketimes = nonzeros(spiketimes);
 	end
 else
+	
 	[a,b] = size(spiketimes);
-	if b == length(time)
+	if b > a
 		spiketimes = spiketimes';
 		b=a;
 	end
-	for i = 1:b
-		temp=find(spiketimes(:,i));
-		spiketimes(:,i) = 0;
+	if length(unique(spiketimes)) == 2
+		% binary data
+		for i = 1:b
+			temp=find(spiketimes(:,i));
+			spiketimes(:,i) = 0;
 
-		spiketimes(1:length(temp),i) = temp;
+			spiketimes(1:length(temp),i) = temp;
+		end
+	else
 	end
 	ntrials = b;
 end
