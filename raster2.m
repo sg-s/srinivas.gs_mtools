@@ -40,7 +40,7 @@ case 2
         st(st==0)=[];
         x = reshape([st;st;NaN(1,length(st))],1,[]);
         y = reshape([(i-1+zeros(1,length(st))); (i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
-        plot(x,y,'b')
+        plot(x*1e-4,y,'b')
     end
     
     s = size(B);
