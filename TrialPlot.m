@@ -21,7 +21,10 @@
 %                   'std' plots mean and shades the standard deviation
 %                   'sem' plots mean and shades standard error of mean
 %                   'mean' plots only the mean. No errorbars plotted.
-function  [mx sx notplotted] = TrialPlot(t,x,c,limits,normalisewindow,type)
+function  [mx, sx, notplotted] = TrialPlot(t,x,c,limits,normalisewindow,type,verbosity)
+if nargin < 7
+    verbosity = 0;
+end
 mx = 0; sx = 0;
 opacity = 0.5;
 notplotted = [];
@@ -94,9 +97,10 @@ switch type
         end
         hold on
         if any(badtraces)
-            
-            disp('These traces were not plotted:')
-            disp(badtraces)
+            if verbosity
+                disp('These traces were not plotted:')
+                disp(badtraces)
+            end
         end
         notplotted = badtraces;
         
@@ -163,8 +167,10 @@ switch type
             set(gca,'XLim',[min(t)-0.5 max(t)+0.5],'YLim',[min(mean(x))-min(std(x))/sqrt(ss(1)) max(mean(x))+max(std(x))/sqrt(ss(1))])
         end
         if any(badtraces)
-            disp('These traces were not plotted:')
-            disp(badtraces)
+            if verbosity
+                disp('These traces were not plotted:')
+                disp(badtraces)
+            end
         end
         notplotted = badtraces;
     case 'mean'
@@ -202,8 +208,10 @@ switch type
             set(gca,'XLim',[min(t)-0.5 max(t)+0.5],'YLim',[min(mean(x))-min(std(x))/sqrt(ss(1)) max(mean(x))+max(std(x))/sqrt(ss(1))])
         end
         if any(badtraces)
-            disp('These traces were not plotted:')
-            disp(badtraces)
+            if verbosity
+                disp('These traces were not plotted:')
+                disp(badtraces)
+            end
         end
         notplotted = badtraces;
        

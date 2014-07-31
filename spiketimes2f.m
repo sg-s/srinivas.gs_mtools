@@ -1,13 +1,13 @@
 % spikestimes2f.m
-% this is a complete rewrite because earlier versions were very broken and seriously problematic 
-% Usage: [f] =  spiketimes2f(spiketimes,time,dt,window,algo)
+% accepts a vector of spike times and returns a firing rate estimate using a Gaussian smoothing window. 
+% Usage: f =  spiketimes2f(spiketimes,time,dt,window,algo)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [f] =  spiketimes2f(spiketimes,time,dt,window,algo)
-f=NaN;
+function f =  spiketimes2f(spiketimes,time,dt,window,algo)
+
 switch nargin 
 case 0
 	help spiketimes2f
@@ -21,10 +21,12 @@ case 2
 	algo = 'gauss';
 case 3
 	window = 30*dt;
+	algo = 'gauss';
 	
 case 4
 	algo = 'gauss';
 end
+f=NaN;
 
 % validate spiketimes 
 if isvector(spiketimes)
