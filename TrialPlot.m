@@ -22,7 +22,32 @@
 %                   'sem' plots mean and shades standard error of mean
 %                   'mean' plots only the mean. No errorbars plotted.
 function  [mx, sx, notplotted] = TrialPlot(t,x,c,limits,normalisewindow,type,verbosity)
-if nargin < 7
+switch nargin 
+case 0
+    help TrialPlot
+    return
+case 1 
+    help TrialPlot
+    error('Not enough inputs')
+case 2 
+    c = 'r';
+    limits = [-Inf Inf];
+    normalisewindow = [NaN NaN];
+    type = 'sem';
+    verbosity = 0;
+case 3
+    limits = [-Inf Inf];
+    normalisewindow = [NaN NaN];
+    type = 'sem';
+    verbosity = 0;
+case 4
+    normalisewindow = [NaN NaN];
+    type = 'sem';
+    verbosity = 0;
+case 5
+    type = 'sem';
+    verbosity = 0;
+case 5
     verbosity = 0;
 end
 mx = 0; sx = 0;
