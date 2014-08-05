@@ -86,11 +86,8 @@ if nargin > 4
 else
     normalisewindow = [NaN NaN];
 end
-%% figure out the type of plot to be done
-if nargin > 5
-else
-    type = 'data';
-end
+
+
 switch type
     case 'data'
         ymin = Inf; ymax = -Inf;
