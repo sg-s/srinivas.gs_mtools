@@ -32,7 +32,7 @@
 % K=FitFilter2Data(stim, response,[1:2000],'filter_length=500;','n=1;')
 % 
 % calculates a 500-point filter from the data after removing mean and regularising, but only at the first 2000 points of the data.
-function [K C] = FitFilter2Data(stim, response, OnlyThesePoints, varargin)
+function [K, C] = FitFilter2Data(stim, response, OnlyThesePoints, varargin)
 
 % defaults
 filter_length = 333;
@@ -69,6 +69,11 @@ if isvector(stim) && isvector(response)
 	% check that there are no NaNs
 	if any(isnan([stim;response]))
 		error('NaN in inputs, cannot continue')
+	end
+
+	% check that there are no Infs
+	if sum(isinf(stim)) || sum(isinf(response))
+		error('Inf in inputs/outputs, cannot continue')
 	end
 
 	% subtract mean in response
