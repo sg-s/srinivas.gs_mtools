@@ -23,3 +23,6 @@ end
 
 
 r = k*(xdata./(A-xdata)).^(1/n);
+
+% fix for when r is Inf
+r(isinf(r)) = A;
