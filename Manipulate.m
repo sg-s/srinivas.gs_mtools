@@ -125,7 +125,7 @@ function [] = EvaluateModel()
 		es= strcat(es,'=',fname,'(time,stimulus,p);');
 		eval(es);
 	else
-		error('The function you are trying to manipualte has too many inputs, so I dont know what to do')
+		error('The function you are trying to manipulate has too many inputs, so I dont know what to do')
 	end
 
 	% label the plots using names from the function we are manipulating 
@@ -147,7 +147,7 @@ function [] = EvaluateModel()
 	% intelligently try to figure out where to plot the reference response
 	rr = zeros(1,length(respplot));
 	for j = 1:length(respplot)
-		es=strcat('rr(j)=  rsquare(response,r',mat2str(j),');');
+		es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
 		eval(es)
 
 	end

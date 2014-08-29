@@ -22,6 +22,29 @@ All functions here have help above the function definition, and you can get help
 
 shows:
 
+```
+Manipulate.m
+  Mathematica-stype model manipulation
+  usage: 
+  Manipulate(fname,p,stimulus,response,time)
+  where p is a structure containing the parameters of the model you want to manipulate 
+  The function to be manipulated (fname) should conform to the following standard: should accept two inputs, time and stimulus, and a third input which is a structure specifying parameters (p)
+  x is the stimulus input
+ 
+ and response is an optional reference output that will be plotted with the model output (useful if you want to manually tune some parameters to fit data)
+time is an optional time vector
+  
+Minimal Usage: 
+  Manipulate(fname,p,stimulus);
+  
+  
+created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+  
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+  
+  ```
+
 You can also call any function with no arguments and it will return help, if at least one argument is required for that function. So `Manipulate` is the same as `help Manipulate`
 
 I've tried to follow the style guidelines specified in `mfile style guideline.md`		

@@ -10,6 +10,8 @@ function [ons,offs] = ComputeOnsOffs(x)
 if ~nargin
 	help ComputeOnsOffs
 	return
+else
+	x = x(:);
 end
 
 ons = diff(x);
@@ -26,12 +28,12 @@ if isempty(offs)
     return
 end
 if ons(1) > offs(1)
-    disp('something wrong')
-    keyboard
+    % the first pulse is lost. ignore it
+    offs(1) = [];
 end
 ons = ons+1; % correct for derivative shift
 if length(ons) > length(offs)
-	offs = [offs length(x)];
+	offs = [offs; length(x)];
 elseif length(offs) > length(ons)
 	keyboard
 else
