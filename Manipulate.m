@@ -1,16 +1,19 @@
 % Manipulate.m
 % Mathematica-stype model manipulation
 % usage: 
-% Manipulate(fname,p,stimulus,response,time)
-% where p is a structure containing the parameters of the model you want to manipulate 
-% The function to be manipulated (fname) should conform to the following standard: should accept two inputs, time and stimulus, and a third input which is a structure specifying parameters (p)
-% x is the stimulus input
 %
-% and response is an optional reference output that will be plotted with the model output (useful if you want to manually tune some parameters to fit data)
-% time is an optional time vector
-% 
-% Minimal Usage: 
-% Manipulate(fname,p,stimulus);
+% 	Manipulate(fname,p,stimulus);
+% 	Manipulate(fname,p,stimulus,response,time)
+%	Manipulate(fname,p,stimulus,response,time,plothere)
+%
+% where p is a structure containing the parameters of the model you want to manipulate 
+% The function to be manipulated (fname) should conform to the following standard: 
+% 	
+% 	[r]=fname(time,stimulus,p,plothere);
+%
+% where time and stimulus are optional matrices that your function might need
+% p is a structure containing the parameters you want to manipulate 
+% and plothere is an optional list of axis handles you want fname to plot to. fname should know what to do with plothere, if supplied, and should not require it. 
 % 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
@@ -19,7 +22,7 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 
-function [p] = Manipulate(fname,p,stimulus,response,time)
+function [p] = Manipulate(fname,p,stimulus,response,time,plothere)
 switch nargin
 case 0
 	help Manipulate
@@ -41,20 +44,24 @@ case 5
 	response = response(:);
 end
 
-plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
+if isempty(plothere)
+	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
 
-nplots= nargout(fname) + 1;
+	nplots= nargout(fname) + 1;
 
-stimplot = autoplot(nplots,1,1);
-for i = 2:nplots
-	respplot(i-1) = autoplot(nplots,i,1);
+	stimplot = autoplot(nplots,1,1);
+	for i = 2:nplots
+		respplot(i-1) = autoplot(nplots,i,1);
+	end
+
+	% link plots
+	linkaxes([stimplot respplot],'x');
 end
 
 
-% link plots
-linkaxes([stimplot respplot],'x');
 Height = 440;
 controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off','CloseRequestFcn',@QuitManipulateCallback);
+axis off
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
 pp = struct2mat(p);
@@ -78,8 +85,10 @@ control = [];
 controllabel = [];
 nspacing = [];
 
-% plot the stimulus
-plot(stimplot,time,stimulus)
+if isempty(plothere)
+	% plot the stimulus
+	plot(stimplot,time,stimulus)
+end
 
 RedrawSlider(NaN,NaN);
 EvaluateModel;
@@ -100,61 +109,85 @@ end
 function [] = EvaluateModel()
 	% try to figure out if the model we are evaluating requires a time vector 
 	% get the XLim 
-	xl = get(stimplot,'XLim');
+	if isempty(plothere)
+		xl = get(stimplot,'XLim');
+	end
 
 	if nargin(fname) == 2
-		%disp('ignoring time')
-		es = '[';
-		for j = 1:nplots-1
-			es=strcat(es,'r',mat2str(j),',');
+		if isempty(plothere)
+			%disp('ignoring time')
+			es = '[';
+			for j = 1:nplots-1
+				es=strcat(es,'r',mat2str(j),',');
+			end
+			clear j
+			es(end) = ']';
+			es= strcat(es,'=',fname,'(stimulus,p);');
+			eval(es);
+		else
+			% clear all the axes
+			for ip = 1:length(plothere)
+				cla(plothere(ip))
+			end
+			es = strcat(fname,'(stimulus,p);');
+			eval(es);
 		end
-		clear j
-		es(end) = ']';
-		es= strcat(es,'=',fname,'(stimulus,p);');
-		eval(es);
+		
 
 	elseif nargin(fname) == 3
 		%disp('assume time is required')
-
-		es = '[';
-		for j = 1:nplots-1
-			es=strcat(es,'r',mat2str(j),',');
+		if isempty(plothere)
+			es = '[';
+			for j = 1:nplots-1
+				es=strcat(es,'r',mat2str(j),',');
+			end
+			clear j
+			es(end) = ']';
+			es= strcat(es,'=',fname,'(time,stimulus,p);');
+			eval(es);
+		else
+			% clear all the axes
+			for ip = 1:length(plothere)
+				cla(plothere(ip))
+			end
+			es = strcat(fname,'(stimulus,p,plothere);');
+			eval(es);
 		end
-		clear j
-		es(end) = ']';
-		es= strcat(es,'=',fname,'(time,stimulus,p);');
-		eval(es);
 	else
 		error('The function you are trying to manipulate has too many inputs, so I dont know what to do')
 	end
 
 	% label the plots using names from the function we are manipulating 
-	names = argoutnames(fname);
+	try
+		names = argoutnames(fname);
+	catch
+	end
 
-	% update all the response plots
-	for j = 1:length(respplot)
-		cla(respplot(j));
-		es='plot(respplot(j),time,r';
-		es = strcat(es,mat2str(j),');');	
-		eval(es);
-		if xl(1) ~= 0
-			set(respplot(j),'XLim',xl);
+	if isempty(plothere)
+		% update all the response plots
+		for j = 1:length(respplot)
+			cla(respplot(j));
+			es='plot(respplot(j),time,r';
+			es = strcat(es,mat2str(j),');');	
+			eval(es);
+			if xl(1) ~= 0
+				set(respplot(j),'XLim',xl);
+			end
+			title(respplot(j),names{j});
+			hold(respplot(j),'on')
 		end
-		title(respplot(j),names{j});
-		hold(respplot(j),'on')
+
+		% intelligently try to figure out where to plot the reference response
+		rr = zeros(1,length(respplot));
+		for j = 1:length(respplot)
+			es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
+			eval(es)
+
+		end
+		[~,plot_here] = max(rr);
+		plot(respplot(plot_here),time,response,'r'); 
+		clear j
 	end
-
-	% intelligently try to figure out where to plot the reference response
-	rr = zeros(1,length(respplot));
-	for j = 1:length(respplot)
-		es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
-		eval(es)
-
-	end
-	[~,plot_here] = max(rr);
-	plot(respplot(plot_here),time,response,'r'); 
-	clear j
-
 	
 		
 	

@@ -15,6 +15,11 @@ if ~nargin
 	return
 end
 
+if nargout(fname) == 0
+	anems = '';
+	return
+end
+
 names = cell(1,nargout(fname));
 
 % first find out where it is 
