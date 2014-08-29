@@ -5,12 +5,15 @@ This repositroy contains some useful functions and scripts written in MATLAB tha
 ## List of Functions 
 
 1. Manipulate.m
-2. mulitplot.m
+2. multiplot.m
 3. oss.m
 4. oval.m
 5. PrettyFig.m
 6. RandomString.m
 7. textbar.m
+8. argoutnames.m
+9. MakePDF.m
+10. CleanPublish.m
 
 ## General Notes on Usage
 
@@ -47,7 +50,13 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 You can also call any function with no arguments and it will return help, if at least one argument is required for that function. So `Manipulate` is the same as `help Manipulate`
 
-I've tried to follow the style guidelines specified in `mfile style guideline.md`		
+I've tried to follow the style guidelines specified in `mfile style guideline.md`	
+
+## MakePDF.m and CleanPublish.m
+`MakePDF.m` is a wrapper for MATLAB's [publish](http://www.mathworks.com/help/matlab/ref/publish.html) function that accepts a script, and makes into a PDF directly. It works by first using `publish` to make a .tex file, then using `pdflatex` to compile that to a PDF. Assumes you are working on a Unix machine with pdflatex installed. 
+
+It uses `CleanPublish.m` to remove all the figures and log files after the PDF is compiled. 
+	
 ## textbar.m
 
 `textbar` is a text-based `waitbar` replacement. Drop it into long loops:
@@ -55,11 +64,11 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 ```
 for i = 1:34
 	textbar(i,34)
-	% do something
+	% do some long computation
 end
 ```
 
-will show you a progress bar and how many loops have evaluated. For loops that run more than a hundred times, textbar intellgitently switches to percent completed. 
+will show you a progress bar and how many loops have evaluated. For loops that run more than a hundred times, textbar intellgitently switches to percent completed. The progress bar is erased when the loop completes. 
 
 
 ## Manipulate.m
