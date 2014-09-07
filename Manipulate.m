@@ -225,7 +225,7 @@ function [] = RedrawSlider(src,event)
 	end
 end            
 
-function  [] = SliderCallback(src,ed)
+function  [] = SliderCallback(src,~)
 
 	% figure out which slider was moved
 	this_slider = find(control == src);

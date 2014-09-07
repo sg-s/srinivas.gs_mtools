@@ -1,19 +1,48 @@
 # srinivas.gs_mtools: README
 
-This repositroy contains some useful functions and scripts written in MATLAB that I've written over the years. My other repositories depend on this; feel free to do whatever you want with this. 
+This repository contains some useful functions and scripts written in MATLAB that I've written over the years. My other repositories depend on this. Feel free to do whatever you want with this. 
 
-## List of Functions 
+## Plotting and Data visualisation 
 
-1. Manipulate.m
-2. multiplot.m
-3. oss.m
-4. oval.m
-5. PrettyFig.m
-6. RandomString.m
-7. textbar.m
-8. argoutnames.m
-9. MakePDF.m
-10. CleanPublish.m
+2. autoplot.m
+26. oval.m
+27. Manipulate.m
+28. raster2.m
+29. TrialPlot.m
+30. multiplot.m
+31. PrettyFig.m
+
+
+## Web crawling functions
+
+13. GetLinks.m
+14. ParseHTML.m
+
+## Maths
+5. convolve.m
+6. ComputeOnsOffs.m7. cv.m8. FindShortestDimension.m9. FitFilter2Data.m10. GammaDist.m14. hill.m15. hill2.m16. ihill2.m17. iseven.m18. l2.m19. logistic.m20. logistic4.m23. mean2.m1. spiketimes2f.m1. rsquare.m
+
+
+## publishing 
+
+3. CleanPublish.m
+4. MakePDF.m
+
+## image processing
+
+6. CutImage.m
+7. triangle.m
+7. SaturationPlane.m
+
+## misc.
+
+12. getComputerName.m
+13. getAllFiles.m1. argoutnames.m1. RemovePointDefects.m
+1. width.m1. textbar.m
+1. struct2mat.m25. oss.m
+## text handling
+1. strkat.m
+1. StripPath.m1. spellcheck.m1. RandomString.m
 
 ## General Notes on Usage
 

@@ -4,6 +4,11 @@
 % 2. turns on all minor ticks
 % 3. makes all font sizes bigger
 % 4. makes all plots thicker 
+% 
+% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 function [] = PrettyFig(varargin)
 
@@ -20,7 +25,7 @@ for i = 1:nargin
 end
 
 
-% get handle to all plots in current fi
+% get handle to all plots in current figure
 axesHandles = findall(gcf,'type','axes');
 
 % for each axis

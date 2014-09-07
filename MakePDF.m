@@ -5,7 +5,21 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = MakePDF(filename);
+function [] = MakePDF(filename)
+
+switch nargin
+case 0
+	help MakePDF
+case 1
+	% check if file exists
+	if exist(filename,'file') ~= 2
+		help MakePDF
+		error('Cant find the file you told me to compile')
+	end
+otherwise
+	help MakePDF
+	error('Too many inputs')
+end
 
 % compile to .tex
 options.showCode = false;
