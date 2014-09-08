@@ -26,7 +26,19 @@ options.showCode = false;
 options.format = 'latex';
 options.imageFormat= 'pdf';
 options.figureSnapMethod=  'print';
-options.stylesheet = 'srinivas_latex.xsl';
+
+% use a custom stylesheet, if it exists
+a = dir('*.xsl');
+switch length(a)
+	case 0
+		% no custom stylesheet
+	case 1
+		% use this!
+		options.stylesheet = a.name;
+	case 2
+		error('Too many custom stylesheets in current directory. MakePDF does not know what to do.')
+end
+
 
 f=publish(filename,options);
 
