@@ -18,13 +18,13 @@ case 1
 case 2
 	dt = 10*mean(diff(time));
 	window = 30*dt;
-	algo = 'gauss';
+	algo = 'causal';
 case 3
 	window = 30*dt;
-	algo = 'gauss';
+	algo = 'causal';
 	
 case 4
-	algo = 'gauss';
+	algo = 'causal';
 end
 f=NaN;
 
@@ -72,5 +72,26 @@ switch algo
 	    	end
 
 		end
-	case 'isi'
+	case 'causal'
+		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
+		t=min(time):dt:max(time);
+		alpha = 1/window; 
+		f = zeros(length(t),ntrials);
+		deltat = time(2)-time(1);
+		tt=0:deltat:1;
+		K = ((alpha^2)*exp(-alpha*tt).*tt);
+
+		for i = 1:ntrials
+			s = 0*time;
+			s(nonzeros(spiketimes(:,i))) = 1;
+			ff = filter(K,1,s);
+
+			% subsample this to desired sampling rate
+			f(:,i) = interp1(time,ff,t);
+
+		end
+
+		
+
+
 end
