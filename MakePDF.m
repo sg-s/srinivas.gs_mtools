@@ -21,6 +21,8 @@ otherwise
 	error('Too many inputs')
 end
 
+close all 
+
 % compile to .tex
 options.showCode = false;
 options.format = 'latex';
