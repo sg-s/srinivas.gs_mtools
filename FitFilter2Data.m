@@ -36,7 +36,7 @@ function [K, C] = FitFilter2Data(stim, response, OnlyThesePoints, varargin)
 
 % defaults
 filter_length = 333;
-reg = 1; % mean of eigenvalues of C
+reg = 1e-1; % in units of mean of eigenvalues of C
 n = 1;
 regtype = 2;
 if nargin < 3
