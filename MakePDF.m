@@ -1,5 +1,6 @@
 % MakePDF.m
 % a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex that MATLAB creates and cleans up afterwards.
+% needs pdflatex installed. Will not work on Windows.
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -52,8 +53,8 @@ setenv('PATH', [PATH ':/usr/texbin']);
 cd('html')
 
 % convert the .tex to a PDF
-es = strkat('pdflatex ',f)
-unix(es)
+es = strkat('pdflatex ',f);
+unix(es);
 
 % clean up
 cd('..')

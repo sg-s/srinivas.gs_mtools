@@ -12,7 +12,7 @@ if ~nargin
 	return
 else
 	if isvector(x)
-		m = mean(x(~isnan(x)));
+		m = mean(x(~isnan(x) & (~isinf(x))));
 	else
 		m = mean(x,FindShortestDimension(x));
 	end
