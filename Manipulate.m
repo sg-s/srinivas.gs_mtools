@@ -60,7 +60,7 @@ end
 
 
 Height = 440;
-controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off','CloseRequestFcn',@QuitManipulateCallback);
+controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off','CloseRequestFcn',@QuitManipulateCallback,'Name','Manipulate');
 axis off
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
