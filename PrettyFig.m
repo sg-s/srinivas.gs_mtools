@@ -4,6 +4,8 @@
 % 2. turns on all minor ticks
 % 3. makes all font sizes bigger
 % 4. makes all plots thicker 
+% 5. (optional) equalises Y axis in all subplots. to use: PrettyFig('EqualiseY=1;')
+% 6. makes figure background white
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -19,11 +21,10 @@ fs = 24; % font size
 EqualiseY = 0;
 
 
-% evluate inputs
+% evaluate option inputs
 for i = 1:nargin
 	eval(varargin{i})
 end
-
 
 % get handle to all plots in current figure
 axesHandles = findall(gcf,'type','axes');
@@ -33,21 +34,38 @@ for i = 1:length(axesHandles)
 	% set line width and font size
 	set(axesHandles(i),'FontSize',fs,'LineWidth',lw)
 
-	% find all line plots
-	ph = findall(axesHandles,'type','line');
+	% get all their X and Y extents
+	ph = findall(axesHandles(i),'type','line');
+	xlimits = NaN(2,length(ph));
+	ylimits = NaN(2,length(ph));
 	for j = 1:length(ph)
-		set(ph(j),'LineWidth',plw)
+		temp=get(ph(j),'XData');
+		xlimits(1,j) = min(temp); xlimits(2,j) = max(temp); clear temp
+		temp=get(ph(j),'YData');
+		ylimits(1,j) = min(temp); ylimits(2,j) = max(temp); clear temp
 	end
 	clear j
-
-	% find all titles
-	th = findall(axesHandles,'type','text');
-	for j = 1:length(th)
-		set(th(j),'FontSize',fs)
-	end
-	clear j
+	minx=min(xlimits(1,:)); miny = min(ylimits(1,:)); 
+	maxx=max(xlimits(2,:)); maxy = max(ylimits(2,:)); 
+	rx = abs(minx-maxx); ry = abs(miny-maxy);
+	set(axesHandles(i),'XLim',[minx-.1*rx maxx+.1*rx],'YLim',[miny-.1*ry maxy+.1*ry])
 end
 clear i
+
+% find all line plots and get all their X and Y extents
+ph = findall(axesHandles,'type','line');
+for j = 1:length(ph)
+	set(ph(j),'LineWidth',plw)
+end
+clear j
+
+
+% find all titles
+th = findall(axesHandles,'type','text');
+for j = 1:length(th)
+	set(th(j),'FontSize',fs)
+end
+clear j
 
 
 if EqualiseY 
@@ -66,3 +84,5 @@ if EqualiseY
 	clear i
 
 end
+
+set(gcf,'Color','w')
