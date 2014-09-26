@@ -19,6 +19,7 @@ lw = 2; % line width of graphical elements
 plw = 2; % plot line width 
 fs = 24; % font size
 EqualiseY = 0;
+plot_buffer = .1; % how much should you zoom out of the data to show extremes?
 
 
 % evaluate option inputs
@@ -34,7 +35,7 @@ for i = 1:length(axesHandles)
 	% set line width and font size
 	set(axesHandles(i),'FontSize',fs,'LineWidth',lw)
 
-	% get all their X and Y extents
+	% rescale the X and Y limits, but only if the user has not manually specified something
 	ph = findall(axesHandles(i),'type','line');
 	xlimits = NaN(2,length(ph));
 	ylimits = NaN(2,length(ph));
@@ -48,7 +49,13 @@ for i = 1:length(axesHandles)
 	minx=min(xlimits(1,:)); miny = min(ylimits(1,:)); 
 	maxx=max(xlimits(2,:)); maxy = max(ylimits(2,:)); 
 	rx = abs(minx-maxx); ry = abs(miny-maxy);
-	set(axesHandles(i),'XLim',[minx-.1*rx maxx+.1*rx],'YLim',[miny-.1*ry maxy+.1*ry])
+	
+	if strcmp(get(axesHandles(i),'XLimMode'),'auto')
+		set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
+	end
+	if strcmp(get(axesHandles(i),'YLimMode'),'auto')
+		set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+	end
 end
 clear i
 
