@@ -35,13 +35,16 @@ case 3
 	stimulus = stimulus(:);
 	response = NaN*stimulus;
 	time = 1:length(stimulus);
+	plothere = [];
 case 4
 	stimulus = stimulus(:);
 	response = response(:);
 	time = 1:length(stimulus);
+	plothere = [];
 case 5
 	stimulus = stimulus(:);
 	response = response(:);
+	plothere = [];
 end
 
 if isempty(plothere)
@@ -54,8 +57,10 @@ if isempty(plothere)
 		respplot(i-1) = autoplot(nplots,i,1);
 	end
 
-	% link plots
-	linkaxes([stimplot respplot],'x');
+	if nplots > 1
+		% link plots
+		linkaxes([stimplot respplot],'x');
+	end
 end
 
 
@@ -153,6 +158,16 @@ function [] = EvaluateModel()
 			es = strcat(fname,'(stimulus,p,plothere);');
 			eval(es);
 		end
+	elseif nargin(fname) == 4
+		% the function to be manipulated makes its own plot
+		if ~isempty(plothere)
+			% clear all the axes
+			for ip = 1:length(plothere)
+				cla(plothere(ip))
+			end
+			es = strcat(fname,'(time,stimulus,p,plothere);');
+			eval(es);
+		end
 	else
 		error('The function you are trying to manipulate has too many inputs, so I dont know what to do')
 	end
@@ -190,7 +205,7 @@ function [] = EvaluateModel()
 	end
 	
 		
-	
+	set(controlfig,'Name','Manipulate')
 end
 
 function [] = RedrawSlider(src,event)
@@ -239,10 +254,16 @@ function  [] = SliderCallback(src,~)
 	% update the label
 	controllabel(this_slider) = uicontrol(controlfig,'Position',[10 Height-this_slider*nspacing 50 20],'style','text','String',thisstring);
 
-
+	% disable all the sliders while the model is being evaluated
+	set(control,'Enable','off')
+	set(controlfig,'Name','...')
 
 	% evalaute the model and update the plot
 	EvaluateModel;
+
+	% re-enable all the sliders
+	set(control,'Enable','on')
+
 
 end
 
