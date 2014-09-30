@@ -1,23 +1,24 @@
-% getComputerName.m
-% 
-% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [name shortname] = getComputerName()
-[status, name] = system('hostname');   
+function name = getComputerName()
+% GETCOMPUTERNAME returns the name of the computer (hostname)
+% name = getComputerName()
+%
+% WARN: output string is converted to lower case
+%
+%
+% See also SYSTEM, GETENV, ISPC, ISUNIX
+%
+% m j m a r i n j (AT) y a h o o (DOT) e s
+% (c) MJMJ/2007
+%
 
-if ~status 
+[ret, name] = system('hostname');   
+
+if ret ~= 0,
    if ispc
-      name = lower(getenv('COMPUTERNAME'));
+      name = getenv('COMPUTERNAME');
    else      
-      name = lower(getenv('HOSTNAME'));      
+      name = getenv('HOSTNAME');      
    end
 end
+name = lower(name);
 
-d = strfind(name,'.');
-if ~isempty(d)
-	shortnamename = name(1:d(1)-1);
-else
-	shortname = name;
-end

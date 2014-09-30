@@ -3,6 +3,9 @@
 % where x(1) specifies the maximum
 % x(2) specifies the location of the inflection point
 % x(3) specifies the steepness 
+% Usage:
+% r = hill(x,xdata)
+% 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 

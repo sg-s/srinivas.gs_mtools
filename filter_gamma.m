@@ -4,10 +4,10 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function f = gamma_function(tau,n,A,t)
+function f = filter_gamma(tau,n,A,t)
 switch nargin
 case 0
-	help gamma_function
+	help filter_gamma
 	return
 case 1
 	% check to see if we are getting a vector

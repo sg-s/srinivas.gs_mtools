@@ -45,6 +45,7 @@ case 5
 	stimulus = stimulus(:);
 	response = response(:);
 	plothere = [];
+case 6
 end
 
 if isempty(plothere)
