@@ -16,8 +16,8 @@ case 1
 	error('Need to define a time vector:')
 	help spiketimes2f
 case 2
-	dt = 10*mean(diff(time));
-	window = 30*dt;
+	dt = 10*mean(diff(time)); % desired rate of output firing rate
+	window = 30*dt; % smoothing window
 	algo = 'causal';
 case 3
 	window = 30*dt;
