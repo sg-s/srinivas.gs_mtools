@@ -14,11 +14,12 @@ else
 	x = x(:);
 end
 
-ons = diff(x);
-offs = (ons<0);
-ons(ons<0) = 0;
-ons = find(ons);
-offs = find(offs);
+x= x/max(x);
+x(x<.5) = 0;
+x(x>0) = 1;
+
+ons = find(diff(x)==1);
+offs = find(diff(x)==-1);
 
 % check that the order is good
 if isempty(ons)

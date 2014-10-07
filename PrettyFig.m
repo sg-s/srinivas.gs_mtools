@@ -22,6 +22,14 @@ EqualiseY = 0;
 plot_buffer = .1; % how much should you zoom out of the data to show extremes?
 
 
+% bringing PrettyFig dragging and screaming into 2014b
+if strcmp(version('-release'),'2014b')
+    fs = 15;
+    plw = 1.5;
+    lw = 1.5;
+end
+
+
 % evaluate option inputs
 for i = 1:nargin
 	eval(varargin{i})
