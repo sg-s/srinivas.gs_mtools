@@ -56,13 +56,13 @@ thisline = lines{func_def_line};
 a = strfind(thisline,'(');
 z = strfind(thisline,')');
 
-
 if nargin(fname) == 1
 	
 	names{1} = thisline(a+1:z-1);
 else
 	% find commas
 	c = strfind(thisline,',');
+	c(c<a) = [];
 	c(c>z) = [];
 
 	% grab the first
