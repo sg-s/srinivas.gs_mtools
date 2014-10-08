@@ -1,7 +1,7 @@
 % bilobed_alpha_filter.m
 % four parameter bilobed filter based on an alpha function
 % usage:
-% K = filter_alpha2(tau1,tau2,A,b,t)\
+% K = filter_alpha2(tau1,tau2,A,b,t)
 %
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 

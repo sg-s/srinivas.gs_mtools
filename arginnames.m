@@ -9,18 +9,18 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [names] = argoutnames(fname)
+function [names] = arginnames(fname)
 if ~nargin 
-	help argoutnames
+	help arginnames
 	return
 end
 
-if nargout(fname) == 0
+if nargin(fname) == 0
 	names = '';
 	return
 end
 
-names = cell(1,nargout(fname));
+names = cell(1,nargin(fname));
 
 % first find out where it is 
 funcfile=which(fname);
@@ -53,17 +53,13 @@ clear i
 
 % find parentheses in this line
 thisline = lines{func_def_line};
-a = strfind(thisline,'[');
-z = strfind(thisline,']');
+a = strfind(thisline,'(');
+z = strfind(thisline,')');
 
-if isempty(a) && isempty(z)
-	a =  (strfind(thisline,'function')+8);
-	z=  strfind(thisline,'=')-1;
-end
 
-if nargout(fname) == 1
+if nargin(fname) == 1
 	
-	names{1} = thisline(a:z);
+	names{1} = thisline(a+1:z-1);
 else
 	% find commas
 	c = strfind(thisline,',');
@@ -75,7 +71,7 @@ else
 	names{1} = thisline(aa:zz);
 
 	% grab the middle ones
-	for i = 2:nargout(fname)-1
+	for i = 2:nargin(fname)-1
 		aa = c(i-1) + 1;
 		zz = c(i) -1;
 		names{i} = thisline(aa:zz);
