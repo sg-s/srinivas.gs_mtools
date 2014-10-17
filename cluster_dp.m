@@ -1,7 +1,11 @@
 % cluster_dp
 % "Density peaks" based clustering
 % See: Rodriguez, A., & Laio, A. (2014). Clustering by fast search and find of density peaks. Science, 344(6191), 1492–1496. doi:10.1126/science.1242072
-% based off their script, just cleaned up a bit. 
+% based off their script, with some modifications (general input type, automatic detection of cluster centres, etc.)
+% usage:
+% [cl,halo] = cluster_dp(xx)
+% where xx is a n X 3 matrix, the first two columns containing pairs of points, and the third the distance b/w them (see the reference above for full details)
+% 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
@@ -219,15 +223,8 @@ for i=1:NCLUST
       A(nn,2)=Y1(j,2);
     end
   end
-  hold on
+
   %plot(A(1:nn,1),A(1:nn,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
 end
 
-%for i=1:ND
-%   if (halo(i)>0)
-%      ic=int8((halo(i)*64.)/(NCLUST*1.));
-%      hold on
-%      plot(Y1(i,1),Y1(i,2),'o','MarkerSize',2,'MarkerFaceColor',cmap(ic,:),'MarkerEdgeColor',cmap(ic,:));
-%   end
-%end
 

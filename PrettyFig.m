@@ -56,13 +56,16 @@ for i = 1:length(axesHandles)
 	clear j
 	minx=min(xlimits(1,:)); miny = min(ylimits(1,:)); 
 	maxx=max(xlimits(2,:)); maxy = max(ylimits(2,:)); 
-	rx = abs(minx-maxx); ry = abs(miny-maxy);
-	
-	if strcmp(get(axesHandles(i),'XLimMode'),'auto')
-		set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
-	end
-	if strcmp(get(axesHandles(i),'YLimMode'),'auto')
-		set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+
+	if ~isempty(minx) && ~isempty(maxx)
+		rx = abs(minx-maxx); ry = abs(miny-maxy);
+		
+		if strcmp(get(axesHandles(i),'XLimMode'),'auto')
+			set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
+		end
+		if strcmp(get(axesHandles(i),'YLimMode'),'auto')
+			set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+		end
 	end
 end
 clear i

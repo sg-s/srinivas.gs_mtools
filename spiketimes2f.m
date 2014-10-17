@@ -39,14 +39,18 @@ f=NaN;
 if isvector(spiketimes)
 	ntrials = 1;
 	spiketimes = spiketimes(:);
-	keyboard
-	% rewrite to compute on binary data
-	% if length(unique(spiketimes)) == 2
-	% 	% this is binary data
-	% 	spiketimes = find(spiketimes);
-	% else
-	% 	spiketimes = nonzeros(spiketimes);
-	% end
+	if length(unique(spiketimes)) == 2
+		% all OK
+	else
+		error('not binary data')
+		% rewrite to compute on binary data
+		% if length(unique(spiketimes)) == 2
+		% 	% this is binary data
+		% 	spiketimes = find(spiketimes);
+		% else
+		% 	spiketimes = nonzeros(spiketimes);
+		% end
+	end
 else
 	
 	[a,b] = size(spiketimes);

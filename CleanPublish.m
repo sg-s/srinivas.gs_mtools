@@ -21,4 +21,10 @@ if exist('html','dir') == 7
 			delete(strcat('html/',a(i).name))
 		end
 	end
+
+	if verLessThan('matlab','8.4')
+	else
+		% have to clean up pngs too
+		delete('html/*.png')
+	end
 end

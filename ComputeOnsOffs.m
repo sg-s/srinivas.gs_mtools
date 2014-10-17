@@ -12,6 +12,7 @@ if ~nargin
 	return
 else
 	x = x(:);
+	x = double(x);
 end
 
 x= x/max(x);

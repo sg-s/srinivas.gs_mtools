@@ -27,7 +27,12 @@ close all
 % compile to .tex
 options.showCode = false;
 options.format = 'latex';
-options.imageFormat= 'pdf';
+if verLessThan('matlab','8.4')
+	options.imageFormat= 'pdf';
+else
+	options.imageFormat= 'png';
+end
+
 options.figureSnapMethod=  'print';
 
 % use a custom stylesheet, if it exists

@@ -1,4 +1,4 @@
-% gamma_function.m
+% filter_gamma.m
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -23,8 +23,8 @@ case 3
 	t = 1:1000;
 case 4
 end	
-f = t.^n.*exp(-t/tau); % functional form in paper
-f = f/tau^(n+1)/gamma(n+1); % normalize appropriately
+f = t.^n.*exp(-t/tau); 
+f = f/tau^(n+1)/gamma(n+1); 
 
 % and then scale
 f = f*A;
