@@ -35,24 +35,34 @@ case 4
 end
 f=NaN;
 
+debug_mode = 0;
+
+
 % validate spiketimes 
 if isvector(spiketimes)
+	if debug_mode
+		disp('spiketimes is a vecotr')
+	end
 	ntrials = 1;
 	spiketimes = spiketimes(:);
-	if length(unique(spiketimes)) == 2
+	if length(unique(spiketimes)) == 2 && sum(unique(spiketimes)) == 1
 		% all OK
+		if debug_mode
+			disp('spiketimes is binary data')
+		end
 	else
-		error('not binary data')
-		% rewrite to compute on binary data
-		% if length(unique(spiketimes)) == 2
-		% 	% this is binary data
-		% 	spiketimes = find(spiketimes);
-		% else
-		% 	spiketimes = nonzeros(spiketimes);
-		% end
+		% error('not binary data')
+		temp = sparse(length(time),1);
+		temp(nonzeros(spiketimes))=1;
+		spiketimes = temp; clear temp
+		if debug_mode
+			disp('spiketimes is not binary, but i converted it to binary')
+		end
 	end
 else
-	
+	if debug_mode
+		disp('spiketimes is NOT a vector')
+	end
 	[a,b] = size(spiketimes);
 	if b > a
 		spiketimes = spiketimes';
@@ -97,10 +107,8 @@ switch algo
 		K = ((alpha^2)*exp(-alpha*tt).*tt);
 		for i = 1:ntrials
 			ff = filter(K,1,full(spiketimes(:,i)));
-
 			% subsample this to desired sampling rate
 			f(:,i) = interp1(time,ff,t);
-
 		end
 
 		

@@ -27,13 +27,12 @@ close all
 % compile to .tex
 options.showCode = false;
 options.format = 'latex';
-if verLessThan('matlab','8.4')
-	options.imageFormat= 'pdf';
-else
-	options.imageFormat= 'png';
-end
 
+options.imageFormat= 'pdf';
 options.figureSnapMethod=  'print';
+
+
+
 
 % use a custom stylesheet, if it exists
 a = dir('*.xsl');
@@ -50,11 +49,13 @@ end
 
 f=publish(filename,options);
 
+
+
 % tell stupid MATLAB to get the path right
 PATH = getenv('PATH');
 setenv('PATH', [PATH ':/usr/texbin']); 
 
-% move to the correct directroy
+% move to the correct directory
 cd('html')
 
 % convert the .tex to a PDF
