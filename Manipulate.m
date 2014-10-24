@@ -48,6 +48,11 @@ case 5
 case 6
 end
 
+% check inputs
+if ~isstruct(p)
+	error('Second argument should be a structure containing parameters')
+end
+
 if isempty(plothere)
 	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
 
@@ -94,6 +99,7 @@ nspacing = [];
 if isempty(plothere)
 	% plot the stimulus
 	plot(stimplot,time,stimulus)
+	title(stimplot,'Stimulus')
 end
 
 RedrawSlider(NaN,NaN);
@@ -194,15 +200,18 @@ function [] = EvaluateModel()
 		end
 
 		% intelligently try to figure out where to plot the reference response
-		rr = zeros(1,length(respplot));
-		for j = 1:length(respplot)
-			es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
-			eval(es)
+		if any(~isnan(response))
+			rr = zeros(1,length(respplot));
+		
+			for j = 1:length(respplot)
+				es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
+				eval(es)
 
+			end
+			[~,plot_here] = max(rr);
+			plot(respplot(plot_here),time,response,'r'); 
+			clear j
 		end
-		[~,plot_here] = max(rr);
-		plot(respplot(plot_here),time,response,'r'); 
-		clear j
 	end
 	
 		
@@ -210,8 +219,8 @@ function [] = EvaluateModel()
 end
 
 function [] = RedrawSlider(src,event)
-
-	if isnan(src)
+	temp=whos('src');
+	if ~strcmp(temp.class,'matlab.ui.control.UIControl')
 
 		% draw for the first time
 		f = fieldnames(p);

@@ -14,6 +14,8 @@
 
 function [] = PrettyFig(varargin)
 
+warning off
+
 % defaults
 lw = 2; % line width of graphical elements
 plw = 2; % plot line width 
@@ -104,3 +106,6 @@ if EqualiseY
 end
 
 set(gcf,'Color','w')
+
+
+warning on
