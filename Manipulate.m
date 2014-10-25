@@ -53,6 +53,11 @@ if ~isstruct(p)
 	error('Second argument should be a structure containing parameters')
 end
 
+% remove trailing extention, if any.
+if ~isempty(strfind(fname,'.m'))
+	fname(strfind(fname,'.m'):end) = [];
+end
+
 if isempty(plothere)
 	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
 
