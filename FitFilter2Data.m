@@ -33,12 +33,25 @@
 % 
 % calculates a 500-point filter from the data after removing mean and regularising, but only at the first 2000 points of the data.
 function [K, C] = FitFilter2Data(stim, response, OnlyThesePoints, varargin)
+if ~nargin
+	help FitFilter2Data
+	return
+end
 
 % defaults
 filter_length = 333;
 reg = 1e-1; % in units of mean of eigenvalues of C
 n = 1;
 regtype = 2;
+
+% evaluate optional inputs
+for i = 1:nargin-3
+	eval(varargin{i})
+end
+
+
+
+
 if nargin < 3
 	OnlyThesePoints = filter_length+1:length(stim);
 else
@@ -51,10 +64,6 @@ else
 	end
 end
 
-% evaluate optional inputs
-for i = 1:nargin-3
-	eval(varargin{i})
-end
 
 
 % check that stimulus and response are OK
@@ -90,7 +99,7 @@ if isvector(stim) && isvector(response)
 	% chop up the stimulus into blocks  
 	s = zeros(length(OnlyThesePoints), filter_length+1);
 	for i=1:length(OnlyThesePoints)
-	    s(i,:) = stim(OnlyThesePoints(i):-1:OnlyThesePoints(i)-filter_length);
+		s(i,:) = stim(OnlyThesePoints(i):-1:OnlyThesePoints(i)-filter_length);
 	end
 
 	% compute covariance matrix

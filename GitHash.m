@@ -13,12 +13,18 @@ case 0
 	return
 end
 
-
 slashes = strfind(filename,oss);
-root = filename(1:slashes(end));
 
-try
-	h=fileread(strcat(root,'.git',oss,'refs',oss,'heads',oss,'master'));
-catch
+if isempty(slashes)
 	h = '000000';
+else
+
+	root = filename(1:slashes(end));
+
+	try
+		h=fileread(strcat(root,'.git',oss,'refs',oss,'heads',oss,'master'));
+		h = h(1:40);
+	catch
+		h = '000000';
+	end
 end

@@ -2,6 +2,11 @@
 % created by Srinivas Gorur-Shandilya at 17:31 , 15 January 2014. Contact me at http://srinivas.gs/contact/
 % finds the best filter, searching through the space of the free parameter in my and damon's filter estimation functions
 function [K, diagnostics, filtertime] = FindBestFilter(stim,response,OnlyThesePoints,varargin)
+if ~nargin
+	help FindBestFilter
+	return
+end 
+
 
 % ensure inputs OK
 stim = stim(:);

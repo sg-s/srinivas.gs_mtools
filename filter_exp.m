@@ -27,4 +27,7 @@ case 2
 end
 K = exp(-t/tau);
 K = A*K;
+
+% normalise correctly
+K = K*mean(diff(t));
 K = K/tau;
