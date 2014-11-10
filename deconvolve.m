@@ -2,7 +2,15 @@
 % Devonvolves a signal using Wiener deconvoltuion
 % created by Srinivas Gorur-Shandilya at 11:07 , 27 July 2011. Contact me
 % at http://srinivas.gs/contact/
-function [x frec] = deconvolve(a,y)
+% this was written a long while ago, and these usage notes have been added later:
+% usage:
+% [x, frec] = deconvolve(a,y)
+function [x, frec] = deconvolve(a,y)
+if ~nargin
+	help deconvolve
+	return
+end
+
 %% parse inputs correctly
 s = size(a);
 if s(1)  > s(2)
