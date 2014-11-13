@@ -15,10 +15,14 @@ end
 p = path;
 c = pathsep;
 
-if isempty(strfind(path,char(name)))
+if isempty(strfind(p,char(name)))
 	inpath = 0;
-	containing_folder = '';
+	full_path = '';
 else
+	inpath = 1;
 	sep_points = strfind(p,c);
-	full_path=p(sep_points(find(sep_points<strfind(path,char(name)),1,'last'))+1:sep_points(find(sep_points>strfind(path,char(name)),1,'first'))-1);
+	full_path=p(sep_points(find(sep_points<strfind(p,char(name)),1,'last'))+1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);
+	if isempty(full_path)
+		full_path=p(1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);
+	end
 end

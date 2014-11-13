@@ -61,6 +61,12 @@ for i = 1:length(axesHandles)
 
 	if ~isempty(minx) && ~isempty(maxx)
 		rx = abs(minx-maxx); ry = abs(miny-maxy);
+		if rx == 0
+			rx = 1; minx = minx - 1; maxx = maxx + 1;
+		end
+		if ry == 0
+			ry == 1; miny = miny - 1; maxy = maxy + 1;
+		end
 		
 		if strcmp(get(axesHandles(i),'XLimMode'),'auto')
 			set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
