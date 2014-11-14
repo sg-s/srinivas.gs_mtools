@@ -42,6 +42,10 @@ axesHandles = findall(gcf,'type','axes');
 
 % for each axis
 for i = 1:length(axesHandles)
+	% get the old limits
+	oldx = get(axesHandles(i),'XLim');
+	oldy = get(axesHandles(i),'YLim');
+
 	% set line width and font size
 	set(axesHandles(i),'FontSize',fs,'LineWidth',lw)
 
@@ -68,15 +72,56 @@ for i = 1:length(axesHandles)
 			ry == 1; miny = miny - 1; maxy = maxy + 1;
 		end
 		
-		if strcmp(get(axesHandles(i),'XLimMode'),'auto')
-			set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
+		if strcmp(get(axesHandles(i),'XScale'),'log')
+			if strcmp(get(axesHandles(i),'XLimMode'),'auto')
+				set(axesHandles(i),'XLim',oldx)
+			end
+		else
+			if strcmp(get(axesHandles(i),'XLimMode'),'auto')
+				set(axesHandles(i),'XLim',[minx-plot_buffer*rx maxx+plot_buffer*rx])
+			end
 		end
-		if strcmp(get(axesHandles(i),'YLimMode'),'auto')
-			set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+
+		if strcmp(get(axesHandles(i),'YScale'),'log')
+			if strcmp(get(axesHandles(i),'YLimMode'),'auto')
+				set(axesHandles(i),'YLim',oldy)
+			end
+		else
+			if strcmp(get(axesHandles(i),'YLimMode'),'auto')
+				set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+			end
 		end
+
+
+		
+		
 	end
+
+	% turn the minor ticks on
+	set(axesHandles(i),'XMinorTick','on','YMinorTick','on')	
+
+	% there should be more than 1 xtick when we have a log scale
+	if  length(get(axesHandles(i),'XTick')) == 1 && strcmp(get(axesHandles(i),'XScale'),'log')
+		c=get(axesHandles(i),'Children');
+		minlog = Inf;maxlog = -Inf;
+		for k = 1:length(c)
+			minlog = min([ min(nonzeros(get(c(1),'XData'))) minlog]);
+			maxlog = max([ max(nonzeros(get(c(1),'XData'))) maxlog]);
+		end
+		a = ceil(log10(minlog));
+		z = floor(log10(maxlog));
+		if length(a:z) > 2
+			set(axesHandles(i),'XTick',10.^(a:z));
+		else
+		end
+	else
+
+	end
+	
+
 end
 clear i
+
 
 % find all line plots and get all their X and Y extents
 ph = findall(axesHandles,'type','line');
