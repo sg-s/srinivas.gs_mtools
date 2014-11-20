@@ -63,7 +63,7 @@ for i = 1:length(axesHandles)
 	minx=min(xlimits(1,:)); miny = min(ylimits(1,:)); 
 	maxx=max(xlimits(2,:)); maxy = max(ylimits(2,:)); 
 
-	if ~isempty(minx) && ~isempty(maxx)
+	if ~isempty(minx) && ~isempty(maxx) && ~isempty(nonzeros([maxy miny]))
 		rx = abs(minx-maxx); ry = abs(miny-maxy);
 		if rx == 0
 			rx = 1; minx = minx - 1; maxx = maxx + 1;
