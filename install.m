@@ -19,7 +19,10 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 function [] = install(varargin)
-
+if ~nargin
+	help install
+	return
+end
 % defaults
 force = 0;
 p = {};

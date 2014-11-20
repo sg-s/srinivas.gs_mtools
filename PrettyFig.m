@@ -117,6 +117,14 @@ for i = 1:length(axesHandles)
 	else
 
 	end
+
+
+	% find all errorbar plots and set those line widths appropriately
+	ph=get(axesHandles(i),'Children');
+	for j = 1:length(ph)
+		set(ph(j),'LineWidth',plw)
+	end
+
 	
 
 end
@@ -129,6 +137,7 @@ for j = 1:length(ph)
 	set(ph(j),'LineWidth',plw)
 end
 clear j
+
 
 
 % find all titles
@@ -157,6 +166,5 @@ if EqualiseY
 end
 
 set(gcf,'Color','w')
-
 
 warning on
