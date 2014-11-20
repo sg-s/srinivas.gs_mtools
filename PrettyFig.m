@@ -118,6 +118,34 @@ for i = 1:length(axesHandles)
 
 	end
 
+	% there should be more than 1 Ytick when we have a log scale
+	if  length(get(axesHandles(i),'YTick')) == 1 && strcmp(get(axesHandles(i),'YScale'),'log')
+		c=get(axesHandles(i),'Children');
+		minlog = Inf; maxlog = -Inf;
+		for k = 1:length(c)
+			minlog = min([ min(nonzeros(get(c(1),'YData'))) minlog]);
+			maxlog = max([ max(nonzeros(get(c(1),'YData'))) maxlog]);
+		end
+		a = ceil(log10(minlog));
+		z = floor(log10(maxlog));
+		if length(a:z) > 2
+			set(axesHandles(i),'YTick',10.^(a:z));
+		else
+			% choose a smaller base
+			a = ceil(log(minlog));
+			z = floor(log(maxlog));
+			L = {};
+			for ke = a:z
+				L = [L strcat('e^{',mat2str(ke),'}')];
+			end
+			set(axesHandles(i),'YTick',exp(a:z),'YTickLabel',L);
+
+		end
+		
+	else
+
+	end
+
 
 	% find all errorbar plots and set those line widths appropriately
 	ph=get(axesHandles(i),'Children');
