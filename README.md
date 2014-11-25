@@ -2,47 +2,26 @@
 
 This repository contains some useful functions and scripts written in MATLAB that I've written over the years. My other repositories depend on this. Feel free to do whatever you want with this. 
 
-## Plotting and Data visualisation 
+# Installation
 
-2. autoplot.m
-26. oval.m
-27. Manipulate.m
-28. raster2.m
-29. TrialPlot.m
-30. multiplot.m
-31. PrettyFig.m
+You can install all these functions from within MATLAB using my package manager:
 
+```
+>> urlwrite('http://srinivas.gs/install.m','install.m');
+>> install srinivas.gs_mtools
+```
 
-## Web crawling functions
+or you can install using `git`
 
-13. GetLinks.m
-14. ParseHTML.m
+```
+$ git clone https://github.com/sg-s/srinivas.gs_mtools.git
+```
 
-## Maths
-5. convolve.m
-6. ComputeOnsOffs.m7. cv.m8. FindShortestDimension.m9. FitFilter2Data.m10. GammaDist.m14. hill.m15. hill2.m16. ihill2.m17. iseven.m18. l2.m19. logistic.m20. logistic4.m23. mean2.m1. spiketimes2f.m1. rsquare.m
+or 
 
-
-## publishing 
-
-3. CleanPublish.m
-4. MakePDF.m
-
-## image processing
-
-6. CutImage.m
-7. triangle.m
-7. SaturationPlane.m
-
-## misc.
-
-12. getComputerName.m
-13. getAllFiles.m1. argoutnames.m1. RemovePointDefects.m
-1. width.m1. textbar.m
-1. struct2mat.m25. oss.m
-## text handling
-1. strkat.m
-1. StripPath.m1. spellcheck.m1. RandomString.m
+```
+$ git clone git@github.com:sg-s/srinivas.gs_mtools.git
+```
 
 ## General Notes on Usage
 
@@ -79,10 +58,57 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 You can also call any function with no arguments and it will return help, if at least one argument is required for that function. So `Manipulate` is the same as `help Manipulate`
 
-I've tried to follow the style guidelines specified in `mfile style guideline.md`	
+I've tried to follow the style guidelines specified in `mfile style guideline.md`
+
+# Contents
+
+## Plotting and Data visualisation 
+
+2. autoplot.m
+26. oval.m
+27. Manipulate.m
+28. raster2.m
+29. TrialPlot.m
+30. multiplot.m
+31. PrettyFig.m
+
+
+## Web crawling functions
+
+13. GetLinks.m
+14. ParseHTML.m
+
+## Maths
+5. convolve.m
+6. ComputeOnsOffs.m7. cv.m8. FindShortestDimension.m9. FitFilter2Data.m10. GammaDist.m14. hill.m15. hill2.m16. ihill2.m17. iseven.m18. l2.m19. logistic.m20. logistic4.m23. mean2.m
+24. powerspec.m1. spiketimes2f.m1. rsquare.m
+
+
+## publishing 
+
+3. CleanPublish.m
+4. MakePDF.m
+
+## image processing
+
+6. CutImage.m
+7. triangle.m
+7. SaturationPlane.m
+
+## misc.
+
+12. getComputerName.m
+13. getAllFiles.m1. argoutnames.m1. RemovePointDefects.m
+1. width.m1. textbar.m
+1. struct2mat.m25. oss.m
+## text handling
+1. strkat.m
+1. StripPath.m1. spellcheck.m1. RandomString.m
+
+# Detailed Notes	
 
 ## MakePDF.m and CleanPublish.m
-`MakePDF.m` is a wrapper for MATLAB's [publish](http://www.mathworks.com/help/matlab/ref/publish.html) function that accepts a script, and makes into a PDF directly. It works by first using `publish` to make a .tex file, then using `pdflatex` to compile that to a PDF. Assumes you are working on a Unix machine with pdflatex installed. 
+`MakePDF.m` is a wrapper for MATLAB's [publish](http://www.mathworks.com/help/matlab/ref/publish.html) function that accepts a script, and makes into a PDF directly. It works by first using `publish` to make a .tex file, then using `pdflatex` to compile that to a PDF. Assumes you are working on a Unix machine with `pdflatex` installed. 
 
 It uses `CleanPublish.m` to remove all the figures and log files after the PDF is compiled. 
 	
