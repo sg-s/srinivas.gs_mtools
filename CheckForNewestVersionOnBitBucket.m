@@ -2,13 +2,18 @@
 % checks for a pattern containing version number in the source code.
 % assumes open source code on bitbucket.org
 % this is of rather limited use right now
-% 
+% usage:
+% m = CheckForNewestVersionOnBitBucket(filename,VersionName,fullname)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [m] = CheckForNewestVersionOnBitBucket(filename,VersionName,fullname)
+function m = CheckForNewestVersionOnBitBucket(filename,VersionName,fullname)
+if ~nargin
+	help CheckForNewestVersionOnBitBucket
+	return
+end	
 a = strfind(VersionName,'v_');
 z = strfind(VersionName,'_');
 z = setdiff(z,a+1);

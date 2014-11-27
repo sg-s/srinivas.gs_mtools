@@ -1,13 +1,17 @@
 % CutImage.m
 % cuts a small square of an image out a bigger image.
 % if the requested portion is too large, cut image pads the image
-% 
+% usage: [SmallImage] = CutImage(BigImage,centre,cutsize)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [SmallImage] = CutImage(BigImage,centre,cutsize)
+function SmallImage = CutImage(BigImage,centre,cutsize)
+if ~nargin
+	help CutImage
+	return
+end
 cx = round(centre(2));
 cy = round(centre(1));
 % make sure we are cutting it nicely

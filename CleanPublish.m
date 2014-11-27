@@ -1,6 +1,7 @@
 % CleanPublish.m
 % CleanPublish removes all the junk created by MATLAB's publish() function in the html/ folder in the current directory. Make sure you compile the PDF before running this! 
-% 
+% usage: CleanPublish; 
+% assumes you have a folder called "html" in your cd
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 

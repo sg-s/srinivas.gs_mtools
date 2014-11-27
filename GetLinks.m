@@ -1,14 +1,19 @@
 % GetLinks
 % gets links from a snippet of HTML text (h)
+% usage: [a,ra] = GetLinks(h) 
 % a returns links, and 
 % ra returns relative links
-% % 
+% 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [a,ra] = GetLinks(h) 
+if ~nargin
+	help GetLinks
+	return
+end
 
 linkstarts = strfind(h,'href="http://');
 linkends = 0*linkstarts;

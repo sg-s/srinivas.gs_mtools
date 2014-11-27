@@ -1,4 +1,6 @@
-% 
+% GetLatestHash.m
+% gets the SHA-1 hash of the latest git commit at online repository. 
+% usage: h = GetLatestHash(url)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 

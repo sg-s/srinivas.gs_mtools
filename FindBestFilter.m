@@ -1,6 +1,21 @@
 % FindBestFilter.m
 % created by Srinivas Gorur-Shandilya at 17:31 , 15 January 2014. Contact me at http://srinivas.gs/contact/
 % finds the best filter, searching through the space of the free parameter in my and damon's filter estimation functions
+% usage: [K, diagnostics, filtertime] = FindBestFilter(stim,response,OnlyThesePoints,varargin)
+% where stim and response are vectors of equal length
+% OnlyThesePoints is a optional argument that is a either a vector as long as as stim or an empty matrix (for all the points)
+% More optional arguments can be entered by a direct eval syntax, e.g:
+% K = FindBestFilter(stim,response,[],'reg=1;')
+% the defaults are:
+% 
+% regmax = 100;
+% regmin = 1e-5;
+% algo = 1;
+% reg = [];
+% regtype=2;
+% filter_length = 333;
+% min_cutoff = -Inf;
+% offset = floor(filter_length/10);
 function [K, diagnostics, filtertime] = FindBestFilter(stim,response,OnlyThesePoints,varargin)
 if ~nargin
 	help FindBestFilter

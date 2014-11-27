@@ -22,7 +22,7 @@ if nargin == 1
         disp('Last Edited on:')
         disp(le.date)
     else
-        disp('Canno�t read last edit info. This may be because this instance is running compiled code, as opposed to a .m from within MATLAB.')
+        disp('Cannot read last edit info. This may be because this instance is running compiled code, as opposed to a .m from within MATLAB.')
     end
 else
     runningon;

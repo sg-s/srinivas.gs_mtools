@@ -62,48 +62,85 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 
 # Contents
 
-## Plotting and Data visualisation 
+1. AngularDifference.m
+1. CheckForNewestVersionOnBitBucket.m
+1. CheckForNewestVersionOnGitHub.m
+1. CleanPublish.m
+1. ComputeOnsOffs.m
+1. Cost2.m
+1. CutImage.m
+1. FindBestFilter.m
+1. FindCorrelationTime.m
+1. FindShortestDimension.m
+1. FitFilter2Data.m
+1. GammaDist.m
+1. GetLatestHash.m
+1. GetLinks.m
+1. GitHash.m
+1. MakePDF.m
+1. Manipulate.m
+1. ManualCluster.m
+1. ParseHTML.m
+1. PrettyFig.m
+1. README.md
+1. RandomString.m
+1. RemovePointDefects.m
+1. SaturationPlane.m
+1. StripPath.m
+1. TrialPlot.m
+1. arginnames.m
+1. argoutnames.m
+1. autoplot.m
+1. cluster_dp.m
+1. convolve.m
+1. cv.m
+1. deconvolve.m
+1. dift.m
+1. distance.m
+1. duplicateFigure.m
+1. filter_alpha.m
+1. filter_alpha2.m
+1. filter_exp.m
+1. filter_gamma.m
+1. filter_gamma2.m
+1. find_data.m
+1. foldername.m
+1. getAllFiles.m
+1. getComputerName.m
+1. header.m
+1. hill.m
+1. hill2.m
+1. hill4.m
+1. ihill.m
+1. ihill2.m
+1. install.m
+1. iseven.m
+1. l2.m
+1. logistic.m
+1. logistic4.m
+1. mdot.m
+1. mean2.m
+1. mfile style guideline.md
+1. min2.m
+1. modd.m
+1. multiplot.m
+1. online.m
+1. oss.m
+1. oval.m
+1. plott.m
+1. powerspec.m
+1. raster2.m
+1. rsquare.m
+1. searchpath.m
+1. spellcheck.m
+1. spiketimes2f.m
+1. strkat.m
+1. struct2mat.m
+1. textbar.m
+1. triangle.m
+1. uid.m
+1. width.m
 
-2. autoplot.m
-26. oval.m
-27. Manipulate.m
-28. raster2.m
-29. TrialPlot.m
-30. multiplot.m
-31. PrettyFig.m
-
-
-## Web crawling functions
-
-13. GetLinks.m
-14. ParseHTML.m
-
-## Maths
-5. convolve.m
-6. ComputeOnsOffs.m7. cv.m8. FindShortestDimension.m9. FitFilter2Data.m10. GammaDist.m14. hill.m15. hill2.m16. ihill2.m17. iseven.m18. l2.m19. logistic.m20. logistic4.m23. mean2.m
-24. powerspec.m1. spiketimes2f.m1. rsquare.m
-
-
-## publishing 
-
-3. CleanPublish.m
-4. MakePDF.m
-
-## image processing
-
-6. CutImage.m
-7. triangle.m
-7. SaturationPlane.m
-
-## misc.
-
-12. getComputerName.m
-13. getAllFiles.m1. argoutnames.m1. RemovePointDefects.m
-1. width.m1. textbar.m
-1. struct2mat.m25. oss.m
-## text handling
-1. strkat.m
-1. StripPath.m1. spellcheck.m1. RandomString.m
 
 # Detailed Notes	
 
