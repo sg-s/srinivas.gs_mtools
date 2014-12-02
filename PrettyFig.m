@@ -150,7 +150,11 @@ for i = 1:length(axesHandles)
 	% find all errorbar plots and set those line widths appropriately
 	ph=get(axesHandles(i),'Children');
 	for j = 1:length(ph)
-		set(ph(j),'LineWidth',plw)
+		try
+			set(ph(j),'LineWidth',plw)
+		catch
+			% probably an image or something
+		end
 	end
 
 	
