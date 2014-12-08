@@ -10,7 +10,14 @@ function [] = MakePDF(filename)
 
 switch nargin
 case 0
-	help MakePDF
+	% run on the last modified file
+	d = dir('*.m');
+
+	% find the last modified file
+	[~,idx] = max([d.datenum]);
+
+	% name of file
+	filename = d(idx).name;
 case 1
 	% check if file exists
 	if exist(filename,'file') ~= 2
@@ -22,6 +29,7 @@ otherwise
 	error('Too many inputs')
 end
 
+orig_dir = cd;
 close all 
 
 % compile to .tex
@@ -63,6 +71,6 @@ es = strkat('pdflatex ',f);
 unix(es);
 
 % clean up
-cd('..')
+cd(orig_dir)
 CleanPublish;
 close all
