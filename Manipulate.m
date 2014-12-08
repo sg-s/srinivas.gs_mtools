@@ -264,6 +264,8 @@ function  [] = SliderCallback(src,~)
 
 	% update the value
 	f = fieldnames(p);
+	f=f(valid_fields);
+	
 	thisval = get(control(this_slider),'Value');
 	eval((strcat('p.',f{this_slider},'=thisval;')));
 	thisstring = strkat(f{this_slider},'=',oval(eval(strcat('p.',f{this_slider})),2));
