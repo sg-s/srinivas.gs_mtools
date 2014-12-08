@@ -73,6 +73,7 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 1. FindCorrelationTime.m
 1. FindShortestDimension.m
 1. FitFilter2Data.m
+1. FitModel2Data.m
 1. GammaDist.m
 1. GetLatestHash.m
 1. GetLinks.m
@@ -82,7 +83,6 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 1. ManualCluster.m
 1. ParseHTML.m
 1. PrettyFig.m
-1. README.md
 1. RandomString.m
 1. RemovePointDefects.m
 1. SaturationPlane.m
@@ -97,10 +97,10 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 1. deconvolve.m
 1. dift.m
 1. distance.m
-1. duplicateFigure.m
 1. filter_alpha.m
 1. filter_alpha2.m
 1. filter_exp.m
+1. filter_exp2.m
 1. filter_gamma.m
 1. filter_gamma2.m
 1. find_data.m
@@ -118,9 +118,9 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 1. l2.m
 1. logistic.m
 1. logistic4.m
+1. mat2struct.m
 1. mdot.m
 1. mean2.m
-1. mfile style guideline.md
 1. min2.m
 1. modd.m
 1. multiplot.m
@@ -134,12 +134,14 @@ I've tried to follow the style guidelines specified in `mfile style guideline.md
 1. searchpath.m
 1. spellcheck.m
 1. spiketimes2f.m
+1. spinner.m
 1. strkat.m
 1. struct2mat.m
 1. textbar.m
 1. triangle.m
 1. uid.m
 1. width.m
+
 
 
 # Detailed Notes	
