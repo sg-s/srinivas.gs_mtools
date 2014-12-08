@@ -80,7 +80,7 @@ controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar'
 axis off
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
-pp = struct2mat(p);
+[pp,valid_fields] = struct2mat(p);
 lb = (pp/2);
 ub = (pp*2);
 for i = 1:length(lb)
@@ -229,6 +229,8 @@ function [] = RedrawSlider(src,event)
 
 		% draw for the first time
 		f = fieldnames(p);
+		f=f(valid_fields);
+
 		for i = 1:length(lbcontrol)
 			lb(i)=str2num(get(lbcontrol(i),'String'));
 			ub(i)=str2num(get(ubcontrol(i),'String'));

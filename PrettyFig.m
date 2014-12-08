@@ -153,7 +153,9 @@ for i = 1:length(axesHandles)
 		try
 			set(ph(j),'LineWidth',plw)
 		catch
-			% probably an image or something
+			% probably an image or something.
+			% so reverse tick direction
+			set(gca,'TickDir','out')
 		end
 	end
 
