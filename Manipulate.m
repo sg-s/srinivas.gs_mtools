@@ -22,7 +22,7 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 
-function [p] = Manipulate(fname,p,stimulus,response,time,plothere)
+function Manipulate(fname,p,stimulus,response,time,plothere)
 switch nargin
 case 0
 	help Manipulate

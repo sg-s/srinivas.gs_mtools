@@ -156,6 +156,7 @@ for i = 1:length(axesHandles)
 			% probably an image or something.
 			% so reverse tick direction
 			set(gca,'TickDir','out')
+			box on
 		end
 	end
 

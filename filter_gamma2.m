@@ -27,10 +27,13 @@ end
 f1 = t.^n.*exp(-t/tau1); % functional form in paper
 f1 = f1/tau1^(n+1)/gamma(n+1); % normalize appropriately
 
-
 f2 = t.^n.*exp(-t/tau2); % functional form in paper
 f2 = f2/tau2^(n+1)/gamma(n+1); % normalize appropriately
 
 f = f1 - f2;
 f = f/max(f);
+if any(isnan(f))
+	f = zeros(length(f),1);
+	f(1) = 1;
+end
 f=A*f;
