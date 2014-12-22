@@ -16,6 +16,25 @@ if ~nargin
 	return
 end
 
+if isstruct(x)
+	temp=x;
+	x= [];
+	x(1) = temp.A;
+	x(2) = temp.k;
+	x(3) = temp.n;
+	clear temp
+end
+
+if isstruct(xdata) % inputs in wrong order
+	temp=xdata;
+	xdata = x;
+	x = [];
+	x(1) = temp.A;
+	x(2) = temp.k;
+	x(3) = temp.n;
+	clear temp
+end
+
 A = x(1);
 k = x(2);
 n  =x(3);
@@ -25,3 +44,4 @@ r = r./(xdata.^n + k^n);
 	
 % when xdata is negative, return 0
 r(xdata<0) = 0;	
+

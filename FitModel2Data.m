@@ -85,6 +85,7 @@ end
 
 % global options
 nsteps = 300;
+nrep = 20;
 psoptions = psoptimset('UseParallel',true, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display','iter','MaxIter',nsteps,'MaxFunEvals',20000);
 min_r2 = 0; % keep solving till we get here
 
@@ -96,30 +97,6 @@ if min_r2
 	
 	for i = 1:nrep
 
-		% specify new bounds
-		lb = x/scale;
-		ub = x*scale;
-		% special bounds
-		temp=ub(x<0);
-		ub(x<0) = lb(x<0);
-		lb(x<0) = temp; clear temp;
-		if lb(3) < 0
-			lb(3) = 0; 
-		end
-		if ub(3) > 1
-			ub(3) = 1;
-		end
-		
-		% make sure that p.s0 does not exceed the minimum value of the stimulus
-		if ub(end) > min(stimulus)
-			ub(end) = min(stimulus)-1e-5;
-		end
-		if lb(end) > ub(end)
-			lb(end) = 0;
-		end
-		if x(end) > ub(end)
-			x(end) = ub(end)/2;
-		end
 
 		% fit
 		x = patternsearch(@(x)  GeneralCostFunction(x,data,modelname,param_names),x,[],[],[],[],lb,ub,psoptions);
