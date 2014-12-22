@@ -190,7 +190,7 @@ function [] = EvaluateModel()
 
 	% label the plots using names from the function we are manipulating 
 	try
-		names = argoutnames(fname);
+		plotnames = argoutnames(fname);
 	catch
 	end
 
@@ -204,7 +204,10 @@ function [] = EvaluateModel()
 			if xl(1) ~= 0
 				set(respplot(j),'XLim',xl);
 			end
-			title(respplot(j),names{j});
+			try
+				title(respplot(j),plotnames{j});
+			catch
+			end
 			hold(respplot(j),'on')
 		end
 

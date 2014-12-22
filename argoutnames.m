@@ -51,6 +51,10 @@ for i = 1:length(lines)
 end
 clear i
 
+if isempty(func_def_line)
+	error('Error reading function. Can''t determine the function definiton line')
+end
+
 % find parentheses in this line
 thisline = lines{func_def_line};
 a = strfind(thisline,'[');
