@@ -50,7 +50,11 @@ end
 
 % check inputs
 if ~isstruct(p)
-	error('Second argument should be a structure containing parameters')
+	if isempty(p)
+		p=getModelParameters(fname);
+	else
+		error('Second argument should be a structure containing parameters')
+	end
 end
 
 % remove trailing extention, if any.
@@ -240,6 +244,12 @@ function [] = RedrawSlider(src,event)
 		nspacing = Height/(length(f)+1);
 		for i = 1:length(f)
 			control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',(lb(i)+ub(i))/2);
+			try    % R2013b and older
+			   addlistener(control(i),'ActionEvent',@SliderCallback);
+			catch  % R2014a and newer
+			   addlistener(control(i),'ContinuousValueChange',@SliderCallback);
+			end
+			% hat tip: http://undocumentedmatlab.com/blog/continuous-slider-callback
 			thisstring = strkat(f{i},'=',mat2str(eval(strcat('p.',f{i}))));
 			controllabel(i) = uicontrol(controlfig,'Position',[10 Height-i*nspacing 50 20],'style','text','String',thisstring);
 			lbcontrol(i) = uicontrol(controlfig,'Position',[300 Height-i*nspacing 40 20],'style','edit','String',mat2str(lb(i)),'Callback',@RedrawSlider);
