@@ -49,7 +49,11 @@ for i = 1:nargin
 	end
 end
 
-
+% check for searchpath, or download if needed
+a=which('searchpath');
+if isempty(a)
+	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchpath.m','searchpath.m');
+end
 
 for i = 1:length(p)
 	install_this = 0;
