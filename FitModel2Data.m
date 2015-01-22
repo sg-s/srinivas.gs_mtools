@@ -5,6 +5,9 @@
 % f is the output of the model (a 1D vector as long as s)
 % s is a stimulus vector
 % p is a structure with parameters
+% 
+% You can get p using GetModelParameters(model)
+%
 % to data given by r
 % minimum usage:
 % p = FitModel2Data(@modelname,data,p0);
