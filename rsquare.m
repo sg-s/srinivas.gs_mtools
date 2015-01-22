@@ -33,8 +33,8 @@ elseif ~isvector(x)
 	[a, adim] = width(x);
 
 	r = NaN(a);
-	for i = 1:a
-		for j = 1:a
+	for i = 1:a-1
+		for j = i+1:a
 			if adim == 1
 				xx = x(i,:);
 				yy = x(j,:);
