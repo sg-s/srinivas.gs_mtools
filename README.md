@@ -7,7 +7,7 @@ This repository contains some useful functions and scripts written in MATLAB tha
 You can install all these functions from within MATLAB using my package manager:
 
 ```
->> urlwrite('http://srinivas.gs/install.m','install.m');
+>> urlwrite('http://git.io/47a1Pg','install.m');
 >> install srinivas.gs_mtools
 ```
 
@@ -17,11 +17,6 @@ or you can install using `git`
 $ git clone https://github.com/sg-s/srinivas.gs_mtools.git
 ```
 
-or 
-
-```
-$ git clone git@github.com:sg-s/srinivas.gs_mtools.git
-```
 
 ## General Notes on Usage
 
