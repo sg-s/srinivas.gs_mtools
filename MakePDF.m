@@ -17,7 +17,11 @@ case 0
 	[~,idx] = max([d.datenum]);
 
 	% name of file
-	filename = d(idx).name;
+	try
+		filename = d(idx).name;
+	catch
+		error('MakdPDF could not figure out which document you want to publish. Specify explicitly.')
+	end
 case 1
 	% check if file exists
 	if exist(filename,'file') ~= 2

@@ -9,4 +9,16 @@ if ~nargin
 end
 a = a(:);
 b = b(:);
-c = sqrt(sum((a-b).^2)); % distance to solution
+
+% ignore NaNs
+rm_this =[];
+rm_this = [rm_this find(isnan(a))];
+rm_this = [rm_this find(isnan(b))];
+a(rm_this) = [];
+b(rm_this) = [];
+
+if length(a) > 0
+	c = sqrt(sum((a-b).^2)); % distance to solution
+else
+	c= Inf;
+end
