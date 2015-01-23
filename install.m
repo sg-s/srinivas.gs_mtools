@@ -115,8 +115,11 @@ for i = 1:length(p)
 	    	movefile(strcat(full_path,char(p{i}),'-master'),strcat(full_path,char(p{i})));
 	    else
 	    	% updating. trash the older folder, rename the new folder
-	    	rmdir(strcat(full_path,char(p{i})),'s');
-	    	movefile(strcat(full_path,char(p{i}),'-master'),strcat(full_path,char(p{i})));
+	    	try
+	    		rmdir(strcat(full_path,char(p{i})),'s');
+	    	catch
+	    	end
+	    	movefile(strcat(full_path,char(p{i}),'-master'),strcat(full_path,char(p{i})),'f');
 
 	    end
 
