@@ -28,28 +28,31 @@ end
 
 % check if cache exists
 if exist('cached.mat','file')
-	load('cached.mat')
+	load('cached.mat','hash') % only load the hashes, it's much faster
 else
-	cached(1).md5 = '';
-	cached(1).data = [];
-	save('cached.mat','cached')
+	hash = '';
+	save('cached.mat','hash')
 end
 
 
 if nargin == 1
 	console('retrieval mode')
-	if isempty(find(strcmp(varargin{1}, {cached.md5})))
+	if isempty(find(strcmp(varargin{1}, hash)))
 		retrieved_data = [];
+		return
 	else
-		retrieved_data = cached(find(strcmp(varargin{1}, {cached.md5}))).data;
+		temp=load('cached.mat',strcat('md5_',varargin{1}));
+		eval(strcat('retrieved_data=temp.md5_',varargin{1},';'))
 	end
 end
 
 if nargin == 2
 	console('write to hash table mode')
-	wh = length(cached)+1; % write here
-	cached(wh).md5=varargin{1};
-	cached(wh).data=varargin{2};
-	save('cached.mat','cached')
+	if isempty(find(strcmp(varargin{1}, hash)))
+		wh = length(hash)+1; % write here
+		hash{wh}=varargin{1};
+		eval(strcat('md5_',varargin{1},'=varargin{2};'));
+		save('cached.mat','hash',strcat('md5_',hash{wh}),'-append')
+	end
 end
 
