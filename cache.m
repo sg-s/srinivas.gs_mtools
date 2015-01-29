@@ -13,6 +13,7 @@
 % so cache(DataHash(X),Y); cache(DataHash(X),Y);
 % will only write to file once. this also means that hashes exist uniquely in the cache
 % 
+% cache(hash,[]) clears that value from the hash table
 % 
 % created by Srinivas Gorur-Shandilya at 8:31 , 28 January 2015. Contact me at http://srinivas.gs/contact/
 % 
@@ -65,6 +66,14 @@ if nargin == 2
 		hash{wh}=varargin{1};
 		eval(strcat('md5_',varargin{1},'=varargin{2};'));
 		save(strcat(pwd,oss,'cached.mat'),'hash',strcat('md5_',hash{wh}),'-append')
+	else
+		if isempty(varargin{2})
+			% set that data entry to empty
+			eval(strcat('md5_',varargin{1},'=[];'))
+			% and remove the hash from the hash table
+			hash(find(strcmp(varargin{1}, hash))) = [];
+			save(strcat(pwd,oss,'cached.mat'),'hash',strcat('md5_',varargin{1}),'-append')
+		end
 	end
 end
 
