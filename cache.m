@@ -13,7 +13,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function []  = cache(varargin)
+function retrieved_data  = cache(varargin)
 
 switch nargin
 	case 0
@@ -38,11 +38,18 @@ end
 
 if nargin == 1
 	console('retrieval mode')
-	keyboard
+	if isempty(find(strcmp(varargin{1}, {cached.md5})))
+		retrieved_data = [];
+	else
+		retrieved_data = cached(find(strcmp(varargin{1}, {cached.md5}))).data;
+	end
 end
 
 if nargin == 2
 	console('write to hash table mode')
-	keyboard
+	wh = length(cached)+1; % write here
+	cached(wh).md5=varargin{1};
+	cached(wh).data=varargin{2};
+	save('cached.mat','cached')
 end
 
