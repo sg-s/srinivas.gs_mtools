@@ -30,6 +30,9 @@ if isvector(x) && isvector(y)
 	[~, r]=fit(x,y,'Poly1');
 	r = r.rsquare;
 elseif ~isvector(x)
+	if size(x,1) > size(x,2)
+		x = x';
+	end
 	[a, adim] = width(x);
 
 	r = NaN(a);

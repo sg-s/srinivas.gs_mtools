@@ -34,8 +34,9 @@ if ~isempty(strfind(calling_func,'/'))
 	calling_func = calling_func(1:strfind(calling_func,'/')-1);
 end
 
-a=what(calling_func);
-filename = strcat(a.path,oss,'console.log');
+a=which(calling_func);
+a = fileparts(a);
+filename = strcat(a,'/console.log');
 
 unix(strcat('echo "',datestr(now),'-',calling_func,'-',m,'">>',filename));
 
