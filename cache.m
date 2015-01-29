@@ -57,6 +57,15 @@ if nargin == 1
 	else
 		temp=load(strcat(pwd,oss,'cached.mat'),strcat('md5_',varargin{1}));
 		eval(strcat('retrieved_data=temp.md5_',varargin{1},';'))
+
+		% update retrieval time stamp
+		load(strcat(pwd,oss,'cached.mat'),'last_retrieved');
+		if ~exist('last_retrieved')
+			last_retrieved = zeros(length(hash),1);
+		end
+		last_retrieved(find(strcmp(varargin{1}, hash))) = now;
+		save(strcat(pwd,oss,'cached.mat'),'last_retrieved','-append')
+
 	end
 end
 
@@ -77,3 +86,22 @@ if nargin == 2
 	end
 end
 
+% trim cache
+s = dir(strcat(pwd,oss,'cached.mat'));
+while s.bytes - maxCacheSize > 0
+	clear last_retrieved temp hash
+	temp = load(strcat(pwd,oss,'cached.mat'),'last_retrieved','hash');
+	last_retrieved = temp.last_retrieved;
+	hash = temp.hash;
+
+	% delete the oldest-looked-at hash
+	[~,rm_this]=min(last_retrieved-now);
+	rm_this_hash = hash{rm_this};
+	eval(strcat('md5_',rm_this_hash,'=[];'))
+
+	hash(rm_this) = [];
+	save(strcat(pwd,oss,'cached.mat'),'hash',strcat('md5_',rm_this_hash),'-append')
+	console('cache-Pruning cache...')
+
+	s = dir(strcat(pwd,oss,'cached.mat'));
+end
