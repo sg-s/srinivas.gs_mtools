@@ -1,21 +1,111 @@
-# srinivas.gs_mtools: README
+# mtools by srinivas.gs
 
-This repository contains some useful functions and scripts written in MATLAB that I've written over the years. My other repositories depend on this. Feel free to do whatever you want with this. 
+This repository contains a bunch of useful scripts and functions that make working in MATLAB much easier. All my other MATLAB repositories depend on this. Feel free to do with this what you will. 
 
-# Installation
+<!-- MarkdownTOC -->
 
-You can install all these functions from within MATLAB using my package manager:
+- [List of Functions](#list-of-functions)
+  - [General Notes on Usage](#general-notes-on-usage)
+- [Installation](#installation)
+- [Detailed Notes](#detailed-notes)
+  - [MakePDF.m and CleanPublish.m](#makepdfm-and-cleanpublishm)
+  - [textbar.m](#textbarm)
+  - [Manipulate.m](#manipulatem)
+  - [oval.m](#ovalm)
 
-```
->> urlwrite('http://git.io/47a1Pg','install.m');
->> install srinivas.gs_mtools
-```
+<!-- /MarkdownTOC -->
 
-or you can install using `git`
 
-```
-$ git clone https://github.com/sg-s/srinivas.gs_mtools.git
-```
+# List of Functions 
+
+AngularDifference.m
+CheckForNewestVersionOnBitBucket.m
+CheckForNewestVersionOnGitHub.m
+CleanPublish.m
+ComputeOnsOffs.m
+Cost2.m
+CutImage.m
+DataHash.m
+DesignFig.m
+FindBestFilter.m
+FindCorrelationTime.m
+FindShortestDimension.m
+FitFilter2Data.m
+FitModel2Data.m
+GammaDist.m
+GetLatestHash.m
+GetLinks.m
+GitHash.m
+MakePDF.m
+Manipulate.m
+ManualCluster.m
+ParseHTML.m
+PrettyFig.m
+README.md
+RandomString.m
+RemovePointDefects.m
+SaturationPlane.m
+StripPath.m
+TrialPlot.m
+arginnames.m
+argoutnames.m
+autoplot.m
+cache.m
+cluster_dp.m
+console.log
+console.m
+convolve.m
+cv.m
+deconvolve.m
+dift.m
+distance.m
+filter_alpha.m
+filter_alpha2.m
+filter_exp.m
+filter_exp2.m
+filter_gamma.m
+filter_gamma2.m
+find_data.m
+foldername.m
+getAllFiles.m
+getComputerName.m
+getModelParameters.m
+header.m
+hill.m
+hill2.m
+hill4.m
+ihill.m
+ihill2.m
+install.m
+iseven.m
+l2.m
+logistic.m
+logistic4.m
+mat2struct.m
+mdot.m
+mean2.m
+mfile style guideline.md
+min2.m
+modd.m
+multiplot.m
+online.m
+oss.m
+oval.m
+plott.m
+powerspec.m
+raster2.m
+rsquare.m
+searchpath.m
+spellcheck.m
+spiketimes2f.m
+spinner.m
+splinehist.m
+strkat.m
+struct2mat.m
+textbar.m
+triangle.m
+uid.m
+width.m
 
 
 ## General Notes on Usage
@@ -49,93 +139,26 @@ created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
   
-  ```
+```
 
 You can also call any function with no arguments and it will return help, if at least one argument is required for that function. So `Manipulate` is the same as `help Manipulate`
 
 I've tried to follow the style guidelines specified in `mfile style guideline.md`
 
-# Contents
+# Installation
 
-1. AngularDifference.m
-1. CheckForNewestVersionOnBitBucket.m
-1. CheckForNewestVersionOnGitHub.m
-1. CleanPublish.m
-1. ComputeOnsOffs.m
-1. Cost2.m
-1. CutImage.m
-1. FindBestFilter.m
-1. FindCorrelationTime.m
-1. FindShortestDimension.m
-1. FitFilter2Data.m
-1. FitModel2Data.m
-1. GammaDist.m
-1. GetLatestHash.m
-1. GetLinks.m
-1. GitHash.m
-1. MakePDF.m
-1. Manipulate.m
-1. ManualCluster.m
-1. ParseHTML.m
-1. PrettyFig.m
-1. RandomString.m
-1. RemovePointDefects.m
-1. SaturationPlane.m
-1. StripPath.m
-1. TrialPlot.m
-1. arginnames.m
-1. argoutnames.m
-1. autoplot.m
-1. cluster_dp.m
-1. convolve.m
-1. cv.m
-1. deconvolve.m
-1. dift.m
-1. distance.m
-1. filter_alpha.m
-1. filter_alpha2.m
-1. filter_exp.m
-1. filter_exp2.m
-1. filter_gamma.m
-1. filter_gamma2.m
-1. find_data.m
-1. foldername.m
-1. getAllFiles.m
-1. getComputerName.m
-1. header.m
-1. hill.m
-1. hill2.m
-1. hill4.m
-1. ihill.m
-1. ihill2.m
-1. install.m
-1. iseven.m
-1. l2.m
-1. logistic.m
-1. logistic4.m
-1. mat2struct.m
-1. mdot.m
-1. mean2.m
-1. min2.m
-1. modd.m
-1. multiplot.m
-1. online.m
-1. oss.m
-1. oval.m
-1. plott.m
-1. powerspec.m
-1. raster2.m
-1. rsquare.m
-1. searchpath.m
-1. spellcheck.m
-1. spiketimes2f.m
-1. spinner.m
-1. strkat.m
-1. struct2mat.m
-1. textbar.m
-1. triangle.m
-1. uid.m
-1. width.m
+You can install all these functions from within MATLAB using my package manager:
+
+```
+>> urlwrite('http://srinivas.gs/install.m','install.m');
+>> install srinivas.gs_mtools
+```
+
+or you can install using `git`
+
+```
+$ git clone https://github.com/sg-s/srinivas.gs_mtools.git
+```
 
 
 
