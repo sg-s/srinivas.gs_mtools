@@ -23,7 +23,7 @@ if isvector(x) && isvector(y)
 
 	% ignore NaNs
 	deletethis = find(isnan(x));
-	deletethis = unique([deletethis find(isnan(y))]);
+	deletethis = unique([deletethis; find(isnan(y))]);
 	x(deletethis) = [];
 	y(deletethis) = [];
 

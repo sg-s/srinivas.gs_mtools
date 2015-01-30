@@ -21,15 +21,8 @@ lw = 2; % line width of graphical elements
 plw = 2; % plot line width 
 fs = 24; % font size
 EqualiseY = 0;
+EqualiseX = 0;
 plot_buffer = .1; % how much should you zoom out of the data to show extremes?
-
-
-% % bringing PrettyFig dragging and screaming into 2014b
-% if strcmp(version('-release'),'2014b')
-
-%     plw = 1.5;
-%     lw = 1.5;
-% end
 
 
 % evaluate option inputs
@@ -199,6 +192,24 @@ if EqualiseY
 	clear i
 
 end
+
+if EqualiseX
+	xmin = Inf;
+	xmax = -Inf;
+	for i = 1:length(axesHandles)
+		xl = get(axesHandles(i),'XLim');
+		xmin = min([xmin xl]);
+		xmax = max([xmax xl]);
+	end
+	clear i
+
+	for i = 1:length(axesHandles)
+		set(axesHandles(i),'XLim',[xmin xmax])
+	end
+	clear i
+
+end
+
 
 set(gcf,'Color','w')
 
