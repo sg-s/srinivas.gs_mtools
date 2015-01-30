@@ -42,6 +42,13 @@ LoadControl = uicontrol(f,'Units','normalized','Position',[.65 .96 .1 .03],'Styl
 
 GenerateCodeControl = uicontrol(f,'Units','normalized','Position',[.85 .96 .1 .03],'Style','pushbutton','Enable','on','String','Generate Code','FontSize',10,'Callback',@GenerateCode);
 
+function [] = GenerateCode(~,~)
+	disp(strcat('figure(',char(39),'Units',char(39),',',char(39),'pixels',char(39),',',char(39),'Position',char(39),',',mat2str(figure_position),')'))
+	for i = 1:length(allrect)
+		disp(strcat('axes(',char(39),'Units',char(39),',',char(39),'pixels',char(39),',',char(39),'Position',char(39),',',mat2str(getPosition(allrect(i).h)),')'))
+	end
+
+end
 
 
 function [] = Save(~,~)
