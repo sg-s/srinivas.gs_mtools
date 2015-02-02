@@ -38,5 +38,5 @@ for i = 1:length(a)
 	this_snippet = strrep(this_snippet,'_','underscore');
 	f=this_snippet(1:(find(~isstrprop(this_snippet,'alphanum'),1,'first')-1));
 	f = strrep(f,'underscore','_');
-	eval(strcat('p.',f,'=0;'));
+	eval(strcat('p.',f,'=rand;'));
 end

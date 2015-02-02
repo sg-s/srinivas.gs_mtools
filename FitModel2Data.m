@@ -42,8 +42,7 @@ switch nargin
 			f = fieldnames(p0);
 			param_names = f(param_names);
 		end
-		lb = -Inf*ones(length(x0),1);
-		ub = Inf*ones(length(x0),1);
+
 	case 4
 		error('Specify both upper and lower bounds')
 	case 5
@@ -71,8 +70,6 @@ switch nargin
 end
 
 % validate inputs
-
-
 if ~isa(modelname,'function_handle')
 	error('First argument is not a function handle')
 end
@@ -85,6 +82,54 @@ else
 	help FitModel2Data
 	error('RTFM')
 end
+
+if nargin == 3
+	clear ub lb
+	this_lb =[]; this_ub = [];
+	ub = struct; lb = struct;
+	% intelligently ask the model what the bounds for parameters are
+	mn= char(modelname);
+	mn=which(mn);
+	txt=fileread(mn);
+	a = strfind(txt,'ub.');
+	
+	for i = 1:length(a)
+		this_snippet = txt(a(i):length(txt));
+		semicolons = strfind(this_snippet,';');
+		this_snippet = this_snippet(1:semicolons(1));
+		eval(this_snippet)
+	end
+	a = strfind(txt,'lb.');
+	for i = 1:length(a)
+		this_snippet = txt(a(i):length(txt));
+		semicolons = strfind(this_snippet,';');
+		this_snippet = this_snippet(1:semicolons(1));
+		eval(this_snippet)
+	end
+
+	lb_vec = -Inf*ones(length(x0),1);
+	ub_vec =  Inf*ones(length(x0),1);
+
+	% assign 
+	assign_these = fieldnames(lb);
+	for i = 1:length(assign_these)
+		assign_this = assign_these{i};
+		eval(strcat('this_lb = lb.',assign_this,';'))
+		lb_vec(find(strcmp(assign_this,param_names)))= this_lb;
+	end
+	assign_these = fieldnames(ub);
+	for i = 1:length(assign_these)
+		assign_this = assign_these{i};
+		eval(strcat('this_ub = ub.',assign_this,';'))
+		ub_vec(find(strcmp(assign_this,param_names)))= this_ub;
+	end
+
+	ub = ub_vec;
+	lb = lb_vec;
+
+end
+
+
 
 % global options
 nsteps = 300;

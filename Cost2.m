@@ -10,7 +10,7 @@ end
 a = a(:);
 b = b(:);
 
-% ignore NaNs
+% ignore NaNs, but penalize
 rm_this =[];
 rm_this = [rm_this find(isnan(a))];
 rm_this = [rm_this find(isnan(b))];
@@ -22,3 +22,5 @@ if length(a) > 0
 else
 	c= Inf;
 end
+
+c = c+ length(rm_this);
