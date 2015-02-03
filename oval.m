@@ -7,8 +7,26 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [r] = oval(a,s)
-% fix for negative numbers
+function r = oval(a,s)
+switch nargin
+case 0
+	help oval
+	return
+case 1
+	if isvector(a)
+		% this means oval should take the mean and the std. of the vector, and format that into a string and return it. 
+		m = mean(a); s = std(a);
+		m = oval(m,3); s = oval(s,2);
+		r = strcat(m,'(',s,')');
+		return
+	else
+		s = 2;
+	end
+case 2
+otherwise
+	error('Too many input arguments')
+end
+
 if a == 0
 	r = '0';
 	return

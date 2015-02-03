@@ -17,10 +17,10 @@ rm_this = [rm_this find(isnan(b))];
 a(rm_this) = [];
 b(rm_this) = [];
 
-if length(a) > 0
+if length(a) > 10
 	c = sqrt(sum((a-b).^2)); % distance to solution
 else
 	c= Inf;
 end
 
-c = c+ length(rm_this);
+

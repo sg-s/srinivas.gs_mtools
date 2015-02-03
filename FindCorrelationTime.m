@@ -10,7 +10,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [zctime,tau] = FindCorrelationTime(x)
+function [zctime,tau,c] = FindCorrelationTime(x)
 switch nargin
 case 0
 	help FindCorrelationTime
@@ -20,12 +20,14 @@ case 1
 		error('Input argument must be a vector')
 	end
 	x = x(:);
+otherwise
+	error('Too many input arguments')
 end
 
 c = autocorr(x,length(x)-1);
 zctime = find(c<0,1,'first')-1;
 
-if nargout == 2
+if nargout > 1
 	ff=fit((1:zctime)',c(1:zctime),'exp1');
 	tau = abs(1/ff.b);
 end
