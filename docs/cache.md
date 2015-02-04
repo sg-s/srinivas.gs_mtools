@@ -79,3 +79,6 @@ cache('wow',[])
 
 The best part? `cache` automatically manages its own size, and intelligently removes the least-used hashes first. 
 
+## Installation
+
+Get this repo, or if you just want to use `cache`, you'll need `DataHash.m`

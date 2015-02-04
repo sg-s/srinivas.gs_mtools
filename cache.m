@@ -101,7 +101,7 @@ while s.bytes - maxCacheSize > 0
 
 	hash(rm_this) = [];
 	save(strcat(pwd,oss,'cached.mat'),'hash',strcat('md5_',rm_this_hash),'-append')
-	console('cache-Pruning cache...')
+	% console('cache-Pruning cache...')
 
 	s = dir(strcat(pwd,oss,'cached.mat'));
 end

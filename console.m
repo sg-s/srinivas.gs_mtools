@@ -17,6 +17,10 @@ if nargin == 1
 	v =0;
 end
 
+if ispc
+	return
+end
+
 % figure out which function is calling it
 calling_func = dbstack;
 
