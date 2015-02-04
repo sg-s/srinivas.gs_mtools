@@ -38,6 +38,17 @@ elseif ~isvector(x)
 	if size(x,1) > size(x,2)
 		x = x';
 	end
+
+	% check the cache to see if we have already done this
+	hash = DataHash(x);
+	r = cache(strcat(hash,'r'));
+	if ~isempty(r)
+		s = cache(strcat(hash,'s'));
+		if ~isempty(s)
+			return
+		end
+	end
+
 	[a, adim] = width(x);
 
 	r = NaN(a);
@@ -66,4 +77,8 @@ elseif ~isvector(x)
 			s(i,j) = temp2.p1;
 		end
 	end
+
+	% cache for later use
+	cache(strcat(hash,'s'),s);
+	cache(strcat(hash,'r'),r);
 end
