@@ -13,7 +13,7 @@ case 0
 	help oval
 	return
 case 1
-	if isvector(a)
+	if isvector(a) && length(a) > 1
 		% this means oval should take the mean and the std. of the vector, and format that into a string and return it. 
 		m = mean(a); s = std(a);
 		m = oval(m,3); s = oval(s,2);
