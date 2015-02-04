@@ -48,6 +48,29 @@ for i = 1:nargin-3
 	eval(varargin{i})
 end
 
+% FindBestFilter now supports cache.m to speed up code. first, we get a hash of the current state we are in. this includes the input arguments, optional arguments...everything. 
+
+
+temp.stim  =stim;
+temp.response = response;
+temp.OnlyThesePoints = OnlyThesePoints;
+temp.filter_length = filter_length;
+temp.regmax = regmax;
+temp.regmin = regmin;
+temp.algo = 1;
+temp.reg = reg;
+temp.regtype = regtype;
+temp.min_cutoff = min_cutoff;
+hash = DataHash(temp);
+
+cached_data = cache(hash);
+if ~isempty(cached_data)
+	K = cached_data.K;
+	diagnostics = cached_data.diagnostics;
+	filtertime = cached_data.filtertime;
+	return
+end
+
 
 % offset the stimulus and response a little bit to account for acausal filters (I know, weird)
 stim = stim(offset:end);
@@ -65,6 +88,13 @@ if algo == 1
 		regstr2 = strcat('regtype=',mat2str(regtype),';');
 		K = FitFilter2Data(stim,response,OnlyThesePoints,flstr,regstr,regstr2);
 		diagnostics = [];
+
+		% cache the data for later
+		cached_data = struct;
+		cached_data.K = K;
+		cached_data.diagnostics = diagnostics;
+		cached_data.filtertime = filtertime;
+		cache(hash,cached_data)
 		return
 	end
 
@@ -202,3 +232,10 @@ else
 	K = Back_out_1dfilter_new(stim,response,filter_length,reg(id));
 	diagnostics.bestfilter = id;
 end
+
+% cache the data for later
+cached_data = struct;
+cached_data.K = K;
+cached_data.diagnostics = diagnostics;
+cached_data.filtertime = filtertime;
+cache(hash,cached_data)
