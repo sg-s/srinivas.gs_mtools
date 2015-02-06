@@ -116,8 +116,8 @@ for i = 1:length(axesHandles)
 		c=get(axesHandles(i),'Children');
 		minlog = Inf; maxlog = -Inf;
 		for k = 1:length(c)
-			minlog = min([ min(nonzeros(get(c(1),'YData'))) minlog]);
-			maxlog = max([ max(nonzeros(get(c(1),'YData'))) maxlog]);
+			minlog = min([ min(nonzeros(get(c(k),'YData'))) minlog]);
+			maxlog = max([ max(nonzeros(get(c(k),'YData'))) maxlog]);
 		end
 		a = ceil(log10(minlog));
 		z = floor(log10(maxlog));
@@ -136,8 +136,36 @@ for i = 1:length(axesHandles)
 		end
 		
 	else
-
 	end
+
+	% there should be more than 1 Xtick when we have a log scale
+	if  length(get(axesHandles(i),'XTick')) == 1 && strcmp(get(axesHandles(i),'XScale'),'log')
+
+		c=get(axesHandles(i),'Children');
+		minlog = Inf; maxlog = -Inf;
+		for k = 1:length(c)
+			minlog = min([ min(nonzeros(get(c(k),'XData'))) minlog]);
+			maxlog = max([ max(nonzeros(get(c(k),'XData'))) maxlog]);
+		end
+		a = ceil(log10(minlog));
+		z = floor(log10(maxlog));
+		if length(a:z) > 2
+			set(axesHandles(i),'XTick',10.^(a:z));
+		else
+			% choose a smaller base
+			a = ceil(log(minlog));
+			z = floor(log(maxlog));
+			L = {};
+			for ke = a:z
+				L = [L strcat('e^{',mat2str(ke),'}')];
+			end
+			set(axesHandles(i),'XTick',exp(a:z),'XTickLabel',L);
+
+		end
+		
+	else
+	end
+
 
 
 	% find all errorbar plots and set those line widths appropriately
