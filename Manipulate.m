@@ -20,9 +20,11 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+% 
+% Manipulate(fname,p,stimulus,response,time,plothere
 
 
-function Manipulate(fname,p,stimulus,response,time,plothere)
+function Manipulate(varargin)
 switch nargin
 case 0
 	help Manipulate
@@ -32,26 +34,94 @@ case 1
 case 2
 	error('Not enough input arguments. Must supply a third argument which is the stimulus')	
 case 3 
+	fname = varargin{1};
+	p = varargin{2};
+	stimulus = varargin{3};
 	stimulus = stimulus(:);
 	response = NaN*stimulus;
 	time = 1:length(stimulus);
 	plothere = [];
 case 4
+	fname = varargin{1};
+	p = varargin{2};
+	stimulus = varargin{3};
+	response = varargin{4};
 	stimulus = stimulus(:);
 	response = response(:);
 	time = 1:length(stimulus);
 	plothere = [];
 case 5
+	fname = varargin{1};
+	p = varargin{2};
+	stimulus = varargin{3};
+	response = varargin{4};
+	time = varargin{5};
 	stimulus = stimulus(:);
 	response = response(:);
 	plothere = [];
 case 6
+	fname = varargin{1};
+	p = varargin{2};
+	stimulus = varargin{3};
+	response = varargin{4};
+	time = varargin{5};
+	plothere = varargin{6};
 end
 
 % check inputs
 if ~isstruct(p)
 	if isempty(p)
 		p=getModelParameters(fname);
+
+		% also read bounds from that file
+		clear ub lb
+		this_lb =[]; this_ub = [];
+		ub = struct; lb = struct;
+		% intelligently ask the model what the bounds for parameters are
+		mn= char(fname);
+		mn=which(mn);
+		txt=fileread(mn);
+		a = strfind(txt,'ub.');
+		
+		for i = 1:length(a)
+			this_snippet = txt(a(i):length(txt));
+			semicolons = strfind(this_snippet,';');
+			this_snippet = this_snippet(1:semicolons(1));
+			eval(this_snippet)
+		end
+		a = strfind(txt,'lb.');
+		for i = 1:length(a)
+			this_snippet = txt(a(i):length(txt));
+			semicolons = strfind(this_snippet,';');
+			this_snippet = this_snippet(1:semicolons(1));
+			eval(this_snippet)
+		end
+
+		lb_vec = -Inf*ones(length(fieldnames(p)),1);
+		ub_vec =  Inf*ones(length(fieldnames(p)),1);
+
+		% assign 
+		assign_these = fieldnames(lb);
+		for i = 1:length(assign_these)
+			assign_this = assign_these{i};
+			eval(strcat('this_lb = lb.',assign_this,';'))
+			lb_vec(find(strcmp(assign_this,fieldnames(p))))= this_lb;
+		end
+		assign_these = fieldnames(ub);
+		for i = 1:length(assign_these)
+			assign_this = assign_these{i};
+			eval(strcat('this_ub = ub.',assign_this,';'))
+			ub_vec(find(strcmp(assign_this,fieldnames(p))))= this_ub;
+		end
+
+		ub = ub_vec;
+		lb = lb_vec;
+
+		ub(isinf(ub)) = 1e4;
+		lb(isinf(lb)) = -1e4;
+
+	
+
 	else
 		error('Second argument should be a structure containing parameters')
 	end
@@ -85,20 +155,24 @@ axis off
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
 [pp,valid_fields] = struct2mat(p);
-lb = (pp/2);
-ub = (pp*2);
-for i = 1:length(lb)
-	if lb(i) == ub(i)
-		lb(i) = 0;
-		ub(i) = 1;
+
+if ~isempty(varargin{2})
+	lb = (pp/2);
+	ub = (pp*2);
+	for i = 1:length(lb)
+		if lb(i) == ub(i)
+			lb(i) = 0;
+			ub(i) = 1;
+		end
+		if lb(i) > ub(i)
+			temp = ub(i);
+			ub(i) = lb(i);
+			lb(i) = temp;
+		end
 	end
-	if lb(i) > ub(i)
-		temp = ub(i);
-		ub(i) = lb(i);
-		lb(i) = temp;
-	end
+	clear i
 end
-clear i
+
 lbcontrol = [];
 ubcontrol = [];
 control = [];
@@ -200,13 +274,17 @@ function [] = EvaluateModel()
 			cla(respplot(j));
 			es='plot(respplot(j),time,r';
 			es = strcat(es,mat2str(j),');');	
-			eval(es);
+			try
+				eval(es);
+			catch
+			end
 			if xl(1) ~= 0
 				set(respplot(j),'XLim',xl);
 			end
 			try
 				title(respplot(j),plotnames{j});
 			catch
+				keyboard
 			end
 			hold(respplot(j),'on')
 		end
@@ -216,14 +294,20 @@ function [] = EvaluateModel()
 			rr = zeros(1,length(respplot));
 		
 			for j = 1:length(respplot)
-				es=strcat('rr(j)=  rsquare(response(300:end),r',mat2str(j),'(300:end));');
-				eval(es)
+				es=strcat('rr(j)=  rsquare(response,r',mat2str(j),');'); % why are we using a eval here??????
+				try
+					eval(es)
+				catch
+				end
 
 			end
 			[~,plot_here] = max(rr);
-			plot(respplot(plot_here),time,response,'r'); 
+			
+			
 			clear j
 		end
+		plot(respplot(1),time,response,'r'); 
+		set(plotfig,'Name',strcat('r^2 = ',oval(rr(1))))
 	end
 	
 		

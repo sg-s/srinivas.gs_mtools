@@ -84,3 +84,7 @@ unix(es);
 cd(orig_dir)
 CleanPublish;
 close all
+
+% open the PDF
+f = strrep(f,'.tex','.pdf');
+open(f)

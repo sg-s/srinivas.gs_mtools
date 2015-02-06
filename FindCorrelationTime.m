@@ -10,7 +10,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [zctime,tau,c] = FindCorrelationTime(x)
+function [zctime,tau,c,half_cross_time] = FindCorrelationTime(x)
 switch nargin
 case 0
 	help FindCorrelationTime
@@ -26,6 +26,8 @@ end
 
 c = autocorr(x,length(x)-1);
 zctime = find(c<0,1,'first')-1;
+
+half_cross_time = find(c<.5,1,'first')-1;
 
 if nargout > 1
 	ff=fit((1:zctime)',c(1:zctime),'exp1');

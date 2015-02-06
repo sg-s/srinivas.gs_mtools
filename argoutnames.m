@@ -35,12 +35,15 @@ lines = lines{1};
 func_def_line = [];
 for i = 1:length(lines)
 	if any(strfind(lines{i},'function')) && any(strfind(lines{i},fname))
+
 		% check if this commented 
 		if any(strfind(lines{i},'%'))  
 			% maybe?
 			if (strfind(lines{i},'%')) > strfind(lines{i},'function')
 				func_def_line = i;
 				break
+			else
+				
 			end
 		else
 			% all good
@@ -52,7 +55,9 @@ end
 clear i
 
 if isempty(func_def_line)
+	keyboard
 	error('Error reading function. Can''t determine the function definiton line')
+
 end
 
 % find parentheses in this line
