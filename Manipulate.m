@@ -200,8 +200,14 @@ if isempty(plothere)
 	title(stimplot,'Stimulus')
 end
 
+an = argoutnames(fname);
+set(plot_response_here,'String',an(find(plot_these)));
+
 RedrawSlider(NaN,NaN);
 EvaluateModel2(stimplot,respplot,plot_these);
+
+
+
 
 function [] = update_plots(src,event)
 	% remove all the plots
@@ -232,6 +238,9 @@ function [] = update_plots(src,event)
 		[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);;
 		set(plot_control,'String',plot_control_string);
 		EvaluateModel2(stimplot,respplot,plot_these);
+		an = argoutnames(fname);
+		set(plot_response_here,'String',an(find(plot_these)));
+		
 
 	elseif strcmp(get(src,'Tag'),'plot_response_here')
 	end
@@ -279,33 +288,57 @@ function [] = EvaluateModel2(stimplot,respplot,plot_these)
 		es= strcat(es,'=',fname,'(stimulus,p);');
 		eval(es);
 
-		% plot in the correct places
-
 		% clear all the axes
 		for ip = 1:length(respplot)
 			cla(respplot(ip))
 		end
 
-		% plot what is needed
+		% plot the response in the right place 
+		permitted_plots = get(plot_response_here,'String');
+		prh = get(plot_response_here,'Value');
+		prh = permitted_plots(prh);
 
+		% plot what is needed
 		ti = 1;
 		for ip = 1:length(an)
 			if plot_these(ip)
+
+				if strcmp(an{ip},prh{1})
+					plot(respplot(ti),response,'k')
+					hold(respplot(ti),'on')
+					
+				end
+
 				eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
 				eval(strcat('title(respplot(ti),',char(39),an{ip},char(39),')'));
+
+				if strcmp(an{ip},prh{1})
+					hold(respplot(ti),'off')
+					% update title with r2
+					rr = [];
+					eval(strcat('rr=rsquare(response,r',mat2str(ip),');'))
+					set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
+				else
+					set(plotfig,'Name','Manipulate.m')
+				end
+
+
 				ti = ti+1;
 			end
 		end
+		clear ti ip
 
 		plot(stimplot,stimulus)
 		title(stimplot,'Stimulus')
+
+
 		
 	else
 		error('297 not coded')
 	end		
 
 
-
+	set(controlfig,'Name','Manipulate')
 
 end
 
