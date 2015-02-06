@@ -32,7 +32,7 @@ case 0
 case 1
 	error('Not enough input arguments. Must supply a second argument, which is a structure containing the parameters, and a third argument which is the stimulus')	
 case 2
-	error('Not enough input arguments. Must supply a third argument which is the stimulus')	
+	error('Not enough input arguments. Must supply a third argument which is the stimulus/input to the model being manipulated')	
 case 3 
 	fname = varargin{1};
 	p = varargin{2};
@@ -133,19 +133,34 @@ if ~isempty(strfind(fname,'.m'))
 end
 
 if isempty(plothere)
-	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback);
+	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback,'Menubar','none');
 
-	nplots= nargout(fname) + 1;
+	modepanel = uibuttongroup(plotfig,'Title','Mode','Units','normalized','Position',[.01 .95 .25 .05]);
 
-	stimplot = autoplot(nplots,1,1);
-	for i = 2:nplots
-		respplot(i-1) = autoplot(nplots,i,1);
+	
+	mode_time = uicontrol(modepanel,'Units','normalized','Position',[.01 .1 .5 .9], 'Style', 'radiobutton', 'String', 'Time Series','FontSize',10,'Callback',@update_plots);
+	mode_fun = uicontrol(modepanel,'Units','normalized','Position',[.51 .1 .5 .9], 'Style', 'radiobutton', 'String', 'Function','FontSize',10,'Callback',@update_plots);
+
+
+	plot_control_string = ['stimulus' argoutnames(fname)];
+	for i = 3:length(plot_control_string)
+		plot_control_string{i} = strcat('+',plot_control_string{i});
+	end
+	uicontrol(plotfig,'Units','normalized','Position',[.26 .93 .05 .05],'style','text','String','Plot')
+	plot_control = uicontrol(plotfig,'Units','normalized','Position',[.31 .935 .15 .05],'style','popupmenu','String',plot_control_string,'Callback',@update_plots,'Tag','plot_control');
+	
+
+	if length(varargin) > 3
+		uicontrol(plotfig,'Units','normalized','Position',[.46 .93 .09 .05],'style','text','String','Response vs.')
+		plot_response_here = uicontrol(plotfig,'Units','normalized','Position',[.56 .935 .15 .05],'style','popupmenu','String',argoutnames(fname),'Callback',@update_plots,'Tag','plot_response_here');
 	end
 
-	if nplots > 1
-		% link plots
-		linkaxes([stimplot respplot],'x');
-	end
+
+	show_stim = 1;
+	plot_these = zeros(nargout(fname),1);
+	plot_these(1) = 1; % stores which model outputs to plot
+	[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);
+
 end
 
 
@@ -186,7 +201,56 @@ if isempty(plothere)
 end
 
 RedrawSlider(NaN,NaN);
-EvaluateModel;
+EvaluateModel2(stimplot,respplot,plot_these);
+
+function [] = update_plots(src,event)
+	% remove all the plots
+	delete(stimplot)
+	for i = 1:length(respplot)
+		delete(respplot(i))
+	end
+
+	if strcmp(get(src,'Tag'),'plot_control')
+		% ok. user wants to add/remove a plot. rebuild list of plots 
+		if any(strfind(char(plot_control_string(get(src,'Value'))),'+'))
+			% need to add this plot
+			plot_control_string{get(src,'Value')} = strrep(plot_control_string{get(src,'Value')},'+','');
+			if get(src,'Value') > 1
+				plot_these(get(src,'Value')-1) = 1;
+			else
+				show_stim = 1;
+			end
+		else
+			plot_control_string{get(src,'Value')} = strcat('+',plot_control_string{get(src,'Value')});
+			if get(src,'Value') > 1
+				plot_these(get(src,'Value')-1) = 0;
+			else
+				show_stim = 0;
+			end
+		end
+
+		[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);;
+		set(plot_control,'String',plot_control_string);
+		EvaluateModel2(stimplot,respplot,plot_these);
+
+	elseif strcmp(get(src,'Tag'),'plot_response_here')
+	end
+end
+
+function [stimplot,respplot] = make_plots(nplots,show_stim)
+	stimplot = []; respplot = [];
+	if show_stim
+		stimplot = autoplot(nplots,1,1);
+	end
+	for i = 2:nplots
+		respplot(i-1) = autoplot(nplots,i,1);
+	end
+
+	if nplots > 1
+		% link plots
+		linkaxes([stimplot respplot],'x');
+	end
+end
 
 
 function  [] = QuitManipulateCallback(~,~)
@@ -198,6 +262,51 @@ function  [] = QuitManipulateCallback(~,~)
 		delete(controlfig)
 	catch
 	end
+end
+
+function [] = EvaluateModel2(stimplot,respplot,plot_these)
+	% replacement of Evaluate Model given the near-total rewrite of Manipualte
+	if nargin(fname) == 2
+
+		an = argoutnames(fname);
+		% evalaute the model
+		es = '[';
+		for j = 1:length(an)
+			es=strcat(es,'r',mat2str(j),',');
+		end
+		clear j
+		es(end) = ']';
+		es= strcat(es,'=',fname,'(stimulus,p);');
+		eval(es);
+
+		% plot in the correct places
+
+		% clear all the axes
+		for ip = 1:length(respplot)
+			cla(respplot(ip))
+		end
+
+		% plot what is needed
+
+		ti = 1;
+		for ip = 1:length(an)
+			if plot_these(ip)
+				eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
+				eval(strcat('title(respplot(ti),',char(39),an{ip},char(39),')'));
+				ti = ti+1;
+			end
+		end
+
+		plot(stimplot,stimulus)
+		title(stimplot,'Stimulus')
+		
+	else
+		error('297 not coded')
+	end		
+
+
+
+
 end
 
             
@@ -289,25 +398,16 @@ function [] = EvaluateModel()
 			hold(respplot(j),'on')
 		end
 
-		% intelligently try to figure out where to plot the reference response
 		if any(~isnan(response))
-			rr = zeros(1,length(respplot));
-		
-			for j = 1:length(respplot)
-				es=strcat('rr(j)=  rsquare(response,r',mat2str(j),');'); % why are we using a eval here??????
-				try
-					eval(es)
-				catch
-				end
-
-			end
-			[~,plot_here] = max(rr);
-			
-			
-			clear j
+			disp('398')
+			keyboard
+			rr = rsquare(response);
+			set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
+		else
+			% response is all NaNs. ignore
+			set(plotfig,'Name','Manipulate.m')
 		end
-		plot(respplot(1),time,response,'r'); 
-		set(plotfig,'Name',strcat('r^2 = ',oval(rr(1))))
+		
 	end
 	
 		
@@ -375,7 +475,7 @@ function  [] = SliderCallback(src,~)
 	set(controlfig,'Name','...')
 
 	% evalaute the model and update the plot
-	EvaluateModel;
+	EvaluateModel2(stimplot,respplot,plot_these)
 
 	% re-enable all the sliders
 	set(control,'Enable','on')
