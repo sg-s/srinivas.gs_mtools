@@ -26,17 +26,19 @@ function Manipulate(varargin)
 if ~nargin 
 	help Manipulate
 	return
+else
+	fname = varargin{1};
 end
 
 % get model parameters if not specified
 if nargin < 2 || isempty(varargin{2})
 	% no parameter structure...so get it from the model
-	fname = varargin{1};
 	p = getModelParameters(fname);
 	if isempty(p)
 		error('Unable to figure out the model parameters. Specify manually')
 	end
-
+else
+	p = varargin{2};
 end
 
 if nargin >  2 && ~isempty(varargin{3})
@@ -430,6 +432,8 @@ function [] = RedrawSlider(src,event)
 			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing+3 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
 		end
 		clear i
+		uicontrol(controlfig,'Position',[100 Height-length(f)*nspacing-30 180 20],'style','pushbutton','String','Export parameters','Callback',@export);
+
 	else
 		% find the control that is being changed
 		this_control=[find(lbcontrol==src) find(ubcontrol==src)];
@@ -448,7 +452,13 @@ function [] = RedrawSlider(src,event)
 		set(control(this_control),'Max',str2num(get(ubcontrol(this_control),'String')));
 
 	end
-end            
+end         
+
+function [] = export(~,~)
+	disp(p)
+	assignin('base','p',p)
+end
+
 
 function  [] = SliderCallback(src,~)
 
