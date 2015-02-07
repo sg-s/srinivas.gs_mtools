@@ -156,7 +156,7 @@ end
 
 
 RedrawSlider(NaN,NaN);
-EvaluateModel2(stimplot,respplot,plot_these);
+EvaluateModel2(stimplot,respplot,[]);
 
 
 
@@ -226,7 +226,7 @@ function  [] = QuitManipulateCallback(~,~)
 	end
 end
 
-function [] = EvaluateModel2(stimplot,respplot,plot_these)
+function [] = EvaluateModel2(stimplot,respplot,event)
 	% replacement of Evaluate Model given the near-total rewrite of Manipualte
 	if nargin(fname) == 2
 
@@ -290,7 +290,9 @@ function [] = EvaluateModel2(stimplot,respplot,plot_these)
 		
 	else
 		% just evaluate the model, because the model will handle all plotting 
+		p.event = event; % we're also telling the model we are manipulating of the type of event
 		eval(strcat(fname,'(p);'))
+		p=rmfield(p,'event');
 	end		
 
 	% reset the name of the controlfig to indicate that the model has finished running
@@ -460,7 +462,7 @@ function [] = export(~,~)
 end
 
 
-function  [] = SliderCallback(src,~)
+function  [] = SliderCallback(src,event)
 
 	% figure out which slider was moved
 	this_slider = find(control == src);
@@ -481,7 +483,7 @@ function  [] = SliderCallback(src,~)
 	set(controlfig,'Name','...')
 
 	% evalaute the model and update the plot
-	EvaluateModel2(stimplot,respplot,plot_these)
+	EvaluateModel2(stimplot,respplot,event)
 
 	% re-enable all the sliders
 	set(control,'Enable','on')
