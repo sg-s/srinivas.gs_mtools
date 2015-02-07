@@ -4,24 +4,22 @@
 %
 % 	Manipulate(fname,p,stimulus);
 % 	Manipulate(fname,p,stimulus,response,time)
-%	Manipulate(fname,p,stimulus,response,time,plothere)
+%	Manipulate(fname,p,stimulus,response,time)
 %
 % where p is a structure containing the parameters of the model you want to manipulate 
 % The function to be manipulated (fname) should conform to the following standard: 
 % 	
-% 	[r]=fname(time,stimulus,p,plothere);
+% 	[r]=fname(time,stimulus,p);
 %
 % where time and stimulus are optional matrices that your function might need
 % p is a structure containing the parameters you want to manipulate 
-% and plothere is an optional list of axis handles you want fname to plot to. fname should know what to do with plothere, if supplied, and should not require it. 
-% 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 % 
-% Manipulate(fname,p,stimulus,response,time,plothere)
+% Manipulate(fname,p,stimulus,response,time)
 
 
 function Manipulate(varargin)
@@ -38,11 +36,17 @@ if nargin < 2 || isempty(varargin{2})
 	if isempty(p)
 		error('Unable to figure out the model parameters. Specify manually')
 	end
+
 end
 
 if nargin >  2 && ~isempty(varargin{3})
 	stimulus = varargin{3};
 	stimulus = stimulus(:);
+else
+	% no stimulus specified. Manipulate assumes that it is manipulating an external model that handles all its plotting itself. 
+	stimulus = [];
+	response = [];
+	time = [];
 end
 
 if nargin >  3 && ~isempty(varargin{4})
@@ -54,14 +58,34 @@ if nargin < 5
 	time = 1:length(stimulus);
 end  
 
-if nargin < 6
-	plothere = [];
-end
 
 % get bounds from file
 [lb, ub] = getBounds(fname);
-lb(isinf(lb)) = 0;
-ub(isinf(ub)) = 1e4;
+[pp,valid_fields] = struct2mat(p);
+if sum(isinf(lb)) + sum(isinf(ub)) == 2*length(ub)
+	lb = (pp/2);
+	ub = (pp*2);
+	for i = 1:length(lb)
+		if lb(i) == ub(i)
+			lb(i) = 0;
+			ub(i) = 1;
+		end
+		if lb(i) > ub(i)
+			temp = ub(i);
+			ub(i) = lb(i);
+			lb(i) = temp;
+		end
+	end
+	clear i
+else
+	lb(isinf(lb)) = 0;
+	ub(isinf(ub)) = 1e4;
+end
+
+
+
+
+
 
 
 
@@ -71,7 +95,7 @@ if ~isempty(strfind(fname,'.m'))
 	fname(strfind(fname,'.m'):end) = [];
 end
 
-if isempty(plothere)
+if ~isempty(stimulus)
 	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback,'Menubar','none');
 
 	modepanel = uibuttongroup(plotfig,'Title','Mode','Units','normalized','Position',[.01 .95 .25 .05]);
@@ -100,6 +124,11 @@ if isempty(plothere)
 	plot_these(1) = 1; % stores which model outputs to plot
 	[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);
 
+	an = argoutnames(fname);
+	set(plot_response_here,'String',an(find(plot_these)));
+
+else
+	stimplot = []; respplot = []; plot_these = [];
 end
 
 
@@ -108,24 +137,8 @@ controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar'
 axis off
 
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
-[pp,valid_fields] = struct2mat(p);
 
-if ~isempty(varargin{2})
-	lb = (pp/2);
-	ub = (pp*2);
-	for i = 1:length(lb)
-		if lb(i) == ub(i)
-			lb(i) = 0;
-			ub(i) = 1;
-		end
-		if lb(i) > ub(i)
-			temp = ub(i);
-			ub(i) = lb(i);
-			lb(i) = temp;
-		end
-	end
-	clear i
-end
+
 
 lbcontrol = [];
 ubcontrol = [];
@@ -133,14 +146,12 @@ control = [];
 controllabel = [];
 nspacing = [];
 
-if isempty(plothere)
+if ~isempty(stimulus)
 	% plot the stimulus
 	plot(stimplot,time,stimulus)
 	title(stimplot,'Stimulus')
 end
 
-an = argoutnames(fname);
-set(plot_response_here,'String',an(find(plot_these)));
 
 RedrawSlider(NaN,NaN);
 EvaluateModel2(stimplot,respplot,plot_these);
@@ -182,6 +193,7 @@ function [] = update_plots(src,event)
 		
 
 	elseif strcmp(get(src,'Tag'),'plot_response_here')
+		disp('196 not coded')
 	end
 end
 
@@ -271,12 +283,15 @@ function [] = EvaluateModel2(stimplot,respplot,plot_these)
 		title(stimplot,'Stimulus')
 
 
+
+
 		
 	else
-		error('297 not coded')
+		% just evaluate the model, because the model will handle all plotting 
+		eval(strcat(fname,'(p);'))
 	end		
 
-
+	% reset the name of the controlfig to indicate that the model has finished running
 	set(controlfig,'Name','Manipulate')
 
 end
@@ -285,7 +300,7 @@ end
 function [] = EvaluateModel()
 	% try to figure out if the model we are evaluating requires a time vector 
 	% get the XLim 
-	if isempty(plothere)
+	if ~isempty(stimulus)
 		xl = get(stimplot,'XLim');
 	end
 
@@ -411,13 +426,22 @@ function [] = RedrawSlider(src,event)
 			% hat tip: http://undocumentedmatlab.com/blog/continuous-slider-callback
 			thisstring = strkat(f{i},'=',mat2str(eval(strcat('p.',f{i}))));
 			controllabel(i) = uicontrol(controlfig,'Position',[10 Height-i*nspacing 50 20],'style','text','String',thisstring);
-			lbcontrol(i) = uicontrol(controlfig,'Position',[300 Height-i*nspacing 40 20],'style','edit','String',mat2str(lb(i)),'Callback',@RedrawSlider);
-			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
+			lbcontrol(i) = uicontrol(controlfig,'Position',[300 Height-i*nspacing+3 40 20],'style','edit','String',mat2str(lb(i)),'Callback',@RedrawSlider);
+			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing+3 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
 		end
 		clear i
 	else
 		% find the control that is being changed
 		this_control=[find(lbcontrol==src) find(ubcontrol==src)];
+
+		this_lb = str2double(get(lbcontrol(this_control),'String'));
+		this_ub = str2double(get(ubcontrol(this_control),'String'));
+		this_slider = get(control(this_control),'Value');
+
+		if this_slider > this_ub || this_slider < this_lb 
+			this_slider = (this_ub - this_lb)/2 + this_lb;
+			set(control(this_control),'Value',this_slider);
+		end
 
 		% change the upper and lower bounds of this slider
 		set(control(this_control),'Min',str2num(get(lbcontrol(this_control),'String')));
