@@ -31,22 +31,5 @@ for i = 1:length(a)
 	eval(this_snippet)
 end
 
-lb_vec = -Inf*ones(length(fieldnames(p)),1);
-ub_vec =  Inf*ones(length(fieldnames(p)),1);
+% lb_vec = -Inf*ones(length(fieldnames(p)),1);
 
-% assign 
-assign_these = fieldnames(lb);
-for i = 1:length(assign_these)
-	assign_this = assign_these{i};
-	eval(strcat('this_lb = lb.',assign_this,';'))
-	lb_vec(find(strcmp(assign_this,fieldnames(p))))= this_lb;
-end
-assign_these = fieldnames(ub);
-for i = 1:length(assign_these)
-	assign_this = assign_these{i};
-	eval(strcat('this_ub = ub.',assign_this,';'))
-	ub_vec(find(strcmp(assign_this,fieldnames(p))))= this_ub;
-end
-
-ub = ub_vec;
-lb = lb_vec;

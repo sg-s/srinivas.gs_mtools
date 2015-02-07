@@ -60,10 +60,36 @@ if nargin < 5
 	time = 1:length(stimulus);
 end  
 
+% remove trailing extention, if any.
+if ~isempty(strfind(fname,'.m'))
+	fname(strfind(fname,'.m'):end) = [];
+end
+
 
 % get bounds from file
 [lb, ub] = getBounds(fname);
 [pp,valid_fields] = struct2mat(p);
+
+% fit them correctly into vectors 
+ub_vec =  Inf*ones(length(fieldnames(p)),1);
+
+% assign 
+assign_these = fieldnames(lb);
+for i = 1:length(assign_these)
+	assign_this = assign_these{i};
+	eval(strcat('this_lb = lb.',assign_this,';'))
+	lb_vec(find(strcmp(assign_this,fieldnames(p))))= this_lb;
+end
+assign_these = fieldnames(ub);
+for i = 1:length(assign_these)
+	assign_this = assign_these{i};
+	eval(strcat('this_ub = ub.',assign_this,';'))
+	ub_vec(find(strcmp(assign_this,fieldnames(p))))= this_ub;
+end
+
+ub = ub_vec;
+lb = lb_vec;
+
 if sum(isinf(lb)) + sum(isinf(ub)) == 2*length(ub)
 	lb = (pp/2);
 	ub = (pp*2);
@@ -82,19 +108,6 @@ if sum(isinf(lb)) + sum(isinf(ub)) == 2*length(ub)
 else
 	lb(isinf(lb)) = 0;
 	ub(isinf(ub)) = 1e4;
-end
-
-
-
-
-
-
-
-
-
-% remove trailing extention, if any.
-if ~isempty(strfind(fname,'.m'))
-	fname(strfind(fname,'.m'):end) = [];
 end
 
 if ~isempty(stimulus)
