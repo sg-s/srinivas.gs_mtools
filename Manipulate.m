@@ -21,111 +21,50 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 % 
-% Manipulate(fname,p,stimulus,response,time,plothere
+% Manipulate(fname,p,stimulus,response,time,plothere)
 
 
 function Manipulate(varargin)
-switch nargin
-case 0
+if ~nargin 
 	help Manipulate
 	return
-case 1
-	error('Not enough input arguments. Must supply a second argument, which is a structure containing the parameters, and a third argument which is the stimulus')	
-case 2
-	error('Not enough input arguments. Must supply a third argument which is the stimulus/input to the model being manipulated')	
-case 3 
-	fname = varargin{1};
-	p = varargin{2};
-	stimulus = varargin{3};
-	stimulus = stimulus(:);
-	response = NaN*stimulus;
-	time = 1:length(stimulus);
-	plothere = [];
-case 4
-	fname = varargin{1};
-	p = varargin{2};
-	stimulus = varargin{3};
-	response = varargin{4};
-	stimulus = stimulus(:);
-	response = response(:);
-	time = 1:length(stimulus);
-	plothere = [];
-case 5
-	fname = varargin{1};
-	p = varargin{2};
-	stimulus = varargin{3};
-	response = varargin{4};
-	time = varargin{5};
-	stimulus = stimulus(:);
-	response = response(:);
-	plothere = [];
-case 6
-	fname = varargin{1};
-	p = varargin{2};
-	stimulus = varargin{3};
-	response = varargin{4};
-	time = varargin{5};
-	plothere = varargin{6};
 end
 
-% check inputs
-if ~isstruct(p)
+% get model parameters if not specified
+if nargin < 2 || isempty(varargin{2})
+	% no parameter structure...so get it from the model
+	fname = varargin{1};
+	p = getModelParameters(fname);
 	if isempty(p)
-		p=getModelParameters(fname);
-
-		% also read bounds from that file
-		clear ub lb
-		this_lb =[]; this_ub = [];
-		ub = struct; lb = struct;
-		% intelligently ask the model what the bounds for parameters are
-		mn= char(fname);
-		mn=which(mn);
-		txt=fileread(mn);
-		a = strfind(txt,'ub.');
-		
-		for i = 1:length(a)
-			this_snippet = txt(a(i):length(txt));
-			semicolons = strfind(this_snippet,';');
-			this_snippet = this_snippet(1:semicolons(1));
-			eval(this_snippet)
-		end
-		a = strfind(txt,'lb.');
-		for i = 1:length(a)
-			this_snippet = txt(a(i):length(txt));
-			semicolons = strfind(this_snippet,';');
-			this_snippet = this_snippet(1:semicolons(1));
-			eval(this_snippet)
-		end
-
-		lb_vec = -Inf*ones(length(fieldnames(p)),1);
-		ub_vec =  Inf*ones(length(fieldnames(p)),1);
-
-		% assign 
-		assign_these = fieldnames(lb);
-		for i = 1:length(assign_these)
-			assign_this = assign_these{i};
-			eval(strcat('this_lb = lb.',assign_this,';'))
-			lb_vec(find(strcmp(assign_this,fieldnames(p))))= this_lb;
-		end
-		assign_these = fieldnames(ub);
-		for i = 1:length(assign_these)
-			assign_this = assign_these{i};
-			eval(strcat('this_ub = ub.',assign_this,';'))
-			ub_vec(find(strcmp(assign_this,fieldnames(p))))= this_ub;
-		end
-
-		ub = ub_vec;
-		lb = lb_vec;
-
-		ub(isinf(ub)) = 1e4;
-		lb(isinf(lb)) = -1e4;
-
-	
-
-	else
-		error('Second argument should be a structure containing parameters')
+		error('Unable to figure out the model parameters. Specify manually')
 	end
 end
+
+if nargin >  2 && ~isempty(varargin{3})
+	stimulus = varargin{3};
+	stimulus = stimulus(:);
+end
+
+if nargin >  3 && ~isempty(varargin{4})
+	response = varargin{4};
+	response = response(:);
+end
+
+if nargin < 5
+	time = 1:length(stimulus);
+end  
+
+if nargin < 6
+	plothere = [];
+end
+
+% get bounds from file
+[lb, ub] = getBounds(fname);
+lb(isinf(lb)) = 0;
+ub(isinf(ub)) = 1e4;
+
+
+
 
 % remove trailing extention, if any.
 if ~isempty(strfind(fname,'.m'))

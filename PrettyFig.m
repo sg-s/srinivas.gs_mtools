@@ -129,7 +129,8 @@ for i = 1:length(axesHandles)
 			z = floor(log(maxlog));
 			L = {};
 			for ke = a:z
-				L = [L strcat('e^{',mat2str(ke),'}')];
+				%L = [L strcat('e^{',mat2str(ke),'}')];
+				L = [L oval(exp(ke))];
 			end
 			set(axesHandles(i),'YTick',exp(a:z),'YTickLabel',L);
 
@@ -157,7 +158,8 @@ for i = 1:length(axesHandles)
 			z = floor(log(maxlog));
 			L = {};
 			for ke = a:z
-				L = [L strcat('e^{',mat2str(ke),'}')];
+				% L = [L strcat('e^{',mat2str(ke),'}')];
+				L = [L oval(exp(ke))];
 			end
 			set(axesHandles(i),'XTick',exp(a:z),'XTickLabel',L);
 
