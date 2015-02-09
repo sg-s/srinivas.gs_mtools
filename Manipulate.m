@@ -518,6 +518,18 @@ function [] = export(~,~)
 		mp(length(mp)+1) = p;
 	end
 	assignin('base','p',mp)
+
+	% update saved states
+	saved_state_string = {};
+	if length(mp) > 0
+		for i = 1:length(mp)
+			saved_state_string{i} = strcat('State',mat2str(i));
+		end
+	else
+		saved_state_string = 'No Saved states.'
+	end
+	set(saved_state_control,'String',saved_state_string)
+
 end
 
 
