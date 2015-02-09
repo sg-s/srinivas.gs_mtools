@@ -39,7 +39,19 @@ if nargin < 2 || isempty(varargin{2})
 	end
 else
 	p = varargin{2};
+	if isstruct(p)
+		if length(p) > 1
+			% treat each element of p as a distinct state. 
+			mp = p;
+			p = p(1);
+		else
+			mp  = []; 
+		end
+	else
+		error('Second argument should be a structure')
+	end
 end
+
 
 if nargin >  2 && ~isempty(varargin{3})
 	stimulus = varargin{3};
@@ -154,12 +166,13 @@ axis off
 r1 = []; r2 = []; r3 = []; r4 = []; r5 = [];
 
 
-
+% declare variables here so that all functions see them
 lbcontrol = [];
 ubcontrol = [];
 control = [];
 controllabel = [];
 nspacing = [];
+saved_state_control = [];
 
 if ~isempty(stimulus)
 	% plot the stimulus
@@ -447,7 +460,16 @@ function [] = RedrawSlider(src,event)
 			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing+3 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
 		end
 		clear i
-		uicontrol(controlfig,'Position',[100 Height-length(f)*nspacing-30 180 20],'style','pushbutton','String','Export parameters','Callback',@export);
+		uicontrol(controlfig,'Position',[10 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','Save State','Callback',@export);
+		saved_state_string = {};
+		if length(mp) > 0
+			for i = 1:length(mp)
+				saved_state_string{i} = strcat('State',mat2str(i));
+			end
+		else
+			saved_state_string = 'No Saved states.'
+		end
+		saved_state_control = uicontrol(controlfig,'Position',[110 Height-length(f)*nspacing-30 100 20],'style','popupmenu','String',saved_state_string,'Callback',@go_to_saved_state);
 
 	else
 		% find the control that is being changed
@@ -469,9 +491,33 @@ function [] = RedrawSlider(src,event)
 	end
 end         
 
+function [] = go_to_saved_state(~,event)
+	this_state = get(saved_state_control,'Value');
+	p = mp(this_state);
+
+	% Evaluate the model
+	EvaluateModel2(stimplot,respplot,event);
+
+	% fix all the slider positions
+	f = fieldnames(p);
+	f=f(valid_fields);
+
+	for i = 1:length(controllabel)
+		thisstring = strkat(f{i},'=',oval(eval(strcat('p(length(p)).',f{i})),2));
+
+		% update the label
+		set(controllabel(i),'String',thisstring);
+	end
+end
+
+
 function [] = export(~,~)
-	disp(p)
-	assignin('base','p',p)
+	if isempty(mp)
+		mp = p;
+	else
+		mp(length(mp)+1) = p;
+	end
+	assignin('base','p',mp)
 end
 
 
@@ -481,12 +527,12 @@ function  [] = SliderCallback(src,event)
 	this_slider = find(control == src);
 
 	% update the value
-	f = fieldnames(p);
+	f = fieldnames(p(length(p)));
 	f=f(valid_fields);
 	
 	thisval = get(control(this_slider),'Value');
-	eval((strcat('p.',f{this_slider},'=thisval;')));
-	thisstring = strkat(f{this_slider},'=',oval(eval(strcat('p.',f{this_slider})),2));
+	eval((strcat('p(length(p)).',f{this_slider},'=thisval;')));
+	thisstring = strkat(f{this_slider},'=',oval(eval(strcat('p(length(p)).',f{this_slider})),2));
 
 	% update the label
 	controllabel(this_slider) = uicontrol(controlfig,'Position',[10 Height-this_slider*nspacing 50 20],'style','text','String',thisstring);
