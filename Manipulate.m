@@ -84,6 +84,7 @@ end
 
 % fit them correctly into vectors 
 ub_vec =  Inf*ones(length(fieldnames(p)),1);
+lb_vec =  Inf*ones(length(fieldnames(p)),1);
 
 % assign 
 assign_these = fieldnames(lb);
@@ -439,11 +440,11 @@ function [] = RedrawSlider(src,event)
 		f = fieldnames(p);
 		f=f(valid_fields);
 
-		for i = 1:length(lbcontrol)
-			lb(i)=str2num(get(lbcontrol(i),'String'));
-			ub(i)=str2num(get(ubcontrol(i),'String'));
-		end
-		clear i
+		% for i = 1:length(lbcontrol)
+		% 	lb(i)=str2num(get(lbcontrol(i),'String'));
+		% 	ub(i)=str2num(get(ubcontrol(i),'String'));
+		% end
+		% clear i
 		
 		nspacing = Height/(length(f)+1);
 		for i = 1:length(f)
@@ -467,7 +468,7 @@ function [] = RedrawSlider(src,event)
 				saved_state_string{i} = strcat('State',mat2str(i));
 			end
 		else
-			saved_state_string = 'No Saved states.'
+			saved_state_string = 'No Saved states.';
 		end
 		saved_state_control = uicontrol(controlfig,'Position',[110 Height-length(f)*nspacing-30 100 20],'style','popupmenu','String',saved_state_string,'Callback',@go_to_saved_state);
 
