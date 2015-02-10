@@ -37,6 +37,7 @@ if nargin < 2 || isempty(varargin{2})
 	if isempty(p)
 		error('Unable to figure out the model parameters. Specify manually')
 	end
+	mp = p;
 else
 	p = varargin{2};
 	if isstruct(p)
@@ -51,7 +52,6 @@ else
 		error('Second argument should be a structure')
 	end
 end
-
 
 if nargin >  2 && ~isempty(varargin{3})
 	stimulus = varargin{3};
@@ -460,7 +460,7 @@ function [] = RedrawSlider(src,event)
 			ubcontrol(i) = uicontrol(controlfig,'Position',[350 Height-i*nspacing+3 40 20],'style','edit','String',mat2str(ub(i)),'Callback',@RedrawSlider);
 		end
 		clear i
-		uicontrol(controlfig,'Position',[10 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','Save State','Callback',@export);
+		uicontrol(controlfig,'Position',[10 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','+State','Callback',@export);
 		saved_state_string = {};
 		if length(mp) > 0
 			for i = 1:length(mp)
@@ -470,6 +470,8 @@ function [] = RedrawSlider(src,event)
 			saved_state_string = 'No Saved states.'
 		end
 		saved_state_control = uicontrol(controlfig,'Position',[110 Height-length(f)*nspacing-30 100 20],'style','popupmenu','String',saved_state_string,'Callback',@go_to_saved_state);
+
+		remove_saved_state_control = uicontrol(controlfig,'Position',[210 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','-State','Callback',@remove_saved_state);
 
 	else
 		% find the control that is being changed
@@ -508,6 +510,23 @@ function [] = go_to_saved_state(~,event)
 		% update the label
 		set(controllabel(i),'String',thisstring);
 	end
+end
+
+function []  = remove_saved_state(~,~)
+	this_state = get(saved_state_control,'Value');
+	mp(this_state) = [];
+	f = fieldnames(p);
+	f=f(valid_fields);
+	% update saved states
+	saved_state_string = {};
+	if length(mp) > 0
+		for i = 1:length(mp)
+			saved_state_string{i} = strcat('State',mat2str(i));
+		end
+	else
+		saved_state_string = 'No Saved states.'
+	end
+	set(saved_state_control,'String',saved_state_string,'Value',1)
 end
 
 
