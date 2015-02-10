@@ -41,13 +41,8 @@ if nargin < 2 || isempty(varargin{2})
 else
 	p = varargin{2};
 	if isstruct(p)
-		if length(p) > 1
-			% treat each element of p as a distinct state. 
-			mp = p;
-			p = p(1);
-		else
-			mp  = []; 
-		end
+		mp = p;
+		p = p(1);
 	else
 		error('Second argument should be a structure')
 	end
@@ -470,9 +465,9 @@ function [] = RedrawSlider(src,event)
 		else
 			saved_state_string = 'No Saved states.';
 		end
-		saved_state_control = uicontrol(controlfig,'Position',[110 Height-length(f)*nspacing-30 100 20],'style','popupmenu','String',saved_state_string,'Callback',@go_to_saved_state);
+		saved_state_control = uicontrol(controlfig,'Position',[110 Height-length(f)*nspacing-30 150 20],'style','popupmenu','String',saved_state_string,'Callback',@go_to_saved_state);
 
-		remove_saved_state_control = uicontrol(controlfig,'Position',[210 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','-State','Callback',@remove_saved_state);
+		remove_saved_state_control = uicontrol(controlfig,'Position',[260 Height-length(f)*nspacing-30 100 20],'style','pushbutton','String','-State','Callback',@remove_saved_state);
 
 	else
 		% find the control that is being changed
