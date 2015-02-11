@@ -435,15 +435,17 @@ function [] = RedrawSlider(src,event)
 		f = fieldnames(p);
 		f=f(valid_fields);
 
-		% for i = 1:length(lbcontrol)
-		% 	lb(i)=str2num(get(lbcontrol(i),'String'));
-		% 	ub(i)=str2num(get(ubcontrol(i),'String'));
-		% end
-		% clear i
+		pvec = struct2mat(p);
 		
 		nspacing = Height/(length(f)+1);
 		for i = 1:length(f)
-			control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',(lb(i)+ub(i))/2);
+
+			if pvec(i) > lb(i) && pvec(i) < ub(i)
+			else
+				lb(i) = pvec(i) - 1;
+				ub(i) = pvec(i) + 1;
+			end	
+			control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',pvec(i));
 			try    % R2013b and older
 			   addlistener(control(i),'ActionEvent',@SliderCallback);
 			catch  % R2014a and newer
