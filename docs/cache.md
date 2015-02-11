@@ -81,4 +81,8 @@ The best part? `cache` automatically manages its own size, and intelligently rem
 
 ## Installation
 
-Get this repo, or if you just want to use `cache`, you'll need `DataHash.m`
+Get this repo
+
+```
+git clone https://github.com/sg-s/srinivas.gs_mtools
+```

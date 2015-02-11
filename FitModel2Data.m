@@ -23,16 +23,21 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function p = FitModel2Data(modelname,data,p0,lb,ub);
 
-default_x0 = struct2mat(p0);
+
 scale = 4;
 
 switch nargin 
 	case 0
 		help FitModel2Data
 		return
-	case {1,2}
+	case 1
 		help FitModel2Data
 		error('Not enough input arguments')
+	case 2
+		p0 = getModelParameters(char(modelname));
+		[x0, param_names] = struct2mat(p0);
+		f = fieldnames(p0);
+		param_names = f(param_names);
 	case 3
 		if ~isstruct(p0)
 			help FitModel2Data
@@ -69,6 +74,8 @@ switch nargin
 
 end
 
+default_x0 = struct2mat(p0);
+
 % validate inputs
 if ~isa(modelname,'function_handle')
 	error('First argument is not a function handle')
@@ -83,7 +90,7 @@ else
 	error('RTFM')
 end
 
-if nargin == 3
+if nargin < 4
 	clear ub lb
 	this_lb =[]; this_ub = [];
 	ub = struct; lb = struct;
