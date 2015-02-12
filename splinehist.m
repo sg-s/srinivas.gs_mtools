@@ -12,11 +12,13 @@ function [cx,cy,hx,hy]  = splinehist(d)
 
 l_max = 1e3;
 
-
 cx=sort(d(:));
 
 if length(cx) > l_max
-	cx = cx(1:floor(length(cx)/l_max):end);
+	tt = 1:floor(length(cx)/l_max):length(cx);
+	cx_old =cx;
+	cx = interp1(1:length(cx),cx,tt,'spline');
+	cx = cx(:);
 end
 
 cy = cumsum(ones(1,length(cx)));
