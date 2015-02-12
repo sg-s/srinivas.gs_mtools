@@ -10,12 +10,20 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [cx,cy,hx,hy]  = splinehist(d)
 
-cx=sort(d);
-cx=cx(:);
+l_max = 1e3;
+
+
+cx=sort(d(:));
+
+if length(cx) > l_max
+	cx = cx(1:floor(length(cx)/l_max):end);
+end
+
 cy = cumsum(ones(1,length(cx)));
 cy= cy/max(cy);
 
-cf =fit(cx(:),cy(:),'smoothingspline','SmoothingParam',1-1/(length(cx))); % this works well to get smooth the cdf
+[cf,gof,output] =fit(cx(:),cy(:),'smoothingspline','SmoothingParam',1-1e-4); % this works well to get smooth the cdf
+
 cy = cf(cx); % cy stores the cumulative prob. density
 
 hy = diff(cy)./(diff(cx)); % the pdf is the derivative of the cdf
