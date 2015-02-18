@@ -11,6 +11,7 @@ function [] = DesignFig()
 % initialise variables
 allrect = struct;	
 allpos = [];
+text_handles = [];
 nplots = 0;
 grid_spacing = [];
 figure_position = [];
@@ -110,6 +111,21 @@ end
 
 function [] = UpdatePositionDisplay(src,~)
 	set(PositionDisplay,'String',mat2str(round(src)));
+	% redraw all labels. this is a hack because i don't know how to find the rectangle that is being resized
+	RedrawLabels;
+end
+
+function [] = RedrawLabels()
+	for i = 1:length(text_handles)
+		delete(text_handles(i))
+	end
+	for i = 1:length(allrect)
+		this_rect = allrect(i);
+		p = getPosition(this_rect.h);
+		
+		text_handles(i) =  text(p(1) + p(3)/2,p(2) + p(4)/2,mat2str(i),'FontSize',48);
+
+	end
 end
 
 
