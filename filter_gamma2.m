@@ -5,32 +5,35 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function f = filter_gamma2(tau1,n,tau2,A,t)
-	switch nargin
+function f = filter_gamma2(t,p)
+switch nargin
 case 0
 	help filter_gamma2
 	return
 case 1
-	% check to see if we are getting a vector
-	if isvector(tau1) && length(tau1) == 4
-		n = tau1(2); tau2 = tau1(3); A = tau1(4); tau1 = tau1(1);
-		t = 1:1000;
-	else
-		error('Not enough input arguments')
-	end 
-case 2
-	error('Not enough input arguments')
-case 3
+	p = t;
 	t = 1:1000;
-case 4
+case 2
+	if isempty(t)
+		t = 1:1000;
+	end
 end	
-f1 = t.^n.*exp(-t/tau1); % functional form in paper
-f1 = f1/tau1^(n+1)/gamma(n+1); % normalize appropriately
 
-f2 = t.^n.*exp(-t/tau2); % functional form in paper
-f2 = f2/tau2^(n+1)/gamma(n+1); % normalize appropriately
+% force tau1 to be smaller than tau2
+if p.tau1 > p.tau2
+	temp = p.tau2;
+	p.tau2 = p.tau1;
+	p.tau1 = temp;
+end
 
-f = f1 - A*f2;
+
+f1 = t.^p.n.*exp(-t/p.tau1); % functional form in paper
+f1 = f1/p.tau1^(p.n+1)/gamma(p.n+1); % normalize appropriately
+
+f2 = t.^p.n.*exp(-t/p.tau2); % functional form in paper
+f2 = f2/p.tau2^(p.n+1)/gamma(p.n+1); % normalize appropriately
+
+f = f1 - p.A*f2;
 f = f/max(f);
 if any(isnan(f))
 	f = zeros(length(f),1);

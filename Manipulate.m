@@ -51,6 +51,7 @@ end
 if nargin >  2 && ~isempty(varargin{3})
 	stimulus = varargin{3};
 	stimulus = stimulus(:);
+	response = [];
 else
 	% no stimulus specified. Manipulate assumes that it is manipulating an external model that handles all its plotting itself. 
 	stimulus = [];
@@ -118,7 +119,7 @@ else
 	ub(isinf(ub)) = 1e4;
 end
 
-if ~isempty(stimulus)
+if nargout(fname)
 	plotfig = figure('position',[50 250 900 740],'NumberTitle','off','IntegerHandle','off','Name','Manipulate.m','CloseRequestFcn',@QuitManipulateCallback,'Menubar','none');
 
 	modepanel = uibuttongroup(plotfig,'Title','Mode','Units','normalized','Position',[.01 .95 .25 .05]);
@@ -127,33 +128,42 @@ if ~isempty(stimulus)
 	mode_time = uicontrol(modepanel,'Units','normalized','Position',[.01 .1 .5 .9], 'Style', 'radiobutton', 'String', 'Time Series','FontSize',10,'Callback',@update_plots);
 	mode_fun = uicontrol(modepanel,'Units','normalized','Position',[.51 .1 .5 .9], 'Style', 'radiobutton', 'String', 'Function','FontSize',10,'Callback',@update_plots);
 
-
-	plot_control_string = ['stimulus' argoutnames(fname)];
-	for i = 3:length(plot_control_string)
-		plot_control_string{i} = strcat('+',plot_control_string{i});
+	if ~isempty(stimulus)
+		plot_control_string = ['stimulus' argoutnames(fname)];
+		for i = 3:length(plot_control_string)
+			plot_control_string{i} = strcat('+',plot_control_string{i});
+		end
+	else
+		plot_control_string = argoutnames(fname);
+		for i = 2:length(plot_control_string)
+			plot_control_string{i} = strcat('+',plot_control_string{i});
+		end
 	end
 	uicontrol(plotfig,'Units','normalized','Position',[.26 .93 .05 .05],'style','text','String','Plot')
 	plot_control = uicontrol(plotfig,'Units','normalized','Position',[.31 .935 .15 .05],'style','popupmenu','String',plot_control_string,'Callback',@update_plots,'Tag','plot_control');
 	
-
-	if length(varargin) > 3
+	if ~isempty(response)
 		uicontrol(plotfig,'Units','normalized','Position',[.46 .93 .09 .05],'style','text','String','Response vs.')
 		plot_response_here = uicontrol(plotfig,'Units','normalized','Position',[.56 .935 .15 .05],'style','popupmenu','String',argoutnames(fname),'Callback',@update_plots,'Tag','plot_response_here');
 	end
 
-
-	show_stim = 1;
+	if ~isempty(stimulus)
+		show_stim = 1;
+	else
+		show_stim = 0;
+	end
 	plot_these = zeros(nargout(fname),1);
 	plot_these(1) = 1; % stores which model outputs to plot
 	[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);
 
 	an = argoutnames(fname);
-	set(plot_response_here,'String',an(find(plot_these)));
+	if ~isempty(response)
+		set(plot_response_here,'String',an(find(plot_these)));
+	end
 
 else
 	stimplot = []; respplot = []; plot_these = [];
 end
-
 
 Height = 440;
 controlfig = figure('position',[1000 250 400 Height], 'Toolbar','none','Menubar','none','NumberTitle','off','IntegerHandle','off','CloseRequestFcn',@QuitManipulateCallback,'Name','Manipulate');
@@ -269,32 +279,38 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 		end
 
 		% plot the response in the right place 
-		permitted_plots = get(plot_response_here,'String');
-		prh = get(plot_response_here,'Value');
-		prh = permitted_plots(prh);
+		if ~isempty(response)
+			permitted_plots = get(plot_response_here,'String');
+			prh = get(plot_response_here,'Value');
+			prh = permitted_plots(prh);
+		end
 
 		% plot what is needed
 		ti = 1;
 		for ip = 1:length(an)
 			if plot_these(ip)
 
-				if strcmp(an{ip},prh{1})
-					plot(respplot(ti),response,'k')
-					hold(respplot(ti),'on')
-					
+				if ~isempty(response)
+					if strcmp(an{ip},prh{1})
+						plot(respplot(ti),response,'k')
+						hold(respplot(ti),'on')
+						
+					end
 				end
 
 				eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
 				eval(strcat('title(respplot(ti),',char(39),an{ip},char(39),')'));
 
-				if strcmp(an{ip},prh{1})
-					hold(respplot(ti),'off')
-					% update title with r2
-					rr = [];
-					eval(strcat('rr=rsquare(response,r',mat2str(ip),');'))
-					set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
-				else
-					set(plotfig,'Name','Manipulate.m')
+				if ~isempty(response)
+					if strcmp(an{ip},prh{1})
+						hold(respplot(ti),'off')
+						% update title with r2
+						rr = [];
+						eval(strcat('rr=rsquare(response,r',mat2str(ip),');'))
+						set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
+					else
+						set(plotfig,'Name','Manipulate.m')
+					end
 				end
 
 
@@ -303,8 +319,10 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 		end
 		clear ti ip
 
-		plot(stimplot,stimulus)
-		title(stimplot,'Stimulus')
+		if ~isempty(stimulus)
+			plot(stimplot,stimulus)
+			title(stimplot,'Stimulus')
+		end
 
 
 
