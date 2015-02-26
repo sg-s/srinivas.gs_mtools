@@ -98,3 +98,10 @@ else
 
 	clear i
 end
+
+% remove brackets on single outputs
+if length(names) == 1
+	temp = strrep(names{1},'[','');
+	temp = strrep(temp,']','');
+	names{1} = temp;
+end
