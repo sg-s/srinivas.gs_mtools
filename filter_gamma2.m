@@ -35,7 +35,4 @@ f2 = f2/p.tau2^(p.n+1)/gamma(p.n+1); % normalize appropriately
 
 f = f1 - p.A*f2;
 f = f/max(f);
-if any(isnan(f))
-	f = zeros(length(f),1);
-	f(1) = 1;
-end
+

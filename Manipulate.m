@@ -200,34 +200,41 @@ function [] = update_plots(src,event)
 		delete(respplot(i))
 	end
 
-	if strcmp(get(src,'Tag'),'plot_control')
-		% ok. user wants to add/remove a plot. rebuild list of plots 
-		if any(strfind(char(plot_control_string(get(src,'Value'))),'+'))
-			% need to add this plot
-			plot_control_string{get(src,'Value')} = strrep(plot_control_string{get(src,'Value')},'+','');
-			if get(src,'Value') > 1
-				plot_these(get(src,'Value')-1) = 1;
+	% first determine which mode we are operating in
+	if get(mode_time,'Value')
+		if strcmp(get(src,'Tag'),'plot_control')
+			% ok. user wants to add/remove a plot. rebuild list of plots 
+			if any(strfind(char(plot_control_string(get(src,'Value'))),'+'))
+				% need to add this plot
+				plot_control_string{get(src,'Value')} = strrep(plot_control_string{get(src,'Value')},'+','');
+				if get(src,'Value') > 1
+					plot_these(get(src,'Value')-1) = 1;
+				else
+					show_stim = 1;
+				end
 			else
-				show_stim = 1;
+				plot_control_string{get(src,'Value')} = strcat('+',plot_control_string{get(src,'Value')});
+				if get(src,'Value') > 1
+					plot_these(get(src,'Value')-1) = 0;
+				else
+					show_stim = 0;
+				end
 			end
-		else
-			plot_control_string{get(src,'Value')} = strcat('+',plot_control_string{get(src,'Value')});
-			if get(src,'Value') > 1
-				plot_these(get(src,'Value')-1) = 0;
-			else
-				show_stim = 0;
-			end
+
+			[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);
+			set(plot_control,'String',plot_control_string);
+			EvaluateModel2(stimplot,respplot,plot_these);
+			an = argoutnames(fname);
+			set(plot_response_here,'String',an(find(plot_these)));
+			
+
+		elseif strcmp(get(src,'Tag'),'plot_response_here')
+			disp('196 not coded')
 		end
-
-		[stimplot,respplot] = make_plots(1+sum(plot_these),show_stim);;
-		set(plot_control,'String',plot_control_string);
-		EvaluateModel2(stimplot,respplot,plot_these);
-		an = argoutnames(fname);
-		set(plot_response_here,'String',an(find(plot_these)));
-		
-
-	elseif strcmp(get(src,'Tag'),'plot_response_here')
-		disp('196 not coded')
+	elseif get(mode_fun,'Value')
+		show_stim = 0;
+		[stimplot,respplot] = make_plots(sum(plot_these),show_stim);
+		EvaluateModel2([],respplot,plot_these);
 	end
 end
 
@@ -235,15 +242,25 @@ function [stimplot,respplot] = make_plots(nplots,show_stim)
 	stimplot = []; respplot = [];
 	if show_stim
 		stimplot = autoplot(nplots,1,1);
-	end
-	for i = 2:nplots
-		respplot(i-1) = autoplot(nplots,i,1);
+		for i = 2:nplots
+			respplot(i-1) = autoplot(nplots,i,1);
+		end
+
+		if nplots > 1
+			% link plots
+			linkaxes([stimplot respplot],'x');
+		end
+	else
+		for i = 1:nplots
+			respplot(i) = autoplot(nplots,i,1);
+		end
+
+		if nplots > 1
+			% link plots
+			linkaxes(respplot,'x');
+		end
 	end
 
-	if nplots > 1
-		% link plots
-		linkaxes([stimplot respplot],'x');
-	end
 end
 
 
@@ -292,14 +309,21 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 
 				if ~isempty(response)
 					if strcmp(an{ip},prh{1})
-						plot(respplot(ti),response,'k')
-						hold(respplot(ti),'on')
+						if get(mode_fun,'Value') && ~isempty(stimulus)
+							plot(respplot(ti),stimulus,response,'k')
+						else
+							plot(respplot(ti),response,'k')
+							hold(respplot(ti),'on')
+						end
 						
 					end
 				end
-
-				eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
-				eval(strcat('title(respplot(ti),',char(39),an{ip},char(39),')'));
+				if get(mode_fun,'Value') && ~isempty(stimulus)
+					eval(strcat('plot(respplot(ti),stimulus,r',mat2str(ip),');'));
+				else
+					eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
+					eval(strcat('title(respplot(ti),',char(39),an{ip},char(39),')'));
+				end
 
 				if ~isempty(response)
 					if strcmp(an{ip},prh{1})
@@ -319,13 +343,10 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 		end
 		clear ti ip
 
-		if ~isempty(stimulus)
+		if ~isempty(stimulus) && ~isempty(stimplot)
 			plot(stimplot,stimulus)
 			title(stimplot,'Stimulus')
 		end
-
-
-
 
 		
 	else

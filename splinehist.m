@@ -9,7 +9,10 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [cx,cy,hx,hy]  = splinehist(d)
-
+if ~nargin
+	help splinehist
+	return
+end
 l_max = 1e3;
 
 cx=sort(d(:));
