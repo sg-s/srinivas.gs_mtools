@@ -22,11 +22,19 @@ figure, hist(X, 100);
 %}
 
 function [X] = pdfrnd(x, px, sampleSize)
+	px(px<eps) = 0;
     cdf = cumsum(px);
     cdf = cdf/sum(cdf);
     cdf = cdf/max(cdf);
+    cdf(isnan(cdf)) = 0;
 
     rnd = rand(sampleSize, 1);
+    if any(isinf(px))
+    	X = 0*rnd;
+    	return
+    end
+
+
 
     % clip the cdf so that we ignore areas with zero pdf
     a = find(diff(cdf)==0,1,'first');
@@ -35,7 +43,13 @@ function [X] = pdfrnd(x, px, sampleSize)
 
 	if isempty(a) && isempty(z)
 		% no zeros in pdf, proceed
-    	X = interp1(cdf, x, rnd, 'linear', 0);
+		try
+    		X = interp1(cdf, x, rnd, 'linear', 0);
+    	catch
+    		disp('41sd')
+    		keyboard
+    	end
+
 	elseif isempty(a)
 		disp('39')
 		keyboard
@@ -48,12 +62,35 @@ function [X] = pdfrnd(x, px, sampleSize)
 			cdf = cdf(1:a);
 			x = x(1:a);
 			X = interp1(cdf, x, rnd, 'linear', 0);
+		elseif max([a z]) < m
+			z = find(cdf<eps,1,'last')+1;
+			cdf = cdf(z:end);
+			x = x(z:end);
+			try
+				X = interp1(cdf, x, rnd, 'linear', 0);
+			catch
+				disp('imag?')
+				keyboard
+			end
+		elseif max(px) < eps
+			% all zero everywhere
+			X = 0*rnd;
 		else
-			disp('49')
+			% there is a zero on either side
+			a = find(cdf>1e-6,1,'first');
+			z = find(cdf<(1-1e-6),1,'last');
+			if ~isempty(a) && ~isempty(z)
+				cdf = cdf(a:z);
+				x = x(a:z);
+
+				X = interp1(cdf, x, rnd, 'linear', 0);
+			else
+				disp('82')
+				keyboard
+			end
 		end
 
 	end
-
 
 
 end

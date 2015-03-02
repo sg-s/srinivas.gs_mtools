@@ -319,6 +319,7 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 					end
 				end
 				if get(mode_fun,'Value') && ~isempty(stimulus)
+					hold(respplot(ti),'on')
 					eval(strcat('plot(respplot(ti),stimulus,r',mat2str(ip),');'));
 				else
 					eval(strcat('plot(respplot(ti),r',mat2str(ip),');'));
@@ -330,8 +331,11 @@ function [] = EvaluateModel2(stimplot,respplot,event)
 						hold(respplot(ti),'off')
 						% update title with r2
 						rr = [];
-						eval(strcat('rr=rsquare(response,r',mat2str(ip),');'))
-						set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
+						try
+							eval(strcat('rr=rsquare(response,r',mat2str(ip),');'))
+							set(plotfig,'Name',strcat('r^2 = ',oval(rr)))
+						catch
+						end
 					else
 						set(plotfig,'Name','Manipulate.m')
 					end

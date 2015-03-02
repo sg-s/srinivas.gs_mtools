@@ -147,7 +147,7 @@ end
 % global options
 nsteps = 300;
 nrep = 20;
-psoptions = psoptimset('UseParallel',true, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display','iter','MaxIter',nsteps,'MaxFunEvals',20000);
+psoptions = psoptimset('UseParallel',false, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display','iter','MaxIter',nsteps,'MaxFunEvals',20000);
 min_r2 = 0; % keep solving till we get here
 
 if min_r2
