@@ -21,14 +21,20 @@ for i = 1:length(a)
 	this_snippet = txt(a(i):length(txt));
 	semicolons = strfind(this_snippet,';');
 	this_snippet = this_snippet(1:semicolons(1));
-	eval(this_snippet)
+	try
+		eval(this_snippet)
+	catch
+	end
 end
 a = strfind(txt,'lb.');
 for i = 1:length(a)
 	this_snippet = txt(a(i):length(txt));
 	semicolons = strfind(this_snippet,';');
 	this_snippet = this_snippet(1:semicolons(1));
-	eval(this_snippet)
+	try
+		eval(this_snippet)
+	catch
+	end
 end
 
 % lb_vec = -Inf*ones(length(fieldnames(p)),1);
