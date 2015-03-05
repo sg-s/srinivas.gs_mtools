@@ -49,4 +49,18 @@ for i = 1:ntrials
     plot(x*1e-4,y,'b'), hold on
 end
 
+if nargin > 1
+    % fix ylabels to reflect the fact that we are plotting both A and B spikes
+    yt = get(gca,'YTick');
+    ytlabel = {};
+    for i = 1:length(yt)
+        if yt(i) > width(A)
+            ytlabel{i} = oval(yt(i)-width(A));
+        else
+            ytlabel{i} = oval(yt(i));
+        end
+    end
+    set(gca,'YTick',yt,'YTickLabel',ytlabel)
+end
+
 
