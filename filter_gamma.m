@@ -4,25 +4,31 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function f = filter_gamma(tau,n,A,t)
+function f = filter_gamma(t,p)
 switch nargin
 case 0
 	help filter_gamma
 	return
 case 1
-	% check to see if we are getting a vector
-	if isvector(tau) && length(tau) == 3
-		n = tau(2); A = tau(3); tau = tau(1);
+	if isstruct(t)
+		p = t;
+		n = p.n; A = p.A; tau = p.tau;
 		t = 1:1000;
 	else
-		error('Not enough input arguments')
-	end 
+		error('No parameters specified')
+	end
 case 2
-	error('Not enough input arguments')
-case 3
-	t = 1:1000;
-case 4
-end	
+	if ~isstruct(p)
+		error('Second argument should be a struct')
+	end
+	if isempty(t)
+		t = 1:1000;
+	elseif ~isvector(t)
+		error('First argument should be a vector')
+	end
+	n = p.n(2); A = p.A; tau = p.tau;
+end
+
 f = t.^n.*exp(-t/tau); 
 f = f/tau^(n+1)/gamma(n+1); 
 

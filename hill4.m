@@ -12,10 +12,32 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function r = hill4(x,xdata)
+function r = hill4(xdata,x)
+
 if ~nargin 
 	help hill4
 	return
+end
+
+if isstruct(x)
+	temp=x;
+	x= [];
+	x(1) = temp.A;
+	x(2) = temp.k;
+	x(3) = temp.n;
+	x(4) = temp.offset;
+	clear temp
+end
+
+if isstruct(xdata) % inputs in wrong order
+	temp=xdata;
+	xdata = x;
+	x = [];
+	x(1) = temp.A;
+	x(2) = temp.k;
+	x(3) = temp.n;
+	x(4) = temp.offset;
+	clear temp
 end
 
 A = x(1);

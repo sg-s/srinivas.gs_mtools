@@ -10,6 +10,8 @@ end
 a = a(:);
 b = b(:);
 
+full_length = length(a);
+
 % ignore NaNs, but penalize
 rm_this =[];
 rm_this = [rm_this find(isnan(a))];
@@ -17,10 +19,8 @@ rm_this = [rm_this find(isnan(b))];
 a(rm_this) = [];
 b(rm_this) = [];
 
-if length(a) > 10
-	c = sqrt(sum((a-b).^2)); % distance to solution
-else
-	c= Inf;
+
+c = sqrt(sum((a-b).^2)); % distance to solution
+if ~isempty(rm_this)
+	c = c*full_length/(full_length-length(rm_this));
 end
-
-
