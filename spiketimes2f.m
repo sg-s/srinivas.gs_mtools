@@ -108,7 +108,14 @@ switch algo
 		for i = 1:ntrials
 			ff = filter(K,1,full(spiketimes(:,i)));
 			% subsample this to desired sampling rate
+			if length(time) ~= length(ff)
+				% something fucked, let's try to fix it
+				warning('The time vector does not match the data. Will attempt to fix as best as possible...')
+				time = mean(diff(time))*(1:length(ff));
+			end
+
 			f(:,i) = interp1(time,ff,t);
+
 		end
 
 		
