@@ -13,7 +13,7 @@
 % optional arguments
 % 'color' -- which colour? 
 % 'time' -- a time vector. if not specified, will default to matrix indices
-% 'type' -- how do you want to show the data? options are 'sem','mean'
+% 'type' -- how do you want to show the data? options are 'sem','raw'
 % 'normalize' -- 0 or 1. default is 0
 % 'baseline' -- remove a baseline? specify time window to remove mean baseline
 %  'limits' -- only plot data within the following limits. default is [-Inf Inf]
@@ -26,7 +26,7 @@ if ~nargin
 end
 
 if iseven(nargin)
-    for ii = 1:nargin
+    for ii = 1:nargin-1
         temp = varargin{ii};
         if ischar(temp)
             eval(strcat(temp,'=varargin{ii+1};'));
@@ -81,59 +81,38 @@ C = rgb(color);
 c =C; c(c==0) = opacity;
 
 
+% common
+badtraces = [];
+for i = 1:s(1)
+    if min(data(i,:)) < limits(1) || max(data(i,:)) > limits(2) || ~isempty(find(isnan(data(i,:)), 1))
+        badtraces = [badtraces i];
+    else
+        if normalize
+             data(i,:) = data(i,:)/max(data(i,:));
+        end
+        if any(isnan(baseline))
+        else
+            disp('remove baseline')
+            keyboard
+        end
+    end
+
+end        
+data(badtraces,:) = [];
+ss = size(data);
+
+
 switch type
+    case 'raw'
+        plot(time,data',cc)
     case 'sem'
-        badtraces = [];
-        for i = 1:s(1)
-            if min(data(i,:)) < limits(1) || max(data(i,:)) > limits(2) || ~isempty(find(isnan(data(i,:)), 1)) 
-                badtraces = [badtraces i];
-            else
-                if normalize
-                     data(i,:) = data(i,:)/max(data(i,:));
-                end
-                if any(isnan(baseline))
-                else
-                    disp('remove baseline')
-                    keyboard
-                end
-            end
-
-        end        
-        data(badtraces,:) = [];
-        ss = size(data);
-
         if ss(1) > 1
-            if ~DoNotPlot
-                try
-                    errorfill(time,mean(data),std(data)/sqrt(ss(1)),cc);
-                catch
-                    errorfill(time,mean(data),std(data)/sqrt(ss(1)),'r');
-                end
-            end
+            errorfill(time,mean(data),std(data)/sqrt(ss(1)),cc);
         elseif ss(1) == 1
-            if ~DoNotPlot
-                plot(time,data,cc)
-            end
+            plot(time,data,cc)
+
         end
-        if ~isempty(data)
-            if s(1) == 1
-                mx = data;
-                sx = mx*0;
-            else
-                mx = mean(data);
-                sx = std(data)/sqrt(ss(1));
-            end
-            
-            %box on, set(gca,'LineWidth',2,'FontSize',24), xlabel('Time (s)', 'FontSize',24)
-            set(gca,'XLim',[min(time)-0.5 max(time)+0.5],'YLim',[min(mean(data))-min(std(data))/sqrt(ss(1)) max(mean(data))+max(std(data))/sqrt(ss(1))])
-        end
-        if any(badtraces)
-            if verbosity
-                disp('These traces were not plotted:')
-                disp(badtraces)
-            end
-        end
-        notplotted = badtraces;
+        
     
        
     otherwise
