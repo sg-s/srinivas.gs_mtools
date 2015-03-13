@@ -186,7 +186,6 @@ if ~isempty(stimulus)
 	title(stimplot,'Stimulus')
 end
 
-
 RedrawSlider(NaN,NaN);
 EvaluateModel2(stimplot,respplot,[]);
 
@@ -375,16 +374,17 @@ function [] = RedrawSlider(src,event)
 		f = fieldnames(p);
 		f=f(valid_fields);
 
-		pvec = struct2mat(p);
+		% pvec = struct2mat(p);
+		pvec = (ub+lb)/2;
 		
 		nspacing = Height/(length(f)+1);
 		for i = 1:length(f)
 
-			if pvec(i) > lb(i) && pvec(i) < ub(i)
-			else
-				lb(i) = pvec(i) - 1;
-				ub(i) = pvec(i) + 1;
-			end	
+			% if pvec(i) > lb(i) && pvec(i) < ub(i)
+			% else
+			% 	lb(i) = pvec(i) - 1;
+			% 	ub(i) = pvec(i) + 1;
+			% end	
 			control(i) = uicontrol(controlfig,'Position',[70 Height-i*nspacing 230 20],'Style', 'slider','FontSize',12,'Callback',@SliderCallback,'Min',lb(i),'Max',ub(i),'Value',pvec(i));
 			try    % R2013b and older
 			   addlistener(control(i),'ActionEvent',@SliderCallback);

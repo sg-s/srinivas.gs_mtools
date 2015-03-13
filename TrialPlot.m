@@ -26,7 +26,7 @@ if ~nargin
 end
 
 if iseven(nargin)
-    for ii = 1:nargin-1
+    for ii = 1:2:nargin-1
         temp = varargin{ii};
         if ischar(temp)
             eval(strcat(temp,'=varargin{ii+1};'));
@@ -76,9 +76,12 @@ end
 
 %% figure out colour
 DoNotPlot = 0;
-cc = color;
-C = rgb(color);
-c =C; c(c==0) = opacity;
+if ~strcmp(color,'cycle')
+    cc = color;
+    C = rgb(color);
+    c =C; c(c==0) = opacity;
+
+end
 
 
 % common
@@ -101,10 +104,13 @@ end
 data(badtraces,:) = [];
 ss = size(data);
 
-
 switch type
     case 'raw'
-        plot(time,data',cc)
+        if ~strcmp(color,'cycle')
+            plot(time,data',cc)
+        else
+            plot(time,data')
+        end
     case 'sem'
         if ss(1) > 1
             errorfill(time,mean(data),std(data)/sqrt(ss(1)),cc);
