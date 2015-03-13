@@ -141,7 +141,7 @@ for i = 1:length(axesHandles)
 	end
 
 	% there should be more than 1 Xtick when we have a log scale
-	if  length(get(axesHandles(i),'XTick')) == 1 && strcmp(get(axesHandles(i),'XScale'),'log') && FixLogX
+	if  length(get(axesHandles(i),'XTick')) < 3 && strcmp(get(axesHandles(i),'XScale'),'log') && FixLogX
 
 		c=get(axesHandles(i),'Children');
 		minlog = Inf; maxlog = -Inf;
@@ -149,22 +149,25 @@ for i = 1:length(axesHandles)
 			minlog = min([ min(nonzeros(get(c(k),'XData'))) minlog]);
 			maxlog = max([ max(nonzeros(get(c(k),'XData'))) maxlog]);
 		end
-		a = ceil(log10(minlog));
-		z = floor(log10(maxlog));
-		if length(a:z) > 2
-			set(axesHandles(i),'XTick',10.^(a:z));
-		else
-			% choose a smaller base
-			a = ceil(log(minlog));
-			z = floor(log(maxlog));
-			L = {};
-			for ke = a:z
-				% L = [L strcat('e^{',mat2str(ke),'}')];
-				L = [L oval(exp(ke))];
-			end
-			set(axesHandles(i),'XTick',exp(a:z),'XTickLabel',L);
+		a = floor(log10(minlog));
+		z = ceil(log10(maxlog));
 
-		end
+		set(axesHandles(i),'XTick',10.^(a:z));
+
+		% if length(a:z) > 2
+		% 	set(axesHandles(i),'XTick',10.^(a:z));
+		% else
+		% 	% choose a smaller base
+		% 	a = ceil(log(minlog));
+		% 	z = floor(log(maxlog));
+		% 	L = {};
+		% 	for ke = a:z
+		% 		% L = [L strcat('e^{',mat2str(ke),'}')];
+		% 		L = [L oval(exp(ke))];
+		% 	end
+		% 	set(axesHandles(i),'XTick',exp(a:z),'XTickLabel',L);
+
+		% end
 		
 	else
 	end

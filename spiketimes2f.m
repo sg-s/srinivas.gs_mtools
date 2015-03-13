@@ -112,12 +112,6 @@ switch algo
 				warning('The time vector does not match the data. Will attempt to fix as best as possible...')
 				time = mean(diff(time))*(1:length(ff));
 			end
-
 			f(:,i) = interp1(time,ff,t);
-
 		end
-
-		
-
-
 end
