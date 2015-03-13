@@ -2,191 +2,130 @@
 % created by Srinivas Gorur-Shandilya at 11:21 , 25 August 2011. Contact me
 % at http://srinivas.gs/contact/
 % rewritten 2012-3-14
+% heavily rewritten on 2015-03-13
 % 
 % TrialPlot plots a matrix of values from many different trials, with many
 % different ways of showing each trial, the first and second moments.
 % 
-% Usage: [] = TrialPlot(t,x,c,limits,normalisewindow,type)
-% where t is a vector of times (fixed time step only)
-% x                 is the data to be plotted (any 2D matrix)
-% c                 is a color identifer. Permitted values: 'b','g','r','k'
-% limits            is a two element vector containing minimum and maximum
-%                   permissible, values allowed in plot (trials outside limits 
-%                   will not be plotted, will not enter average)  e.g. [0 Inf] 
-% normalisewindow   is a two element vector of matrix indicies over which to
-%                   normalise. if [NaN NaN], no normalisation will occur.
-% type              is a string determinging the type of plot
-%                   allowed values are: 'data','std','sem'
-%                   'data' plots every trial
-%                   'std' plots mean and shades the standard deviation
-%                   'sem' plots mean and shades standard error of mean
-%                   'mean' plots only the mean. No errorbars plotted.
-function  [mx, sx, notplotted] = TrialPlot(t,x,c,limits,normalisewindow,type,verbosity)
-switch nargin 
-case 0
+% required arguments 
+% 'data' -- a matrix of data to plot. the short dimension contains different trials, and the long dimension contains the time series/trial
+%
+% optional arguments
+% 'color' -- which colour? 
+% 'time' -- a time vector. if not specified, will default to matrix indices
+% 'type' -- how do you want to show the data? options are 'sem','mean'
+% 'normalize' -- 0 or 1. default is 0
+% 'baseline' -- remove a baseline? specify time window to remove mean baseline
+%  'limits' -- only plot data within the following limits. default is [-Inf Inf]
+function  [mx, sx, notplotted] = TrialPlot(varargin)
+
+
+if ~nargin
     help TrialPlot
     return
-case 1 
-    help TrialPlot
-    error('Not enough inputs')
-case 2 
-    c = 'r';
-    limits = [-Inf Inf];
-    normalisewindow = [NaN NaN];
-    type = 'sem';
-    verbosity = 0;
-case 3
-    limits = [-Inf Inf];
-    normalisewindow = [NaN NaN];
-    type = 'sem';
-    verbosity = 0;
-case 4
-    normalisewindow = [NaN NaN];
-    type = 'sem';
-    verbosity = 0;
-case 5
-    type = 'sem';
-    verbosity = 0;
-case 5
-    verbosity = 0;
 end
+
+if iseven(nargin)
+    for ii = 1:nargin
+        temp = varargin{ii};
+        if ischar(temp)
+            eval(strcat(temp,'=varargin{ii+1};'));
+        end
+    end
+    clear ii
+else
+    error('Inputs need to be name value pairs')
+end
+
+% fall back to defaults
+if ~exist('data','var')
+    error('Data not defined.')
+end
+if ~exist('time')
+    time = 1:length(data);
+end
+if ~exist('normalize','var')
+    normalize = 0;
+end
+if ~exist('color','var')
+    color = 'b';
+end
+if ~exist('type','var')
+    type = 'sem';
+end
+if ~exist('baseline','var')
+    baseline = [NaN NaN];
+end
+if ~exist('limits','var')
+    limits = [-Inf Inf];
+end
+
+
+
+
 mx = 0; sx = 0;
 opacity = 0.5;
 notplotted = [];
-s = size(x);
-T = t(end);
-dt = mean(diff(t));
+s = size(data);
+dt = mean(diff(time));
 %% orient correctly
 if s(2) < s(1)
-    x = x';
-    s = size(x);
-end
-%% figure out colour
-DoNotPlot = 0;
-if nargin > 2
-    cc = c;
-    C = rgb(c);
-    c =C; c(c==0) = opacity;
-    
-else
-    % choose default colour
-    c = [opacity opacity 1];
+    data = data';
+    s = size(data);
 end
 
-%% figure out if there are limits, and if data needs to be screened
-if nargin > 3
-else
-    limits = [-Inf Inf];
-end
-%% figure out if normalisation needs to happen
-if nargin > 4
-    if normalisewindow(1) == 0
-        normalisewindow(1) = dt;
-    end
-else
-    normalisewindow = [NaN NaN];
-end
+%% figure out colour
+DoNotPlot = 0;
+cc = color;
+C = rgb(color);
+c =C; c(c==0) = opacity;
 
 
 switch type
-    case 'data'
-        ymin = Inf; ymax = -Inf;
-        oktraces = [];
-        avgall = zeros(1,T/dt);
-        co = 0;
-        badtraces = [];
-        for i = 1:s(1)
-            
-            if min(x(i,:)) < limits(1) || max(x(i,:)) > limits(2) ||  ~isempty(find(isnan(x(i,:)), 1)) 
-                badtraces = [badtraces i];
-            
-            else
-                if ~any(isnan(normalisewindow))
-                    plotthis = x(i,:) - mean(x(i,normalisewindow(1)/dt:normalisewindow(2)/dt));
-                
-                else
-                    plotthis = x(i,:);
-                    
-                end
-                oktraces = [oktraces i];
-                plot(t,plotthis,'Color',c,'LineWidth',2), hold on
-                ymin = min(ymin,min(plotthis)); ymax = max(ymax,max(plotthis));
-                avgall = avgall + plotthis; 
-                co = co + 1;
-            end
-            
-
-        end
-        hold on
-        if any(badtraces)
-            if verbosity
-                disp('These traces were not plotted:')
-                disp(badtraces)
-            end
-        end
-        notplotted = badtraces;
-        
-        plot(t,avgall/co,'Color',C,'LineWidth',4)
-        box on, set(gca,'LineWidth',2,'FontSize',24), xlabel('Time (s)', 'FontSize',24)
-        set(gca,'XLim',[min(t) max(t)],'YLim',[ymin ymax])
-        mx = avgall/co;
-    case 'std'
-        badtraces = [];
-        for i = 1:s(1)
-            if min(x(i,:)) < limits(1) || max(x(i,:)) > limits(2)
-                badtraces = [badtraces i];
-            else
-                x(i,:) = x(i,:) - mean(x(i,normalisewindow(1)/dt:normalisewindow(2)/dt));
-            end
-
-        end        
-        x(badtraces,:) = [];
-        disp('These traces were not plotted:')
-        disp(badtraces)
-        notplotted = badtraces;
-        errorfill(t,mean(x),std(x),cc);
-        box on, set(gca,'LineWidth',2,'FontSize',24), xlabel('Time (s)', 'FontSize',24)
-        set(gca,'XLim',[0 T],'YLim',[min(mean(x))-min(std(x)) max(mean(x))+max(std(x))]);
-        mx = mean(x);
-        sx = std(x);
     case 'sem'
         badtraces = [];
         for i = 1:s(1)
-            if min(x(i,:)) < limits(1) || max(x(i,:)) > limits(2) || ~isempty(find(isnan(x(i,:)), 1)) 
+            if min(data(i,:)) < limits(1) || max(data(i,:)) > limits(2) || ~isempty(find(isnan(data(i,:)), 1)) 
                 badtraces = [badtraces i];
             else
-                if ~any(isnan(normalisewindow)) % normalise on this window
-                    x(i,:) = x(i,:) - mean(x(i,round(normalisewindow(1)/dt):round(normalisewindow(2)/dt)));
+                if normalize
+                     data(i,:) = data(i,:)/max(data(i,:));
+                end
+                if any(isnan(baseline))
+                else
+                    disp('remove baseline')
+                    keyboard
                 end
             end
 
         end        
-        x(badtraces,:) = [];
-        ss = size(x);
+        data(badtraces,:) = [];
+        ss = size(data);
+
         if ss(1) > 1
             if ~DoNotPlot
                 try
-                    errorfill(t,mean(x),std(x)/sqrt(ss(1)),cc);
+                    errorfill(time,mean(data),std(data)/sqrt(ss(1)),cc);
                 catch
-                    errorfill(t,mean(x),std(x)/sqrt(ss(1)),'r');
+                    errorfill(time,mean(data),std(data)/sqrt(ss(1)),'r');
                 end
             end
         elseif ss(1) == 1
             if ~DoNotPlot
-                plot(t,x,cc)
+                plot(time,data,cc)
             end
         end
-        if ~isempty(x)
+        if ~isempty(data)
             if s(1) == 1
-                mx = x;
+                mx = data;
                 sx = mx*0;
             else
-                mx = mean(x);
-                sx = std(x)/sqrt(ss(1));
+                mx = mean(data);
+                sx = std(data)/sqrt(ss(1));
             end
             
             %box on, set(gca,'LineWidth',2,'FontSize',24), xlabel('Time (s)', 'FontSize',24)
-            set(gca,'XLim',[min(t)-0.5 max(t)+0.5],'YLim',[min(mean(x))-min(std(x))/sqrt(ss(1)) max(mean(x))+max(std(x))/sqrt(ss(1))])
+            set(gca,'XLim',[min(time)-0.5 max(time)+0.5],'YLim',[min(mean(data))-min(std(data))/sqrt(ss(1)) max(mean(data))+max(std(data))/sqrt(ss(1))])
         end
         if any(badtraces)
             if verbosity
@@ -195,70 +134,8 @@ switch type
             end
         end
         notplotted = badtraces;
-    case 'mean'
-        badtraces = [];
-        for i = 1:s(1)
-            if min(x(i,:)) < limits(1) || max(x(i,:)) > limits(2) || ~isempty(find(isnan(x(i,:)), 1)) 
-                badtraces = [badtraces i];
-            else
-                if ~any(isnan(normalisewindow)) % normalise on this window
-                    x(i,:) = x(i,:) - mean(x(i,round(normalisewindow(1)/dt):round(normalisewindow(2)/dt)));
-                end
-            end
-
-        end        
-        x(badtraces,:) = [];
-        ss = size(x);
-        
-            
-        if ss(1) > 1
-            errorfill(t,mean(x),0*std(x),cc);
-        elseif ss(1) == 1
-            
-            plot(t,x,cc)
-        end
-
-        if ~isempty(x)
-            if s(1) == 1
-                mx = x;
-                sx = mx*0;
-            else
-                mx = mean(x);
-                sx = std(x)/sqrt(ss(1));
-            end
-            %box on, set(gca,'LineWidth',2,'FontSize',24), xlabel('Time (s)', 'FontSize',24)
-            set(gca,'XLim',[min(t)-0.5 max(t)+0.5],'YLim',[min(mean(x))-min(std(x))/sqrt(ss(1)) max(mean(x))+max(std(x))/sqrt(ss(1))])
-        end
-        if any(badtraces)
-            if verbosity
-                disp('These traces were not plotted:')
-                disp(badtraces)
-            end
-        end
-        notplotted = badtraces;
+    
        
-    case 'sem-includeAll'
-        % this case includes all traces, EXCEPT those that exceed limits in
-        % the Normalise Window (which is not used to normalise)
-        x(x<limits(1)) = NaN;
-        x(x>limits(2)) = NaN;
-        badtraces = [];
-        if ~any(isnan(normalisewindow))
-            % throw out traces that exceed limits in this window
-            for i = 1:s(1)
-                if any(isnan(x(i,normalisewindow(1):normalisewindow(2)))) 
-                    badtraces = [badtraces i];
-                end
-            end
-        end
-        x(badtraces,:) = [];
-        [mx stdx sx] = NaNAverage(x);
-        errorfill(t,mx,sx,cc);
-        box on, set(gca,'LineWidth',2,'FontSize',24) %xlabel('Time (s)', 'FontSize',24)
-        set(gca,'XLim',[0 T],'YLim',[min(min(x)) max(max(x))] )
-        disp('These traces were not plotted:')
-        disp(badtraces)
-        notplotted = badtraces;
     otherwise
         disp('Unknown display format. Consult usage guide. ')
         help TrialPlot

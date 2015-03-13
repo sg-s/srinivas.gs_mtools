@@ -36,6 +36,7 @@ regtype=2;
 filter_length = 333;
 min_cutoff = -Inf;
 offset = floor(filter_length/10);
+use_cache = 1;
 
 if nargin < 3
 	OnlyThesePoints = [];
@@ -61,14 +62,17 @@ temp.algo = 1;
 temp.reg = reg;
 temp.regtype = regtype;
 temp.min_cutoff = min_cutoff;
-hash = DataHash(temp);
 
-cached_data = cache(hash);
-if ~isempty(cached_data)
-	K = cached_data.K;
-	diagnostics = cached_data.diagnostics;
-	filtertime = cached_data.filtertime;
-	return
+if use_cache
+	hash = DataHash(temp);
+
+	cached_data = cache(hash);
+	if ~isempty(cached_data)
+		K = cached_data.K;
+		diagnostics = cached_data.diagnostics;
+		filtertime = cached_data.filtertime;
+		return
+	end
 end
 
 
@@ -89,12 +93,14 @@ if algo == 1
 		K = FitFilter2Data(stim,response,OnlyThesePoints,flstr,regstr,regstr2);
 		diagnostics = [];
 
-		% cache the data for later
-		cached_data = struct;
-		cached_data.K = K;
-		cached_data.diagnostics = diagnostics;
-		cached_data.filtertime = filtertime;
-		cache(hash,cached_data)
+		if use_cache
+			% cache the data for later
+			cached_data = struct;
+			cached_data.K = K;
+			cached_data.diagnostics = diagnostics;
+			cached_data.filtertime = filtertime;
+			cache(hash,cached_data)
+		end
 		return
 	end
 
@@ -233,9 +239,11 @@ else
 	diagnostics.bestfilter = id;
 end
 
-% cache the data for later
-cached_data = struct;
-cached_data.K = K;
-cached_data.diagnostics = diagnostics;
-cached_data.filtertime = filtertime;
-cache(hash,cached_data)
+if use_cache
+	% cache the data for later
+	cached_data = struct;
+	cached_data.K = K;
+	cached_data.diagnostics = diagnostics;
+	cached_data.filtertime = filtertime;
+	cache(hash,cached_data)
+end

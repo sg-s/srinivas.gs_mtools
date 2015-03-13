@@ -22,6 +22,7 @@ plw = 2; % plot line width
 fs = 24; % font size
 EqualiseY = 0;
 EqualiseX = 0;
+FixLogX = 0;
 plot_buffer = .1; % how much should you zoom out of the data to show extremes?
 
 
@@ -140,7 +141,7 @@ for i = 1:length(axesHandles)
 	end
 
 	% there should be more than 1 Xtick when we have a log scale
-	if  length(get(axesHandles(i),'XTick')) == 1 && strcmp(get(axesHandles(i),'XScale'),'log')
+	if  length(get(axesHandles(i),'XTick')) == 1 && strcmp(get(axesHandles(i),'XScale'),'log') && FixLogX
 
 		c=get(axesHandles(i),'Children');
 		minlog = Inf; maxlog = -Inf;

@@ -16,7 +16,7 @@ case 1
 	if issparse(spiketimes)
 		% assume dt = 1e-4, and that the time vector is simply defined
 		time = 1e-4*(1:length(spiketimes));
-		dt = 1e-4; dt = 3e-3; window = 3e-2;
+ 		dt = 3e-3; window = 3e-2;
 		algo = 'causal';
 	else
 		error('Need to define a time vector:')
@@ -68,19 +68,18 @@ else
 		spiketimes = spiketimes';
 		b=a;
 	end
-	if length(unique(spiketimes)) == 2
-		% binary data
-		% for i = 1:b
-		% 	temp=find(spiketimes(:,i));
-		% 	spiketimes(:,i) = 0;
-
-		% 	spiketimes(1:length(temp),i) = temp;
-		% end
-	else
-		disp('need to convert to binary data')
-		keyboard
-	end
 	ntrials = b;
+	if length(unique(spiketimes)) == 2
+
+	else
+		% disp('need to convert to binary data')
+		new_spiketimes = sparse(length(time),width(spiketimes));
+		for i = 1:width(spiketimes)
+			new_spiketimes(nonzeros(spiketimes(:,i)),i) = 1;
+		end
+		spiketimes = new_spiketimes;
+	end
+
 end
 
 
