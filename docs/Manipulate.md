@@ -1,5 +1,7 @@
 # Manipulate.m
 
+~![](./manipulate-hill-1000.gif)
+
 ## Known bugs and limitations
 
 1. Manipulate window does not close when manipulating external models. That's because the external model file doesn't know about the existence of Manipulate. 
