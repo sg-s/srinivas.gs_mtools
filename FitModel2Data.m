@@ -217,4 +217,18 @@ end
 % assign outputs
 p = mat2struct(x,param_names);
 
+% make a plot showing the fit, etc. 
+figure, hold on
+for i = 1:length(data)
+	autoplot(length(data),i,1);
+	hold on
+	fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+	plot(data(i).response,'k')
+	plot(fp,'r')
+	% show r-square
+	r2 = rsquare(fp,data(i).response);
+	title(strcat('r^2=',oval(r2)))
+end
+
+
 end
