@@ -196,11 +196,15 @@ end
 		else
 			% fit to multiple data sets at the same time
 			c = NaN(length(data),1);
+			w = zeros(length(data),1);
 			for i = 1:length(data)
 				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
 				c(i) = Cost2(data(i).response,fp);
+				w(i) = sum(~isnan(data(i).response));
 			end
-			c = mean(c);
+			% take a weighted average of the costs
+			w = w/max(w);
+			c = mean(c.*w);
 		end
 
 		if isnan(c)
