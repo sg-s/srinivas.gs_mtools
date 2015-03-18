@@ -81,7 +81,8 @@ if ~isa(modelname,'function_handle')
 	error('First argument is not a function handle')
 end
 if isstruct(data)
-	if ~( find(strcmp('response', fieldnames(data))) && find(strcmp('stimulus', fieldnames(data))) )
+	if any(strcmp('stimulus',fieldnames(data))) && any(strcmp('response',fieldnames(data)))
+	else
 		help FitModel2Data
 		error('RTFM')
 	end
@@ -188,8 +189,20 @@ else
 end
 
 	function c =  GeneralCostFunction(x,data,modelname,param_names)
-		fp = modelname(data.stimulus,mat2struct(x,param_names));
-		c = Cost2(data.response,fp);
+		if length(data) == 1
+			% only fit to one data set
+			fp = modelname(data.stimulus,mat2struct(x,param_names));
+			c = Cost2(data.response,fp);
+		else
+			% fit to multiple data sets at the same time
+			c = NaN(length(data),1);
+			for i = 1:length(data)
+				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+				c(i) = Cost2(data(i).response,fp);
+			end
+			c = mean(c);
+		end
+
 		if isnan(c)
 			c = Inf;
 		end
