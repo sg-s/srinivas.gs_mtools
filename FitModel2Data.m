@@ -201,6 +201,7 @@ end
 				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
 				c(i) = Cost2(data(i).response,fp);
 				w(i) = sum(~isnan(data(i).response));
+				w(i) = w(i)*std(~isnan(data(i).response));
 			end
 			% take a weighted average of the costs
 			w = w/max(w);
@@ -228,7 +229,13 @@ for i = 1:length(data)
 	% show r-square
 	r2 = rsquare(fp,data(i).response);
 	title(strcat('r^2=',oval(r2)))
-end
+	legend({'Data',char(modelname)})
 
+	% fix the y scale
+	ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
+	ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
+	set(gca,'YLim',[ymin ymax])
+end
+PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
 
 end
