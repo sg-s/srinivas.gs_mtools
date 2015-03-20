@@ -189,7 +189,7 @@ x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[
 				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
 				c(i) = Cost2(data(i).response,fp);
 				w(i) = sum(~isnan(data(i).response));
-				w(i) = w(i)*std(~isnan(data(i).response));
+				w(i) = w(i)/std(data(i).response(~isnan(data(i).response)));
 			end
 			% take a weighted average of the costs
 			w = w/max(w);
