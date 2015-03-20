@@ -6,73 +6,26 @@
 % s is a stimulus vector
 % p is a structure with parameters
 % 
-% You can get p using GetModelParameters(model)
-%
-% to data given by r
+% to data
+% 
 % minimum usage:
-% p = FitModel2Data(@modelname,data,p0);
-% more options:
-% p = FitModel2Data(@modelname,data,p0,lb,ub);
-% where data is a structure with the following fields:
+% p = FitModel2Data(@modelname,data);
+%
+% % where data is a structure with the following fields:
 % data.response
 % data.stimulus
-% data.time
+% 
+% more options:
+% p = FitModel2Data(@modelname,data,'p0',p0,'UseParallel',true,'nsteps',1000);
+%
+%
 % created by Srinivas Gorur-Shandilya at 12:35 , 08 December 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function p = FitModel2Data(modelname,data,p0,lb,ub);
+function p = FitModel2Data(modelname,data,varargin)
 
-
-scale = 4;
-
-switch nargin 
-	case 0
-		help FitModel2Data
-		return
-	case 1
-		help FitModel2Data
-		error('Not enough input arguments')
-	case 2
-		p0 = getModelParameters(char(modelname));
-		[x0, param_names] = struct2mat(p0);
-		f = fieldnames(p0);
-		param_names = f(param_names);
-	case 3
-		if ~isstruct(p0)
-			help FitModel2Data
-			error('RTFM')
-		else
-			[x0, param_names] = struct2mat(p0);
-			f = fieldnames(p0);
-			param_names = f(param_names);
-		end
-
-	case 4
-		error('Specify both upper and lower bounds')
-	case 5
-		if ~isstruct(p0)
-			help FitModel2Data
-			error('RTFM')
-		else
-			[x0, param_names] = struct2mat(p0);
-			f = fieldnames(p0);
-			param_names = f(param_names);
-		end
-		if ~isstruct(lb)
-			help FitModel2Data
-			error('RTFM')
-		else
-			lb = struct2mat(lb);
-		end
-		if ~isstruct(ub)
-			help FitModel2Data
-			error('RTFM')
-		else
-			ub = struct2mat(ub);
-		end
-
-end
+% defaults
 
 % figure out if we should make a plot or not
 make_plot = 0;
@@ -83,8 +36,30 @@ if length(calling_func) == 1
 	make_plot = 1;
 end
 
+switch nargin 
+	case 0
+		help FitModel2Data
+		return
+	case 1
+		help FitModel2Data
+		error('Not enough input arguments')
+	case 2
+		% minimum case
 
-default_x0 = struct2mat(p0);
+otherwise
+	if iseven(nargin)
+    	for ii = 1:length(varargin)
+        	temp = varargin{ii};
+        	if ischar(temp)
+            	eval(strcat(temp,'=varargin{ii+1};'));
+        	end
+    	end
+	else
+    	error('Inputs need to be name value pairs')
+	end
+end
+
+
 
 % validate inputs
 if ~isa(modelname,'function_handle')
@@ -101,13 +76,25 @@ else
 	error('RTFM')
 end
 
-if nargin < 4
-	clear ub lb
-	this_lb =[]; this_ub = [];
-	ub = struct; lb = struct;
+% check if seed parameter structure is provided
+if exist('p0','var')
+else
+	p0 = getModelParameters(char(modelname));
+end
+[x0, param_names] = struct2mat(p0);
+f = fieldnames(p0);
+param_names = f(param_names);
+default_x0 = struct2mat(p0);
+		
+
+% check if bounds specified
+if ~exist('ub','var')
+	ub = struct;
+	this_ub = [];
+
 	% intelligently ask the model what the bounds for parameters are
-	mn= char(modelname);
-	mn=which(mn);
+	mn = char(modelname);
+	mn = which(mn);
 	txt=fileread(mn);
 	a = strfind(txt,'ub.');
 	
@@ -120,7 +107,29 @@ if nargin < 4
 		catch
 		end
 	end
+
+	ub_vec =  Inf*ones(length(x0),1);
+
+	assign_these = fieldnames(ub);
+	for i = 1:length(assign_these)
+		assign_this = assign_these{i};
+		eval(strcat('this_ub = ub.',assign_this,';'))
+		ub_vec(find(strcmp(assign_this,param_names)))= this_ub;
+	end
+
+	ub = ub_vec;
+end
+
+if ~exist('lb','var')
+	this_lb =[]; 
+	lb = struct;
+
+	% intelligently ask the model what the bounds for parameters are
+	mn = char(modelname);
+	mn = which(mn);
+	txt=fileread(mn);
 	a = strfind(txt,'lb.');
+
 	for i = 1:length(a)
 		this_snippet = txt(a(i):length(txt));
 		semicolons = strfind(this_snippet,';');
@@ -132,7 +141,6 @@ if nargin < 4
 	end
 
 	lb_vec = -Inf*ones(length(x0),1);
-	ub_vec =  Inf*ones(length(x0),1);
 
 	% assign 
 	assign_these = fieldnames(lb);
@@ -141,62 +149,32 @@ if nargin < 4
 		eval(strcat('this_lb = lb.',assign_this,';'))
 		lb_vec(find(strcmp(assign_this,param_names)))= this_lb;
 	end
-	assign_these = fieldnames(ub);
-	for i = 1:length(assign_these)
-		assign_this = assign_these{i};
-		eval(strcat('this_ub = ub.',assign_this,';'))
-		ub_vec(find(strcmp(assign_this,param_names)))= this_ub;
-	end
-
-	ub = ub_vec;
+	
 	lb = lb_vec;
 
 end
 
-
-
-% global options
-nsteps = 300;
-nrep = 20;
-psoptions = psoptimset('UseParallel',true, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display','iter','MaxIter',nsteps,'MaxFunEvals',20000);
-min_r2 = 0; % keep solving till we get here
-
-if min_r2
-	x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
-
-	% keep crunching till we can fit the damn thing
-	x = x0;
-	
-	for i = 1:nrep
-
-
-		% fit
-		x = patternsearch(@(x)  GeneralCostFunction(x,data,modelname,param_names),x,[],[],[],[],lb,ub,psoptions);
-		p = mat2struct(x);
-		
-		if isvector(stimulus)
-			Rguess = modelname(stimulus,p);
-		else
-			for i = 1:size(stimulus,2)
-				Rguess(:,i) = modelname(stimulus(:,i),p);
-			end
-			clear i
-		end
-
-		Rguess = abs(Rguess);
-
-		if rsquare(Rguess(IgnoreInitial:end),data.response(IgnoreInitial:end)) > min_r2
-			return
-		else
-			disp(oval(rsquare(Rguess(IgnoreInitial:end),data.response(IgnoreInitial:end)),4))
-			fprintf('\n')
-		end	
-
-	end
-else
-	x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
-
+if ~exist('nsteps','var')
+	nsteps = 300;
 end
+
+if ~exist('UseParallel','var')
+	UseParallel = true;
+end
+
+if ~exist('Display','var')
+	Display = 'iter';
+end
+
+
+% pattern search options
+psoptions = psoptimset('UseParallel',UseParallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',Display,'MaxIter',nsteps,'MaxFunEvals',20000);
+
+
+% search
+x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+
+
 
 	function c =  GeneralCostFunction(x,data,modelname,param_names)
 		if length(data) == 1
@@ -237,6 +215,7 @@ if make_plot
 			if strcmp(figHandles(i).Tag,hash)
 				make_fig = 0;
 				figure(figHandles(i));
+				clf(figHandles(i))
 			end
 		end
 	end
@@ -266,4 +245,5 @@ if make_plot
 	end
 	PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
 end
-end
+
+end % this end is for the whole function 
