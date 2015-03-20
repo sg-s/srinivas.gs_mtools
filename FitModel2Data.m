@@ -74,6 +74,16 @@ switch nargin
 
 end
 
+% figure out if we should make a plot or not
+make_plot = 0;
+
+calling_func = dbstack;
+being_published = 0;
+if length(calling_func) == 1
+	make_plot = 1;
+end
+
+
 default_x0 = struct2mat(p0);
 
 % validate inputs
@@ -218,24 +228,42 @@ end
 % assign outputs
 p = mat2struct(x,param_names);
 
-% make a plot showing the fit, etc. 
-figure, hold on
-for i = 1:length(data)
-	autoplot(length(data),i,1);
-	hold on
-	fp = modelname(data(i).stimulus,mat2struct(x,param_names));
-	plot(data(i).response,'k')
-	plot(fp,'r')
-	% show r-square
-	r2 = rsquare(fp,data(i).response);
-	title(strcat('r^2=',oval(r2)))
-	legend({'Data',char(modelname)})
-
-	% fix the y scale
-	ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
-	ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
-	set(gca,'YLim',[ymin ymax])
+if make_plot
+	hash = DataHash(data);
+	figHandles = findall(0,'Type','figure');
+	make_fig = 1;
+	for i = 1:length(figHandles)
+		if ~isempty(figHandles(i).Tag)
+			if strcmp(figHandles(i).Tag,hash)
+				make_fig = 0;
+				figure(figHandles(i));
+			end
+		end
+	end
+	if make_fig
+		temp = figure; hold on
+		set(temp,'Tag',hash)
+	end
 end
-PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
 
+% make a plot showing the fit, etc. 
+if make_plot
+	for i = 1:length(data)
+		autoplot(length(data),i,1);
+		hold on
+		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+		plot(data(i).response,'k')
+		plot(fp,'r')
+		% show r-square
+		r2 = rsquare(fp,data(i).response);
+		title(strcat('r^2=',oval(r2)))
+		legend({'Data',char(modelname)})
+
+		% fix the y scale
+		ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
+		ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
+		set(gca,'YLim',[ymin ymax])
+	end
+	PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
+end
 end
