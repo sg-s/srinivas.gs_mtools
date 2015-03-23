@@ -206,6 +206,7 @@ x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[
 % assign outputs
 p = mat2struct(x,param_names);
 
+
 if make_plot
 	hash = DataHash(data);
 	figHandles = findall(0,'Type','figure');
