@@ -41,7 +41,7 @@ debug_mode = 0;
 % validate spiketimes 
 if isvector(spiketimes)
 	if debug_mode
-		disp('spiketimes is a vecotr')
+		disp('spiketimes is a vector')
 	end
 	ntrials = 1;
 	spiketimes = spiketimes(:);
@@ -86,16 +86,7 @@ end
 switch algo
 	case 'gauss'
 		disp('need to convert all computations on binary data')
-		% t=min(time):dt:max(time);
-		% f = zeros(length(t),ntrials);
 
-		% for i = 1:ntrials
-		% 	thesespikes = mean(diff(time))*nonzeros(spiketimes(:,i))+min(time);
-		% 	for j = 1:length(thesespikes)
-	 %        	f(:,i) = f(:,i) + normpdf(t,thesespikes(j),window)';
-	 %        end
-
-		% end
 	case 'causal'
 		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
 		t=min(time):dt:max(time);

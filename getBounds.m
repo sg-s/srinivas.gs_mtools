@@ -8,8 +8,6 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [lb, ub] = getBounds(fname)
 
-p = getModelParameters(fname);
-this_lb =[]; this_ub = [];
 ub = struct; lb = struct;
 % intelligently ask the model what the bounds for parameters are
 mn= char(fname);
@@ -37,5 +35,5 @@ for i = 1:length(a)
 	end
 end
 
-% lb_vec = -Inf*ones(length(fieldnames(p)),1);
+
 

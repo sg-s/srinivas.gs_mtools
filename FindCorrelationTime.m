@@ -24,12 +24,21 @@ otherwise
 	error('Too many input arguments')
 end
 
+
 c = autocorr(x,length(x)-1);
 zctime = find(c<0,1,'first')-1;
 
 half_cross_time = find(c<.5,1,'first')-1;
 
+
+
 if nargout > 1
-	ff=fit((1:zctime)',c(1:zctime),'exp1');
-	tau = abs(1/ff.b);
+	tau = NaN;
+	try
+		ff=fit((1:zctime)',c(1:zctime),'exp1');
+		tau = abs(1/ff.b);
+	catch
+		
+	end
+	
 end

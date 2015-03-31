@@ -44,3 +44,16 @@ for i = 1:length(a)
 		
 	end
 end
+
+% force this to respect model bounds, if any
+[lb, ub] = getBounds(modelname);
+fn_ub = fieldnames(ub);
+fn_lb = fieldnames(lb);
+fn = intersect(fn_ub,fn_lb);
+
+for i = 1:length(fn)
+	if eval(strcat('(lb.',fn{i},'<p.',fn{i},')')) || eval(strcat('(ub.',fn{i},'>p.',fn{i},')'))
+		eval(strcat('p.',fn{i},'=mean([lb.',fn{i},' ub.',fn{i},']);'))
+	end
+end
+

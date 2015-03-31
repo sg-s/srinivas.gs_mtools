@@ -26,7 +26,6 @@ if p.tau1 > p.tau2
 	p.tau1 = temp;
 end
 
-
 f1 = t.^p.n.*exp(-t/p.tau1); % functional form in paper
 f1 = f1/p.tau1^(p.n+1)/gamma(p.n+1); % normalize appropriately
 
@@ -34,5 +33,5 @@ f2 = t.^p.n.*exp(-t/p.tau2); % functional form in paper
 f2 = f2/p.tau2^(p.n+1)/gamma(p.n+1); % normalize appropriately
 
 f = f1 - p.A*f2;
-f = f/max(f);
+f = f/max(abs(f));
 

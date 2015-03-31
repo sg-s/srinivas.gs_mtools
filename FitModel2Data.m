@@ -179,8 +179,35 @@ x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[
 	function c =  GeneralCostFunction(x,data,modelname,param_names)
 		if length(data) == 1
 			% only fit to one data set
-			fp = modelname(data.stimulus,mat2struct(x,param_names));
-			c = Cost2(data.response,fp);
+			if length(unique(data.response)) == 2
+				% binary data, use cumsum - linear trend as proxy
+				if width(data.response) > 1
+					% many trials of one data set. solve for each separately
+					c = 0;
+					for i = 1:width(data.response)
+						fp = modelname(data.stimulus(:,i),mat2struct(x,param_names));
+						a = cumsum(data.response(:,i));
+						a = a(:);
+						a = a - linspace(a(1),a(end),length(a))';
+						b = cumsum(fp); b= b(:);
+						b = b - linspace(b(1),b(end),length(b))';
+						c = c + Cost2(a,b);
+					end
+				else
+					a = cumsum(data.response);
+					a = a(:);
+					a = a - linspace(a(1),a(end),length(a))';
+					b = cumsum(fp); b= b(:);
+					b = b - linspace(b(1),b(end),length(b))';
+					c = Cost2(a,b);
+				end
+			else
+				% normal data
+				fp = modelname(data.stimulus,mat2struct(x,param_names));
+				c = Cost2(data.response,fp);
+			
+			end
+			
 		else
 			% fit to multiple data sets at the same time
 			c = NaN(length(data),1);
@@ -194,6 +221,7 @@ x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[
 			% take a weighted average of the costs
 			w = w/max(w);
 			c = mean(c.*w);
+
 		end
 
 		if isnan(c)
@@ -231,18 +259,21 @@ if make_plot
 	for i = 1:length(data)
 		autoplot(length(data),i,1);
 		hold on
-		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
 		plot(data(i).response,'k')
+		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
 		plot(fp,'r')
 		% show r-square
 		r2 = rsquare(fp,data(i).response);
+		
 		title(strcat('r^2=',oval(r2)))
 		legend({'Data',char(modelname)})
 
-		% fix the y scale
-		ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
-		ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
-		set(gca,'YLim',[ymin ymax])
+		if length(unique(data(i).response)) > 2
+			% fix the y scale
+			ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
+			ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
+			set(gca,'YLim',[ymin ymax])
+		end
 	end
 	PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
 end
