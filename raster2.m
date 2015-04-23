@@ -24,6 +24,7 @@ case 2
     yoffset = 0;
 end
 
+fill_fraction = .95;
 % plot A and B spikes
 s = size(A);
 if s(1) > s(2)
@@ -34,6 +35,8 @@ for i = 1:ntrials
     st = find(A(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(yoffset+i-1+zeros(1,length(st))); (yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
+    y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
+ 
     plot(x*1e-4,y,'r'), hold on
 end
 
@@ -46,6 +49,7 @@ for i = 1:ntrials
     st = find(B(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(yoffset+ntrials-1+i+zeros(1,length(st))); (yoffset+ntrials-1+i+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
+    y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
     plot(x*1e-4,y,'b'), hold on
 end
 

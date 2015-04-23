@@ -38,7 +38,7 @@ if nargout > 1
 		ff=fit((1:zctime)',c(1:zctime),'exp1');
 		tau = abs(1/ff.b);
 	catch
-		
+		keyboard
 	end
 	
 end
