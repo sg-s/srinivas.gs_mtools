@@ -39,7 +39,7 @@ switch nargin
 		error('Too many input arguments.')
 end
 
-maxCacheSize = 100e6; % in bytes
+maxCacheSize = 100e7; % in bytes
 
 % check if cache exists
 if exist(strcat(pwd,oss,'cached.mat'),'file')

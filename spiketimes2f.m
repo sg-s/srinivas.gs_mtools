@@ -85,7 +85,7 @@ end
 
 switch algo
 	case 'gauss'
-		disp('need to convert all computations on binary data')
+		error('not coded')
 
 	case 'causal'
 		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience

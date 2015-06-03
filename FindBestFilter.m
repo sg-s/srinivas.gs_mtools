@@ -35,7 +35,6 @@ reg = [];
 regtype=2;
 filter_length = 333;
 min_cutoff = -Inf;
-offset = floor(filter_length/10);
 use_cache = 1;
 
 if nargin < 3
@@ -48,6 +47,8 @@ end
 for i = 1:nargin-3
 	eval(varargin{i})
 end
+
+offset = floor(filter_length/10);
 
 % FindBestFilter now supports cache.m to speed up code. first, we get a hash of the current state we are in. this includes the input arguments, optional arguments...everything. 
 
@@ -80,6 +81,7 @@ end
 stim = stim(offset:end);
 response = response(1:end-offset+1);
 filtertime = [-offset+1:filter_length-offset+1];
+
 
 if algo == 1
 	%% Chichilnisky's method. 

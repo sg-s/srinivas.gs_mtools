@@ -26,7 +26,7 @@ case 2
 	elseif ~isvector(t)
 		error('First argument should be a vector')
 	end
-	n = p.n(2); A = p.A; tau = p.tau;
+	n = p.n; A = p.A; tau = p.tau;
 end
 
 f = t.^n.*exp(-t/tau); 
