@@ -40,7 +40,7 @@ e = varargin{3};
 e = e(:);
 
 % defaults
-transparency = .01;
+Shading = .5;
 Color = [1 0 0 ];
 LineWidth = 1;
 
@@ -64,7 +64,7 @@ ee = [y-e y+e NaN*e]';
 xe = [x x NaN*(x)]';
 ee = ee(:);
 xe = xe(:);
-shade_handle = plot(xe,ee,'Color',[Color transparency],'LineWidth',LineWidth);
+shade_handle = plot(xe,ee,'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth);
 
 
 % now plot the plot
