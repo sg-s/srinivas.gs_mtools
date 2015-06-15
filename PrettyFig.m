@@ -279,6 +279,10 @@ if EqualiseX
 
 end
 
+% turn on minor ticks
+for i = 1:length(axesHandles)
+	set(axesHandles(i),'XMinorTick','on');
+end
 
 set(gcf,'Color','w')
 

@@ -40,7 +40,7 @@ end
 
 % defaults
 filter_length = 333;
-reg = 1e-1; % in units of mean of eigenvalues of C
+reg = NaN; % in units of mean of eigenvalues of C
 n = 1;
 regtype = 2;
 
@@ -105,16 +105,41 @@ if isvector(stim) && isvector(response)
 	% compute covariance matrix
 	C = s'*s; % this is the covariance matrix, scaled by the size of the C
 	% scale reg by mean of eigenvalues
-	MeanEigenValue = trace(C)/length(C); % cheat; this is the same as mean(eig(C))
-	reg = reg*MeanEigenValue;
 
 
-	switch regtype 
-		case 1
-			C = C + reg*eye(filter_length+1); % Carlotta's reg.
-		case 2
-			C = (C + reg*eye(filter_length+1))*trace(C)/(trace(C) + reg*filter_length);
+	% determine condition parameter 
+	c = cond(C);
+	oldC = C;
+	if isnan(reg)
+	    if c < 1.5
+	    	% all OK
+	    else
+	    	% use a binary search to find the best value to regularise by
+	    	rmin = 0;
+	    	rmax = 1/(2*eps);
+	    	r = c;
+	    	for i = 1:100
+	    		C = oldC + eye(length(C))*r;
+	    		c = cond(C);
+	    		if c < 1.5
+	    			% decrease r
+	    			rmax = r;
+	    			r = mean([rmin r]);
+	    		else
+	    			% increase r
+	    			rmin = r;
+	    			r = mean([rmax r]);
+	    		end
+	    		
+	    	end
+	    end
+	    C = oldC + eye(length(C))*r;
+	else
+		MeanEigenValue = trace(C)/length(C); % cheat; this is the same as mean(eig(C))
+		reg = reg*MeanEigenValue;
+	    C = (C + reg*eye(length(C)))*trace(C)/(trace(C) + reg*length(C));
 	end
+
 
 
 	K = C\(s'*response);
