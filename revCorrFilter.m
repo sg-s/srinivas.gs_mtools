@@ -55,7 +55,7 @@ T = toeplitz(phi_xx); % this should be as diagonal as possible, but won't be if 
 c = cond(T);
 oldT = T;
 if isnan(reg)
-    if c < 1.5
+    if c < length(T)
     	% all OK
         r = 0; % no regularisation
     else
@@ -66,7 +66,7 @@ if isnan(reg)
     	for i = 1:100
     		T = oldT + eye(length(T))*r;
     		c = cond(T);
-    		if c < 1.5
+    		if c < length(T)
     			% decrease r
     			rmax = r;
     			r = mean([rmin r]);

@@ -39,7 +39,7 @@ if ~nargin
 end
 
 % defaults
-filter_length = 333;
+filter_length = 300;
 reg = NaN; % in units of mean of eigenvalues of C
 n = 1;
 regtype = 2;
@@ -111,8 +111,9 @@ if isvector(stim) && isvector(response)
 	c = cond(C);
 	oldC = C;
 	if isnan(reg)
-	    if c < 1.5
+	    if c < length(C)
 	    	% all OK
+	    	r = 0;
 	    else
 	    	% use a binary search to find the best value to regularise by
 	    	rmin = 0;
@@ -121,7 +122,7 @@ if isvector(stim) && isvector(response)
 	    	for i = 1:100
 	    		C = oldC + eye(length(C))*r;
 	    		c = cond(C);
-	    		if c < 1.5
+	    		if c < length(C)
 	    			% decrease r
 	    			rmax = r;
 	    			r = mean([rmin r]);
@@ -136,11 +137,9 @@ if isvector(stim) && isvector(response)
 	    C = oldC + eye(length(C))*r;
 	else
 		MeanEigenValue = trace(C)/length(C); % cheat; this is the same as mean(eig(C))
-		reg = reg*MeanEigenValue;
-	    C = (C + reg*eye(length(C)))*trace(C)/(trace(C) + reg*length(C));
+		r = reg*MeanEigenValue;
+	    C = (C + r*eye(length(C)))*trace(C)/(trace(C) + r*length(C));
 	end
-
-
 
 	K = C\(s'*response);
 
