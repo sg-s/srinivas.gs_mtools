@@ -1,4 +1,6 @@
 % CheckForNewestVersionOnGitHub.m
+% checks for newest version of a given repo or file on github. 
+% 
 % usage: m = CheckForNewestVersionOnGitHub(reponame,filename,VersionName)
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 

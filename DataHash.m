@@ -1,3 +1,6 @@
+% DataHash.m
+% computes hash of data. 
+% 
 function Hash = DataHash(Data, Opt)
 % DATAHASH - Checksum for Matlab array of any type
 % This function creates a hash value for an input of any type. The type and

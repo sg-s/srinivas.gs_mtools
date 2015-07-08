@@ -1,6 +1,8 @@
 % ParseHTML.m
+% extracts a section from a text string containing HTML so that only text from a specified tag to the end of the tag is extracted. 
+% 
 % created by Srinivas Gorur-Shandilya at 14:11 , 19 February 2014. Contact me at http://srinivas.gs/contact/
-% extracts a section from a text string containing HTML so that only text from a speciied tag to the end of the tag is extracted. 
+% 
 function [t] = ParseHTML(h,tag)
 
 t=[];

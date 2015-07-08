@@ -1,4 +1,6 @@
 % getModelParameters.m
+% reads a model file to determine parameters. 
+% 
 % usage:
 % p=getModelParameters(modelname);
 % returns a structure p that modelname needs

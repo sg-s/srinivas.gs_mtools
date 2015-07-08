@@ -1,4 +1,6 @@
 % cv.m 
+% coefficient of variation of a matrix of a vector.
+% 
 % usage:
 % c = cv(x)
 % where x is a vector or a matrix. if x is a matrix, c is a vector as long as x is wide. 

@@ -1,5 +1,7 @@
 % FitModel2Data
-% fits a model specified by a file that is of the following form:
+% fits a model specified by a file to data. 
+% 
+% the model has to be of the following form:
 % f = model(s,p)
 % where 
 % f is the output of the model (a 1D vector as long as s)

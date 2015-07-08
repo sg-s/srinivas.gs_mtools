@@ -1,6 +1,6 @@
 % FindBestFilter.m
-% created by Srinivas Gorur-Shandilya at 17:31 , 15 January 2014. Contact me at http://srinivas.gs/contact/
-% finds the best filter, searching through the space of the free parameter in my and damon's filter estimation functions
+% fits the "best" filter to data. a wrapper for FitFilter2Data
+% 
 % usage: [K, diagnostics, filtertime] = FindBestFilter(stim,response,OnlyThesePoints,varargin)
 % where stim and response are vectors of equal length
 % OnlyThesePoints is a optional argument that is a either a vector as long as as stim or an empty matrix (for all the points)
@@ -16,6 +16,7 @@
 % filter_length = 333;
 % min_cutoff = -Inf;
 % offset = floor(filter_length/10);
+% created by Srinivas Gorur-Shandilya at 17:31 , 15 January 2014. Contact me at http://srinivas.gs/contact/
 function [K, diagnostics, filtertime] = FindBestFilter(stim,response,OnlyThesePoints,varargin)
 if ~nargin
 	help FindBestFilter

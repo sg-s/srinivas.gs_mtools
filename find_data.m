@@ -1,4 +1,6 @@
 % find_data.m
+% finds indices of a structure that have non empty fields. 
+% 
 % created by Srinivas Gorur-Shandilya at 12:47 , 28 August 2013. Contact me
 % at http://srinivas.gs/contact/
 % finds which elements in a given structure contain non-empty matrices.
