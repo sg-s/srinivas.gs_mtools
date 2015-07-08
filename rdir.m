@@ -1,3 +1,6 @@
+% rdir.m
+% Recursive directory listing.
+% 
 function [varargout] = rdir(rootdir,varargin)
 % Lists the files in a directory and its sub directories. 
 % 

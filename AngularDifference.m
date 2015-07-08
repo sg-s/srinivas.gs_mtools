@@ -1,4 +1,6 @@
+% AngularDifference.m
 % computes absolute angular distance between two angles in degrees
+% 
 % usage: d = AngularDifference(a,b)
 % where a and b are angles in degrees.
 % 

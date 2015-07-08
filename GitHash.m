@@ -1,4 +1,5 @@
 % GitHash.m
+% finds the hash of the current commit of the git repository of the given file
 % usage: 
 % h = GitHash(filename);
 % finds the hash of the current commit of the git repository of the given file

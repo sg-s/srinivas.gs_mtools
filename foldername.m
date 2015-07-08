@@ -1,5 +1,5 @@
+% foldername.m
 % returns the current folder's name
-% 
 % 
 % created by Srinivas Gorur-Shandilya at 12:44 , 27 November 2014. Contact me at http://srinivas.gs/contact/
 % 

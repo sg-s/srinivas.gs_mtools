@@ -1,3 +1,6 @@
+% errorbarxy.m
+% error bars in both X and Y
+% 
 function errorbarxy(x,y,lx,ly,col)
 %This function allows the user to plot the graph of x against y, along with both x and y errorbars.
 %For the x and y errors it is possible to input both lower (lx and ly)  and upper  (ux and uy) values for the

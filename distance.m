@@ -1,3 +1,4 @@
+% distance.m
 % finds the distance (l-2 norm) b/w two points
 % 
 % 

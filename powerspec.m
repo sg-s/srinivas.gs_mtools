@@ -1,13 +1,19 @@
-%{
- created by G S Srinivas ( http://srinivas.gs ) @ 16:23 on Tuesday the
- 22th of February, 2011
- usage: [f mx] = powerspec(Fs,x,v)
- where x is the input time series that you want to take the power spectral density of
- Fs is the sampling rate in Hz
- mx is the power
- f is the frequency
- v is an optional input that determines verbosity
-%}
+% powerspec.m
+% power spectral density of an input time series
+%
+% usage: [f mx] = powerspec(Fs,x,v)
+% where x is the input time series that you want to take the power spectral density of
+% Fs is the sampling rate in Hz
+% mx is the power
+% f is the frequency
+% v is an optional input that determines verbosity
+%  created by G S Srinivas ( http://srinivas.gs ) @ 16:23 on Tuesday the 22th of February, 2011
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
+
+
 function  [f mx] = powerspec(Fs,x,v)
 
 switch nargin 

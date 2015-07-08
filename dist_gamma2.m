@@ -1,4 +1,5 @@
-% 
+% dist_gamma2.m
+% distribution based on two gamma functions
 % 
 % created by Srinivas Gorur-Shandilya at 11:30 , 26 February 2015. Contact me at http://srinivas.gs/contact/
 % 

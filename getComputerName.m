@@ -1,4 +1,6 @@
-function name = getComputerName()
+% getComputerName.m
+% returns the host name of the computer
+%
 % GETCOMPUTERNAME returns the name of the computer (hostname)
 % name = getComputerName()
 %
@@ -10,6 +12,7 @@ function name = getComputerName()
 % m j m a r i n j (AT) y a h o o (DOT) e s
 % (c) MJMJ/2007
 %
+function name = getComputerName()
 
 [ret, name] = system('hostname');   
 

@@ -1,4 +1,5 @@
-% 
+% dist_gauss2.m
+% distribution from a mixture of 2 gaussians
 % 
 % created by Srinivas Gorur-Shandilya at 11:30 , 26 February 2015. Contact me at http://srinivas.gs/contact/
 % 

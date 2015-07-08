@@ -1,4 +1,6 @@
-function [r,t,p]=spear(x,y)
+% spear.m
+% Spearman's rank correalation coefficient.
+% 
 %Syntax: [r,t,p]=spear(x,y)
 %__________________________
 %
@@ -39,6 +41,7 @@ function [r,t,p]=spear(x,y)
 % 
 % 3 Feb 2002.
 
+function [r,t,p]=spear(x,y)
 
 % x and y must have equal number of rows
 if size(x,1)~=size(y,1)

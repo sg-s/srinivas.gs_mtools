@@ -1,3 +1,6 @@
+% larsen.m
+% The LARS-EN algorithm for estimating Elastic Net solutions.
+%
 function [b steps] = larsen(X, y, delta, stop, Gram, storepath, verbose)
 %LARSEN The LARS-EN algorithm for estimating Elastic Net solutions.
 %

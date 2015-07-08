@@ -1,3 +1,5 @@
+% GammaDist.m
+% generate a parametric gamma distribution
 % returns a gamma distribution, which is characterised by two parameters: theta and k
 % usage: g = GammaDist(t,p)
 % 

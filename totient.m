@@ -1,3 +1,6 @@
+% totient.m
+% calculates the totient function  of any positive integer n.
+% 
 function [t] = totient(n)
 %TOTIENT  calculates the totient function (also
 %         called the Euler Phi function) of any

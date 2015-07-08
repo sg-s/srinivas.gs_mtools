@@ -1,3 +1,6 @@
+% autocorr2d.m
+% 2D autocorrelation of a matrix (image)
+% 
 function B=autocorr2d(H)
 
 % Compute the 2D  autocorrelation of matrix ( Image )
