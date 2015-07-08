@@ -12,7 +12,7 @@ computes absolute angular distance between two angles in degrees
 ### [BestDistribution.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/BestDistribution.m)
 this function is meant to be optimised by FitModel2Data
 ### [CheckForNewestVersionOnGitHub.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/CheckForNewestVersionOnGitHub.m)
-usage: m = CheckForNewestVersionOnGitHub(reponame,filename,VersionName)
+checks for newest version of a given repo or file on github. 
 ### [CleanPublish.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/CleanPublish.m)
 CleanPublish removes all the junk created by MATLAB's publish() function in the html/ folder in the current directory. Make sure you compile the PDF before running this! 
 ### [ComputeOnsOffs.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/ComputeOnsOffs.m)
@@ -22,11 +22,11 @@ computes a cost for two vectors
 ### [CutImage.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/CutImage.m)
 cuts a small square of an image out a bigger image.
 ### [DataHash.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/DataHash.m)
-This function creates a hash value for an input of any type. The type and
+computes hash of data. 
 ### [DesignFig.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/DesignFig.m)
 interactively design a figure with multiple subplots and get DesignFig to make the code for you
 ### [FindBestFilter.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/FindBestFilter.m)
-created by Srinivas Gorur-Shandilya at 17:31 , 15 January 2014. Contact me at http://srinivas.gs/contact/
+fits the "best" filter to data. a wrapper for FitFilter2Data
 ### [FindCorrelationTime.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/FindCorrelationTime.m)
 finds the correlation time of a vector. returns an answer in the units of vector indices
 ### [FindShortestDimension.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/FindShortestDimension.m)
@@ -34,7 +34,7 @@ finds the shortest dimension in a multidimensional matrix x
 ### [FitFilter2Data.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/FitFilter2Data.m)
 fits a linear filter to data.
 ### [FitModel2Data.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/FitModel2Data.m)
-fits a model specified by a file that is of the following form:
+fits a model specified by a file to data. 
 ### [GammaDist.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/GammaDist.m)
 generate a parametric gamma distribution
 ### [GetLatestHash.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/GetLatestHash.m)
@@ -48,7 +48,7 @@ a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex
 ### [ManualCluster.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/ManualCluster.m)
 allows you to manually cluster a reduced-to-2D-dataset by drawling lines around clusters
 ### [ParseHTML.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/ParseHTML.m)
-created by Srinivas Gorur-Shandilya at 14:11 , 19 February 2014. Contact me at http://srinivas.gs/contact/
+extracts a section from a text string containing HTML so that only text from a specified tag to the end of the tag is extracted. 
 ### [PrettyFig.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/PrettyFig.m)
 makes current figure pretty:
 ### [RandomString.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/RandomString.m)
@@ -84,7 +84,7 @@ logs messages to console
 ### [convolve.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/convolve.m)
 convolve is just like filter.m, but accepts a-causal filters.
 ### [cv.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/cv.m)
-usage:
+coefficient of variation of a matrix of a vector.
 ### [deconvolve.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/deconvolve.m)
 Devonvolves a signal using Wiener deconvoltuion
 ### [dift.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/dift.m)
@@ -114,9 +114,9 @@ exponentially decaying filter
 ### [filter_gamma.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/filter_gamma.m)
 usage:  f = filter_gamma(tau,n,A,t)
 ### [filter_gamma2.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/filter_gamma2.m)
-usage: f = filter_gamma2(t,p)
+parametrically generate a 2-lobed gamma filter
 ### [find_data.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/find_data.m)
-created by Srinivas Gorur-Shandilya at 12:47 , 28 August 2013. Contact me
+finds indices of a structure that have non empty fields. 
 ### [foldername.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/foldername.m)
 returns the current folder's name
 ### [getAllFiles.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/getAllFiles.m)
@@ -126,7 +126,7 @@ gets upper and lower bounds by reading a .m file
 ### [getComputerName.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/getComputerName.m)
 returns the host name of the computer
 ### [getModelParameters.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/getModelParameters.m)
-usage:
+reads a model file to determine parameters. 
 ### [gini.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/gini.m)
 Givne these values, this computes the GINI coefficient according to
 ### [hill.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/hill.m)
