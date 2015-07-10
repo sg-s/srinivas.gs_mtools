@@ -38,16 +38,16 @@ allfiles = dir('*.m');
 s = '';
 
 for i = 1:length(allfiles)
+	disp(allfiles(i).name)
 	s = [s '### [' allfiles(i).name,'](https://github.com/' github_user_name '/' repo_name '/blob/master/' allfiles(i).name,')'];
 	temp = fileread(allfiles(i).name);
 
 	% find the '% characters'
 	c = strfind(temp,'%');
-	if length(c) < 3
-		disp(allfiles(i).name)
-	end
 	temp = temp(c(2):c(3));
 	temp = strrep(temp,'%','');
+
+
 	if strcmp(temp(1),' ')
 		temp(1) = [];
 	end
