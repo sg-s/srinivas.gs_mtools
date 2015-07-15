@@ -170,6 +170,8 @@ oval is a better version of round, which rounds to how many ever
 pdfrnd(x, px, sampleSize): return a random sample of size sampleSize from 
 ### [powerspec.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/powerspec.m)
 power spectral density of an input time series
+### [publish_skeleton.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/publish_skeleton.m)
+a minimal template for .m files that will be published using publish()
 ### [raster2.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/raster2.m)
 raster2(A,B)
 ### [rdir.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/rdir.m)
@@ -180,6 +182,8 @@ extracts filter from input vector x and output vector y
 computes the coefficent of determination (http://en.wikipedia.org/wiki/Coefficient_of_determination) between two inputs
 ### [searchpath.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/searchpath.m)
 usage:
+### [sem.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/sem.m)
+computes standard error of mean of a matrix
 ### [shadedErrorBar.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/shadedErrorBar.m)
 
 ### [spear.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/spear.m)
