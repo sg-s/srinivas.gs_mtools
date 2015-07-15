@@ -32,8 +32,7 @@ for i = 1:length(t)
 	if ~isempty(strfind(t{i},'function'))
 		% check for open braces -- these are the end point
 		if isempty(strfind(t{i},'('))
-			disp('no (')
-			keyboard
+			z = NaN;
 		else
 			z = strfind(t{i},'(') - 1;
 		end
@@ -47,7 +46,11 @@ for i = 1:length(t)
 			a = strfind(t{i},'=') + 1;
 		end
 		this_line = t{i};
-		this_line = strtrim(this_line(a:z));
+		if ~isnan(z)
+			this_line = strtrim(this_line(a:z));
+		else
+			this_line = '';
+		end
 		if ~isempty(this_line)
 			L{end+1} = this_line;
 		end
