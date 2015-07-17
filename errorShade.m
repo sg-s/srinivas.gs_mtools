@@ -17,6 +17,9 @@
 % errorShade(...,'LineWidth',2) 
 % errorShade(...,'Shading',.4) % must be between 0 and 1
 % 
+% there is also a minimal usage of errorShade:
+% errorShade(Y) % where Y is a matrix will automatically compute the SEM and use that as the error
+% 
 % created by Srinivas Gorur-Shandilya at 10:48 , 04 June 2015. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
@@ -41,12 +44,21 @@ end
 hold(h,'on');
 
 
-x = varargin{1};
-x = x(:);
-y = varargin{2};
-y = y(:);
-e = varargin{3};
-e = e(:);
+if nargin == 1 && width(varargin{1}) > 1
+	y = varargin{1};
+	x = 1:length(y); x = x(:);
+	e = sem(y);
+	y = mean2(y);
+	varargin(1)= [];
+else
+	x = varargin{1};
+	x = x(:);
+	y = varargin{2};
+	y = y(:);
+	e = varargin{3};
+	e = e(:);
+	varargin(1:3) = [];
+end
 
 % defaults
 Shading = .5;
@@ -54,7 +66,6 @@ Color = [1 0 0];
 LineWidth = 1;
 SubSample = 1;
 
-varargin(1:3) = [];
 if length(varargin)
 	if iseven(length(varargin))
 		for ii = 1:2:length(varargin)-1
@@ -85,3 +96,4 @@ shade_handle = plot(xe,ee,'Color',[Color + Shading*(1- Color)],'LineWidth',LineW
 
 % now plot the plot
 line_handle = plot(x,y,'Color',Color,'LineWidth',3);
+
