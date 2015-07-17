@@ -33,7 +33,7 @@ link_cap = '/archive/master.zip';
 
 % validate inputs
 for i = 1:nargin
-	if strfind(varargin{i},'-')
+	if strfind(varargin{i},'-') == 1
 		% it's an option
 		if strmatch(varargin{i},'-h')
 			help install

@@ -14,6 +14,18 @@ else
 	if isvector(x)
 		m = mean(x(~isnan(x) & (~isinf(x))));
 	else
-		m = mean(x,FindShortestDimension(x));
+		% rotate correctly
+		if size(x,2) > size(x,1)
+			x = x';
+		end
+
+		% first remove trials that are only NaN
+		rm_this = (sum(isnan(x)) == length(x));
+		x(:,rm_this) = [];
+
+		% then calcualte the mean ignoring NaNs
+		m = mean(x','omitnan');
 	end
 end
+
+m = m(:);
