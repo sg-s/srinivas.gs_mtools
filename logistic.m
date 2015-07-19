@@ -1,3 +1,4 @@
+% logistic.m
 % 3-parameter logistic function
 % usage: r = logistic(x,xdata)
 % where x(1) specifies the maximum

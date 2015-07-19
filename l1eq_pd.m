@@ -1,9 +1,6 @@
 % l1eq_pd.m
-%
-% Solve
-% min_x ||x||_1  s.t.  Ax = b
-%
-% Recast as linear program
+% finds the solution to min_x ||x||_1  s.t.  Ax = b, recast as a linear program
+% 
 % min_{x,u} sum(u)  s.t.  -u <= x <= u,  Ax=b
 % and use primal-dual interior point method
 %

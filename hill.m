@@ -1,3 +1,4 @@
+% hill.m
 % 3-parameter Hill function
 % usage: r = hill(x,xdata)
 % where x(1) specifies the maximum

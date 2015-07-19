@@ -1,13 +1,14 @@
-function x = barfit(A, b)
-% x=barfit(A,b) %
-% Finds x which minimizes |Ax - b|_1 (ie. 1-norm of the residuals) using
-% the Barrowdale/Roberts algorithm (Comm.of the ACM June 1974)
+% barfit(A,b)
+% Finds x which minimizes |Ax - b|_1 (ie. 1-norm of the residuals) using the Barrowdale/Roberts algorithm (Comm.of the ACM June 1974)
+% 
 %
 % Last row and col of tableau store indices so we can extract sol’n when done
 % m = number of equations, n = number of unknowns (m >= n) 
 %
 % this was obtained from Frank van Bussel's PhD thesis:
 % http://ediss.uni-goettingen.de/bitstream/handle/11858/00-1735-0000-0006-B5BF-1/van_bussel.pdf?sequence=1
+function x = barfit(A, b)
+
 [m n] = size(A);
 AA = [A b n+[1:m]’; [zeros(1,n); [1:n]] zeros(2,2)];
 tmp = find(b<0);

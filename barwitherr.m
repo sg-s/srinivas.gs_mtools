@@ -1,3 +1,5 @@
+% barwitherr.m
+% bar chart with error bars
 %**************************************************************************
 %
 %   This is a simple extension of the bar plot to include error bars.  It

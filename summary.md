@@ -50,8 +50,6 @@ removes large, single time point excursions from signal
 calculates the saturation plane from a 3-channel image. 
 ### [StripPath.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/StripPath.m)
 strips the path from a complete path to a file
-### [TrialPlot.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/TrialPlot.m)
-created by Srinivas Gorur-Shandilya at 11:21 , 25 August 2011. Contact me
 ### [arginnames.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/arginnames.m)
 returns a cell containing the names of the variables that are returned by a function, as defined in the function. 
 ### [argoutnames.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/argoutnames.m)
@@ -61,11 +59,13 @@ returns a cell containing the names of the variables that are returned by a func
 ### [autoplot.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/autoplot.m)
 autoplot is a wrapper for subplot that allows you to simplify figure creation where you know the number of plots, but don't want to bother to calcualte how many subplots you want in the X and Y directions. 
 ### [barfit.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/barfit.m)
-
+Finds x which minimizes |Ax - b|_1 (ie. 1-norm of the residuals) using the Barrowdale/Roberts algorithm (Comm.of the ACM June 1974)
 ### [barwitherr.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/barwitherr.m)
-
+bar chart with error bars
 ### [cache.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/cache.m)
 fast, hash-based cache function to speed up computation. 
+### [circfit.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/circfit.m)
+  [xc yx R] = circfit(x,y)
 ### [circle.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/circle.m)
 plots a circle
 ### [cluster_dp.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/cluster_dp.m)
@@ -121,9 +121,9 @@ reads a model file to determine parameters.
 ### [gini.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/gini.m)
 Givne these values, this computes the GINI coefficient according to
 ### [hill.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/hill.m)
-usage: r = hill(x,xdata)
+3-parameter Hill function
 ### [hill2.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/hill2.m)
-usage: r = hill2(x,xdata)
+2-parameter Hill function
 ### [hill4.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/hill4.m)
 4-parameter Hill function
 ### [ihill.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/ihill.m)
@@ -135,15 +135,17 @@ install.m is a package manager for my MATLAB code
 ### [iseven.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/iseven.m)
 is the number even or not?
 ### [l1eq_pd.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/l1eq_pd.m)
-
+finds the solution to min_x ||x||_1  s.t.  Ax = b, recast as a linear program
 ### [l2.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/l2.m)
 calcualtes the l2 norm between 2 vectors a and b
 ### [larsen.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/larsen.m)
 The LARS-EN algorithm for estimating Elastic Net solutions.
+### [listSubFunctions.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/listSubFunctions.m)
+makes a list of all subfunctions in a matfile 
 ### [logistic.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/logistic.m)
-usage: r = logistic(x,xdata)
+3-parameter logistic function
 ### [logistic4.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/logistic4.m)
-usage: r = logisti4(x,xdata)
+4-parameter logistic function
 ### [mat2struct.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/mat2struct.m)
 converts a vector into a structure
 ### [mdot.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/mdot.m)
@@ -181,7 +183,7 @@ extracts filter from input vector x and output vector y
 ### [rsquare.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/rsquare.m)
 computes the coefficent of determination (http://en.wikipedia.org/wiki/Coefficient_of_determination) between two inputs
 ### [searchpath.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/searchpath.m)
-usage:
+searches path for a given folder
 ### [sem.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/sem.m)
 computes standard error of mean of a matrix
 ### [shadedErrorBar.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/shadedErrorBar.m)
@@ -199,13 +201,13 @@ uses smoothing splines to make nice-looking histograms
 ### [strkat.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/strkat.m)
 created by strkat@srinivas.gs on the 7th of June 2013
 ### [struct2mat.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/struct2mat.m)
-usage: p =  struct2mat(p)
+converts a structure to a matrix, when possible
 ### [summarise.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/summarise.m)
 reads m files and makes a text file containing the file name and the second line of each m file. 
 ### [sweetspot.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/sweetspot.m)
 makes a colour map that goes from blue (too low) through green (nice) to red (too high)
 ### [textbar.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/textbar.m)
-usage: insert textbar(i,imax) in the first line of your for loop
+textbar is the text equivalent of waitbar.
 ### [totient.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/totient.m)
 calculates the totient function  of any positive integer n.
 ### [triangle.m](https://github.com/sg-s/srinivas.gs_mtools/blob/master/triangle.m)

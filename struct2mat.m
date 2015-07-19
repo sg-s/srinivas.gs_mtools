@@ -1,4 +1,5 @@
 % struct2mat.m
+% converts a structure to a matrix, when possible
 % usage: p =  struct2mat(p)
 % converts a structure to a matrix
 % 

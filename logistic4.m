@@ -1,3 +1,4 @@
+% logistic4.m
 % 4-parameter logistic function
 % usage: r = logisti4(x,xdata)
 % where x(1) specifies the maximum

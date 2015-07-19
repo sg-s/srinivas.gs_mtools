@@ -1,4 +1,5 @@
 % searchpath.m
+% searches path for a given folder
 % usage:
 % [inpath,containing_folder]= searchpath(name)
 %

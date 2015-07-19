@@ -1,3 +1,4 @@
+% hill2.m
 % 2-parameter Hill function
 % usage: r = hill2(x,xdata)
 % where 
