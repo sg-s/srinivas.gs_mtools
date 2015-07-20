@@ -55,8 +55,9 @@ if exist(strcat(root,'cached.mat'),'file')
 			root = [root oss];
 			warning('Local cache is corrupted. Falling back to global cache...')
 			% check if there is a global cache
-			if ~exist([root cached.mat],'file')
+			if ~exist(strcat(root,'cached.mat'),'file')
 				save(strcat(root,'cached.mat'),'hash');
+				disp('Initialised global cache...')
 			end
 		end
 	end
