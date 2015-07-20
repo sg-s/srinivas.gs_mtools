@@ -43,7 +43,7 @@ maxCacheSize = 100e9; % in bytes
 
 root = [pwd oss];
 
-
+hash = '';
 % check if cache exists
 if exist(strcat(pwd,oss,'cached.mat'),'file')
 	try
@@ -53,10 +53,10 @@ if exist(strcat(pwd,oss,'cached.mat'),'file')
 			% corrupt cache. use a global cache
 			[~,root]=searchpath('mtools');
 			root = [root oss];
+			warning('Local cache is corrupted. Falling back to local cache...')
 		end
 	end
 else
-	hash = '';
 	save(strcat(pwd,oss,'cached.mat'),'hash')
 end
 
