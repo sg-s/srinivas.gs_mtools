@@ -54,6 +54,10 @@ if exist(strcat(root,'cached.mat'),'file')
 			[~,root]=searchpath('mtools');
 			root = [root oss];
 			warning('Local cache is corrupted. Falling back to global cache...')
+			% check if there is a global cache
+			if ~exist([root cached.mat],'file')
+				save(strcat(root,'cached.mat'),'hash');
+			end
 		end
 	end
 else
