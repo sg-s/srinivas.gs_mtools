@@ -72,9 +72,11 @@ elseif ~isvector(x)
 			xx(deletethis) = [];
 			yy(deletethis) = [];
 
-			[temp2, temp]=fit(xx,yy,'Poly1');
-			r(i,j) = temp.rsquare;
-			s(i,j) = temp2.p1;
+			if ~isempty(xx)
+				[temp2, temp]=fit(xx,yy,'Poly1');
+				r(i,j) = temp.rsquare;
+				s(i,j) = temp2.p1;
+			end
 		end
 	end
 

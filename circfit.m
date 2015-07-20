@@ -1,3 +1,5 @@
+% circfit.m
+% fits a circle to a set of points
 function   [xc,yc,R,a] = circfit(x,y)
 %
 %   [xc yx R] = circfit(x,y)

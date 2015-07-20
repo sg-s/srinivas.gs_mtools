@@ -41,9 +41,20 @@ end
 
 maxCacheSize = 100e9; % in bytes
 
+root = [pwd oss];
+
+
 % check if cache exists
 if exist(strcat(pwd,oss,'cached.mat'),'file')
-	load(strcat(pwd,oss,'cached.mat'),'hash') % only load the hashes, it's much faster
+	try
+		load(strcat(pwd,oss,'cached.mat'),'hash') % only load the hashes, it's much faster
+	catch err
+		if any(strfind(err.message,'corrupt'))
+			% corrupt cache. use a global cache
+			[~,root]=searchpath('mtools');
+			root = [root oss];
+		end
+	end
 else
 	hash = '';
 	save(strcat(pwd,oss,'cached.mat'),'hash')

@@ -1,4 +1,5 @@
 % strkat.m
+% alternate version of strcat, to better handle spaces
 % created by strkat@srinivas.gs on the 7th of June 2013
 % strkat.m is in the public domain
 % strkat is an alternate version of strcat
