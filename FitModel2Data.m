@@ -17,9 +17,17 @@
 % data.response
 % data.stimulus
 % 
+% if data has extra fields, they will be ignored. 
+% if data is a a structure array, then the model will be fit to each element of the array simultaneously
+% 
 % more options:
 % p = FitModel2Data(@modelname,data,'p0',p0,'UseParallel',true,'nsteps',1000);
+% p = FitModel2Data(@modelname,data,'use_cache',true)
+% 
+% specifying the start point using 'p0' overrides the cache. However, p0 will be set in the cache no matter what. 
 %
+% the cache can also be used to to go directly to the solution, without optimising anything:
+% p = FitModel2Data(@modelname,data,'use_cache',true,'nsteps',0)
 %
 % created by Srinivas Gorur-Shandilya at 12:35 , 08 December 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -28,6 +36,11 @@
 function p = FitModel2Data(modelname,data,varargin)
 
 % defaults
+use_cache = true;
+UseParallel = true;
+nsteps = 300;
+Display = 'iter';
+MaxFunEvals = 2e4;
 
 % figure out if we should make a plot or not
 make_plot = 0;
@@ -41,6 +54,12 @@ end
 switch nargin 
 	case 0
 		help FitModel2Data
+		disp('The defaults are:')
+		use_cache
+		UseParallel
+		nsteps
+		Display
+		MaxFunEvals
 		return
 	case 1
 		help FitModel2Data
@@ -78,10 +97,21 @@ else
 	error('RTFM')
 end
 
+% hash the data
+hash = DataHash(data);
+
 % check if seed parameter structure is provided
 if exist('p0','var')
 else
-	p0 = getModelParameters(char(modelname));
+	if use_cache
+		% check the cache for p0
+		p0 = cache(hash);
+		if isempty(p0)
+			p0 = getModelParameters(char(modelname));
+		end
+	else
+		p0 = getModelParameters(char(modelname));
+	end
 end
 [x0, param_names] = struct2mat(p0);
 f = fieldnames(p0);
@@ -156,25 +186,17 @@ if ~exist('lb','var')
 
 end
 
-if ~exist('nsteps','var')
-	nsteps = 300;
-end
-
-if ~exist('UseParallel','var')
-	UseParallel = true;
-end
-
-if ~exist('Display','var')
-	Display = 'iter';
-end
 
 
 % pattern search options
-psoptions = psoptimset('UseParallel',UseParallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',Display,'MaxIter',nsteps,'MaxFunEvals',20000);
-
-
-% search
-x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+if nsteps
+	psoptions = psoptimset('UseParallel',UseParallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',Display,'MaxIter',nsteps,'MaxFunEvals',MaxFunEvals);
+	% search
+	x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+else
+	p = p0;
+	return
+end
 
 
 
@@ -235,6 +257,9 @@ x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[
 
 % assign outputs
 p = mat2struct(x,param_names);
+
+% save to cache
+cache(hash,p);
 
 
 if make_plot

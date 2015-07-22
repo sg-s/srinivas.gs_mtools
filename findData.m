@@ -1,4 +1,4 @@
-% find_data.m
+% findData.m
 % finds indices of a structure that have non empty fields. 
 % 
 % created by Srinivas Gorur-Shandilya at 12:47 , 28 August 2013. Contact me
@@ -7,9 +7,9 @@
 % usage: have_data  = find_data(data)
 % where data is a structure array
 % 
-function have_data  = find_data(data)
+function have_data  = findData(data)
 if ~nargin
-	help have_data
+	help findData
 	return
 end
 l = length(data);
