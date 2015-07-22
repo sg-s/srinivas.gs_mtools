@@ -26,7 +26,7 @@
 % 
 % specifying the start point using 'p0' overrides the cache. However, p0 will be set in the cache no matter what. 
 %
-% the cache can also be used to to go directly to the solution, without optimising anything:
+% the cache can also be used to to go directly to the solution (if previously known), without optimising anything:
 % p = FitModel2Data(@modelname,data,'use_cache',true,'nsteps',0)
 %
 % created by Srinivas Gorur-Shandilya at 12:35 , 08 December 2014. Contact me at http://srinivas.gs/contact/
@@ -199,6 +199,34 @@ else
 end
 
 
+% assign outputs
+p = mat2struct(x,param_names);
+
+% save to cache only if this solution is better than the best. 
+current_cost = GeneralCostFunction(x,data,modelname,param_names);
+hash2 = DataHash(['best solution to ' hash]);
+best_cost = cache(hash2);
+if isempty(best_cost)
+	% first time, cache this
+	cache(hash,[]);
+	cache(hash,p);
+	% also cache the cost of this solution
+	cache(hash2,[]);
+	cache(hash2,current_cost);
+else
+	% check if current cost is lower than best cost
+	if current_cost < best_cost
+		% update cache
+		cache(hash,[]);
+		cache(hash,p);
+		% also cache the cost of this solution
+		cache(hash2,[]);
+		cache(hash2,current_cost);
+	end
+end
+
+
+
 
 	function c =  GeneralCostFunction(x,data,modelname,param_names)
 		if length(data) == 1
@@ -254,12 +282,6 @@ end
 
 	end
 
-
-% assign outputs
-p = mat2struct(x,param_names);
-
-% save to cache
-cache(hash,p);
 
 
 if make_plot
