@@ -58,6 +58,8 @@ if exist(strcat(root,'cached.mat'),'file')
 			if ~exist(strcat(root,'cached.mat'),'file')
 				save(strcat(root,'cached.mat'),'hash');
 				disp('Initialised global cache...')
+			else
+				load(strcat(root,'cached.mat'),'hash');
 			end
 		end
 	end
