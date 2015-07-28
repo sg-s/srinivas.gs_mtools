@@ -8,14 +8,14 @@
 function f = dist_gamma2(t,p)
 switch nargin
 case 0
-	help filter_gamma2
+	help dist_gamma2
 	return
 case 1
 	p = t;
-	t = 0:1000;
+	t = 0:.01:5;
 case 2
 	if isempty(t)
-		t = 0:1000;
+		t = 0:.01:5;
 	end
 end	
 

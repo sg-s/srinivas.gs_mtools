@@ -32,6 +32,11 @@ end
 
 txt=fileread(modelname);
 a = strfind(txt,'p.');
+
+if ~length(a)
+	error('Could not read the parameters from this model.')
+end
+
 p = [];
 
 for i = 1:length(a)
