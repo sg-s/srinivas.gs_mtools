@@ -24,6 +24,8 @@ end
 lb.A = 0;
 lb.n1 = 0;
 lb.n2 = 0;
+ub.n1 = 10;
+ub.n2 = 10;
 lb.xmin = 0;
 lb.xmax = 0;
 ub.xmin = 1;
@@ -39,9 +41,9 @@ f = f1 + p.A*f2;
 
 
 % clip to some region
-a = min([ 1 floor(p.xmin*length(f))]);
-z = max([length(f) floor(p.xmax*length(f))]);
-if z == 0 
+a = max([ 1 floor(p.xmin*length(f))]);
+z = min([length(f) floor(p.xmax*length(f))]);
+if z == 0
 	z = 1;
 end
 f(1:a) = 0;

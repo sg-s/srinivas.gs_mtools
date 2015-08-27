@@ -19,6 +19,8 @@ if ~nargin
 	return
 end
 
+
+
 if isstruct(x)
 	temp=x;
 	x= [];
@@ -37,6 +39,12 @@ if isstruct(xdata) % inputs in wrong order
 	x(2) = temp.k;
 	x(3) = temp.n;
 	x(4) = temp.offset;
+	p = temp;
+	% parameters so that FitModel2Data can read this
+	p.A;
+	p.k;
+	p.offset;
+	p.n;
 	clear temp
 end
 

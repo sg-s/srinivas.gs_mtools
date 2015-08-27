@@ -44,7 +44,12 @@ for i = 1:length(allfiles)
 
 	% find the '% characters'
 	c = strfind(temp,'%');
-	temp = temp(c(2):c(3));
+	try
+		temp = temp(c(2):c(3));
+	catch err
+		err
+
+	end
 	temp = strrep(temp,'%','');
 
 
