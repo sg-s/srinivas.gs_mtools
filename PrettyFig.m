@@ -213,7 +213,10 @@ for i = 1:length(axesHandles)
 	ph=get(axesHandles(i),'Children');
 	for j = 1:length(ph)
 		try
-			set(ph(j),'LineWidth',plw)
+			% only change the Line Width if default
+			if ph(j).LineWidth == 1
+				set(ph(j),'LineWidth',plw);
+			end
 		catch
 			% probably an image or something.
 			% so reverse tick direction
@@ -231,7 +234,9 @@ clear i
 % find all line plots and get all their X and Y extents
 ph = findall(axesHandles,'type','line');
 for j = 1:length(ph)
-	set(ph(j),'LineWidth',plw)
+	if ph(j).LineWidth == 1
+		set(ph(j),'LineWidth',plw)
+	end
 end
 clear j
 
