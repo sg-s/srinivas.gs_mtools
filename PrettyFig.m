@@ -214,7 +214,7 @@ for i = 1:length(axesHandles)
 	for j = 1:length(ph)
 		try
 			% only change the Line Width if default
-			if ph(j).LineWidth == 1
+			if ph(j).LineWidth == .5
 				set(ph(j),'LineWidth',plw);
 			end
 		catch
@@ -234,7 +234,7 @@ clear i
 % find all line plots and get all their X and Y extents
 ph = findall(axesHandles,'type','line');
 for j = 1:length(ph)
-	if ph(j).LineWidth == 1
+	if ph(j).LineWidth == .5
 		set(ph(j),'LineWidth',plw)
 	end
 end
