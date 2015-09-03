@@ -125,7 +125,7 @@ for i = 1:length(p)
 
 	    disp('Setting path...')
 	    addpath(strcat(full_path,char(p{i})))
-
+	    savepath
 		
 	end
 
