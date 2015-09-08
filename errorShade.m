@@ -1,6 +1,6 @@
 % errorShade.m
 % a fast error-shading plot function
-% it's (really) fast because it doesn't use patch()
+% it's (really) fast because it doesn't use patch (for large datasets, see note below). 
 % it also creates only 2 plot objects, irrespective of the size of the data. 
 % alternatives spawn as many patch objects as there are data points, making them useless for large
 % datasets
@@ -19,6 +19,8 @@
 % 
 % there is also a minimal usage of errorShade:
 % errorShade(Y) % where Y is a matrix will automatically compute the SEM and use that as the error
+%
+% for small datasets and short vectors, errorShade falls back to shadedErrorBar (which uses patch objects, because it looks prettier). 
 % 
 % created by Srinivas Gorur-Shandilya at 10:48 , 04 June 2015. Contact me at http://srinivas.gs/contact/
 % 
@@ -61,7 +63,7 @@ else
 end
 
 % defaults
-Shading = .5;
+Shading = .75;
 Color = [1 0 0];
 LineWidth = 1;
 SubSample = 1;
@@ -85,15 +87,22 @@ x = x(1:SubSample:end);
 y = y(1:SubSample:end);
 e = e(1:SubSample:end);
 
+if length(x) < 1e3
+	% fall back to shadedErrorBar
+	h = shadedErrorBar(x,y,e,{'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth});
+	line_handle = h.mainLine;
+	shade_handle = h.patch;
+	set(line_handle,'LineWidth',3);
+else
+	% first plot the error
+	ee = [y-e y+e NaN*e]';
+	xe = [x x NaN*(x)]';
+	ee = ee(:);
+	xe = xe(:);
+	shade_handle = plot(xe,ee,'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth);
 
-% first plot the error
-ee = [y-e y+e NaN*e]';
-xe = [x x NaN*(x)]';
-ee = ee(:);
-xe = xe(:);
-shade_handle = plot(xe,ee,'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth);
 
-
-% now plot the plot
-line_handle = plot(x,y,'Color',Color,'LineWidth',3);
+	% now plot the plot
+	line_handle = plot(x,y,'Color',Color,'LineWidth',3);
+end
 

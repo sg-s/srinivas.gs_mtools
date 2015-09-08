@@ -16,5 +16,5 @@ end
 rm_this = find(isnan(sum(x)));
 x(:,rm_this) = [];
 
-y = std(x')/sqrt(width(x));
+y = nanstd(x')/sqrt(width(x));
 y = y(:);
