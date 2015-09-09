@@ -1,5 +1,6 @@
 % install.m
-% install.m is a package manager for my MATLAB code
+% install.m is a package manager for @sg-s' MATLAB code. install.m downloads code from GitHub and fixes your MATLAB path so that everything works out of the box. 
+% 
 % usage:
 % install [options] package_name 
 % 
@@ -11,7 +12,16 @@
 % 
 % kontroller 				The Kontroller System (http://github.com/sg-s/kontroller/)
 % srinivas.gs_mtools 		My general-purpose MATLAB toolbox (http://github.com/sg-s/srinivas.gs_mtools/)
-% spikesort					Spikesorting for Kontroller  (http://github.com/sg-s/spikesort/)
+% spikesort 				Spikesorting for Kontroller  (http://github.com/sg-s/spikesort/)
+% t-sne* 					t-distributed Stochastic Neighbour Embedding
+% bhtsne* 					fast t-SNE implementation in C
+% fitFilter2Data 			toolbox to fit linear filters to time series
+% kontroller2 				experimental, event-driven version of kontroller
+% fly-voyeur 				automated scoring of copulation behaviour in flies
+% DeepLearnToolbox* 			toolbox for deep learning
+% manipulate 				Mathematica-style function and model manipulation 
+%
+% [*] third party code
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
