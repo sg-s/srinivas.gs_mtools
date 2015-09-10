@@ -98,7 +98,7 @@ else
 end
 
 % hash the data
-hash = DataHash(data);
+hash = dataHash(data);
 
 % check if seed parameter structure is provided
 if exist('p0','var')
@@ -204,7 +204,7 @@ p = mat2struct(x,param_names);
 
 % save to cache only if this solution is better than the best. 
 current_cost = GeneralCostFunction(x,data,modelname,param_names);
-hash2 = DataHash(['best solution to ' hash]);
+hash2 = dataHash(['best solution to ' hash]);
 best_cost = cache(hash2);
 if isempty(best_cost)
 	% first time, cache this
@@ -243,7 +243,7 @@ end
 						a = a - linspace(a(1),a(end),length(a))';
 						b = cumsum(fp); b= b(:);
 						b = b - linspace(b(1),b(end),length(b))';
-						c = c + Cost2(a,b);
+						c = c + cost2(a,b);
 					end
 				else
 					a = cumsum(data.response);
@@ -251,12 +251,12 @@ end
 					a = a - linspace(a(1),a(end),length(a))';
 					b = cumsum(fp); b= b(:);
 					b = b - linspace(b(1),b(end),length(b))';
-					c = Cost2(a,b);
+					c = cost2(a,b);
 				end
 			else
 				% normal data
 				fp = modelname(data.stimulus,mat2struct(x,param_names));
-				c = Cost2(data.response,fp);
+				c = cost2(data.response,fp);
 			
 			end
 			
@@ -266,7 +266,7 @@ end
 			w = zeros(length(data),1);
 			for i = 1:length(data)
 				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
-				c(i) = Cost2(data(i).response,fp);
+				c(i) = cost2(data(i).response,fp);
 				w(i) = sum(~isnan(data(i).response));
 				w(i) = w(i)/std(data(i).response(~isnan(data(i).response)));
 			end
@@ -285,7 +285,7 @@ end
 
 
 if make_plot
-	hash = DataHash(data);
+	hash = dataHash(data);
 	figHandles = findall(0,'Type','figure');
 	make_fig = 1;
 	for i = 1:length(figHandles)
@@ -306,7 +306,7 @@ end
 % make a plot showing the fit, etc. 
 if make_plot
 	for i = 1:length(data)
-		autoplot(length(data),i,1);
+		autoPlot(length(data),i,1);
 		hold on
 		plot(data(i).response,'k')
 		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
@@ -324,7 +324,7 @@ if make_plot
 			set(gca,'YLim',[ymin ymax])
 		end
 	end
-	PrettyFig('plw=1.5;','lw=1.5;','fs=14;')
+	prettyFig('plw=1.5;','lw=1.5;','fs=14;')
 end
 
 end % this end is for the whole function 

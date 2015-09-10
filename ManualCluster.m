@@ -39,7 +39,7 @@ add_control = uicontrol(hmc,'Units','normalized','position',[.6 .55 .35 .15],'St
 uicontrol(hmc,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','FontSize',24,'String','Add to:');
 
 
-PrettyFig;
+prettyFig;
 
 
 editon = 0; % this C a mode selector b/w editing and looking

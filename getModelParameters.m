@@ -34,10 +34,10 @@ txt=fileread(modelname);
 a = strfind(txt,'p.');
 
 if ~length(a)
-	error('Could not read the parameters from this model.')
+	error('Could not read the parameters from this model. Make sure this model uses a parameter structure called "p" ')
 end
 
-p = [];
+p = struct;
 
 for i = 1:length(a)
 	this_snippet = txt(a(i)+2:length(txt));
