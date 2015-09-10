@@ -1,6 +1,6 @@
-% GetLinks
+% getLinks
 % gets links from a snippet of HTML text (h)
-% usage: [a,ra] = GetLinks(h) 
+% usage: [a,ra] = getLinks(h) 
 % a returns links, and 
 % ra returns relative links
 % 
@@ -9,9 +9,9 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [a,ra] = GetLinks(h) 
+function [a,ra] = getLinks(h) 
 if ~nargin
-	help GetLinks
+	help getLinks
 	return
 end
 

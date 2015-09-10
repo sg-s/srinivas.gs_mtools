@@ -1,12 +1,12 @@
-% DesignFig.m
-% interactively design a figure with multiple subplots and get DesignFig to make the code for you
+% designFig.m
+% interactively design a figure with multiple subplots and get designFig to make the code for you
 % 
 % created by Srinivas Gorur-Shandilya at 10:06 , 28 January 2015. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [] = DesignFig()
+function [] = designFig()
 
 % initialise variables
 allrect = struct;	

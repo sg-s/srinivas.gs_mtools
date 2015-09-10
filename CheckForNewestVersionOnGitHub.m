@@ -1,14 +1,14 @@
-% CheckForNewestVersionOnGitHub.m
+% checkForNewestVersionOnGitHub.m
 % checks for newest version of a given repo or file on github. 
 % 
-% usage: m = CheckForNewestVersionOnGitHub(reponame,filename,VersionName)
+% usage: m = checkForNewestVersionOnGitHub(reponame,filename,VersionName)
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function m = CheckForNewestVersionOnGitHub(reponame,filename,VersionName)
+function m = checkForNewestVersionOnGitHub(reponame,filename,VersionName)
 if ~nargin 
-	help CheckForNewestVersionOnGitHub
+	help checkForNewestVersionOnGitHub
 	return
 end
 a = strfind(VersionName,'v_');

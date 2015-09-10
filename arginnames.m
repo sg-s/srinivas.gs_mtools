@@ -1,7 +1,7 @@
-% argoutnames.m
+% argInNames.m
 % returns a cell containing the names of the variables that are returned by a function, as defined in the function. 
 % Usage:
-% names=argoutnames('function_name')
+% names=argInNames('function_name')
 % 
 % names is a cell containing the names of the arguments as defined in the function
 % Note that argoutnames won't work for most MATLAB functions as their code is obfuscated. 
@@ -9,9 +9,9 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [names] = arginnames(fname)
+function [names] = argInNames(fname)
 if ~nargin 
-	help arginnames
+	help argInNames
 	return
 end
 

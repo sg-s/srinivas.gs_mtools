@@ -1,4 +1,4 @@
-% FitModel2Data
+% fitModel2Data
 % fits a model specified by a file to data. 
 % 
 % the model has to be of the following form:
@@ -21,19 +21,19 @@
 % if data is a a structure array, then the model will be fit to each element of the array simultaneously
 % 
 % more options:
-% p = FitModel2Data(@modelname,data,'p0',p0,'UseParallel',true,'nsteps',1000);
-% p = FitModel2Data(@modelname,data,'use_cache',true)
+% p = fitModel2Data(@modelname,data,'p0',p0,'UseParallel',true,'nsteps',1000);
+% p = fitModel2Data(@modelname,data,'use_cache',true)
 % 
 % specifying the start point using 'p0' overrides the cache. However, p0 will be set in the cache no matter what. 
 %
 % the cache can also be used to to go directly to the solution (if previously known), without optimising anything:
-% p = FitModel2Data(@modelname,data,'use_cache',true,'nsteps',0)
+% p = fitModel2Data(@modelname,data,'use_cache',true,'nsteps',0)
 %
 % created by Srinivas Gorur-Shandilya at 12:35 , 08 December 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function p = FitModel2Data(modelname,data,varargin)
+function p = fitModel2Data(modelname,data,varargin)
 
 % defaults
 use_cache = true;

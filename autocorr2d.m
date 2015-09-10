@@ -1,7 +1,7 @@
-% autocorr2d.m
+% autoCorr2d.m
 % 2D autocorrelation of a matrix (image)
 % 
-function B=autocorr2d(H)
+function B=autoCorr2d(H)
 
 % Compute the 2D  autocorrelation of matrix ( Image )
 % Algorithm based on Wiener - Khintchine Theorem*.

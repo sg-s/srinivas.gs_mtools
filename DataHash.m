@@ -1,14 +1,14 @@
-% DataHash.m
+% dataHash.m
 % computes hash of data. 
 % 
-function Hash = DataHash(Data, Opt)
+function Hash = dataHash(Data, Opt)
 % DATAHASH - Checksum for Matlab array of any type
 % This function creates a hash value for an input of any type. The type and
 % dimensions of the input are considered as default, such that UINT8([0,0]) and
 % UINT16(0) have different hash values. Nested STRUCTs and CELLs are parsed
 % recursively.
 %
-% Hash = DataHash(Data, Opt)
+% Hash = dataHash(Data, Opt)
 % INPUT:
 %   Data: Array of these built-in types:
 %           (U)INT8/16/32/64, SINGLE, DOUBLE, (real or complex)
@@ -45,20 +45,20 @@ function Hash = DataHash(Data, Opt)
 %
 % EXAMPLES:
 % % Default: MD5, hex:
-%   DataHash([])                % 7de5637fd217d0e44e0082f4d79b3e73
+%   dataHash([])                % 7de5637fd217d0e44e0082f4d79b3e73
 % % MD5, Base64:
 %   Opt.Format = 'base64';
 %   Opt.Method = 'MD5';
-%   DataHash(int32(1:10), Opt)  % bKdecqzUpOrL4oxzk+cfyg
+%   dataHash(int32(1:10), Opt)  % bKdecqzUpOrL4oxzk+cfyg
 % % SHA-1, Base64:
 %   S.a = uint8([]);
 %   S.b = {{1:10}, struct('q', uint64(415))};
 %   Opt.Method = 'SHA-1';
-%   DataHash(S, Opt)            % ZMe4eUAp0G9TDrvSW0/Qc0gQ9/A
+%   dataHash(S, Opt)            % ZMe4eUAp0G9TDrvSW0/Qc0gQ9/A
 % % SHA-1 of binary values:
 %   Opt.Method = 'SHA-1';
 %   Opt.Input  = 'bin';
-%   DataHash(1:8, Opt)          % 826cf9d3a5d74bbe415e97d4cecf03f445f69225
+%   dataHash(1:8, Opt)          % 826cf9d3a5d74bbe415e97d4cecf03f445f69225
 %
 % NOTE:
 %   Function handles and user-defined objects cannot be converted uniquely:
@@ -71,11 +71,11 @@ function Hash = DataHash(Data, Opt)
 %   MATLAB CHARs have 16 bits! In consequence the string 'hello' is treated as
 %   UINT16('hello') for the binary input method.
 %
-%   DataHash uses James Tursa's smart and fast TYPECASTX, if it is installed:
+%   dataHash uses James Tursa's smart and fast TYPECASTX, if it is installed:
 %     http://www.mathworks.com/matlabcentral/fileexchange/17476
 %   As fallback the built-in TYPECAST is used automatically, but for large
 %   inputs this can be more than 100 times slower.
-%   For Matlab 6.5 installing typecastx is obligatory to run DataHash.
+%   For Matlab 6.5 installing typecastx is obligatory to run dataHash.
 %
 % Tested: Matlab 6.5, 7.7, 7.8, 7.13, WinXP/32, Win7/64
 % Author: Jan Simon, Heidelberg, (C) 2011-2012 matlab.THISYEAR(a)nMINUSsimon.de
@@ -91,7 +91,7 @@ function Hash = DataHash(Data, Opt)
 
 % $JRev: R-k V:011 Sum:kZG25iszfKbg Date:28-May-2012 12:48:06 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $File: Tools\GLFile\DataHash.m $
+% $File: Tools\GLFile\dataHash.m $
 % History:
 % 001: 01-May-2011 21:52, First version.
 % 007: 10-Jun-2011 10:38, [Opt.Input], binary data, complex values considered.

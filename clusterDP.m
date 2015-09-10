@@ -1,19 +1,19 @@
-% cluster_dp
+% clusterDP
 % "Density peaks" based clustering
 % See: Rodriguez, A., & Laio, A. (2014). Clustering by fast search and find of density peaks. Science, 344(6191), 1492–1496. doi:10.1126/science.1242072
 % based off their script, with some modifications (general input type, automatic detection of cluster centres, etc.)
 % usage:
-% [cl,halo] = cluster_dp(xx)
+% [cl,halo] = clusterDP(xx)
 % where xx is a n X 3 matrix, the first two columns containing pairs of points, and the third the distance b/w them (see the reference above for full details)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [cl,halo] = cluster_dp(xx)
+function [cl,halo] = clusterDP(xx)
 switch nargin 
     case 0
-      help cluster_dp
+      help clusterDP
 end
 
 

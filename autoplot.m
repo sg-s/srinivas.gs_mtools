@@ -1,17 +1,17 @@
-% autoplot.m
-% autoplot is a wrapper for subplot that allows you to simplify figure creation where you know the number of plots, but don't want to bother to calcualte how many subplots you want in the X and Y directions. 
-% autoplot does this for you.
+% autoPlot.m
+% autoPlot is a wrapper for subplot that allows you to simplify figure creation where you know the number of plots, but don't want to bother to calcualte how many subplots you want in the X and Y directions. 
+% autoPlot does this for you.
 % usage:
-% Handle = autoplot(TotalNumberOfSubplots,ThisSubplot,PreferLongPLots)
+% Handle = autoPlot(TotalNumberOfSubplots,ThisSubplot,PreferLongPLots)
 % 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function h = autoplot(n,thisplot,PreferLong)
+function h = autoPlot(n,thisplot,PreferLong)
 if ~nargin
-	help autoplot
+	help autoPlot
 	return
 
 end

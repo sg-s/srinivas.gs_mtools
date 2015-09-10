@@ -1,4 +1,4 @@
-% MakePDF.m
+% makePDF.m
 % a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex that MATLAB creates and cleans up afterwards.
 % needs pdflatex installed. Will not work on Windows.
 % 
@@ -6,7 +6,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = MakePDF(filename)
+function [] = makePDF(filename)
 
 switch nargin
 case 0

@@ -1,8 +1,8 @@
-% circfit.m
+% circFit.m
 % fits a circle to a set of points
-function   [xc,yc,R,a] = circfit(x,y)
+function   [xc,yc,R,a] = circFit(x,y)
 %
-%   [xc yx R] = circfit(x,y)
+%   [xc yx R] = circFit(x,y)
 %
 %   fits a circle  in x,y plane in a more accurate
 %   (less prone to ill condition )
