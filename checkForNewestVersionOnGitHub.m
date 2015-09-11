@@ -11,31 +11,38 @@ if ~nargin
 	help checkForNewestVersionOnGitHub
 	return
 end
-a = strfind(VersionName,'v_');
-z = strfind(VersionName,'_');
-z = setdiff(z,a+1);
-old_vn = str2double(VersionName(a+2:z-1));
+
+try
+	a = strfind(VersionName,'v_');
+	z = strfind(VersionName,'_');
+	z = setdiff(z,a+1);
+	old_vn = str2double(VersionName(a+2:z-1));
 
 
-u = strcat('https://raw.githubusercontent.com/sg-s/',lower(reponame),'/master/',filename,'.m');
+	u = strcat('https://raw.githubusercontent.com/sg-s/',lower(reponame),'/master/',filename,'.m');
 
-h = urlread(u);
+	h = urlread(u);
 
-lookhere=strfind(h,'VersionName');
-lookhere = lookhere(1);
-lookhere = h(lookhere:lookhere+100);
-a = strfind(lookhere,'v_');
-z = strfind(lookhere,'_');
-z = setdiff(z,a+1);
+	lookhere=strfind(h,'VersionName');
+	lookhere = lookhere(1);
+	lookhere = h(lookhere:lookhere+100);
+	a = strfind(lookhere,'v_');
+	z = strfind(lookhere,'_');
+	z = setdiff(z,a+1);
 
-online_vn = str2double(lookhere(a+2:z-1));
+	online_vn = str2double(lookhere(a+2:z-1));
 
-if online_vn > old_vn
-	warningtext = strkat('A newer version of ',filename,' is available. It is a really good idea to upgrade.');
-	disp(warningtext)
-	m = 1;
-else
-	disp('Checked for updates, no updates available.')
+	if online_vn > old_vn
+		warningtext = strkat('A newer version of ',filename,' is available. It is a really good idea to upgrade. You can upgrade using:');
+		disp(warningtext)
+		disp(['install -f reponame'])
+		m = 1;
+	else
+		disp('Checked for updates, no updates available.')
+		m = 0;
+	    
+	end
+catch
+	disp('Unable to check for updates')
 	m = 0;
-    
 end

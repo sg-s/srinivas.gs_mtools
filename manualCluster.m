@@ -16,7 +16,7 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function idx = manualCluster(R,X,labels)
+function idx = manualCluster(R,X,labels,runOnClick,runOnClick_data)
 
 % defensive programming
 if size(R,1) ~= 2
@@ -139,6 +139,9 @@ uiwait(hmc);
             else
                 plot(hm2,X(:,cp),'Color',c(idx(cp),:),'LineWidth',3);
             end
+
+            % also run the external callback
+            runOnClick(runOnClick_data,idx,cp)
         end
      
     end
