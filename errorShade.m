@@ -89,7 +89,7 @@ e = e(1:SubSample:end);
 
 if length(x) < 1e3
 	% fall back to shadedErrorBar
-	h = shadedErrorBar(x,y,e,{'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth});
+	h = shadedErrorBar(x,y,e,{'Color',Color,'LineWidth',LineWidth});
 	line_handle = h.mainLine;
 	shade_handle = h.patch;
 	set(line_handle,'LineWidth',3);
