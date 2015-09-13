@@ -1,4 +1,4 @@
-% multiplot.m
+% multiPlot.m
 % mulitplot accepts 1 time axis and multiple data channels, and figures out what to do with them.
 % If all the channels are of similar range, it plots them all one on top of each other
 % If they are significantly different, it plots each channel on a different subplot and x-links all of them so that they can be zoomed and explored together
@@ -12,7 +12,7 @@
 % multiplot([],x,y,z)
 %
 % created by Srinivas Gorur-Shandilya at 13:54 , 24 January 2014. Contact me at http://srinivas.gs/contact/
-function [a] = multiplot(t,varargin)
+function [a] = multiPlot(t,varargin)
 a = [];
 % check if statistics toolbox exists
 v = ver;

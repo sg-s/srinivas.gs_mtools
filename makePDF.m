@@ -82,7 +82,7 @@ unix(es);
 
 % clean up
 cd(orig_dir)
-CleanPublish;
+cleanPublish;
 close all
 
 % open the PDF

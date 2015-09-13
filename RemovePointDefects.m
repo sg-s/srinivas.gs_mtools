@@ -2,10 +2,10 @@
 % removes large, single time point excursions from signal
 % created by Srinivas Gorur-Shandilya at 20:59 , 21 December 2011. Contact
 % me at http://srinivas.gs/contact/
-function cleanx = RemovePointDefects(x)
+function cleanx = removePointDefects(x)
 switch nargin
 case 0
-	help RemovePointDefects
+	help removePointDefects
 	return
 end
 x = squeeze(x);

@@ -1,4 +1,4 @@
-% FindShortestDimension.m
+% findShortestDimension.m
 % finds the shortest dimension in a multidimensional matrix x
 % usage: d = FindShortestDimension(x)
 % 
@@ -7,9 +7,9 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function d = FindShortestDimension(x)
+function d = findShortestDimension(x)
 if ~nargin 
-	help FindShortestDimension
+	help findShortestDimension
 	return
 else
 	s = size(x);

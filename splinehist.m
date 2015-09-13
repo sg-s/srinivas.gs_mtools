@@ -1,4 +1,4 @@
-% splinehist.m
+% splineHist.m
 % uses smoothing splines to make nice-looking histograms 
 % created by Srinivas Gorur-Shandilya at 10:27 , 10 December 2014. Contact me at http://srinivas.gs/contact/
 % usage:
@@ -8,9 +8,9 @@
 % and plot(hx,hy) to see the PDF
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [cx,cy,hx,hy]  = splinehist(d)
+function [cx,cy,hx,hy]  = splineHist(d)
 if ~nargin
-	help splinehist
+	help splineHist
 	return
 end
 l_max = 1e3;
