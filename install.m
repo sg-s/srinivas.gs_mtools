@@ -5,8 +5,8 @@
 % install [options] package_name 
 % 
 % list of options:
-% -f 	force, ignore warnings, OVERWRITE old installations, update
-% -h 	help
+% -f 		force, ignore warnings, OVERWRITE old installations, update
+% -h 		help
 % 
 % list of packages available:
 % 
@@ -18,7 +18,7 @@
 % fitFilter2Data 			toolbox to fit linear filters to time series
 % kontroller2 				experimental, event-driven version of kontroller
 % fly-voyeur 				automated scoring of copulation behaviour in flies
-% DeepLearnToolbox* 			toolbox for deep learning
+% DeepLearnToolbox* 		toolbox for deep learning
 % manipulate 				Mathematica-style function and model manipulation 
 %
 % [*] third party code
@@ -62,16 +62,16 @@ for i = 1:nargin
 	end
 end
 
-% check for searchpath, or download if needed
-a=which('searchpath');
+% check for searchPath, or download if needed
+a=which('searchPath');
 if isempty(a)
-	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchpath.m','searchpath.m');
+	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchPath.m','searchPath.m');
 end
 
 for i = 1:length(p)
 	install_this = 0;
 	% check for this package on the path
-	[s,full_path]=searchpath(char(p{i}));
+	[s,full_path]=searchPath(char(p{i}));
 	if s
 		if ~force
 			warning(strcat(char(p{i}),' is already installed. To update/overwrite the old installation, use "install -f [package_name]"'))
