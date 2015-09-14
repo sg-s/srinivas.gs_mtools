@@ -37,6 +37,9 @@ end
 force = 0;
 p = {};
 
+return_here = pwd; 
+warning off
+
 % this allows install to translate the name of a package to a URL for a zipped executable
 link_root = 'https://github.com/sg-s/';
 link_cap = '/archive/master.zip';
@@ -141,5 +144,7 @@ for i = 1:length(p)
 
 end
 
+warning on
+cd(return_here)
 
 

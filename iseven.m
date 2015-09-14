@@ -11,3 +11,4 @@ if round(a/2)*2 == a
 else
 	b=0 ;
 end
+b = logical(b);
