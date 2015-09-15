@@ -62,6 +62,14 @@ else
 	varargin(1:3) = [];
 end
 
+% defensive programming
+if isempty(x)
+	x = 1:length(y);
+	x = x(:);
+end
+assert(length(x)==length(y),'All inputs must have the same length')
+assert(length(x)==length(e),'All inputs must have the same length')
+
 % defaults
 Shading = .75;
 Color = [1 0 0];

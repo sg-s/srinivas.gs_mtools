@@ -22,7 +22,6 @@ if any(isnan(V))
 	V(isnan(V)) = [];
 end
 
-
 Vf = V;
 % high pass filter the trace to remove the LFP
 if ~isinf(low_cutoff) && low_cutoff > 0
