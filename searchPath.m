@@ -22,6 +22,15 @@ if isempty(strfind(p,char(name)))
 else
 	inpath = 1;
 	sep_points = strfind(p,c);
+	loc = strfind(p,char(name));
+	if length(loc) > 1
+		rm_this = [];
+		% there is more than location?
+		for i = 1:length(loc)
+			
+		end
+	end
+
 	full_path=p(sep_points(find(sep_points<strfind(p,char(name)),1,'last'))+1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);
 	if isempty(full_path)
 		full_path=p(1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);

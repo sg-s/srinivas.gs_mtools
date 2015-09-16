@@ -18,6 +18,11 @@
 
 function idx = manualCluster(R,X,labels,runOnClick,runOnClick_data)
 
+if ~nargin
+    help manualCluster
+    return
+end
+
 % defensive programming
 if size(R,1) ~= 2
     R = R';
@@ -32,12 +37,13 @@ idx = zeros(1,length(R)); % stores the cluster ID
 c = parula(length(labels)+1);
 
 % make the UI
-hmc = figure('Name','manualCluster','WindowButtonDownFcn',@mansortmouse,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@closeManualCluster); hold on,axis off
+hmc = figure('Name','manualCluster','WindowButtonDownFcn',@mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@closeManualCluster); hold on,axis off
 hm1 = axes('parent',hmc,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');axis square, hold on ; title('Reduced Data')
 hm2 = axes('parent',hmc,'position',[0.6 0.1 0.3 0.3],'box','on','TickDir','out');axis square, hold on  ; title('Raw data'), set(gca,'YLim',[min(min(R)) max(max(R))]);
-add_control = uicontrol(hmc,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@add_to_callback);
+add_control = uicontrol(hmc,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
 uicontrol(hmc,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','FontSize',24,'String','Add to:');
-
+plot_handles = [];
+plot_handles2 = [];
 
 prettyFig;
 
@@ -45,7 +51,7 @@ prettyFig;
 editon = 0; % this C a mode selector b/w editing and looking
 
 % plot the clusters
-clusterplot;
+clusterPlot;
 
 uiwait(hmc);
 
@@ -68,14 +74,14 @@ uiwait(hmc);
                 assignations(i) = idx(loc);            
             end
             idx(idx==0) = assignations;
-            clusterplot;
+            clusterPlot;
             pause(1)
         end
         delete(hmc)
         return
     end
 
-    function add_to_callback(src,~)
+    function addToCallback(src,~)
         editon = 1;
         this_cluster_name = src.String{src.Value};
         set(hmc,'Name',['Circle points to add to ' this_cluster_name]);
@@ -85,7 +91,7 @@ uiwait(hmc);
         inp = inpolygon(R(1,:),R(2,:),p(:,1),p(:,2));
 
         idx(inp) = src.Value;
-        clusterplot;
+        clusterPlot;
         editon = 0;
         set(hmc,'Color','w');
         set(hmc,'Name',[mat2str(length(find(inp))) ' points added to ' this_cluster_name]);
@@ -93,55 +99,59 @@ uiwait(hmc);
         uiwait(hmc);
     end
 
-	function clusterplot(~,~)
+	function clusterPlot(~,~)
+        if isempty(plot_handles)
+            % plotting for the first time
+            for i = 1:length(labels)
+                plot_handles(i+1) = plot(NaN,NaN);
+            end
+            % plot unassigned data
+            plot_handles(1) = plot(hm1,R(1,:),R(2,:),'+','Color',[.5 .5 .5]);
 
-         cla(hm1); cla(hm2)    
-         % plot all the reduced data and colour appropriately
-         unassigned_data = find(idx == 0);
-         if ~isempty(unassigned_data)
-            plot(hm1,R(1,unassigned_data),R(2,unassigned_data),'+','Color',[.5 .5 .5])
-         end
-         a = nonzeros(unique(idx));
-         for i = 1:length(a)
-            this_cluster = a(i);
-            plot(hm1,R(1,idx==this_cluster),R(2,idx==this_cluster),'o','MarkerFaceColor',c(this_cluster,:),'Color',c(this_cluster,:))
+            if length(X) > 100
+                plotX = X(:,1:floor(length(X)/100):end);
+            else
+                plotX = X;
+            end
+            plot(hm2,plotX,'Color',[.5 .5 .5]);
+            plot_handles2 = plot(hm2,NaN,NaN);
+            set(hm2,'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
+        else
+            
+            set(plot_handles(1),'XData',R(1,idx==0),'YData',R(2,idx==0),'Parent',hm1,'Marker','+','LineStyle','none','MarkerFaceColor','none','Color',[.5 .5 .5]);
+            for i = 2:length(labels)+1
+                set(plot_handles(i),'XData',R(1,idx==i-1),'YData',R(2,idx==i-1),'Parent',hm1,'Marker','o','LineStyle','none','MarkerFaceColor',c(i-1,:),'MarkerEdgeColor',c(i-1,:));
+            end
         end
-
-        % also plot all the data
-        plot(hm2,X,'Color',[.5 .5 .5])
-        set(hm2,'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
-         
-         
-         
     end
 
 
-   function mansortmouse(~,~)
+   function mouseCallback(~,~)
 
         if editon == 1
             return
         end
         if gca == hm1
-             pp = get(hm1,'CurrentPoint');
-             p(1) = (pp(1,1)); p(2) = pp(1,2);
-             x = R(1,:); y = R(2,:);
-             [~,cp] = min((x-p(1)).^2+(y-p(2)).^2); % cp C the index of the chosen point
-                if length(cp) > 1
-                    cp = min(cp);
-                end
-            % refresh the plot        
-             clusterplot;
-
-             % now plot the data vector corresponding to this plot on the secondary axis
-             if idx(cp) == 0
+            pp = get(hm1,'CurrentPoint');
+            p(1) = (pp(1,1)); p(2) = pp(1,2);
+            x = R(1,:); y = R(2,:);
+            [~,cp] = min((x-p(1)).^2+(y-p(2)).^2); % cp C the index of the chosen point
+            if length(cp) > 1
+                cp = min(cp);
+            end
+            % now plot the data vector corresponding to this plot on the secondary axis
+            if idx(cp) == 0
                 % gray point
-                plot(hm2,X(:,cp),'Color','k','LineWidth',3);
+                set(plot_handles2,'Parent',hm2,'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color','k','LineWidth',3);
             else
-                plot(hm2,X(:,cp),'Color',c(idx(cp),:),'LineWidth',3);
+                set(plot_handles2,'Parent',hm2,'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color',c(idx(cp),:),'LineWidth',3);
             end
 
             % also run the external callback
-            runOnClick(runOnClick_data,idx,cp)
+            try
+                runOnClick(runOnClick_data,idx,cp)
+            catch
+            end
         end
      
     end
