@@ -26,6 +26,7 @@ else
 	inpath = 1;
 	sep_points = strfind(p,c);
 	loc = strfind(p,char(name));
+	rm_this = [];
 	if length(loc) > 1
 		rm_this = [];
 		% there is more than location?
