@@ -1,7 +1,10 @@
 % searchPath.m
 % searches path for a given folder
 % usage:
-% [inpath,containing_folder]= searchpath(name)
+% [inpath,full_path]= searchpath(name)
+%
+% inpath is 1 if name exists in your path, 0 o/w
+% full_path is the full path to where name is installed
 %
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -27,12 +30,18 @@ else
 		rm_this = [];
 		% there is more than location?
 		for i = 1:length(loc)
-			
+			next_sep_point = sep_points(find(sep_points>loc(i),1,'first'));
+			this_string = p(loc(i):next_sep_point);
+			this_string = strrep(this_string,c,'');
+			if ~strcmp(this_string,name)
+				rm_this = [rm_this i];
+			end
 		end
 	end
+	loc(rm_this) = [];
 
-	full_path=p(sep_points(find(sep_points<strfind(p,char(name)),1,'last'))+1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);
+	full_path=p(sep_points(find(sep_points<loc,1,'last'))+1:sep_points(find(sep_points>loc,1,'first'))-1);
 	if isempty(full_path)
-		full_path=p(1:sep_points(find(sep_points>strfind(p,char(name)),1,'first'))-1);
+		full_path=p(1:sep_points(find(sep_points>loc,1,'first'))-1);
 	end
 end
