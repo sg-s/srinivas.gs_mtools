@@ -18,10 +18,7 @@ end
 
 % see if there is a pref.m file in the folder we have to look in
 if exist([look_here oss 'pref.m']) == 2
-	fid = fopen([look_here oss 'pref.m'], 'rt'); 
-	lines = textscan(fid,'%[^\n]'); %reads line by line 
-	fclose(fid); 
-	lines = lines{1};
+	lines = lineRead([look_here oss 'pref.m']);
 else
 	error('No preference file found!')
 end
