@@ -53,7 +53,7 @@ end
 
 switch nargin 
 	case 0
-		help FitModel2Data
+		help fitModel2Data
 		disp('The defaults are:')
 		use_cache
 		UseParallel
@@ -140,6 +140,8 @@ if ~exist('ub','var')
 		end
 	end
 
+end
+if isstruct(ub)
 	ub_vec =  Inf*ones(length(x0),1);
 
 	assign_these = fieldnames(ub);
@@ -172,6 +174,8 @@ if ~exist('lb','var')
 		end
 	end
 
+end
+if isstruct(lb)
 	lb_vec = -Inf*ones(length(x0),1);
 
 	% assign 
@@ -185,7 +189,6 @@ if ~exist('lb','var')
 	lb = lb_vec;
 
 end
-
 
 
 % pattern search options

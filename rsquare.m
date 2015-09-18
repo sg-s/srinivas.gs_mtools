@@ -31,6 +31,9 @@ if isvector(x) && isvector(y)
 	x(deletethis) = [];
 	y(deletethis) = [];
 
+	assert(length(x) == length(y),'Both input vectors should te the same length')
+	assert(length(x)>2,'Vector inputs too short. Maybe all NaN?')
+
 	[s, r]=fit(x,y,'Poly1');
 	r = r.rsquare;
 	s = s.p1;
