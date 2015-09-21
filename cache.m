@@ -28,7 +28,8 @@ switch nargin
 		try
 			load('cached.mat','hash')
 			disp('Here is a list of hashes in the current hash table:')
-			disp(setdiff(hash,'hash'))
+			temp = setdiff(hash,'hash');
+			disp(temp(:))
 		catch
 		end
 		return
@@ -118,7 +119,7 @@ over_limit  = s.bytes/1e6 - maxCacheSize ;
 if over_limit > 0
 	warning('cache::cache is over the maximum allowed size!')
 	% load the list of recently retrieved cache entries
-	
+	try
 		temp = load(strcat(root,'cached_log.mat'),'retrieved_order');
 		retrieved_order = temp.retrieved_order;
 
@@ -172,7 +173,7 @@ if over_limit > 0
 		disp('cache::Pruning cache...this may take some time...')
 		save([root 'cached.mat'],'md5*','hash','-append')
 
-	% catch
-	% 	% cache was never retrieved, so don't do anything. cache will temporarily go over, but can't be helped
-	% end
+	catch
+	 	% cache was never retrieved, so don't do anything. cache will temporarily go over, but can't be helped
+	end
 end
