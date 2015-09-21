@@ -43,7 +43,7 @@ elseif ~isvector(x)
 	end
 
 	% check the cache to see if we have already done this
-	hash = DataHash(x);
+	hash = dataHash(x);
 	r = cache(strcat(hash,'r'));
 	if ~isempty(r)
 		s = cache(strcat(hash,'s'));

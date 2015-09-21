@@ -6,14 +6,21 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function pref = readPref
-pref = struct;
-calling_func = dbstack;
-if ~isempty(calling_func)
-	calling_func = calling_func(end).name;
-	[~,look_here]=searchPath(calling_func);
+function pref = readPref(look_here)
+if ~nargin
+	pref = struct;
+	calling_func = dbstack;
+	if ~isempty(calling_func)
+		calling_func = calling_func(end).name;
+		[~,look_here]=searchPath(calling_func);
+	else
+		look_here = pwd;
+	end
 else
-	look_here = pwd;
+	if isdir(look_here)
+	else
+		look_here = fileparts(look_here);
+	end
 end
 
 % see if there is a pref.m file in the folder we have to look in

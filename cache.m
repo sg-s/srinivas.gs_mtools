@@ -4,13 +4,13 @@
 % 
 % if Y = some_function(X);, and if some_function is computationally expensive,
 % cache the results using
-% cache(DataHash(X),Y);
+% cache(dataHash(X),Y);
 % 
 % and retrieve them later using
-% Y = cache(DataHash(X));
+% Y = cache(dataHash(X));
 %
 % cache respects Idempotence (https://en.wikipedia.org/wiki/Idempotent)
-% so cache(DataHash(X),Y); cache(DataHash(X),Y);
+% so cache(dataHash(X),Y); cache(dataHash(X),Y);
 % will only write to file once. this also means that hashes exist uniquely in the cache
 % 
 % cache(hash,[]) clears that value from the hash table
