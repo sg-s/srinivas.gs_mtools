@@ -28,7 +28,7 @@ switch nargin
 		try
 			load('cached.mat','hash')
 			disp('Here is a list of hashes in the current hash table:')
-			disp(hash')
+			disp(setdiff(hash,'hash'))
 		catch
 		end
 		return
@@ -39,7 +39,7 @@ switch nargin
 		error('Too many input arguments.')
 end
 
-maxCacheSize = 100e9; % in bytes
+maxCacheSize = 100; % in MB
 
 root = [pwd oss];
 
@@ -73,17 +73,25 @@ if nargin == 1
 		retrieved_data = [];
 		return
 	else
-		temp=load(strcat(root,'cached.mat'),strcat('md5_',varargin{1}));
+		temp = load(strcat(root,'cached.mat'),['md5_' varargin{1}]);
 		eval(strcat('retrieved_data=temp.md5_',varargin{1},';'))
 
-		% update retrieval time stamp
-		load(strcat(root,'cached.mat'),'last_retrieved');
-		if ~exist('last_retrieved')
-			last_retrieved = zeros(length(hash),1);
+		try
+			temp = load(strcat(root,'cached_log.mat'),'retrieved_order');
+			retrieved_order = temp.retrieved_order;
+		catch
 		end
-		last_retrieved(find(strcmp(varargin{1}, hash))) = now;
-		save(strcat(root,'cached.mat'),'last_retrieved','-append')
 
+		if ~exist('retrieved_order','var')
+			retrieved_order{1} = varargin{1};
+		else
+			retrieved_order{end+1} = varargin{1};
+			retrieved_order = unique(retrieved_order);
+		end
+
+		save(strcat(root,'cached_log.mat'),'retrieved_order');
+
+		
 	end
 end
 
@@ -104,22 +112,67 @@ if nargin == 2
 	end
 end
 
-% trim cache
+% trim cache if needed
 s = dir(strcat(root,'cached.mat'));
-while s.bytes - maxCacheSize > 0
-	clear last_retrieved temp hash
-	temp = load(strcat(root,'cached.mat'),'last_retrieved','hash');
-	last_retrieved = temp.last_retrieved;
-	hash = temp.hash;
+over_limit  = s.bytes/1e6 - maxCacheSize ;
+if over_limit > 0
+	warning('cache::cache is over the maximum allowed size!')
+	% load the list of recently retrieved cache entries
+	
+		temp = load(strcat(root,'cached_log.mat'),'retrieved_order');
+		retrieved_order = temp.retrieved_order;
 
-	% delete the oldest-looked-at hash
-	[~,rm_this]=min(last_retrieved-now);
-	rm_this_hash = hash{rm_this};
-	eval(strcat('md5_',rm_this_hash,'=[];'))
+		% get the sizes of each variable in the cache
+		m = matfile([root 'cached.mat']);
+		temp = whos(m);
+		hash = {};
+		hash_size  = [];
+		for i = 1:length(temp)
+			hash{i} = strrep(temp(i).name,'md5_','');
+		end
+		hash = hash';
+		hash_size = [temp.bytes]/1e6;
 
-	hash(rm_this) = [];
-	save(strcat(root,'cached.mat'),'hash',strcat('md5_',rm_this_hash),'-append')
-	warning('cache-Pruning cache...')
+		% can we just get away with clearing variables that have never been retrieved?
+		never_retrieved = setdiff(hash,[retrieved_order 'hash']);
+		size_A = 0;
+		for i = 1:length(never_retrieved)
+			size_A = size_A + hash_size(find(strcmp(never_retrieved{i},hash)));
+			if size_A > over_limit
+				break
+			end
+		end
+		% remove the ones that were never retrieved
+		remove_these = never_retrieved(1:i);
+		hash = setdiff(hash,remove_these);
+		for i = 1:length(remove_these)
+			remove_these{i} = ['md5_' remove_these{i}];
+			eval([remove_these{i} '=[];'])
+		end
 
-	s = dir(strcat(root,'cached.mat'));
+		if size_A > over_limit
+			% good, we can restrict ourselves to just deleting entries that were never retrieved
+			
+		else
+			% we have to remove some things that were retrieved before. 
+			for i = 1:length(retrieved_order)
+				size_A = size_A + hash_size(find(strcmp(retrieved_order{i},hash)));
+				if size_A > over_limit
+					break
+				end
+			end
+			remove_these = retrieved_order(1:i);
+			hash = setdiff(hash,remove_these);
+			for i = 1:length(remove_these)
+				remove_these{i} = ['md5_' remove_these{i}];
+				eval([remove_these{i} '=[];'])
+			end
+		end
+
+		disp('cache::Pruning cache...this may take some time...')
+		save([root 'cached.mat'],'md5*','hash','-append')
+
+	% catch
+	% 	% cache was never retrieved, so don't do anything. cache will temporarily go over, but can't be helped
+	% end
 end
