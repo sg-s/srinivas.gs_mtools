@@ -10,9 +10,23 @@
 
 function [] = getDependencies(allpaths)
 
+if ~nargin
+	help getDependencies
+	return
+end
+
 % first get the names of all files in all paths
+if ~iscell(allpaths)
+	temp = allpaths;
+	clear allpaths
+	allpaths{1} = temp;
+end
 allfiles = {};
 for i = 1:length(allpaths)
+	temp = allpaths{i};
+	if ~strcmp(temp(end),oss)
+		allpaths{i} = [allpaths{i} oss]
+	end
 	if isdir(allpaths{i})
 		these_files = dir([allpaths{i} '*.m']);
 		allfiles = [allfiles {these_files.name}];

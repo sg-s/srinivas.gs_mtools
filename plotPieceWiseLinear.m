@@ -6,14 +6,18 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function handles = plotPieceWiseLinear(a,b,varargin)
+function [handles, data] = plotPieceWiseLinear(a,b,varargin)
 
+handles = [];
+data = [];
 
 % defualts	
 nbins = 10;
 LineWidth = 2;
 LineStyle = '-';
 Marker = 'none';
+trim_end = false;
+make_plot = true;
 Color = [0 0 0];
 
 if ~nargin
@@ -53,11 +57,23 @@ for i = 1:(nbins)
 	ye(i) = sem(this_b);
 end
 
-if nbins < 20
-    handles = errorbar(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
-else
-    [temp1, temp2] = errorShade(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
-    handles.line = temp1;
-    handles.shade = temp2;
+if trim_end
+    x = x(2:end-1);
+    y = y(2:end-1);
+    ye = ye(2:end-1);
 end
 
+if make_plot
+    if nbins < 20
+        handles = errorbar(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
+    else
+        [temp1, temp2] = errorShade(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
+        handles.line = temp1;
+        handles.shade = temp2;
+    end
+end
+
+% package data
+data.x = x;
+data.y = y;
+data.ye = ye;
