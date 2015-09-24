@@ -40,7 +40,7 @@ switch nargin
 		error('Too many input arguments.')
 end
 
-maxCacheSize = 100; % in MB
+maxCacheSize = 500; % in MB
 
 root = [pwd oss];
 

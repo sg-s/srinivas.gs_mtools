@@ -1,17 +1,17 @@
-% getDependencies.m
-% builds dependency list of functions in a list of folders
+% getDependants.m
+% builds reverse-dependency list of functions in a list of folders
 % usage
-% getDependencies({'folder1','folder2'})
+% getDependants({'folder1','folder2'})
 % 
 % created by Srinivas Gorur-Shandilya at 3:54 , 03 September 2015. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [] = getDependencies(allpaths)
+function [] = getDependants(allpaths)
 
 if ~nargin
-	help getDependencies
+	help getDependants
 	return
 end
 
@@ -43,16 +43,28 @@ for i = 1:length(allpaths)
 end
 
 
+
 for i = 1:length(allfiles)
 	these_deps = {};
-	temp = fileread([parent_folder{i} allfiles{i}]);
-	disp(['Dependencies for ' allfiles{i}])
-	for j = 1:length(allfiles)
-		[~,thisfilename] = fileparts(allfiles{j});
-		if ~isempty(strfind(temp,thisfilename))
-			these_deps = [these_deps; thisfilename];
+
+	thisfilename = strrep(allfiles{i},'.m','');
+	
+	for j = setdiff(1:length(allfiles),i)
+		temp = fileread([parent_folder{j} allfiles{j}]);
+		
+		if any(strfind(temp,thisfilename))
+			these_deps = [these_deps; allfiles{j}];
 		end
 	end
-	disp(these_deps)
-	fprintf('\n')
+	if length(these_deps)
+		disp(['The following files rely on ' allfiles{i} ' to work:'])
+		disp(these_deps)
+		fprintf('\n')
+	else
+		disp([allfiles{i} ' has no dependants.'])
+		fprintf('\n')
+
+	end
+	
+	
 end
