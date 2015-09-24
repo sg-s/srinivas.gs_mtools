@@ -21,22 +21,17 @@ if ~iscell(allpaths)
 	clear allpaths
 	allpaths{1} = temp;
 end
-<<<<<<< HEAD
 
-=======
->>>>>>> 23177e18856639d5c243985977a0c74d7660ffc8
 allfiles = {};
 parent_folder = {};
 
 for i = 1:length(allpaths)
 	temp = allpaths{i};
-<<<<<<< HEAD
-	
-=======
+
 	if ~strcmp(temp(end),oss)
 		allpaths{i} = [allpaths{i} oss]
 	end
->>>>>>> 23177e18856639d5c243985977a0c74d7660ffc8
+
 	if isdir(allpaths{i})
 		if ~strcmp(temp(end),oss)
 			allpaths{i} = [allpaths{i} oss];

@@ -17,10 +17,12 @@ end
 original_V = V;
 
 % ignore NaNs in trace
-if any(isnan(V))
-	
+if any(isnan(V))	
 	V(isnan(V)) = [];
 end
+
+assert(length(V)>1./low_cutoff,'Vector too short');
+assert(length(V)>1./high_cutoff,'Vector too short');
 
 Vf = V;
 % high pass filter the trace to remove the LFP
