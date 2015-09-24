@@ -11,6 +11,8 @@ FaceColor = [.5 .5 .5];
 EdgeColor = [0 0 0];
 EdgeLineWidth = 3;
 FaceLineWidth = 1;
+SecondPlot = 'none'; 
+SecondColor = [.5 .3 .3];
 
 if ~nargin
 	help envelopePlot
@@ -47,6 +49,29 @@ p = p(:);
 T = repmat(t,1,3); T = T'; T = T(:);
 plot(T,p,'Color',FaceColor,'LineWidth',FaceLineWidth)
 hold on
+
+% make the secondary plots
+switch SecondPlot
+    case 'none'
+    case 'sem'
+        sM = mean2(X) + sem(X);
+        sm = mean2(X) - sem(X);
+        p = [sm(:) NaN(length(sm),1) sM(:)];
+        p = p';
+        p = p(:);
+        plot(T,p,'Color',SecondColor,'LineWidth',FaceLineWidth)
+    case 'std'
+        sM = mean2(X)' + nanstd(X');
+        sm = mean2(X)' - nanstd(X');
+        p = [sm(:) NaN(length(sm),1) sM(:)];
+        p = p';
+        p = p(:);
+        plot(T,p,'Color',SecondColor,'LineWidth',FaceLineWidth)
+end
+
+
 % also plot some edges
-plot(t,m,'Color',EdgeColor,'LineWidth',EdgeLineWidth)
-plot(t,M,'Color',EdgeColor,'LineWidth',EdgeLineWidth)
+if EdgeLineWidth > 0
+    plot(t,m,'Color',EdgeColor,'LineWidth',EdgeLineWidth)
+    plot(t,M,'Color',EdgeColor,'LineWidth',EdgeLineWidth)
+end
