@@ -8,10 +8,6 @@
 
 function [y] = sem(x)
 
-if size(x,2) > size(x,1)
-	x = x';
-end
-
 % remove trials with NaNs
 rm_this = find(isnan(sum(x)));
 x(:,rm_this) = [];
