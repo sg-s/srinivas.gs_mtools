@@ -83,7 +83,10 @@ for i = 1:length(axesHandles)
 			end
 		else
 			if strcmp(get(axesHandles(i),'YLimMode'),'auto')
-				set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+				try
+					set(axesHandles(i),'YLim',[miny-plot_buffer*ry maxy+plot_buffer*ry])
+				catch
+				end
 			end
 		end
 

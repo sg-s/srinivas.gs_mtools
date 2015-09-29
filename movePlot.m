@@ -1,7 +1,7 @@
 % movePlot.m
 % moves the given plot up down, left or right
-
-% 
+% usage:
+% movePlot('up',0.1)
 % 
 % created by Srinivas Gorur-Shandilya at 2:44 , 29 September 2015. Contact me at http://srinivas.gs/contact/
 % 
