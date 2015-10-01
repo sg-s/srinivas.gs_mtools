@@ -8,6 +8,8 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [] = makePDF(filename)
 
+assert(~ispc,'makePDF cannot run on a Windows computer')
+
 switch nargin
 case 0
 	% run on the last modified file
@@ -20,7 +22,7 @@ case 0
 	try
 		filename = d(idx).name;
 	catch
-		error('MakdPDF could not figure out which document you want to publish. Specify explicitly.')
+		error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
 	end
 case 1
 	% check if file exists
@@ -70,8 +72,14 @@ f=publish(filename,options);
 
 
 % tell stupid MATLAB to get the path right
+[~,v] = unix('sw_vers -productVersion');
+v = str2double(v);
 PATH = getenv('PATH');
-setenv('PATH', [PATH ':/usr/texbin']); 
+if v < 10.11
+	setenv('PATH', [PATH ':/usr/texbin']); 
+else
+	setenv('PATH',[PATH ':/Library/TeX/texbin/pdflatex']);
+end
 
 % move to the correct directory
 cd('html')

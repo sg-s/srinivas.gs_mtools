@@ -18,7 +18,11 @@ switch nargin
 		help getModelParameters
 	case 1
 		if ~ischar(modelname)
-			error('Argument must be a string')
+			if strcmp(class(modelname),'function_handle')
+				modelname = char(modelname);
+			else
+				error('Argument must be a string or a function handle')
+			end
 		end
 		if any(strfind(modelname,'.m'))
 		else

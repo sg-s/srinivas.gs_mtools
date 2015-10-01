@@ -14,6 +14,7 @@ if ~nargin
 	help argoutnames
 	return
 end
+fname = char(fname);
 
 if nargout(fname) == 0
 	names = '';
