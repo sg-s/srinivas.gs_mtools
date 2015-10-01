@@ -78,7 +78,7 @@ PATH = getenv('PATH');
 if v < 10.11
 	setenv('PATH', [PATH ':/usr/texbin']); 
 else
-	setenv('PATH',[PATH ':/Library/TeX/texbin/pdflatex']);
+	setenv('PATH',[PATH ':/Library/TeX/texbin']);
 end
 
 % move to the correct directory
