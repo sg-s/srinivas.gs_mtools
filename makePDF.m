@@ -85,7 +85,7 @@ end
 cd('html')
 
 % convert the .tex to a PDF
-es = strkat('pdflatex ',f);
+es = ['pdflatex ' f];
 unix(es);
 
 % clean up
