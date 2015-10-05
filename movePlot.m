@@ -27,7 +27,7 @@ switch direction
 	case 'down'
 		plot_handle.Position(2) = old_pos(2)-frac_dist;
 	case 'left'
-		plot_handle.Position(2) = old_pos(1)-frac_dist;
+		plot_handle.Position(1) = old_pos(1)-frac_dist;
 	case 'right'
-		plot_handle.Position(2) = old_pos(2)+frac_dist;
+		plot_handle.Position(1) = old_pos(1)+frac_dist;
 end

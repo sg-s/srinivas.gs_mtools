@@ -87,16 +87,15 @@ for i = 1:width(spikes)
 
 	if ~isnan(regulariseParameter)
 
-		all_times = before+1:length(stimulus)-after-1;
-		X = zeros(length(all_times),before+after+1);
+
+		all_times = before+1:10:length(stimulus)-after-1;
+		X = zeros(length(all_times),size(K,1));
 		for j = 1:length(all_times)
 			this_spike = all_times(j);
-			X(j,:) = stimulus(this_spike-before:this_spike+after,i);		
+			X(j,:) = stimulus(this_spike-before:10:this_spike+after,i);		
 		end
 
-		X = X(:,1:10:end);
 		C = X'*X;
-		keyboard
 
 		MeanEigenValue = trace(C)/length(C);
 
