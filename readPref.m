@@ -12,6 +12,9 @@ if ~nargin
 	calling_func = dbstack;
 	if ~isempty(calling_func)
 		calling_func = calling_func(end).name;
+		if any(strfind(calling_func,'/'))
+			calling_func(1:strfind(calling_func,'/')-1);
+		end
 		[~,look_here]=searchPath(calling_func);
 	else
 		look_here = pwd;
@@ -40,7 +43,4 @@ for i = 1:length(lines)
 		end
 	end
 end
-
-
-
 

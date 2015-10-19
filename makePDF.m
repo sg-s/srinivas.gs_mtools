@@ -6,7 +6,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = makePDF(filename)
+function [] = makePDF(filename,force)
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
 
@@ -24,11 +24,19 @@ case 0
 	catch
 		error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
 	end
+	force = false;
 case 1
 	% check if file exists
 	if exist(filename,'file') ~= 2
 		help MakePDF
 		error('Cant find the file you told me to compile')
+	end
+	force = false;
+case 2
+	if strcmp(force,'force')
+		force = true;
+	else
+		force = false;
 	end
 otherwise
 	help MakePDF
@@ -62,7 +70,7 @@ end
 
 % check to make sure all changes are committed to git
 [~,m] = unix('git status | grep "modified" | wc -l');
-if str2double(m) > 0
+if str2double(m) > 0 && ~force
 	error('You have unmodified files that have not been committed to your git repo. Cowardly refusing to proceed till you commit all files.')
 end
 

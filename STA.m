@@ -74,15 +74,14 @@ for i = 1:width(spikes)
 	Y = zeros(length(permitted_spikes),before+after+1);
 
 	% filter stimulus
-	stimulus(:,i) = filtfilt(ones(100,1),100,stimulus(:,i));
+	% stimulus(:,i) = filtfilt(ones(100,1),100,stimulus(:,i)); % why filter???
 	
 	for j = 1:length(permitted_spikes)
 		this_spike = permitted_spikes(j);
 		Y(j,:) = stimulus(this_spike-before:this_spike+after,i);		
 	end
 
-
-	% downsample X because we don't want the stimulus at resolution so high that we can see spikes
+	% downsample Y at 1ms resolution
 	Y = Y(:,1:10:end);
 
 	if ~isnan(regulariseParameter)
@@ -92,17 +91,43 @@ for i = 1:width(spikes)
 		X = zeros(length(all_times),size(K,1));
 		for j = 1:length(all_times)
 			this_spike = all_times(j);
+			% downsample X because we don't want the stimulus at resolution so high that we can see spikes
 			X(j,:) = stimulus(this_spike-before:10:this_spike+after,i);		
 		end
 
-		C = X'*X;
+		C = X'*X; 
 
 		MeanEigenValue = trace(C)/length(C);
 
-		K(:,i) = (mean(((C + regulariseParameter*MeanEigenValue*eye(length(C)))\Y')')); 
+		C2 = C + eye(length(C))*MeanEigenValue*regulariseParameter;
+
+		K(:,i) = mean(inv(C2)*Y',2);
+
+		keyboard
+
+		% K(:,i) = (mean(((C + regulariseParameter*MeanEigenValue*eye(length(C)))\Y')')); 
+
 		K(:,i) = K(:,i)/max(K(:,i));
 		K(:,i) = K(:,i)*max(mean(Y,1));
 	else
+
+		% X = zeros(length(permitted_spikes),before+after+1);
+		% % circularly permute stimulus randomly
+		% for j = 1:size(Y,1)
+		% 	this_stim = circshift(stimulus(:,i),randi(length(stimulus)));
+		% 	for k = 1:length(permitted_spikes)
+		% 		this_spike = permitted_spikes(k);
+		% 		X(j,:) = this_stim(this_spike-before:this_spike+after,i);		
+		% 	end
+		% end
+		% X = X(:,1:10:end);
+		% C = X'*X; 
+
+		% MeanEigenValue = trace(C)/length(C);
+
+		% C2 = C + eye(length(C))*MeanEigenValue*1;
+		% K(:,i) = mean(inv(C2)*Y',2);
+
 		K(:,i) = mean(Y,1);
 	end
 

@@ -15,10 +15,10 @@
 function [a] = multiPlot(t,varargin)
 a = [];
 % check if statistics toolbox exists
-v = ver;
-if ~any(strcmp('Statistics Toolbox', {v.Name}))
-	error('You need to get the Statistics Toolbox to run multiplot')
-end
+% v = ver;
+% if ~any(strcmp('Statistics Toolbox', {v.Name}))
+% 	error('You need to get the Statistics Toolbox to run multiplot')
+% end
 
 warning off
 % color order for many plots on the same axes
