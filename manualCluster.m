@@ -40,7 +40,7 @@ c = parula(length(labels)+1);
 hmc = figure('Name','manualCluster','WindowButtonDownFcn',@mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@closeManualCluster); hold on,axis off
 hm1 = axes('parent',hmc,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');axis square, hold on ; title('Reduced Data')
 hm2 = axes('parent',hmc,'position',[0.6 0.1 0.3 0.3],'box','on','TickDir','out');axis square, hold on  ; title('Raw data'), set(gca,'YLim',[min(min(R)) max(max(R))]);
-add_control = uicontrol(hmc,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
+uicontrol(hmc,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
 uicontrol(hmc,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','FontSize',24,'String','Add to:');
 plot_handles = [];
 plot_handles2 = [];

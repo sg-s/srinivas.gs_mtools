@@ -99,6 +99,7 @@ end
 
 % hash the data
 hash = dataHash(data);
+hash = dataHash([dataHash(modelname) hash]);
 
 % check if seed parameter structure is provided
 if exist('p0','var')

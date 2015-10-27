@@ -13,7 +13,7 @@ if ~nargin
 	if ~isempty(calling_func)
 		calling_func = calling_func(end).name;
 		if any(strfind(calling_func,'/'))
-			calling_func(1:strfind(calling_func,'/')-1);
+			calling_func = calling_func(1:strfind(calling_func,'/')-1);
 		end
 		[~,look_here]=searchPath(calling_func);
 	else
