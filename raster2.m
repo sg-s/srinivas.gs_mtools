@@ -11,7 +11,7 @@
 
 
 
-function raster2(A,B,yoffset)
+function raster2(A,B,yoffset,colour)
 
 switch nargin 
 case 0
@@ -37,7 +37,11 @@ for i = 1:ntrials
     y = reshape([(yoffset+i-1+zeros(1,length(st))); (yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
     y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
  
-    plot(x*1e-4,y,'r'), hold on
+    if nargin < 4
+        plot(x*1e-4,y,'r'), hold on
+    else
+        plot(x*1e-4,y,'Color',colour), hold on
+    end
 end
 
 s = size(B);
@@ -50,7 +54,11 @@ for i = 1:ntrials
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(yoffset+ntrials-1+i+zeros(1,length(st))); (yoffset+ntrials-1+i+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
     y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
-    plot(x*1e-4,y,'b'), hold on
+    if nargin < 4
+        plot(x*1e-4,y,'b'), hold on
+    else
+        plot(x*1e-4,y,'Color',colour), hold on
+    end
 end
 
 if nargin > 1

@@ -8,9 +8,8 @@
 
 function [y] = sem(x)
 
-% remove trials with NaNs
-rm_this = find(isnan(sum(x)));
-x(:,rm_this) = [];
 
-y = nanstd(x')/sqrt(width(x));
-y = y(:);
+y = nanstd(x);
+n = sum(~isnan(x));
+y = y./sqrt(n);
+
