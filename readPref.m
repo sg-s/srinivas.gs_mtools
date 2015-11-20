@@ -15,7 +15,7 @@ if ~nargin
 		if any(strfind(calling_func,'/'))
 			calling_func = calling_func(1:strfind(calling_func,'/')-1);
 		end
-		[~,look_here]=searchPath(calling_func);
+		look_here = fileparts(which(calling_func));
 	else
 		look_here = pwd;
 	end

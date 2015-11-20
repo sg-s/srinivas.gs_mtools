@@ -19,6 +19,7 @@ Marker = 'none';
 trim_end = false;
 make_plot = true;
 Color = [0 0 0];
+use_std = false;
 
 if ~nargin
     help plotPieceWiseLinear
@@ -54,7 +55,11 @@ for i = 1:(nbins)
 	this_b = b(a>bin_edges(i) & a < bin_edges(i+1));
 	x(i) = mean(this_a);
 	y(i) = mean(this_b);
-	ye(i) = sem(this_b);
+    if use_std
+	    ye(i) = std(this_b);
+    else
+        ye(i) = sem(this_b);
+    end
 end
 
 if trim_end
