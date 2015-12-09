@@ -9,7 +9,7 @@
 function [] = makePDF(filename,force)
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
-
+assert(nargin < 3,'Too many inputs!')
 switch nargin
 case 0
 	% run on the last modified file
@@ -27,20 +27,15 @@ case 0
 	force = false;
 case 1
 	% check if file exists
-	if exist(filename,'file') ~= 2
-		help MakePDF
-		error('Cant find the file you told me to compile')
-	end
+	assert(exist(filename,'file') == 2,'Cant find the file you told me to compile');
 	force = false;
 case 2
+	assert(ischar(force),'Second argument should be a string')
 	if strcmp(force,'force')
 		force = true;
 	else
 		force = false;
 	end
-otherwise
-	help MakePDF
-	error('Too many inputs')
 end
 
 orig_dir = cd;
@@ -49,11 +44,8 @@ close all
 % compile to .tex
 options.showCode = false;
 options.format = 'latex';
-
 options.imageFormat= 'pdf';
 options.figureSnapMethod=  'print';
-
-
 
 
 % use a custom stylesheet, if it exists
@@ -65,7 +57,7 @@ switch length(a)
 		% use this!
 		options.stylesheet = a.name;
 	case 2
-		error('Too many custom stylesheets in current directory. MakePDF does not know what to do.')
+		error('Too many custom stylesheets in working directory. makePDF does not know what to do. Make sure there is only one .xsl file in the working directory.')
 end
 
 % check to make sure all changes are committed to git
@@ -74,13 +66,11 @@ if str2double(m) > 0 && ~force
 	error('You have unmodified files that have not been committed to your git repo. Cowardly refusing to proceed till you commit all files.')
 end
 
-
-f=publish(filename,options);
-
-
+% run publish to generate the .tex file
+f = publish(filename,options);
 
 % tell stupid MATLAB to get the path right
-[~,v] = unix('sw_vers -productVersion');
+[~,v] = unix('sw_vers -productVersion'); % Mac OS X specific
 v = str2double(v);
 PATH = getenv('PATH');
 if v < 10.11
@@ -93,14 +83,26 @@ end
 cd('html')
 
 % convert the .tex to a PDF
-es = ['pdflatex ' f];
-unix(es);
+unix(['pdflatex ' f]);
 
 % clean up
 cd(orig_dir)
 cleanPublish;
 close all
 
-% open the PDF
 f = strrep(f,'.tex','.pdf');
+
+% archive this PDF in html/archive/ with the date and the git hash
+if exist([fileparts(f) oss 'archive'],'file') == 7
+else
+	mkdir([fileparts(f) oss 'archive'])
+end
+
+[~,archive_file_name] = fileparts(f);
+[~,git_hash] = unix('git rev-parse HEAD');
+archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:6) '.pdf'];
+archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
+copyfile(f,archive_file_name);
+
+% open the PDF
 open(f)
