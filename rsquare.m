@@ -1,5 +1,5 @@
 % rsquare.m
-% computes the coefficent of determination (http://en.wikipedia.org/wiki/Coefficient_of_determination) between two inputs
+% computes the [coefficent of determination](http://en.wikipedia.org/wiki/Coefficient_of_determination) between two inputs
 % r = rsquare(x,y)
 % returns a scalar if x and y are vectors
 % 

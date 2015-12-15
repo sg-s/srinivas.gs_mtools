@@ -1,13 +1,12 @@
-%%pdfrnd(x, px, sampleSize): return a random sample of size sampleSize from 
+% pdfrnd.m
+% Generate random samples given a pdf.  The x and p(x) are specified in the arguments.  See inverse transform sampling, gaussdis, gammadis. 
+% pdfrnd(x, px, sampleSize): return a random sample of size sampleSize from 
 %%the pdf px defined on the domain x. 
 
 %{
 Joshua Stough
 Washington and Lee University
 August 2012
-
-Generate random samples given a pdf.  The x and p(x) are specified in the
-arguments.  See inverse transform sampling, gaussdis, gammadis. 
 
 Examples:
 X = pdfrnd(0:.1:20, gammadis(3,2, 0:.1:20), 100000);

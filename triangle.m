@@ -1,7 +1,6 @@
 % triangle.m
-% triangle.m draws a equliateral triangle at a given point and orientation,
-% so that it points towards the orientation and its centroid is located at
-% the point
+% triangle.m draws a equliateral triangle at a given point and orientation, so that it points towards the orientation and its centroid is located at the point. useful for building GUIs
+% 
 % created by Srinivas Gorur-Shandilya at 18:58 , 30 August 2013. Contact me
 % at http://srinivas.gs/contact/
 function [] = triangle(centre,orientation,size,colour,LineWidth)

@@ -1,5 +1,5 @@
 % prettyFig.m
-% makes current figure pretty:
+% makes current figure pretty out of the box. most settings tweakable.
 % 1. makes all line widths of plots 2
 % 2. turns on all minor ticks
 % 3. makes all font sizes bigger

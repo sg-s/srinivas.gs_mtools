@@ -1,6 +1,5 @@
 % width.m
-% width is like the built in "length"
-% and returns the second largest dimension of the matrix
+% width is like the built in "length" and returns the second largest dimension of the matrix
 %
 % e.g: width(zeros(1000,3)) returns 3
 % it also returns the dimension that it is wide in

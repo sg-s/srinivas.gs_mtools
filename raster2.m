@@ -1,6 +1,5 @@
 % raster2.m
-% raster2(A,B)
-% makes a raster plot of two different neurons. A (or B) can be either a logical matrix with 1 where a spike occurs, or long (zero padded) matrices of spike times. The time step is assumed to be 1e-4.
+% makes a raster plot of two different neurons. A (or B) can be either a logical matrix with 1 where a spike occurs, or long (zero padded) matrices of spike times. The time step is assumed to be 1e-4s
 % This function is designed to be faster the the original raster
 % 
 % 

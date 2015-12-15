@@ -26,7 +26,7 @@ end
 
 if nargin < 4
 	% just filter
-	b = filter(K,1,stimulus-mean(stimulus));
+	b = filter(K,1,stimulus);
 	return
 end	
 
@@ -40,13 +40,13 @@ fdt= mean(diff(filtertime));
 if abs(fdt - dt)<eps
 	% both are in the same units. all good.
 	filtertime = round(filtertime/fdt);
-	b = filter(K,1,stimulus-mean(stimulus));
+	b = filter(K,1,stimulus);
 	offset = abs(min(filtertime));
 	b(1:offset) = [];
 	b = [b; NaN(offset,1)];
 elseif fdt == 1
 	% assume that filtertime is given in vector indices, and it is not time.
-	b = filter(K,1,stimulus-mean(stimulus));
+	b = filter(K,1,stimulus);
 	offset = abs(min(filtertime))-1; % this is the correct offset
 	b(1:offset) = [];
 	b = [b; NaN(offset,1)];

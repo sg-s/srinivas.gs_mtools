@@ -1,5 +1,5 @@
 % spellcheck.m
-% small wrapper function to check spelling using aspell
+% small wrapper function to check spelling using aspell. will not work on Windows. 
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 

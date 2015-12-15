@@ -1,7 +1,7 @@
 % spear.m
 % Spearman's rank correalation coefficient.
 % 
-%Syntax: [r,t,p]=spear(x,y)
+% Syntax: [r,t,p]=spear(x,y)
 %__________________________
 %
 % Spearman's rank correalation coefficient.

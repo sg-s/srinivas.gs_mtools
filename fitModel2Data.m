@@ -37,10 +37,10 @@ function p = fitModel2Data(modelname,data,varargin)
 
 % defaults
 use_cache = true;
-UseParallel = true;
+use_parallel = true;
 nsteps = 300;
-Display = 'iter';
-MaxFunEvals = 2e4;
+display_type = 'iter';
+max_fun_evals = 2e4;
 
 % figure out if we should make a plot or not
 make_plot = 0;
@@ -56,13 +56,13 @@ switch nargin
 		help fitModel2Data
 		disp('The defaults are:')
 		use_cache
-		UseParallel
+		use_parallel
 		nsteps
-		Display
-		MaxFunEvals
+		display_type
+		max_fun_evals
 		return
 	case 1
-		help FitModel2Data
+		help fitModel2Data
 		error('Not enough input arguments')
 	case 2
 		% minimum case
@@ -89,11 +89,11 @@ end
 if isstruct(data)
 	if any(strcmp('stimulus',fieldnames(data))) && any(strcmp('response',fieldnames(data)))
 	else
-		help FitModel2Data
+		help fitModel2Data
 		error('RTFM')
 	end
 else
-	help FitModel2Data
+	help fitModel2Data
 	error('RTFM')
 end
 
@@ -194,9 +194,9 @@ end
 
 % pattern search options
 if nsteps
-	psoptions = psoptimset('UseParallel',UseParallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',Display,'MaxIter',nsteps,'MaxFunEvals',MaxFunEvals);
+	psoptions = psoptimset('UseParallel',use_parallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',display_type,'MaxIter',nsteps,'MaxFunEvals',max_fun_evals);
 	% search
-	x = patternsearch(@(x) GeneralCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+	x = patternsearch(@(x) generalCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
 else
 	p = p0;
 	return
@@ -207,7 +207,7 @@ end
 p = mat2struct(x,param_names);
 
 % save to cache only if this solution is better than the best. 
-current_cost = GeneralCostFunction(x,data,modelname,param_names);
+current_cost = generalCostFunction(x,data,modelname,param_names);
 hash2 = dataHash(['best solution to ' hash]);
 best_cost = cache(hash2);
 if isempty(best_cost)
@@ -232,7 +232,7 @@ end
 
 
 
-	function c =  GeneralCostFunction(x,data,modelname,param_names)
+	function c =  generalCostFunction(x,data,modelname,param_names)
 		if length(data) == 1
 			% only fit to one data set
 			if length(unique(data.response)) == 2
