@@ -100,7 +100,7 @@ end
 
 [~,archive_file_name] = fileparts(f);
 [~,git_hash] = unix('git rev-parse HEAD');
-archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:6) '.pdf'];
+archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
 archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
 copyfile(f,archive_file_name);
 
