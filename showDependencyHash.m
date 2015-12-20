@@ -11,6 +11,8 @@ function [] = showDependencyHash(this_file)
 assert(ischar(this_file),'input argument should be a string')
 assert(exist(this_file,'file')==2,'file not found.')
 
+original_folder = pwd;
+
 % intelligently search the path and make a list of m files that are likely to be user-generated
 p = path;
 p = [':' p];
@@ -39,16 +41,27 @@ for i = 1:length(allfiles)
 		is_dep(i) = true;
 	end
 end
+dep_files = allfiles(is_dep);
+
+% we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
+is_dep = false(length(allfiles),1);
+for j = 1:length(dep_files)
+	source_code = fileread(which(dep_files{j}));
+	for i = 1:length(allfiles)
+		if any(strfind(source_code,allfiles{i}))
+			is_dep(i) = true;
+		end
+	end
+end
+dep_files =  unique([dep_files allfiles(is_dep)]);
+
 
 % find which folders they are in
 allfolders = {};
-dep_files = allfiles(is_dep);
 for i = 1:length(dep_files)
 	allfolders = [allfolders fileparts(which(dep_files{i}))];
 end
 allfolders = unique(allfolders);
-
-original_folder = pwd;
 
 % which of these are git repos?
 for i = 1:length(allfolders)
@@ -62,6 +75,7 @@ for i = 1:length(allfolders)
 	end
 end
 
+% go back from whence you came
 cd(original_folder)
 
 
