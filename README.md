@@ -2,6 +2,8 @@
 
 This repository contains a bunch of useful scripts and functions that make working in MATLAB much easier. All my other MATLAB repositories depend on this. Feel free to do with functions that I have written what you will. Some functions written by others are also included here, with licenses and attribution where possible. 
 
+The [lightspeed](http://research.microsoft.com/en-us/um/people/minka/software/lightspeed/) toolbox is recommended, as it generally makes things faster. 
+
 
 # List of Functions 
 
