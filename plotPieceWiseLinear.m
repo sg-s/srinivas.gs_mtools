@@ -43,6 +43,11 @@ assert(length(a) == length(b),'Inputs should have equal lengths')
 a = a(:);
 b = b(:);
 
+% remove NaNs
+rm_this = isnan(a) | isnan(b);
+a(rm_this) = [];
+b(rm_this) = [];
+
 [a,idx] = sort(a);
 b = b(idx);
 
