@@ -1,41 +1,44 @@
 % makePDF.m
 % a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex that MATLAB creates and cleans up afterwards.
 % needs pdflatex installed. Will not work on Windows.
+% usage:
+% makePDF  % automatically builds PDF from last modified .m file
+% makePDF --dirty % or 
+% makePDF -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.) 
+% makePDF --force % or
+% makePDF -f      % overrides warnings about git status
+% makePDF -f -d filename.m % builds PDF from filename.m
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = makePDF(filename,force)
+function [] = makePDF(varargin)
+
+% defaults 
+force = false;
+dirty = false;
+filename = '';
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
 assert(nargin < 3,'Too many inputs!')
-switch nargin
-case 0
-	% run on the last modified file
-	d = dir('*.m');
-
-	% find the last modified file
-	[~,idx] = max([d.datenum]);
-
-	% name of file
-	try
-		filename = d(idx).name;
-	catch
-		error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
+filename = findFileToPublish;
+if ~nargin
+else
+	% figure out which arguments are options and handle them
+	for i = 1:nargin
+		if strcmp(varargin{i},'-f') || strcmp(varargin{i},'--force') 
+			force = true;
+		elseif strcmp(varargin{i},'-d') || strcmp(varargin{i},'--dirty') 
+			dirty = true;
+		elseif ~any(strfind(varargin{i},'-')) 
+			filename = varargin{i};
+			if strcmp(filename(end-1:end),'.m')
+				filename = [filename '.m'];
+			end
+		end
 	end
-	force = false;
-case 1
-	% check if file exists
 	assert(exist(filename,'file') == 2,'Cant find the file you told me to compile');
-	force = false;
-case 2
-	assert(ischar(force),'Second argument should be a string')
-	if strcmp(force,'force')
-		force = true;
-	else
-		force = false;
-	end
 end
 
 orig_dir = cd;
@@ -87,7 +90,9 @@ unix(['pdflatex ' f]);
 
 % clean up
 cd(orig_dir)
-cleanPublish;
+if ~dirty
+	cleanPublish;
+end
 close all
 
 f = strrep(f,'.tex','.pdf');
@@ -106,3 +111,21 @@ copyfile(f,archive_file_name);
 
 % open the PDF
 open(f)
+
+function filename = findFileToPublish()
+	% run on the last modified file
+	d = dir('*.m');
+
+	% find the last modified file
+	[~,idx] = max([d.datenum]);
+
+	% name of file
+	try
+		filename = d(idx).name;
+	catch
+		error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
+	end
+
+end
+
+end
