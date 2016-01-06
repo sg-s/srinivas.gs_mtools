@@ -123,7 +123,6 @@ for i = 1:length(p)
 	if install_this
 
 		% wipe target clean
-		keyboard
 		if exist(install_path)
 			rmdir(install_path,'s')
 		end
