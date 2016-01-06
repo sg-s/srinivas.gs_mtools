@@ -62,82 +62,92 @@ for i = 1:nargin
 	end
 end
 
-% check for searchPath, or download if needed
-a=which('searchPath');
-if isempty(a)
-	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchPath.m','searchPath.m');
+
+% figure out where to install this
+if ispc
+	code_path = winqueryreg('HKEY_CURRENT_USER',['Software\Microsoft\Windows\CurrentVersion\','Explorer\Shell Folders'],'Personal');
+	code_path = strcat(code_path,'\code\');
+else
+	cd('~')
+	code_path = cd;
+	cd(return_here)
+	code_path = strcat(code_path,'/code/');
 end
 
+% also make a temp folder to stash some files
+if ispc
+	temp_path = winqueryreg('HKEY_CURRENT_USER',['Software\Microsoft\Windows\CurrentVersion\','Explorer\Shell Folders'],'Personal');
+	temp_path = strcat(temp_path,'\temp\');
+else
+	cd('~')
+	temp_path = cd;
+	cd(return_here)
+	temp_path = strcat(temp_path,'/temp/');
+end
+
+
+% check for searchPath, or download if needed to temp path
+if exist(temp_path,'dir') == 0
+	mkdir(temp_path)
+end
+a = which('searchPath');
+if isempty(a)
+	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchPath.m',[temp_path 'searchPath.m']);
+end
+addpath(temp_path)
+
 for i = 1:length(p)
+	disp(['Installing package: ' char(p{i})])
 	install_this = 0;
 	% check for this package on the path
-	[s,full_path]=searchPath(char(p{i}));
+	[s,install_path] = searchPath(char(p{i}));
 	if s
 		if ~force
-			warning(strcat(char(p{i}),' is already installed. To update/overwrite the old installation, use "install -f [package_name]"'))
+			disp(strcat('WARNING:', char(p{i}),' is already installed. To update/overwrite the old installation, use "install -f [package_name]"'))
 		else
 			disp(strcat('Updating package:',char(p{i})))
 			install_this = 1;
-			full_path=fileparts(full_path);
-			if ispc
-				full_path = strcat(full_path,'\');
-			else
-				full_path = strcat(full_path,'/');
-			end
 		end
 	else
 		install_this=1;
-		% figure out where to install this
-		if ispc
-			full_path = winqueryreg('HKEY_CURRENT_USER',['Software\Microsoft\Windows\CurrentVersion\','Explorer\Shell Folders'],'Personal');
-			full_path = strcat(full_path,'\code\');
-		else
-			cd ~
-			full_path = cd('~');
-			full_path = strcat(full_path,'/code/');
-		end
+	end
 
+	if isempty(install_path)
+		if ispc
+			install_path = [code_path char(p{i}) '\'];
+		else
+			install_path = [code_path char(p{i}) '/'];
+		end
 	end
 
 	if install_this
 
-		% check if userDir exists
-		if ~exist(full_path)
-			mkdir(full_path)
+		% wipe target clean
+		keyboard
+		if exist(install_path)
+			rmdir(install_path,'s')
 		end
 
-		% download what you need
+		% download what you need to the temp folder
 		disp('Downloading files...')
 		try
-			outfilename = websave(strcat(full_path,char(p{i})),strcat(link_root,char(p{i}),link_cap));
+			outfilename = websave(install_path,strcat(link_root,char(p{i}),link_cap));
 		catch
-			error('probably no websave, old version of matlab?')
+			outfilename = urlwrite(strcat(link_root,char(p{i}),link_cap),[temp_path 'temp.zip']);
 		end
 
 	    % unzip to target
 	    disp('Extracting files...')
-	    cd(full_path)
-	    unzip(outfilename)
+	    unzip(outfilename,code_path)
 
 	    % delete zip file
 	    delete(outfilename)
 
-	    % are we updating or overwriting?
-	    if ~force
-	    	% disp('fresh install. just rename the folder and add to path')
-	    	movefile(strcat(full_path,char(p{i}),'-master'),strcat(full_path,char(p{i})));
-	    else
-	    	% updating. trash the older folder, rename the new folder
-	    	try
-	    		rmdir(strcat(full_path,char(p{i})),'s');
-	    	catch
-	    	end
-	    	movefile(strcat(full_path,char(p{i}),'-master'),strcat(full_path,char(p{i})),'f');
-
-	    end
+	    % rename folder correctly to strip out the "master"
+	    movefile([code_path char(p{i}) '-master'],install_path)
 
 	    disp('Setting path...')
-	    addpath(strcat(full_path,char(p{i})))
+	    addpath(install_path)
 	    savepath
 		
 	end
@@ -145,6 +155,9 @@ for i = 1:length(p)
 end
 
 warning on
-cd(return_here)
+
+% delete temp folder
+rmdir(temp_path,'s')
+
 
 
