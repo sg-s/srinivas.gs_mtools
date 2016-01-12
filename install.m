@@ -122,8 +122,8 @@ for i = 1:length(p)
 
 	if install_this
 
-		% wipe target clean
-		if exist(install_path)
+		% wipe target clean, but ask for permission first
+		if exist(install_path,'dir')
 			rmdir(install_path,'s')
 		end
 

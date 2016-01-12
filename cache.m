@@ -109,6 +109,10 @@ if nargin == 2
 			% and remove the hash from the hash table
 			hash(find(strcmp(varargin{1}, hash))) = [];
 			save(strcat(root,'cached.mat'),'hash',strcat('md5_',varargin{1}),'-append')
+		else
+			% write it to this hash
+			eval(strcat('md5_',varargin{1},'=varargin{2};'));
+			save(strcat(root,'cached.mat'),'hash',strcat('md5_',varargin{1}),'-append')
 		end
 	end
 end
