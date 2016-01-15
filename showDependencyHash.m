@@ -15,7 +15,7 @@ original_folder = pwd;
 
 % intelligently search the path and make a list of m files that are likely to be user-generated
 p = path;
-p = [':' p];
+p = [pathsep p];
 c = strfind(p,pathsep);
 
 allfiles = {};
@@ -34,14 +34,34 @@ for i = 1:length(allfiles)
 end
 
 % search the file in question for these keywords
-source_code = fileread(which(this_file));
+% read the source file line by line
+fid = fopen(which(this_file), 'rt'); 
+source_code = textscan(fid,'%[^\n]'); %reads line by line 
+source_code = source_code{1};
 is_dep = false(length(allfiles),1);
+
+
 for i = 1:length(allfiles)
-	if any(strfind(source_code,allfiles{i}))
-		is_dep(i) = true;
+	for j = 1:length(source_code)
+		if any(strfind(source_code{j},allfiles{i}))
+			% keyword in this line
+			if any(strfind(source_code{j},'%'))
+				% there is a % somewhere 
+				if strfind(source_code{j},allfiles{i}) < strfind(source_code{j},'%')
+					% keyword is not a comment
+					is_dep(i) = true;
+				else
+					% keyword is a comment. do nothing
+				end
+			else
+				% no % anywhere, but keyword present
+				is_dep(i) = true;
+			end
+		end
 	end
 end
 dep_files = allfiles(is_dep);
+
 
 % we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
 is_dep = false(length(allfiles),1);
