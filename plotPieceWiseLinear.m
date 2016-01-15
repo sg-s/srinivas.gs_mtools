@@ -37,11 +37,10 @@ else
 	end
 end
 
-assert(isvector(a) & isvector(b),'Inputs must be vectors')
-assert(length(a) == length(b),'Inputs should have equal lengths')
-
 a = a(:);
 b = b(:);
+
+assert(length(a) == length(b),'Inputs should have equal lengths')
 
 % remove NaNs
 rm_this = isnan(a) | isnan(b);

@@ -48,6 +48,12 @@ if size(x,1)~=size(y,1)
     error('x and y must have equal number of rows.');
 end
 
+% internally cache spear
+h = dataHash([x y]);
+r = cache(h);
+if ~isempty(r)
+	return
+end
 
 % Find the data length
 N = length(x);
@@ -64,6 +70,8 @@ for i=1:size(y,2)
     r(i) = 1-6*sum((R-S).^2)/N/(N^2-1);
     
 end
+
+cache(h,r);
 
 % Calculate the t statistic
 if r == 1 | r == -1
