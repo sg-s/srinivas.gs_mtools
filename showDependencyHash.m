@@ -88,7 +88,7 @@ for i = 1:length(allfolders)
 	if exist([allfolders{i} oss '.git'],'file') == 7
 		repo_name = allfolders{i}(max(strfind(allfolders{i},oss))+1:end);
 		cd(allfolders{i})
-		[status,m]=unix('git rev-parse HEAD');
+		[status,m]=system('git rev-parse HEAD');
 		if ~status
 			disp(['repo name:  ' repo_name '  commit:   ' m(1:7)])
 		end
