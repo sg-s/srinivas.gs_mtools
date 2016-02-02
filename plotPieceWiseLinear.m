@@ -20,6 +20,7 @@ trim_end = false;
 make_plot = true;
 Color = [0 0 0];
 use_std = false;
+normalise = false;
 
 if ~nargin
     help plotPieceWiseLinear
@@ -84,6 +85,11 @@ if trim_end
     x = x(2:end-1);
     y = y(2:end-1);
     ye = ye(2:end-1);
+end
+
+if normalise
+    ye = ye/max(y);
+    y = y/max(y);
 end
 
 if make_plot
