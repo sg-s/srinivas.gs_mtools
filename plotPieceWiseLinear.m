@@ -6,7 +6,7 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [handles, data] = plotPieceWiseLinear(a,b,varargin)
+function [handles, data] = plotPieceWiseLinear(A,B,varargin)
 
 handles = [];
 data = [];
@@ -37,34 +37,48 @@ else
 	end
 end
 
-a = a(:);
-b = b(:);
+assert(length(A) == length(B),'Inputs should have equal lengths')
 
-assert(length(a) == length(b),'Inputs should have equal lengths')
-
-% remove NaNs
-rm_this = isnan(a) | isnan(b);
-a(rm_this) = [];
-b(rm_this) = [];
-
-[a,idx] = sort(a);
-b = b(idx);
-
-bin_edges = linspace(nanmin(a),nanmax(a),nbins+1);
-x = NaN(nbins,1);
-y = x; ye = y;
-
-for i = 1:(nbins)
-	this_a = a(a>bin_edges(i) & a < bin_edges(i+1));
-	this_b = b(a>bin_edges(i) & a < bin_edges(i+1));
-	x(i) = mean(this_a);
-	y(i) = mean(this_b);
-    if use_std
-	    ye(i) = std(this_b);
-    else
-        ye(i) = sem(this_b);
+% is it a matrix or a vector?
+if isvector(A)
+    [x,y,xe,ye] = constructPWL(A,B,nbins);
+else
+    % it's a matrix. make sure it's oriented properly
+    if size(A,1) < size(A,1)
+        A = A';
     end
+    if size(B,1) < size(B,1)
+        B = B';
+    end
+    x = NaN(nbins,width(A));
+    xe = x; y = x; ye = x;
+    for i = 1:width(A)
+        [x(:,i),y(:,i),xe(:,i),ye(:,i)] = constructPWL(A(:,i),B(:,i),nbins);
+    end
+    all_x = [min(min(x)) max(max(x))];
+    all_x = all_x(1):(diff(all_x)/nbins):all_x(end);
+    all_y = NaN(length(all_x),width(A));
+    
+    for i = 1:width(A)
+        all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+    end
+    rm_this = (width(A) - sum(isnan(all_y)') < round(width(A)/2));
+    % re-sample
+    all_x = all_x(~rm_this); all_x = [all_x(1) all_x(end)];
+    all_x = all_x(1):(diff(all_x)/nbins):all_x(end);
+    all_y = NaN(length(all_x),width(A));
+    
+    for i = 1:width(A)
+        all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+    end
+
+    y = nanmean(all_y');
+    x = all_x;
+    ye = sem(all_y');
+    xe = 0*x;
+
 end
+
 
 if trim_end
     x = x(2:end-1);
@@ -86,3 +100,33 @@ end
 data.x = x;
 data.y = y;
 data.ye = ye;
+data.xe = xe;
+
+    function [x,y,xe,ye] = constructPWL(a,b,nbins)
+        % remove NaNs
+        rm_this = isnan(a) | isnan(b);
+        a(rm_this) = [];
+        b(rm_this) = [];
+
+        % label x axis by percentile
+        l = labelByPercentile(a,nbins);
+
+        x = NaN(nbins,1);
+        y = x; ye = x; xe = x;
+
+        for ci = 1:max(l)
+            x(ci) = mean(a(l==ci));
+
+            y(ci) = mean(b(l==ci));
+            ye(ci) = sem(b(l==ci));
+            if use_std
+                xe(ci) = std(a(l==ci));
+                ye(ci) = std(b(l==ci));
+            else
+                xe(ci) = sem(a(l==ci));
+                ye(ci) = sem(b(l==ci));
+            end
+        end
+    end
+
+end

@@ -40,14 +40,15 @@ source_code = textscan(fid,'%[^\n]'); %reads line by line
 source_code = source_code{1};
 is_dep = false(length(allfiles),1);
 
-
 for i = 1:length(allfiles)
 	for j = 1:length(source_code)
 		if any(strfind(source_code{j},allfiles{i}))
+			temp = strfind(source_code{j},allfiles{i});
+			temp = temp(1); % this is to account for two invocations of one function in 1 line
 			% keyword in this line
 			if any(strfind(source_code{j},'%'))
 				% there is a % somewhere 
-				if strfind(source_code{j},allfiles{i}) < strfind(source_code{j},'%')
+				if temp < strfind(source_code{j},'%')
 					% keyword is not a comment
 					is_dep(i) = true;
 				else
