@@ -36,7 +36,7 @@
 function p = fitModel2Data(modelname,data,varargin)
 
 % defaults
-use_cache = true;
+use_cache = false;
 use_parallel = true;
 nsteps = 300;
 display_type = 'iter';
@@ -212,20 +212,20 @@ hash2 = dataHash(['best solution to ' hash]);
 best_cost = cache(hash2);
 if isempty(best_cost)
 	% first time, cache this
-	cache(hash,[]);
-	cache(hash,p);
-	% also cache the cost of this solution
-	cache(hash2,[]);
-	cache(hash2,current_cost);
+	% cache(hash,[]);
+	% cache(hash,p);
+	% % also cache the cost of this solution
+	% cache(hash2,[]);
+	% cache(hash2,current_cost);
 else
 	% check if current cost is lower than best cost
 	if current_cost < best_cost
 		% update cache
-		cache(hash,[]);
-		cache(hash,p);
-		% also cache the cost of this solution
-		cache(hash2,[]);
-		cache(hash2,current_cost);
+		% cache(hash,[]);
+		% cache(hash,p);
+		% % also cache the cost of this solution
+		% cache(hash2,[]);
+		% cache(hash2,current_cost);
 	end
 end
 

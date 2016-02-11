@@ -75,11 +75,17 @@ f = publish(filename,options);
 % tell stupid MATLAB to get the path right
 [~,v] = unix('sw_vers -productVersion'); % Mac OS X specific
 v = str2double(v);
-PATH = getenv('PATH');
+path1 = getenv('PATH');
 if v < 10.11
-	setenv('PATH', [PATH ':/usr/texbin']); 
+	if isempty(strfind(path1,':/usr/texbin'))
+		path1 = [path1 pathsep '/usr/texbin'];
+	end
+	setenv('PATH', path1);
 else
-	setenv('PATH',[PATH ':/Library/TeX/texbin']);
+	if isempty(strfind(path1,':/Library/TeX/texbin'))
+		path1 = [path1 pathsep '/Library/TeX/texbin'];
+	end
+	setenv('PATH', path1);
 end
 
 % move to the correct directory
@@ -108,6 +114,26 @@ end
 archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
 archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
 copyfile(f,archive_file_name);
+
+% % check if github release is installed
+% path1 = getenv('PATH');
+% if isempty(strfind(path1,':/usr/local/go/bin/bin'))
+% 	path1 = [path1 pathsep '/usr/local/go/bin/bin'];
+% end
+% setenv('PATH', path1);
+% [notok,temp] = unix('github-release');
+% if ~notok
+% 	% github-release is installed
+
+% 	% load github token
+% 	[~,github_token]=unix('echo $(<~/.git.yale.edu-token)');
+
+% 	% make a tag name
+% 	[~,tag_name] = fileparts(archive_file_name);
+
+% 	% assume that the user tagged it and pushed the tags
+
+% end
 
 % open the PDF
 open(f)

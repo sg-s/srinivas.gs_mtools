@@ -61,7 +61,10 @@ else
     all_y = NaN(length(all_x),width(A));
     
     for i = 1:width(A)
-        all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+        try
+            all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+        catch
+        end
     end
     rm_this = (width(A) - sum(isnan(all_y)') < round(width(A)/2));
     % re-sample
@@ -70,7 +73,10 @@ else
     all_y = NaN(length(all_x),width(A));
     
     for i = 1:width(A)
-        all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+        try
+            all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
+        catch
+        end
     end
 
     y = nanmean(all_y');

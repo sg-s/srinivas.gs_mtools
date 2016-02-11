@@ -87,7 +87,7 @@ switch algo
 	case 'gauss'
 		error('not coded')
 
-	case 'causal'
+	case 'causal-conv'
 		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
 		t=min(time):dt:max(time);
 		alpha = 1/window; 
@@ -105,4 +105,26 @@ switch algo
 			end
 			f(:,i) = interp1(time,ff,t);
 		end
+	case 'causal'
+		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
+		t=min(time):dt:max(time);
+		alpha = 1/window; 
+		ff = zeros(length(time),ntrials);
+		f = zeros(length(t),ntrials);
+		deltat = time(2)-time(1);
+		tt=0:deltat:1;
+		K = ((alpha^2)*exp(-alpha*tt).*tt);
+		K = (K(1:20*round(window/deltat))); K = K(:);
+		for i = 1:ntrials
+			spike_locs = find(spiketimes(:,i));
+			for j = 1:length(spike_locs)
+				this_loc = spike_locs(j);
+				try
+					ff(this_loc:this_loc+length(K)-1,i) = ff(this_loc:this_loc+length(K)-1,i) + K;
+				catch
+				end
+			end
+			f(:,i) = interp1(time,ff(:,i),t);
+		end
+
 end

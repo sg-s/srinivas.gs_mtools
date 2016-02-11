@@ -36,6 +36,10 @@ if isstruct(xdata) % inputs in wrong order
 	clear temp
 end
 
+lb.n = 1;
+lb.A = 0;
+lb.k = 0;
+
 A = x(1);
 k = x(2);
 n  =x(3);
