@@ -25,7 +25,7 @@ EqualiseX = 0;
 FixLogX = 0;
 FixLogY = 0;
 plot_buffer = .1; % how much should you zoom out of the data to show extremes?
-
+tick_length = 0.01;
 
 % evaluate option inputs
 for i = 1:nargin
@@ -34,6 +34,8 @@ end
 
 % get handle to all plots in current figure
 axesHandles = findall(gcf,'type','axes');
+
+longest_axes_length = NaN(length(axesHandles),1);
 
 % for each axis
 for i = 1:length(axesHandles)
@@ -228,10 +230,19 @@ for i = 1:length(axesHandles)
 		end
 	end
 
-	
+	% find the length of the longest axis
+	longest_axes_length(i) = max(axesHandles(i).Position(3:4));
 
 end
 clear i
+
+% set all tick marks to be the same absolute length
+tl = max(longest_axes_length)*tick_length;
+for i = 1:length(axesHandles)
+	axesHandles(i).TickLength(1) =  tl/longest_axes_length(i);
+end
+
+	% set(axesHandles(i),'TickLength',[.02 .02])
 
 
 % find all line plots and get all their X and Y extents

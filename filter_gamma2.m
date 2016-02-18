@@ -8,6 +8,15 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function f = filter_gamma2(t,p)
+
+% bounds
+lb.n = 1;
+lb.tau1 = 1;
+lb.tau2 = 1;
+lb.A = 0;
+
+ub.n = 10;
+
 switch nargin
 case 0
 	help filter_gamma2
