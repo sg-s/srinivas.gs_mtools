@@ -1,0 +1,82 @@
+% labelFigure.m
+% adds labels to each subplot of a figure so you can directly drop into a paper
+% 
+% created by Srinivas Gorur-Shandilya at 2:04 , 15 March 2016. Contact me at http://srinivas.gs/contact/
+% 
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
+function [varargout] = labelFigure(varargin)
+
+% options and defaults
+options.capitalise = false;
+options.x_offset = .1;
+options.font_size = 18;
+options.font_weight = 'bold';
+
+if ~nargin && nargout 
+	varargout{1} = options;
+end
+
+% validate and accept options
+if iseven(length(varargin))
+	for ii = 1:2:length(varargin)-1
+	temp = varargin{ii};
+    if ischar(temp)
+    	if ~any(find(strcmp(temp,fieldnames(options))))
+    		disp(['Unknown option: ' temp])
+    		disp('The allowed options are:')
+    		disp(fieldnames(options))
+    		error('UNKNOWN OPTION')
+    	else
+    		options = setfield(options,temp,varargin{ii+1});
+    	end
+    end
+end
+else
+	error('Inputs need to be name value pairs')
+end	
+
+% get all the axes from the current figure
+axesHandles = findall(gcf,'type','axes');
+
+% we need to make sure all the axes units are normalised...
+
+% sort the axes by their positions so we get sensible labels
+X = NaN(length(axesHandles),1);
+Y = NaN(length(axesHandles),1);
+for i = 1:length(axesHandles)
+	X(i) = mean(axesHandles(i).Position([1 3]));
+	Y(i) = mean(axesHandles(i).Position([2 4]));
+end
+Y = 1-Y;
+[~,idx] = sort(X.^2 + Y.^2);
+
+temp = axesHandles;
+for i = 1:length(idx)
+	temp(i) = axesHandles(idx(i));
+end
+axesHandles = temp; clear temp
+
+L = {};
+for i = length(axesHandles):-1:1
+	L{i} = char(96+i);
+end
+
+for i = length(axesHandles):-1:1
+	p = axesHandles(i).Position;
+	x = p(1) - options.x_offset*p(1); 
+	y = p(2) + p(4);
+	label_handles(i) = uicontrol('style','text');
+	label_handles(i).Units = 'normalized';
+	label_handles(i).Position(1) = x;
+	label_handles(i).Position(2) = y;
+	label_handles(i).String = L{i};
+	label_handles(i).FontSize = options.font_size;
+	label_handles(i).FontWeight = options.font_weight;
+
+end
+
+if nargout == 1
+	varargout{1} = label_handles;
+end

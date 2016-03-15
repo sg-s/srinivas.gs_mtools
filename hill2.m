@@ -10,7 +10,7 @@
 % where A is the maximum
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function r = hill2(x,xdata,A)
+function r = hill2(xdata,K_D,n,x_offset)
 switch nargin
 case 0
 	help hill2
@@ -18,18 +18,9 @@ case 0
 case 1
 	help hill2
 	error('Not enough inputs')
-case 2
-	A = max(xdata);
-	
 end
 
-k = x(1);
-n  =x(2);
-
-if min(xdata) < 0
-	error('Hill function not defined for negative values')
-end
-
-r = A*xdata.^n;
-r = r./(xdata.^n + k^n);
+xdata = xdata - x_offset;
+r = (xdata.^n)./(xdata.^n + K_D^n);
+r(xdata<eps) = 0;
 	
