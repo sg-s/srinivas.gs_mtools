@@ -3,84 +3,78 @@
 % 
 % the model has to be of the following form:
 % f = model(s,p)
+% 
 % where 
+% 
 % f is the output of the model (a 1D vector as long as s)
 % s is a stimulus vector
 % p is a structure with parameters
 % 
 % to data
-% 
-% minimum usage:
-% p = FitModel2Data(@modelname,data);
 %
 % % where data is a structure with the following fields:
 % data.response
 % data.stimulus
-% 
+%
+% minimum usage:
+% p = FitModel2Data(@modelname,data); 
+%
 % if data has extra fields, they will be ignored. 
 % if data is a a structure array, then the model will be fit to each element of the array simultaneously
 % 
-% more options:
-% p = fitModel2Data(@modelname,data,'p0',p0,'UseParallel',true,'nsteps',1000);
-% p = fitModel2Data(@modelname,data,'use_cache',true)
+% to see all the options, you can use:
 % 
-% specifying the start point using 'p0' overrides the cache. However, p0 will be set in the cache no matter what. 
-%
-% the cache can also be used to to go directly to the solution (if previously known), without optimising anything:
-% p = fitModel2Data(@modelname,data,'use_cache',true,'nsteps',0)
+% options = fitModel2Data;
+% 
 %
 % created by Srinivas Gorur-Shandilya at 12:35 , 08 December 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function p = fitModel2Data(modelname,data,varargin)
+function [varargout] = fitModel2Data(modelname,data,varargin)
 
-% defaults
-use_cache = false;
-use_parallel = true;
-nsteps = 300;
-display_type = 'iter';
-max_fun_evals = 2e4;
+
+% options and defaults
+options.use_cache = false;
+options.use_parallel = true;
+options.nsteps = 300;
+options.display_type = 'iter';
+options.max_fun_evals = 2e4;
 
 % figure out if we should make a plot or not
-make_plot = 0;
+options.make_plot = 0;
 
 calling_func = dbstack;
-being_published = 0;
 if length(calling_func) == 1
-	make_plot = 1;
+	options.make_plot = 1;
 end
 
-switch nargin 
-	case 0
-		help fitModel2Data
-		disp('The defaults are:')
-		use_cache
-		use_parallel
-		nsteps
-		display_type
-		max_fun_evals
-		return
-	case 1
-		help fitModel2Data
-		error('Not enough input arguments')
-	case 2
-		% minimum case
+if nargout && ~nargin 
+	varargout{1} = options;
+	return
+end
 
-otherwise
-	if iseven(nargin)
-    	for ii = 1:2:length(varargin)-1
-        	temp = varargin{ii};
-        	if ischar(temp)
-            	eval(strcat(temp,'=varargin{ii+1};'));
-        	end
+% validate and accept options
+if iseven(length(varargin))
+	for ii = 1:2:length(varargin)-1
+	temp = varargin{ii};
+    if ischar(temp)
+    	if ~any(find(strcmp(temp,fieldnames(options))))
+    		disp(['Unknown option: ' temp])
+    		disp('The allowed options are:')
+    		disp(fieldnames(options))
+    		error('UNKNOWN OPTION')
+    	else
+    		options = setfield(options,temp,varargin{ii+1});
     	end
-	else
-    	error('Inputs need to be name value pairs')
-	end
+    end
 end
-
-
+elseif isstruct(varargin{1})
+	% should be OK...
+	options = varargin{1};
+else
+	error('Inputs need to be name value pairs')
+end
 
 % validate inputs
 if ~isa(modelname,'function_handle')
@@ -104,7 +98,7 @@ hash = dataHash([dataHash(modelname) hash]);
 % check if seed parameter structure is provided
 if exist('p0','var')
 else
-	if use_cache
+	if options.use_cache
 		% check the cache for p0
 		p0 = cache(hash);
 		if isempty(p0)
@@ -193,8 +187,8 @@ end
 
 
 % pattern search options
-if nsteps
-	psoptions = psoptimset('UseParallel',use_parallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',display_type,'MaxIter',nsteps,'MaxFunEvals',max_fun_evals);
+if options.nsteps
+	psoptions = psoptimset('UseParallel',options.use_parallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',options.display_type,'MaxIter',options.nsteps,'MaxFunEvals',options.max_fun_evals);
 	% search
 	x = patternsearch(@(x) generalCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
 else
@@ -231,6 +225,48 @@ end
 
 
 
+if options.make_plot
+	hash = dataHash(data);
+	figHandles = findall(0,'Type','figure');
+	make_fig = 1;
+	for i = 1:length(figHandles)
+		if ~isempty(figHandles(i).Tag)
+			if strcmp(figHandles(i).Tag,hash)
+				make_fig = 0;
+				figure(figHandles(i));
+				clf(figHandles(i))
+			end
+		end
+	end
+	if make_fig
+		temp = figure; hold on
+		set(temp,'Tag',hash)
+	end
+end
+
+% make a plot showing the fit, etc. 
+if options.make_plot
+	for i = 1:length(data)
+		autoPlot(length(data),i,1);
+		hold on
+		plot(data(i).response,'k')
+		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+		plot(fp,'r')
+		% show r-square
+		r2 = rsquare(fp,data(i).response);
+		
+		title(strcat('r^2=',oval(r2)))
+		legend({'Data',char(modelname)})
+
+		if length(unique(data(i).response)) > 2
+			% fix the y scale
+			ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
+			ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
+			set(gca,'YLim',[ymin ymax])
+		end
+	end
+	prettyFig('plw',1.5,'lw',1.5,'fs',14)
+end
 
 	function c =  generalCostFunction(x,data,modelname,param_names)
 		if length(data) == 1
@@ -286,49 +322,8 @@ end
 
 	end
 
-
-
-if make_plot
-	hash = dataHash(data);
-	figHandles = findall(0,'Type','figure');
-	make_fig = 1;
-	for i = 1:length(figHandles)
-		if ~isempty(figHandles(i).Tag)
-			if strcmp(figHandles(i).Tag,hash)
-				make_fig = 0;
-				figure(figHandles(i));
-				clf(figHandles(i))
-			end
-		end
-	end
-	if make_fig
-		temp = figure; hold on
-		set(temp,'Tag',hash)
-	end
-end
-
-% make a plot showing the fit, etc. 
-if make_plot
-	for i = 1:length(data)
-		autoPlot(length(data),i,1);
-		hold on
-		plot(data(i).response,'k')
-		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
-		plot(fp,'r')
-		% show r-square
-		r2 = rsquare(fp,data(i).response);
-		
-		title(strcat('r^2=',oval(r2)))
-		legend({'Data',char(modelname)})
-
-		if length(unique(data(i).response)) > 2
-			% fix the y scale
-			ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
-			ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
-			set(gca,'YLim',[ymin ymax])
-		end
-	end
-	prettyFig('plw=1.5;','lw=1.5;','fs=14;')
+if nargout == 1
+	varargout{1} = p;
 end
 
 end % this end is for the whole function 
