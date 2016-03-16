@@ -40,6 +40,7 @@ options.use_parallel = true;
 options.nsteps = 300;
 options.display_type = 'iter';
 options.max_fun_evals = 2e4;
+options.p0 = [];
 
 % figure out if we should make a plot or not
 options.make_plot = 0;
@@ -96,7 +97,8 @@ hash = dataHash(data);
 hash = dataHash([dataHash(modelname) hash]);
 
 % check if seed parameter structure is provided
-if exist('p0','var')
+if ~isempty(options.p0)
+	p0 = options.p0;
 else
 	if options.use_cache
 		% check the cache for p0
