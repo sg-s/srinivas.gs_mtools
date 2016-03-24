@@ -41,6 +41,9 @@ options.nsteps = 300;
 options.display_type = 'iter';
 options.max_fun_evals = 2e4;
 options.p0 = [];
+options.lb = [];
+options.ub = [];
+options.minimise_r2 = false;
 
 % figure out if we should make a plot or not
 options.make_plot = 0;
@@ -115,6 +118,14 @@ f = fieldnames(p0);
 param_names = f(param_names);
 default_x0 = struct2mat(p0);
 		
+
+if ~isempty(options.ub)
+	ub = options.ub;
+end
+
+if ~isempty(options.lb)
+	lb = options.lb;
+end
 
 % check if bounds specified
 if ~exist('ub','var')
@@ -192,7 +203,11 @@ end
 if options.nsteps
 	psoptions = psoptimset('UseParallel',options.use_parallel, 'Vectorized', 'off','Cache','on','CompletePoll','on','Display',options.display_type,'MaxIter',options.nsteps,'MaxFunEvals',options.max_fun_evals);
 	% search
-	x = patternsearch(@(x) generalCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+	if options.minimise_r2
+		x = patternsearch(@(x) r2CostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+	else
+		x = patternsearch(@(x) generalCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
+	end
 else
 	p = p0;
 	return
@@ -244,27 +259,36 @@ if options.make_plot
 		temp = figure; hold on
 		set(temp,'Tag',hash)
 	end
-end
-
-% make a plot showing the fit, etc. 
-if options.make_plot
 	for i = 1:length(data)
-		autoPlot(length(data),i,1);
-		hold on
-		plot(data(i).response,'k')
-		fp = modelname(data(i).stimulus,mat2struct(x,param_names));
-		plot(fp,'r')
-		% show r-square
-		r2 = rsquare(fp,data(i).response);
-		
-		title(strcat('r^2=',oval(r2)))
-		legend({'Data',char(modelname)})
+		if options.minimise_r2
+			autoPlot(length(data),i,1);
+			hold on
+			t = 1:length(data(i).response);
+			fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+			plotyy(t,data(i).response,t,fp)
+			% show r-square
+			r2 = rsquare(fp,data(i).response);
+			
+			title(strcat('r^2=',oval(r2)))
+			legend({'Data',char(modelname)})
+		else
+			autoPlot(length(data),i,1);
+			hold on
+			plot(data(i).response,'k')
+			fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+			plot(fp,'r')
+			% show r-square
+			r2 = rsquare(fp,data(i).response);
+			
+			title(strcat('r^2=',oval(r2)))
+			legend({'Data',char(modelname)})
 
-		if length(unique(data(i).response)) > 2
-			% fix the y scale
-			ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
-			ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
-			set(gca,'YLim',[ymin ymax])
+			if length(unique(data(i).response)) > 2
+				% fix the y scale
+				ymax = 1.1*max(data(i).response(~isnan(data(i).response)));
+				ymin = 0.9*min(data(i).response(~isnan(data(i).response)));
+				set(gca,'YLim',[ymin ymax])
+			end
 		end
 	end
 	prettyFig('plw',1.5,'lw',1.5,'fs',14)
@@ -304,6 +328,62 @@ end
 			
 		else
 			% fit to multiple data sets at the same time
+			c = NaN(length(data),1);
+			w = zeros(length(data),1);
+			for i = 1:length(data)
+				fp = modelname(data(i).stimulus,mat2struct(x,param_names));
+				c(i) = cost2(data(i).response,fp);
+				w(i) = sum(~isnan(data(i).response));
+				w(i) = w(i)/std(data(i).response(~isnan(data(i).response)));
+			end
+			% take a weighted average of the costs
+			w = w/max(w);
+			c = mean(c.*w);
+
+		end
+
+		if isnan(c)
+			c = Inf;
+		end
+
+	end
+
+	function c =  r2CostFunction(x,data,modelname,param_names)
+		if length(data) == 1
+			% only fit to one data set
+			if length(unique(data.response)) == 2
+				% binary data, use cumsum - linear trend as proxy
+				if width(data.response) > 1
+					error('This case not coded. 348')
+					% many trials of one data set. solve for each separately
+					c = 0;
+					for i = 1:width(data.response)
+						fp = modelname(data.stimulus(:,i),mat2struct(x,param_names));
+						a = cumsum(data.response(:,i));
+						a = a(:);
+						a = a - linspace(a(1),a(end),length(a))';
+						b = cumsum(fp); b= b(:);
+						b = b - linspace(b(1),b(end),length(b))';
+						c = c + cost2(a,b);
+					end
+				else
+					a = cumsum(data.response);
+					a = a(:);
+					a = a - linspace(a(1),a(end),length(a))';
+					b = cumsum(fp); b= b(:);
+					b = b - linspace(b(1),b(end),length(b))';
+					c = cost2(a,b);
+				end
+			else
+				% normal data
+				fp = modelname(data.stimulus,mat2struct(x,param_names));
+				c = 1-rsquare(data.response,fp);
+			
+			end
+			
+		else
+			% fit to multiple data sets at the same time
+			error('This case not coded. 377')
 			c = NaN(length(data),1);
 			w = zeros(length(data),1);
 			for i = 1:length(data)
