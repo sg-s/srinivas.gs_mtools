@@ -38,6 +38,7 @@ options.tick_length = 0.01;
 
 if nargout && ~nargin 
 	varargout{1} = options;
+	return
 end
 
 % validate and accept options
@@ -179,7 +180,8 @@ for i = 1:length(axesHandles)
 	end
 
 	% find the length of the longest axis
-	longest_axes_length(i) = max(axesHandles(i).Position(3:4));
+	pos_temp = get(axesHandles(i),'Position');
+	longest_axes_length(i) = max(pos_temp(3:4));
 
 end
 clear i
@@ -187,10 +189,12 @@ clear i
 % set all tick marks to be the same absolute length
 tl = max(longest_axes_length)*options.tick_length;
 for i = 1:length(axesHandles)
-	axesHandles(i).TickLength(1) =  tl/longest_axes_length(i);
+	tl_temp = get(axesHandles(i),'TickLength');
+	tl_temp(1) =  tl/longest_axes_length(i);
+	set(axesHandles(i),'TickLength',tl_temp);
+
 end
 
-	% set(axesHandles(i),'TickLength',[.02 .02])
 
 
 % find all line plots and get all their X and Y extents

@@ -377,7 +377,7 @@ end
 			else
 				% normal data
 				fp = modelname(data.stimulus,mat2struct(x,param_names));
-				c = 1-rsquare(data.response,fp);
+				c = 1-abs(rsquare(data.response,fp));
 			
 			end
 			

@@ -11,6 +11,11 @@
 % labels is a cell array what is M elements long, where you want to cluster into M clusters
 % idx is a vector N elements long
 % 
+% in addition, you can also two more arguments:
+% idx = manualCluster(R,X,labels,runOnClick,runOnClick_data)
+% where runOnClick is a function handle that manualCluster will attempt to run as follows:
+% runOnClick(runOnClick_data,idx,cp)
+% 
 % created by Srinivas Gorur-Shandilya at 10:53 , 03 September 2015. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
@@ -83,14 +88,16 @@ uiwait(hmc);
 
     function addToCallback(src,~)
         editon = 1;
-        this_cluster_name = src.String{src.Value};
+        src_string = get(src,'String');
+        src_value = get(src,'Value');
+        this_cluster_name = src_string{src_value};
         set(hmc,'Name',['Circle points to add to ' this_cluster_name]);
-        set(hmc,'Color',c(src.Value,:));
+        set(hmc,'Color',c(src_value,:));
         ifh = imfreehand(hm1);
         p = getPosition(ifh);
         inp = inpolygon(R(1,:),R(2,:),p(:,1),p(:,2));
 
-        idx(inp) = src.Value;
+        idx(inp) = src_value;
         clusterPlot;
         editon = 0;
         set(hmc,'Color','w');
