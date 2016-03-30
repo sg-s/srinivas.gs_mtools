@@ -11,7 +11,7 @@ function [varargout] = labelFigure(varargin)
 % options and defaults
 options.capitalise = false;
 options.x_offset = .1;
-options.font_size = 18;
+options.font_size = 20;
 options.font_weight = 'bold';
 
 if ~nargin && nargout 
@@ -39,6 +39,24 @@ end
 
 % get all the axes from the current figure
 axesHandles = findall(gcf,'type','axes');
+
+% remove suptitle from this list
+rm_this = false(length(axesHandles),1);
+for i = 1:length(axesHandles)
+	if strcmp(get(axesHandles(i),'Tag'),'suptitle')
+		rm_this(i) = true;
+	end
+end
+axesHandles(rm_this) = [];
+
+% remove axes with identical positions (probably plotyy axes)
+ap = NaN(length(axesHandles),1);
+for i = 1:length(axesHandles)
+	ap(i) = sum((2.^(1:4)).*([axesHandles(i).Position]));
+end
+[~,use_these] = unique(ap);
+axesHandles = axesHandles(use_these);
+
 
 % we need to make sure all the axes units are normalised...
 
