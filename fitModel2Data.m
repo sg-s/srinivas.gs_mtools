@@ -35,7 +35,7 @@ function [varargout] = fitModel2Data(modelname,data,varargin)
 
 
 % options and defaults
-options.use_cache = false;
+options.use_cache = true;
 options.use_parallel = true;
 options.nsteps = 300;
 options.display_type = 'iter';
@@ -95,7 +95,7 @@ else
 	error('RTFM')
 end
 
-% hash the data
+% hash the data and model name together 
 hash = dataHash(data);
 hash = dataHash([dataHash(modelname) hash]);
 
@@ -223,27 +223,28 @@ hash2 = dataHash(['best solution to ' hash]);
 best_cost = cache(hash2);
 if isempty(best_cost)
 	% first time, cache this
-	% cache(hash,[]);
-	% cache(hash,p);
-	% % also cache the cost of this solution
-	% cache(hash2,[]);
-	% cache(hash2,current_cost);
+	cache(hash,p);
+	% also cache the cost of this solution
+	cache(hash2,current_cost);
 else
 	% check if current cost is lower than best cost
-	if current_cost < best_cost
+	if current_cost > best_cost
+		disp('This is not the best possible parameter set. For this dataset, these parameters:')
+		disp(cache(hash))
+		disp('do a better job, with a cost of:')
+		disp(best_cost)
+	else
 		% update cache
-		% cache(hash,[]);
-		% cache(hash,p);
-		% % also cache the cost of this solution
-		% cache(hash2,[]);
-		% cache(hash2,current_cost);
+		cache(hash,p);
+		% also cache the cost of this solution
+		cache(hash2,current_cost);
+		disp('This is the best known parameter set for this data')
 	end
 end
 
 
 
 if options.make_plot
-	hash = dataHash(data);
 	figHandles = findall(0,'Type','figure');
 	make_fig = 1;
 	for i = 1:length(figHandles)
