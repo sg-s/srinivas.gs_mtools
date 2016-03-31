@@ -11,7 +11,7 @@ function [handles, data] = plotPieceWiseLinear(A,B,varargin)
 handles = [];
 data = [];
 
-% defualts	
+% defualts  
 nbins = 10;
 LineWidth = 2;
 LineStyle = '-';
@@ -20,29 +20,34 @@ trim_end = false;
 make_plot = true;
 Color = [0 0 0];
 use_std = false;
-normalise = false;
+proportional_bins = true;
+show_error = true;
 
 if ~nargin
     help plotPieceWiseLinear
     return
 else
     if iseven(nargin)
-    	for ii = 1:2:length(varargin)-1
-        	temp = varargin{ii};
-        	if ischar(temp)
-            	eval(strcat(temp,'=varargin{ii+1};'));
-        	end
-    	end
-	else
-    	error('Inputs need to be name value pairs')
-	end
+        for ii = 1:2:length(varargin)-1
+            temp = varargin{ii};
+            if ischar(temp)
+                eval(strcat(temp,'=varargin{ii+1};'));
+            end
+        end
+    else
+        error('Inputs need to be name value pairs')
+    end
 end
 
 assert(length(A) == length(B),'Inputs should have equal lengths')
 
 % is it a matrix or a vector?
 if isvector(A)
-    [x,y,xe,ye] = constructPWL(A,B,nbins);
+    if proportional_bins
+        [x,y,xe,ye] = constructPWL(A,B,nbins);
+    else
+        [x,y,xe,ye] = constructPWL_equal_bins(A,B,nbins);
+    end
 else
     % it's a matrix. make sure it's oriented properly
     if size(A,1) < size(A,1)
@@ -93,18 +98,17 @@ if trim_end
     ye = ye(2:end-1);
 end
 
-if normalise
-    ye = ye/max(y);
-    y = y/max(y);
-end
-
 if make_plot
-    if nbins < 20
-        handles = errorbar(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
+    if show_error
+        if nbins < 20
+            handles = errorbar(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
+        else
+            [temp1, temp2] = errorShade(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
+            handles.line = temp1;
+            handles.shade = temp2;
+        end
     else
-        [temp1, temp2] = errorShade(x,y,ye,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
-        handles.line = temp1;
-        handles.shade = temp2;
+        handles = plot(x,y,'Color',Color,'LineWidth',LineWidth,'Marker',Marker,'LineStyle',LineStyle);
     end
 end
 
@@ -139,6 +143,38 @@ data.xe = xe;
                 ye(ci) = sem(b(l==ci));
             end
         end
+    end
+
+    function [x,y,xe,ye] = constructPWL_equal_bins(a,b,nbins)
+        % remove NaNs
+        rm_this = isnan(a) | isnan(b);
+        a(rm_this) = [];
+        b(rm_this) = [];
+
+        % make equally spaced bins along the x-axis
+        bin_edges = linspace(nanmin(A), nanmax(A),nbins+1);
+        y = NaN(nbins,1);
+        x = NaN(nbins,1);
+        ye = y; xe = x;
+
+        for ci = 1:length(x)
+            this_b = (b(a > bin_edges(ci) & a < bin_edges(ci+1)));
+            this_a = (a(a > bin_edges(ci) & a < bin_edges(ci+1)));
+            rm_this = isnan(this_b) | isnan(this_a);
+            this_a(rm_this) = []; this_b(rm_this) = [];
+            if ~isempty(this_b)
+                y(ci) = mean(this_b);
+                x(ci) = mean(this_a);
+                if use_std
+                    ye(ci) = std(this_b);
+                    xe(ci) = std(this_a);
+                else
+                    ye(ci) = std(this_b)/sqrt(length(this_b));
+                    xe(ci) = std(this_a)/sqrt(length(this_a));
+                end
+            end
+        end
+        
     end
 
 end
