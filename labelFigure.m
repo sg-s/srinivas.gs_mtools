@@ -92,7 +92,7 @@ for i = length(axesHandles):-1:1
 	label_handles(i).String = L{i};
 	label_handles(i).FontSize = options.font_size;
 	label_handles(i).FontWeight = options.font_weight;
-
+	label_handles(i).BackgroundColor = get(gcf,'Color');
 end
 
 if nargout == 1
