@@ -76,7 +76,6 @@ for j = 1:length(dep_files)
 end
 dep_files =  unique([dep_files allfiles(is_dep)]);
 
-
 % find which folders they are in
 allfolders = {};
 for i = 1:length(dep_files)

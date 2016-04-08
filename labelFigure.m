@@ -10,7 +10,7 @@ function [varargout] = labelFigure(varargin)
 
 % options and defaults
 options.capitalise = false;
-options.x_offset = .1;
+options.x_offset = .01;
 options.font_size = 20;
 options.font_weight = 'bold';
 
@@ -36,6 +36,20 @@ end
 else
 	error('Inputs need to be name value pairs')
 end	
+
+if length(findobj) == 1
+	return
+end
+
+% first wipe all previously existing labels in the figure
+figure_children = get(gcf,'Children');
+rm_this = false(length(figure_children));
+for i = 1:length(figure_children)
+	if strcmp(figure_children(i).Tag,'axes-label')
+		rm_this(i) = true;
+	end
+end
+delete(figure_children(rm_this))
 
 % get all the axes from the current figure
 axesHandles = findall(gcf,'type','axes');
@@ -83,16 +97,23 @@ end
 
 for i = length(axesHandles):-1:1
 	p = axesHandles(i).Position;
-	x = p(1) - options.x_offset*p(1); 
+	x = p(1) - options.x_offset*p(3); 
 	y = p(2) + p(4);
 	label_handles(i) = uicontrol('style','text');
 	label_handles(i).Units = 'normalized';
+
 	label_handles(i).Position(1) = x;
 	label_handles(i).Position(2) = y;
+	% trim the position -- they're always too wide
+	label_handles(i).Position(3) = label_handles(i).Position(3)/3;
+
 	label_handles(i).String = L{i};
 	label_handles(i).FontSize = options.font_size;
 	label_handles(i).FontWeight = options.font_weight;
 	label_handles(i).BackgroundColor = get(gcf,'Color');
+	label_handles(i).Tag = 'axes-label';
+	uistack(label_handles(i),'top')
+
 end
 
 if nargout == 1
