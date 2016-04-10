@@ -13,6 +13,7 @@ options.capitalise = false;
 options.x_offset = .01;
 options.font_size = 20;
 options.font_weight = 'bold';
+options.delete_all = false;
 
 if ~nargin && nargout 
 	varargout{1} = options;
@@ -53,6 +54,10 @@ delete(figure_children(rm_this))
 
 % get all the axes from the current figure
 axesHandles = findall(gcf,'type','axes');
+
+if options.delete_all
+	return
+end
 
 % remove suptitle from this list
 rm_this = false(length(axesHandles),1);
