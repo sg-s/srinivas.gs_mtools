@@ -209,7 +209,7 @@ if options.nsteps
 		x = patternsearch(@(x) generalCostFunction(x,data,modelname,param_names),x0,[],[],[],[],lb,ub,psoptions);
 	end
 else
-	p = p0;
+	varargout{1} = p0;
 	return
 end
 
