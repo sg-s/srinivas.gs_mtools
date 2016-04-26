@@ -18,7 +18,7 @@
 % fitFilter2Data 			toolbox to fit linear filters to time series
 % kontroller2 				experimental, event-driven version of kontroller
 % fly-voyeur 				automated scoring of copulation behaviour in flies
-% DeepLearnToolbox* 		toolbox for deep learning
+% fitModel2Data				fits models to data
 % manipulate 				Mathematica-style function and model manipulation 
 %
 % [*] third party code
@@ -92,7 +92,7 @@ if exist(temp_path,'dir') == 0
 end
 a = which('searchPath');
 if isempty(a)
-	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/master/searchPath.m',[temp_path 'searchPath.m']);
+	urlwrite('https://raw.githubusercontent.com/sg-s/srinivas.gs_mtools/dev/src/file-tools/searchPath.m',[temp_path 'searchPath.m']);
 end
 addpath(temp_path)
 
@@ -148,6 +148,19 @@ for i = 1:length(p)
 	    disp('Setting path...')
 	    addpath(install_path)
 	    savepath
+
+	    % add the src folder if it exists
+	    if ispc
+	    	if exist([install_path,'\src'],'dir')==7
+	    		addpath(genpath([install_path,'\src']))
+	    		savepath
+	    	end
+	    else
+	    	if exist([install_path,'/src'],'dir')==7
+	    		addpath(genpath([install_path,'/src']))
+	    		savepath
+	    	end
+	    end
 		
 	end
 
