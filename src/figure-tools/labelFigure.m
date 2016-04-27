@@ -14,6 +14,7 @@ options.x_offset = .01;
 options.font_size = 20;
 options.font_weight = 'bold';
 options.delete_all = false;
+options.column_first = false;
 
 if ~nargin && nargout 
 	varargout{1} = options;
@@ -78,6 +79,12 @@ axesHandles = axesHandles(use_these);
 
 
 % we need to make sure all the axes units are normalised...
+if length(unique({axesHandles.Units})) == 1
+	assert(strcmp(unique({axesHandles.Units}),'normalized'),'FATAL: All axes units must be "normalized"')
+else
+	error('FATAL: All axes units must be "normalized". Multiple axes units detected.')
+end
+
 
 % sort the axes by their positions so we get sensible labels
 X = NaN(length(axesHandles),1);
@@ -87,7 +94,11 @@ for i = 1:length(axesHandles)
 	Y(i) = mean(axesHandles(i).Position([2 4]));
 end
 Y = 1-Y;
-[~,idx] = sort(X.^2 + Y.^2);
+if options.column_first
+	[~,idx] = sort(10*(X.^2) + Y.^2);
+else
+	[~,idx] = sort(X.^2 + 10*(Y.^2));
+end
 
 temp = axesHandles;
 for i = 1:length(idx)
