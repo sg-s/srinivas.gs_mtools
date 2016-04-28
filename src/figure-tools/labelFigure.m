@@ -16,8 +16,9 @@ options.font_weight = 'bold';
 options.delete_all = false;
 options.column_first = false;
 
-if ~nargin && nargout 
+if ~nargin && nargout == 1
 	varargout{1} = options;
+	return
 end
 
 % validate and accept options
@@ -64,6 +65,9 @@ end
 rm_this = false(length(axesHandles),1);
 for i = 1:length(axesHandles)
 	if strcmp(get(axesHandles(i),'Tag'),'suptitle')
+		rm_this(i) = true;
+	end
+	if strcmp(get(axesHandles(i),'Tag'),'inset')
 		rm_this(i) = true;
 	end
 end
@@ -132,6 +136,6 @@ for i = length(axesHandles):-1:1
 
 end
 
-if nargout == 1
-	varargout{1} = label_handles;
+if nargout == 2
+	varargout{2} = label_handles;
 end
