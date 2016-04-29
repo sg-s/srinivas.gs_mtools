@@ -42,9 +42,14 @@ for i = 1:length(all_files)
 		end
 		clear movie
 
+		% compute max, mean and std along time axis
+		disp('Computing projections...')
+		max_proj = max(images,[],3);
+		mean_proj = mean(images,3);
+
 		% save using the same name
 		disp('Saving as a HDF5 .mat file...')
 		
-		save(matfile_name,'images','-v7.3');
+		save(matfile_name,'images','max_proj','mean_proj','-v7.3');
 	end
 end
