@@ -8,16 +8,22 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [l] = labelByPercentile(x,nbins)
+function l = labelByPercentile(x,nbins)
+
+if ~nargin
+	help labelByPercentile
+	return
+end
 
 assert(isvector(x),'First argument should be a vector')
 assert(isscalar(nbins),'Second argument should be a vector')
 assert(nbins>1,'nbins should be greater than 1')
 
+x = x(:);
 l = nbins+zeros*x;
 
 % sort
-[sx,idx] = sort(x);
+[~,idx] = sort(x);
 c = floor(length(x)/nbins);
 
 

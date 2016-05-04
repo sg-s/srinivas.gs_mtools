@@ -21,7 +21,6 @@ dirty = false;
 filename = '';
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
-assert(nargin < 3,'Too many inputs!')
 filename = findFileToPublish;
 if ~nargin
 else
