@@ -81,7 +81,7 @@ for i = 1:length(axesHandles)
 			y = get(c(j),'YData');
 
 			% subsample only if its very big, and if it's on a linear scale
-			if length(x) > 1e4 && strcmp(c(j).Parent.XScale,'linear') && strcmp(c(j).Parent.YScale,'linear')
+			if length(x) > 1e3 && strcmp(c(j).Parent.XScale,'linear') && strcmp(c(j).Parent.YScale,'linear')
 
 				% find the axes limits and size
 				assert(strcmp(c(j).Parent.Units,'normalized'),'Expected axes units to be "normalized"')
