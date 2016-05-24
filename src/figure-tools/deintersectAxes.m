@@ -74,6 +74,10 @@ axY.YTick = ax.YTick;
 delete(axX.Children)
 delete(axY.Children)
 
+% remove titles from the new axes
+title(axX,'');
+title(axY,'');
+
 % turn axes off in parent
 axis(ax,'off')
 uistack(ax,'top')
