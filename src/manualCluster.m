@@ -39,7 +39,11 @@ assert(iscell(labels),'Labels should be cell array')
 idx = zeros(1,length(R)); % stores the cluster ID
 
 % make a colour scheme
-c = parula(length(labels)+1);
+if length(labels) < 5
+    c = lines(length(labels));
+else
+    c = parula(length(labels)+1);
+end
 
 % make the UI
 hmc = figure('Name','manualCluster','WindowButtonDownFcn',@mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@closeManualCluster); hold on,axis off
@@ -50,7 +54,7 @@ uicontrol(hmc,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','Fo
 plot_handles = [];
 plot_handles2 = [];
 
-prettyFig;
+prettyFig('font_units','points');
 
 
 editon = 0; % this C a mode selector b/w editing and looking

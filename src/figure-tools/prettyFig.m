@@ -35,10 +35,21 @@ options.FixLogX = false;
 options.FixLogY = false;
 options.plot_buffer = .1; % how much should you zoom out of the data to show extremes?
 options.tick_length = 0.01; 
+options.x_minor_ticks = false;
+options.y_minor_ticks = false;
+options.font_units = 'points';
 
 if nargout && ~nargin 
 	varargout{1} = options;
 	return
+end
+
+% if a axes handle is provided, use it
+if isa(varargin{1},'matlab.ui.Figure')
+	use_this_figure = varargin{1};
+	varargin(1) = [];
+else
+	use_this_figure = gcf;
 end
 
 % validate and accept options
@@ -64,8 +75,8 @@ else
 end
 
 
-% get handle to all plots in current figure
-axesHandles = findall(gcf,'type','axes');
+% get handle to all plots in figure
+axesHandles = findall(use_this_figure,'type','axes');
 
 longest_axes_length = NaN(length(axesHandles),1);
 
@@ -75,8 +86,12 @@ for i = 1:length(axesHandles)
 	oldx = get(axesHandles(i),'XLim');
 	oldy = get(axesHandles(i),'YLim');
 
+	% first change the units 
+	set(axesHandles(i),'FontUnits',options.font_units)
 	% set line width and font size
 	set(axesHandles(i),'FontSize',options.fs,'LineWidth',options.lw)
+	% change it back to points
+	axesHandles(i).FontUnits = 'points';
 
 	% rescale the X and Y limits, but only if the user has not manually specified something
 	ph = findall(axesHandles(i),'type','line');
@@ -126,11 +141,16 @@ for i = 1:length(axesHandles)
 	end
 
 	% turn the minor ticks on
-	set(axesHandles(i),'XMinorTick','on','YMinorTick','on')	
+	if options.x_minor_ticks
+		set(axesHandles(i),'XMinorTick','on');
+	end
+	if options.y_minor_ticks
+		set(axesHandles(i),'YMinorTick','on');
+	end	
 
 
-	% there should be more than 1 Xtick when we have a log scale
-	if  length(get(axesHandles(i),'XTick')) < 2 && strcmp(get(axesHandles(i),'XScale'),'log') && options.FixLogX
+	% there should be more than 2 Xtick when we have a log scale
+	if  length(get(axesHandles(i),'XTick')) < 3 && strcmp(get(axesHandles(i),'XScale'),'log') && options.FixLogX
 		c = get(axesHandles(i),'Children');
 		minlog = Inf; maxlog = -Inf;
 		for k = 1:length(c)
@@ -211,7 +231,9 @@ clear j
 % find all titles
 th = findall(axesHandles,'type','text');
 for j = 1:length(th)
+	set(th(j),'FontUnits',options.font_units)
 	set(th(j),'FontSize',options.fs)
+	set(th(j),'FontUnits','points')
 end
 clear j
 
@@ -260,6 +282,6 @@ for i = 1:length(axesHandles)
 	set(axesHandles(i),'TickDir','out');
 end
 
-set(gcf,'Color','w')
+set(use_this_figure,'Color','w')
 
 warning on
