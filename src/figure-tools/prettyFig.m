@@ -45,12 +45,18 @@ if nargout && ~nargin
 end
 
 % if a axes handle is provided, use it
-if isa(varargin{1},'matlab.ui.Figure')
-	use_this_figure = varargin{1};
-	varargin(1) = [];
-else
+if nargin == 0
 	use_this_figure = gcf;
+else
+	if isa(varargin{1},'matlab.ui.Figure')
+		use_this_figure = varargin{1};
+		varargin(1) = [];
+	else
+		use_this_figure = gcf;
+	end
 end
+
+
 
 % validate and accept options
 if iseven(length(varargin))
