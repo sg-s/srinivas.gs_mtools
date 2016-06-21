@@ -2,14 +2,20 @@
 % finds the lag between two vectors X and Y and the mean in a preceding window of length L
 % usage:
 % %
-% [lag, mean_x, max_corr] = findLagAndMeanInWindow(X,Y,L)
+% [lag, mean_x, max_corr] = findLagAndMeanInWindow(X,Y,L,step_size)
 % where X and Y are vectors of equal length
 % and L is a integer specifying the window size
+% and step_size is the increment to move the window along the x axis
 % 
 % lag, mean_x and max_corr are vectors as long as X or Y
 % 
 
 function [lag, mean_x, max_corr] = findLagAndMeanInWindow(X,Y,L,step_size)
+
+if ~nargin
+	help findLagAndMeanInWindow
+	return
+end
 
 assert(isvector(X),'first argument should be a vector')
 assert(isvector(Y),'second argument should be a vector')
