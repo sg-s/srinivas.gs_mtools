@@ -278,11 +278,6 @@ if options.EqualiseX
 
 end
 
-% turn on minor ticks
-for i = 1:length(axesHandles)
-	set(axesHandles(i),'XMinorTick','on');
-end
-
 % flip tick direction
 for i = 1:length(axesHandles)
 	set(axesHandles(i),'TickDir','out');

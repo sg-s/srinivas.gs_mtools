@@ -98,3 +98,6 @@ axX.Position(2) = axX.Position(2) - options.pixel_offset/sz(2);
 
 % move the Y axis to the left a bit
 axY.Position(1) = axY.Position(1) - options.pixel_offset/sz(1);
+
+% move the hidden Y axis to the right -- this way we can manually specify the XLim to get a nice tick
+axX.YAxisLocation = 'right';
