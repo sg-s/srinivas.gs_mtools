@@ -5,7 +5,7 @@
 % prettyFig; % will automatically make the current figure prettier
 % 
 % you can tweak individual options if you like. for example:
-% prettyFig('options.lw',4) % set line width of axes to 4 
+% prettyFig('lw',4) % set line width of axes to 4 
 % prettyFig('tick_length',.005) % change the tick length
 % 
 % to see all the options, you can 
@@ -15,10 +15,11 @@
 %
 % prettyFig(options)
 %
-% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+% To see this help message, type:
+% help prettyFig
+%
+% part of mtools, which lives here:
+% https://github.com/sg-s/srinivas.gs_mtools
 
 function [varargout] = prettyFig(varargin)
 

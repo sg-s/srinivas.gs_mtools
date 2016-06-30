@@ -1,10 +1,28 @@
 %% shrinkDataInPlot
 % custom compression engine that selectively throws away points in a plot to keep them visually identical, but much smaller in size
 % use this to make EPS figures that are crisp but small
-% this is primarily meant to be called by shrinkFigure
-% use this independently only if you know what you're doing
+% usage:
+% shrinkDataInPlot(handle_to_plot_object,distance_to_next_point)
+% handle_to_plot_object can be a handle to a line object
+% or it can be a handle to a whole axis. 
+%
+% distance_to_next_point is the distance from one data point to the next, in pixels
+% if you increase this, your plot will get smaller, but less accurate. 
+% a good starting value is distance_to_next_point = 1
+%
+% WARNING: 
+% shrinkDataInPlot irreversibly alters data on your plot. You will have to redo your plot if you want to undo changes.
+% 
+% part of mtools, which lives here:
+% https://github.com/sg-s/srinivas.gs_mtools
+
 
 function [] = shrinkDataInPlot(handle_to_plot_object,distance_to_next_point)
+
+if ~nargin
+	help shrinkDataInPlot
+	return
+end
 
 if isa(handle_to_plot_object,'matlab.graphics.axis.Axes')
 	temp = handle_to_plot_object.Children;

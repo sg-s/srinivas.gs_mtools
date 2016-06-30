@@ -1,12 +1,11 @@
 % movePlot.m
 % moves the given plot up down, left or right
 % usage:
-% movePlot('up',0.1)
+% movePlot(axis_handle,'up',0.1) % units are normalised 
+% movePlot(axis_handle,'right',0.1)
 % 
-% created by Srinivas Gorur-Shandilya at 2:44 , 29 September 2015. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+% part of mtools, which lives here:
+% https://github.com/sg-s/srinivas.gs_mtools
 
 function [] = movePlot(plot_handle,direction,frac_dist)
 

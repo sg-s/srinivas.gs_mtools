@@ -1,7 +1,8 @@
 % deintersectAxes
 % magical function that visually mimics axes that do not intersect
 % only to be used on publication-ready figures;
-% this takes extreme liberties with your figure
+% this takes extreme liberties with your figure -- 
+% do not do anything else to a figure after you have run this on a axis
 %
 % part of mtools, which lives here:
 % https://github.com/sg-s/srinivas.gs_mtools
