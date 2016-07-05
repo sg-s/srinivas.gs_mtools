@@ -30,6 +30,16 @@ else
 	if isa(varargin{1},'matlab.graphics.axis.Axes')
 		ax = varargin{1};
 		varargin(1) = [];
+		if length(ax) > 1
+			for i = 1:length(ax)
+				if ~isempty(varargin)
+					deintersectAxes(ax(i),varargin);
+				else
+					deintersectAxes(ax(i));
+				end
+			end
+			return
+		end
 	else
 		ax = gca;
 	end

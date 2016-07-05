@@ -9,10 +9,9 @@
 
 function [] = markObjects(im,r)
 
-figure, hold on
 imagesc(im), hold on
 for j = 1:length(r)
-	plot(r(j).Centroid(1),r(j).Centroid(2),'r+','MarkerSize',4)
+	plot(r(j).Centroid(1),r(j).Centroid(2),'ro','MarkerSize',10)
 end
 axis image
 axis ij
