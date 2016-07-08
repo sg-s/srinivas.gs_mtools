@@ -29,6 +29,7 @@ switch nargin
 			load('cached.mat','hash')
 			disp('Here is a list of hashes in the current hash table:')
 			temp = setdiff(hash,'hash');
+			keyboard
 			disp(temp(:))
 		catch
 		end
@@ -40,7 +41,7 @@ switch nargin
 		error('Too many input arguments.')
 end
 
-maxCacheSize = 500; % in MB
+maxCacheSize = 1000; % in MB
 
 root = [pwd oss];
 

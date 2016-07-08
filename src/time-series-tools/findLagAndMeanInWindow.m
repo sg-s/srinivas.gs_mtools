@@ -46,6 +46,9 @@ end
 lag = NaN*X;
 mean_x = NaN*X;
 max_corr = NaN*X;
+raw_xcorr = NaN(length(L+1:step_size:length(X)),2*L+1);
+c = 1;
+
 
 for i = L+1:step_size:length(X)
 	x = X(i-L:i); y = Y(i-L:i);
@@ -54,11 +57,15 @@ for i = L+1:step_size:length(X)
 	y = y - mean(y); y = y/std(y);
 	xc = xcorr(y,x);
 	xc = xc/L;
+	raw_xcorr(c,:) = xc;
 	[max_corr(i),lag(i)] = max(xc);
+
+	c = c + 1;
 
 end
 
 lag = lag - L;
+
 
 result.lag = lag;
 result.mean_x = mean_x;

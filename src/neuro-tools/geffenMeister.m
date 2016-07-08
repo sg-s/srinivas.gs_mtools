@@ -17,32 +17,33 @@ if ~nargin
 	return
 end
 
+
 if isvector(resp)
 	error('first argument has to be a matrix')
 end
-if ~isvector(pred)
-	pred = mean2(pred);
-end
 
+% make sure matrices are oriented properly
 if size(resp,2) > size(resp,1)
 	resp = resp';
 end
-ntrials = width(resp);
+if size(pred,2) > size(pred,1)
+	pred = pred';
+end
+
+
+if ~isvector(pred)
+	pred = mean(pred,2);
+end
 
 % compute quantities of interest
-trial_averaged_resp = mean2(resp);
-mean_resp = mean(trial_averaged_resp);
+trial_averaged_resp = nanmean(resp,2);
+mean_resp = nanmean(trial_averaged_resp);
 
-P_S = mean((trial_averaged_resp - mean_resp).^2);
+P_S = nanmean((trial_averaged_resp - mean_resp).^2);
 
+P_N  = mean(mean((resp - repmat(trial_averaged_resp,1,width(resp))).^2,2));
 
-temp = resp-repmat(trial_averaged_resp,1,width(resp));
-temp = temp.^2;
-P_N  = mean(mean(temp'));
-
-temp= (pred-trial_averaged_resp).^2;
-temp(isnan(temp)) = [];
-P_R = mean(temp);
+P_R = nanmean((pred - trial_averaged_resp).^2);
 
 qx = sqrt(P_S/P_N);
 qy = sqrt(P_S/P_R);
