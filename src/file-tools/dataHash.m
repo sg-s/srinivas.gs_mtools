@@ -134,6 +134,9 @@ persistent usetypecastx
 if isempty(usetypecastx)
    usetypecastx = ~isempty(which('typecastx'));  % Run the slow WHICH once only
 end
+if ispc
+   usetypecastx = false;
+end
 
 % Default options: -------------------------------------------------------------
 Method    = 'MD5';
