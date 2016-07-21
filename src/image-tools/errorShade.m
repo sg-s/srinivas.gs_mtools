@@ -101,17 +101,17 @@ if length(x) < 1e3
 	h = shadedErrorBar(x,y,e,{'Color',Color,'LineWidth',LineWidth});
 	line_handle = [h.mainLine h.edge(1) h.edge(2)];
 	shade_handle = h.patch;
-	set(line_handle,'LineWidth',3);
+	set(line_handle,'LineWidth',LineWidth);
 else
 	% first plot the error
 	ee = [y-e y+e NaN*e]';
 	xe = [x x NaN*(x)]';
 	ee = ee(:);
 	xe = xe(:);
-	shade_handle = plot(h,xe,ee,'Color',[Color + Shading*(1- Color)],'LineWidth',LineWidth);
+	shade_handle = plot(h,xe,ee,'Color',[Color + Shading*(1- Color)]);
 
 
 	% now plot the plot
-	line_handle = plot(h,x,y,'Color',Color,'LineWidth',3);
+	line_handle = plot(h,x,y,'Color',Color,'LineWidth',LineWidth);
 end
 

@@ -1,7 +1,6 @@
 % dataHash.m
 % computes hash of data. 
 % 
-function Hash = dataHash(Data, Opt)
 % DATAHASH - Checksum for Matlab array of any type
 % This function creates a hash value for an input of any type. The type and
 % dimensions of the input are considered as default, such that UINT8([0,0]) and
@@ -96,6 +95,31 @@ function Hash = dataHash(Data, Opt)
 % 001: 01-May-2011 21:52, First version.
 % 007: 10-Jun-2011 10:38, [Opt.Input], binary data, complex values considered.
 % 011: 26-May-2012 15:57, Fails for binary input and empty data.
+
+
+function Hash = dataHash(Data, Opt)
+
+% are we trying to run this on a folder? intercept and self-reference
+if nargin == 2 && isfield(Opt,'Input') 
+   if strcmpi(Opt.Input, 'File')
+      if isdir(Data)
+         all_files = getAllFiles(Data);
+         all_hashes = cell(length(all_files),1);
+         for i = 1:length(all_files)
+            textbar(i,length(all_files));
+            [~,temp] = fileparts(all_files{i});
+            if ~isempty(temp)
+               if ~strcmp(temp(1),'.') && ~any(strfind(all_files{i},'.git'))
+                  all_hashes{i} = dataHash(all_files{i},Opt);
+               end
+            end
+         end
+         Hash = dataHash(all_hashes);
+         return
+      end
+   end
+end
+
 
 % Main function: ===============================================================
 % Java is needed:

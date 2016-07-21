@@ -84,7 +84,6 @@ uiwait(hmc);
             end
             idx(idx==0) = assignations;
             clusterPlot;
-            pause(1)
         end
         delete(hmc)
         return
