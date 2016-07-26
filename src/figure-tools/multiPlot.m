@@ -104,9 +104,11 @@ end
 % figure out if to combine all or not
 means = NaN(nChannels,1);
 stds = NaN(nChannels,1);
+
+
 for i = 1:nChannels
-	means(i) = mean2(x(:,i));
-	stds(i) = std2(x(:,i));
+	means(i) = mean(x(:,i));
+	stds(i) = std(x(:,i));
 end
 mins = means - stds;
 maxs = means + stds;
@@ -173,3 +175,8 @@ if t(1)~=1
 end
 
 warning on
+
+if nargout
+	clear a
+	return
+end
