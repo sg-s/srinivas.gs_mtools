@@ -10,7 +10,7 @@ function [varargout] = labelFigure(varargin)
 
 % options and defaults
 options.capitalise = false;
-options.x_offset = .01;
+options.x_offset = -.005;
 options.font_size = 20;
 options.font_weight = 'bold';
 options.delete_all = false;
@@ -126,6 +126,7 @@ for i = length(axesHandles):-1:1
 	label_handles(i).Position(2) = y;
 	% trim the position -- they're always too wide
 	label_handles(i).Position(3) = label_handles(i).Position(3)/3;
+	label_handles(i).Position(4) = 1.2*label_handles(i).Position(4);
 
 	label_handles(i).String = L{i};
 	label_handles(i).FontSize = options.font_size;

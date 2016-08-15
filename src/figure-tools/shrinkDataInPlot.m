@@ -46,6 +46,7 @@ x = get(c,'XData');
 y = get(c,'YData');
 
 % crop to viewport
+disp('Cropping to viewport...')
 xlim = c.Parent.XLim; ylim = c.Parent.YLim;
 rm_this = x < xlim(1) | x > xlim(2) | y < ylim(1) | y > ylim(2);
 x(rm_this) = [];
@@ -78,6 +79,7 @@ x = (x./x_range)*x_size*fig_width;
 y = (y./y_range)*y_size*fig_height; % x and y now in pixels
 
 if length(x) < 500
+	disp('<500 points; returning without optimisation.')
 	return
 end
 

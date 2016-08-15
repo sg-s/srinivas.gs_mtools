@@ -12,6 +12,9 @@ function  m = findMeanInWindows(ons,offs,X)
 assert(isvector(ons),'First argument should be a vector defining window starts')
 assert(isvector(offs),'2nd argument should be a vector defining window ends')
 assert(length(ons)==length(offs),'Ons and Offs should be the same length')
+assert(isvector(X),'3rd argument should be a vector')
+assert(min(ons)>1,'First argument should be a vector defining window starts. Negative value encountered. Specify window starts as matrix indices')
+assert(max(offs)<length(X),'Window offs should be within the length of the vector')
 
 m = NaN*ons;
 

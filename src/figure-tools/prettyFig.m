@@ -39,6 +39,7 @@ options.tick_length = 0.01;
 options.x_minor_ticks = false;
 options.y_minor_ticks = false;
 options.font_units = 'points';
+options.legend_box = false;
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -150,9 +151,13 @@ for i = 1:length(axesHandles)
 	% turn the minor ticks on
 	if options.x_minor_ticks
 		set(axesHandles(i),'XMinorTick','on');
+	else
+		set(axesHandles(i),'XMinorTick','off');
 	end
 	if options.y_minor_ticks
 		set(axesHandles(i),'YMinorTick','on');
+	else
+		set(axesHandles(i),'YMinorTick','off');
 	end	
 
 
@@ -285,5 +290,16 @@ for i = 1:length(axesHandles)
 end
 
 set(use_this_figure,'Color','w')
+
+% adjsut legend boxes
+legend_handles = findobj('-regexp','Tag','[^'']','-and','type','legend');
+for i = 1:length(legend_handles)
+	if options.legend_box 
+		legend_handles(i).Box = 'on';
+	else
+		legend_handles(i).Box = 'off';
+	end
+end 
+
 
 warning on

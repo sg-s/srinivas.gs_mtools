@@ -20,11 +20,9 @@ X = X(:);
 % make the outputs
 time_since_thresh_crossing = NaN*X;
 
-x = X > threshold;
+ons = computeOnsOffs(X > threshold);
+ons = unique([ons; length(X)]);
 
-for i = 2:length(X)
-	temp = find(x(1:i-1),1,'last');
-	if ~isempty(temp)
-		time_since_thresh_crossing(i) = i - temp;
-	end
+for i = length(ons):-1:2
+	time_since_thresh_crossing(ons(i-1)+1:ons(i)) =  1:(ons(i)-ons(i-1));
 end
