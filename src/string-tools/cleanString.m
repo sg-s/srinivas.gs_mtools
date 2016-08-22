@@ -4,9 +4,6 @@
 
 function s = cleanString(s)
 
-% get options from dependencies 
-options = getOptionsFromDeps(mfilename);
-
 % replace minus signs with underscores
 s = strrep(s,'-','_');
 
