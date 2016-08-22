@@ -37,11 +37,15 @@ else
 			if ~strcmp(this_string,name)
 				rm_this = [rm_this i];
 			end
-		end
-	end
-	loc(rm_this) = [];
-
-	full_path=p(sep_points(find(sep_points<loc,1,'last'))+1:sep_points(find(sep_points>loc,1,'first'))-1);
+        end
+        loc(rm_this) = [];
+    else
+        inpath = 0;
+        full_path = '';
+        return
+    end
+	
+    full_path=p(sep_points(find(sep_points<loc,1,'last'))+1:sep_points(find(sep_points>loc,1,'first'))-1);
 	if isempty(full_path)
 		full_path=p(1:sep_points(find(sep_points>loc,1,'first'))-1);
 	end

@@ -10,11 +10,13 @@ function [varargout] = labelFigure(varargin)
 
 % options and defaults
 options.capitalise = false;
-options.x_offset = -.005;
+options.x_offset = -.06;
+options.y_offset = .01;
 options.font_size = 20;
 options.font_weight = 'bold';
 options.delete_all = false;
 options.column_first = false;
+options.ignore_these = [];
 
 if ~nargin && nargout == 1
 	varargout{1} = options;
@@ -60,6 +62,13 @@ axesHandles = findall(gcf,'type','axes');
 if options.delete_all
 	return
 end
+
+% ignore specified handles
+rm_this = false(length(axesHandles),1);
+for i = 1:length(options.ignore_these)
+	rm_this(options.ignore_these(i) == axesHandles) = true;
+end
+axesHandles(rm_this) = [];
 
 % remove suptitle from this list
 rm_this = false(length(axesHandles),1);
@@ -117,8 +126,8 @@ end
 
 for i = length(axesHandles):-1:1
 	p = axesHandles(i).Position;
-	x = p(1) - options.x_offset*p(3); 
-	y = p(2) + p(4);
+	x = p(1) + options.x_offset;
+	y = p(2) + p(4) + options.y_offset;
 	label_handles(i) = uicontrol('style','text');
 	label_handles(i).Units = 'normalized';
 

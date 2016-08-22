@@ -178,7 +178,7 @@ for i = 1:length(axesHandles)
 	end
 
 	% there should be more than 1 Ytick when we have a log scale
-	if  length(get(axesHandles(i),'YTick')) < 2 && strcmp(get(axesHandles(i),'YScale'),'log') && options.FixLogY
+	if  length(get(axesHandles(i),'YTick')) < 3 && strcmp(get(axesHandles(i),'YScale'),'log') && options.FixLogY
 		c = get(axesHandles(i),'Children');
 		minlog = Inf; maxlog = -Inf;
 		for k = 1:length(c)
