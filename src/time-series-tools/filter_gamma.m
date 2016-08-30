@@ -1,10 +1,20 @@
 % filter_gamma.m
-% usage:  f = filter_gamma(tau,n,A,t)
+% usage:  f = filter_gamma(t,p)
+% where p is a structure containing parameters 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function f = filter_gamma(t,p)
+
+% bounds
+lb.n = eps;
+lb.tau = eps;
+lb.A = eps;
+
+ub.tau = 1e3;
+ub.n = 10;
+
 switch nargin
 case 0
 	help filter_gamma

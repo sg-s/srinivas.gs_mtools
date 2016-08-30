@@ -6,11 +6,11 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function options = getOptionsFromDeps(mfilename)
+function options = getOptionsFromDeps(filename)
 
 options = struct;
 
-deps = getDependencies(mfilename);
+deps = getDependencies(filename);
 
 for i = 1:length(deps)
 	% read this file and see if it has any options
