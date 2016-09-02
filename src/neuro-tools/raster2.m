@@ -30,7 +30,9 @@ if s(1) > s(2)
     A = A';
 end
 ntrials = size(A,1);
+
 for i = 1:ntrials
+    A(i,isnan(A(i,:))) = 0;
     st = find(A(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(yoffset+i-1+zeros(1,length(st))); (yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
@@ -49,6 +51,7 @@ if s(1) > s(2)
 end
 ntrials = size(B,1);
 for i = 1:ntrials
+    B(i,isnan(B(i,:))) = 0;
     st = find(B(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(yoffset+ntrials-1+i+zeros(1,length(st))); (yoffset+ntrials-1+i+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
