@@ -10,6 +10,11 @@
 
 function deps = getDependencies(this_file)
 
+if ~nargin
+	help getDependencies
+	return
+end
+
 assert(ischar(this_file),'input argument should be a string')
 assert(exist(this_file,'file')==2,'file not found.')
 

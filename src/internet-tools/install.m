@@ -1,25 +1,36 @@
 % install.m
-% install.m is a package manager for @sg-s' MATLAB code. install.m downloads code from GitHub and fixes your MATLAB path so that everything works out of the box. 
+% install.m is a dependency-free package manager for MATLAB code on Github. 
+% install.m downloads code from GitHub and fixes your MATLAB path so that everything works out of the box. 
 % 
 % usage:
-% install [options] package_name 
+% install user/package_name
 % 
 % list of options:
 % -f 		force, ignore warnings, OVERWRITE old installations, update
 % -h 		help
 % 
-% list of packages available:
+% (partial) list of packages available:
 % 
-% kontroller 				The Kontroller System (http://github.com/sg-s/kontroller/)
-% srinivas.gs_mtools 		My general-purpose MATLAB toolbox (http://github.com/sg-s/srinivas.gs_mtools/)
-% spikesort 				Spikesorting for Kontroller  (http://github.com/sg-s/spikesort/)
-% t-sne* 					t-distributed Stochastic Neighbour Embedding
-% bhtsne* 					fast t-SNE implementation in C
-% fitFilter2Data 			toolbox to fit linear filters to time series
-% kontroller2 				experimental, event-driven version of kontroller
-% fly-voyeur 				automated scoring of copulation behaviour in flies
-% fitModel2Data				fits models to data
-% manipulate 				Mathematica-style function and model manipulation 
+% sg-s/kontroller 				The Kontroller System (http://github.com/sg-s/kontroller/)
+% sg-s/srinivas.gs_mtools 		My general-purpose MATLAB toolbox (http://github.com/sg-s/srinivas.gs_mtools/)
+% sg-s/spikesort 				Spikesorting for Kontroller  (http://github.com/sg-s/spikesort/)
+% sg-s/t-sne* 					t-distributed Stochastic Neighbour Embedding
+% sg-s/bhtsne* 					fast t-SNE implementation in C
+% sg-s/fitFilter2Data 			toolbox to fit linear filters to time series
+% sg-s/kontroller2 				experimental, event-driven version of kontroller
+% sg-s/fly-voyeur 				automated scoring of copulation behaviour in flies
+% sg-s/fitModel2Data				fits models to data
+% sg-s/manipulate 				Mathematica-style function and model manipulation 
+%
+% zhmxu/mutual-information-ICA
+% emukamel/CellSort
+% kristinbranson/JAABA
+% BellWilson2016/laserTrack2
+% BellWilson2016/quickSort
+% cortex-lab/sortingQuality
+% cortex-lab/MATLAB-tools
+% cortex-lab/KiloSort
+% alanse7en/cluster_dp
 %
 % [*] third party code
 % 
@@ -33,6 +44,7 @@ if ~nargin
 	help install
 	return
 end
+
 % defaults
 force = 0;
 p = {};
@@ -40,9 +52,6 @@ p = {};
 return_here = pwd; 
 warning off
 
-% this allows install to translate the name of a package to a URL for a zipped executable
-link_root = 'https://github.com/sg-s/';
-link_cap = '/archive/master.zip';
 
 % validate inputs
 for i = 1:nargin
@@ -53,14 +62,24 @@ for i = 1:nargin
 			return
 		elseif strmatch(varargin{i},'-f')
 			force = 1;
+			varargin{i} = [];
 		else
 			error('Unknown option')
 		end
 			
 	else
-		p{length(p)+1} = varargin(i);
+		p(length(p)+1) = varargin(i);
 	end
 end
+
+% make sure all toolboxes specify the user and the toolbox name
+for i = 1:length(p)
+	assert(any(strfind(p{i},'/')),'Toolbox must specify user and toolbox name. For example, sg-s/spikesort')	
+end
+
+% this allows install to translate the name of a package to a URL for a zipped executable
+link_root = 'https://github.com/';
+link_cap = '/archive/master.zip';
 
 
 % figure out where to install this
@@ -98,14 +117,15 @@ addpath(temp_path)
 
 for i = 1:length(p)
 	disp(['Installing package: ' char(p{i})])
+	repo_name = p{i}(strfind(p{i},'/')+1:end);
 	install_this = 0;
 	% check for this package on the path
-	[s,install_path] = searchPath(char(p{i}));
+	[s,install_path] = searchPath(char(repo_name));
 	if s
 		if ~force
-			disp(strcat('WARNING:', char(p{i}),' is already installed. To update/overwrite the old installation, use "install -f [package_name]"'))
+			disp(strcat('WARNING:', char(repo_name),' is already installed. To update/overwrite the old installation, use "install -f [package_name]"'))
 		else
-			disp(strcat('Updating package:',char(p{i})))
+			disp(strcat('Updating package:',char(repo_name)))
 			install_this = 1;
 		end
 	else
@@ -114,9 +134,9 @@ for i = 1:length(p)
 
 	if isempty(install_path)
 		if ispc
-			install_path = [code_path char(p{i}) '\'];
+			install_path = [code_path char(repo_name) '\'];
 		else
-			install_path = [code_path char(p{i}) '/'];
+			install_path = [code_path char(repo_name) '/'];
 		end
 	end
 
@@ -143,7 +163,8 @@ for i = 1:length(p)
 	    delete(outfilename)
 
 	    % rename folder correctly to strip out the "master"
-	    movefile([code_path char(p{i}) '-master'],install_path)
+
+	    movefile([code_path repo_name '-master'],install_path)
 
 	    disp('Setting path...')
 	    addpath(install_path)
@@ -167,10 +188,8 @@ for i = 1:length(p)
 
 end
 
-warning on
-
 % delete temp folder
 rmdir(temp_path,'s')
 
-
+warning on
 
