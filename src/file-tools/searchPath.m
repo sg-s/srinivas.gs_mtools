@@ -27,7 +27,7 @@ else
 	sep_points = strfind(p,c);
 	loc = strfind(p,char(name));
 	rm_this = [];
-	if length(loc) > 1
+	if length(loc) > 0
 		rm_this = [];
 		% there is more than location?
 		for i = 1:length(loc)
@@ -39,10 +39,6 @@ else
 			end
         end
         loc(rm_this) = [];
-    else
-        inpath = 0;
-        full_path = '';
-        return
     end
 	
     full_path=p(sep_points(find(sep_points<loc,1,'last'))+1:sep_points(find(sep_points>loc,1,'first'))-1);

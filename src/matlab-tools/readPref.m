@@ -32,7 +32,8 @@ if exist([look_here oss 'pref.m']) == 2
 else
 	% maybe there is a default.m? 
 	if exist([look_here oss 'default.m']) == 2
-		copyfile([look_here oss 'default.m'],[look_here oss 'pref.m'])
+		copyfile([look_here oss 'default.m'],[look_here oss 'pref.m']);
+		line_content = lineRead([look_here oss 'default.m']);
 	else
 		error('No preference file found!')
 	end
