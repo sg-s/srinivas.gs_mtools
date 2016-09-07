@@ -2,7 +2,7 @@
 % converts ABF spike recordings to kontroller- and spikesort-compatible data
 % usage: abf2kontroller(file_name)
 % or abf2kontroller() will convert all files in the current folder
-function abf2kontroller(file_name,varargin)
+function abf2kontroller(varargin)
 
 
 % options and defaults
@@ -10,10 +10,20 @@ options.sampling_rate = 1e4;
 options.trigger_channels = 2;
 options.data_channels = 1;
 options.before_trigger_buffer = 1; % in seconds
+options.use_trigger = true;
 
 if nargout && ~nargin 
 	varargout{1} = options;
     return
+end
+
+file_name = pwd;
+if nargin
+	% check if there is a file path somewhere
+	if exist(varargin{1},'file') == 2
+		file_name = varargin{1};
+		varargin(1) = [];
+	end
 end
 
 % validate and accept options
@@ -36,10 +46,6 @@ elseif isstruct(varargin{1})
 	options = varargin{1};
 else
 	error('Inputs need to be name value pairs')
-end
-
-if ~nargin
-	file_name = pwd;
 end
 
 if isdir(file_name)
@@ -80,12 +86,23 @@ else
 	trigger_signal(trigger_signal>0.5) = 1;
 	trigger_signal(trigger_signal<1) = 0;
 
+	if ~options.use_trigger
+		trigger_signal = 0*trigger_signal;
+	end
 
 	clear ControlParadigm data
 	data = struct;
 
 
-	if length(h.tags) > 0
+	if ~options.use_trigger
+		data.voltage = d(:,options.data_channels)';
+		ControlParadigm.Outputs = 0*data.voltage;
+		if length(h.tags) == 0
+			ControlParadigm.Name = 'dummy';
+		else
+			ControlParadigm.Name = h.tags(1).comment;
+		end
+	elseif length(h.tags) > 0
 
 		disp('Tags/metadata found!')
 
