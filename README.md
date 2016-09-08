@@ -45,11 +45,11 @@ You can also call most functions with no arguments and it will return help, if a
 
 # Installation
 
-The reccomended way to install this is to use my package manager: 
+The reccomended way to install this is to use my package manager (which is included in this repo): 
 
 ```
 >> urlwrite('http://srinivas.gs/install.m','install.m');
->> install srinivas.gs_mtools
+>> install sg-s/srinivas.gs_mtools
 ```
 
 or you can install using `git`

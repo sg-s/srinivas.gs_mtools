@@ -23,7 +23,7 @@ try
 		repo = ['/' repo];
 	end
 	u = ['https://raw.githubusercontent.com' repo 'master/build_number'];
-	v = str2double(urlread(u));
+	v = str2double(webread(u));
 catch
 	warning('Could not connect to GitHub')
 	v = NaN;
