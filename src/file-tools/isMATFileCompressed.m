@@ -12,6 +12,11 @@
 % 
 function [is_compressed,file_names] = isMATFileCompressed(file_name)
 
+if ~nargin
+	help isMATFileCompressed
+	return
+end
+
 if isdir(file_name)
 	% figure out how many files there are
 	if strcmp(file_name(end),'/')

@@ -50,6 +50,6 @@ for i = 1:length(all_files)
 		% save using the same name
 		disp('Saving as a HDF5 .mat file...')
 		
-		save(matfile_name,'images','max_proj','mean_proj','-v7.3');
+		savefast(matfile_name,'images','max_proj','mean_proj');
 	end
 end
