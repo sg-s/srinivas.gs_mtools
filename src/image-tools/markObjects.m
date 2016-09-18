@@ -7,11 +7,13 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [] = markObjects(im,r)
+function [handles] = markObjects(im,r)
 
-imagesc(im), hold on
+if ~isempty(im)
+	imagesc(im), hold on
+end
 for j = 1:length(r)
-	plot(r(j).Centroid(1),r(j).Centroid(2),'ro','MarkerSize',10)
+	handles(j) = plot(r(j).Centroid(1),r(j).Centroid(2),'ro','MarkerSize',10);
 end
 axis image
 axis ij
