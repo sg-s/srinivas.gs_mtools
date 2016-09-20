@@ -1,5 +1,5 @@
 % lineRead.m
-% reads a text file line by line and returns the text as a structure array
+% reads a text file line by line and returns the text as a cell array
 % usage:
 % lines = lineRead(filename)
 % 
@@ -9,7 +9,10 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 function lines = lineRead(filename)
-
+if ~nargin
+	help lineRead
+	return
+end
 fid = fopen(filename, 'rt'); 
 lines = textscan(fid,'%[^\n]'); %reads line by line 
 fclose(fid); 
