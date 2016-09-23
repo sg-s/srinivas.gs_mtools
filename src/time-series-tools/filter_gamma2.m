@@ -15,7 +15,7 @@ lb.tau1 = 1;
 lb.tau2 = 1;
 lb.A = 0;
 
-ub.n = 10;
+ub.n = 20;
 
 switch nargin
 case 0
