@@ -44,7 +44,7 @@ end
 bestnsr = nsr(prederror == min(prederror));
 x = deconvwnr(y,a,bestnsr);
 x = [x((memory/2)+1:end) x(1:(memory/2))]; % weird correction -- possibly due to FFT?
-x = normalise(x);
+
 
 
 
