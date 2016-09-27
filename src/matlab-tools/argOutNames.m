@@ -9,7 +9,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [names] = argoutnames(fname)
+function [names] = argOutNames(fname)
 if ~nargin 
 	help argoutnames
 	return
@@ -56,8 +56,9 @@ end
 clear i
 
 if isempty(func_def_line)
+	disp('Error reading function. Can''t determine the function definiton line')
 	keyboard
-	error('Error reading function. Can''t determine the function definiton line')
+	
 
 end
 
