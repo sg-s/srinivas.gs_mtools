@@ -10,7 +10,7 @@ function [] = spinner()
 fprintf('\b')
 r = randi(4);
 if r == 1
-	fprintf('+');
+	fprintf('\');
 elseif r == 2
 	fprintf('/');
 elseif r == 3
