@@ -12,7 +12,10 @@ try
                 if v > build_numbers(i)
                     disp(['A new version of ' toolboxes{i} ' is available: build' oval(v)])
                     disp(['You have build ' oval(build_numbers(i))])
-                    disp(['Update using "install -f sg-s/' toolboxes{i} '"'])
+
+                    update_string = ['install -f sg-s/' toolboxes{i}]; 
+                    disp_string = ['<a href="matlab:' update_string '">click here to update</a>'];
+                    disp(disp_string)
                 else
                     disp(['You have the latest version of ' toolboxes{i} ' -- build ' oval(build_numbers(i))])
                 end

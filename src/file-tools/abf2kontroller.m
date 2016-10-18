@@ -108,6 +108,9 @@ else
 
 		% check that the number of tags is equal to the numer of triggers
 		[ons,offs] = computeOnsOffs(trigger_signal);
+
+		keyboard
+
 		if length(h.tags) ~= length(ons)
 			disp('!!! Something wrong with trigger signals...attempting to fix.')
 			ons((offs-ons)<500) = [];
