@@ -63,7 +63,6 @@ for i = 1:length(allfiles)
 end
 dep_files = allfiles(is_dep);
 
-
 % we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
 is_dep = false(length(allfiles),1);
 for j = 1:length(dep_files)
@@ -76,6 +75,9 @@ for j = 1:length(dep_files)
 end
 dep_files =  unique([dep_files allfiles(is_dep)]);
 
+% remove default
+dep_files(strcmp('default',dep_files)) = [];
+
 % find which folders they are in
 allfolders = {};
 for i = 1:length(dep_files)
@@ -83,23 +85,39 @@ for i = 1:length(dep_files)
 end
 allfolders = unique(allfolders);
 
-% which of these are git repos?
+% which of these are git repos, or are contained in git repos? 
+is_git = false(length(allfolders),1);
+git_folder_name = {};
 for i = 1:length(allfolders)
+	this_folder = allfolders{i};
+
 	if exist([allfolders{i} oss '.git'],'file') == 7
-		repo_name = allfolders{i}(max(strfind(allfolders{i},oss))+1:end);
-		cd(allfolders{i})
-		[status,m]=system('git rev-parse HEAD');
-		if ~status
-			disp(['repo name:  ' repo_name '  commit:   ' m(1:7)])
-		end
+		is_git(i) = true;
+		git_folder_name{i} = this_folder;
+	else
+		% look up 10 levels
+		for j = 1:10
+			this_folder = fileparts(this_folder);
+			if exist([this_folder oss '.git'],'file') == 7
+				is_git(i) = true;
+				git_folder_name{i} = this_folder;
+				continue;
+			end
+		end 
+	end
+end
+allfolders =  unique(git_folder_name(is_git)');
+
+for i = 1:length(allfolders)
+	repo_name = allfolders{i}(max(strfind(allfolders{i},oss))+1:end);
+	cd(allfolders{i})
+	[status,m] = system('git rev-parse HEAD');
+	if ~status
+		disp(['repo name:  ' repo_name ' (' m(1:end-1) ')'])
 	end
 end
 
 % go back from whence you came
 cd(original_folder)
-
-
-
-
 
 
