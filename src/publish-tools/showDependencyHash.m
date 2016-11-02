@@ -33,47 +33,16 @@ for i = 1:length(allfiles)
 	allfiles{i} = allfiles{i}(1:end-2);
 end
 
-% search the file in question for these keywords
-% read the source file line by line
-fid = fopen(which(this_file), 'rt'); 
-source_code = textscan(fid,'%[^\n]'); %reads line by line 
-source_code = source_code{1};
-is_dep = false(length(allfiles),1);
-
-for i = 1:length(allfiles)
-	for j = 1:length(source_code)
-		if any(strfind(source_code{j},allfiles{i}))
-			temp = strfind(source_code{j},allfiles{i});
-			temp = temp(1); % this is to account for two invocations of one function in 1 line
-			% keyword in this line
-			if any(strfind(source_code{j},'%'))
-				% there is a % somewhere 
-				if temp < strfind(source_code{j},'%')
-					% keyword is not a comment
-					is_dep(i) = true;
-				else
-					% keyword is a comment. do nothing
-				end
-			else
-				% no % anywhere, but keyword present
-				is_dep(i) = true;
-			end
-		end
-	end
-end
-dep_files = allfiles(is_dep);
+% find the functions that this file depends on
+dep_files = allfiles(isDep(lineRead(which(this_file)),allfiles));
 
 % we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
 is_dep = false(length(allfiles),1);
 for j = 1:length(dep_files)
-	source_code = fileread(which(dep_files{j}));
-	for i = 1:length(allfiles)
-		if any(strfind(source_code,allfiles{i}))
-			is_dep(i) = true;
-		end
-	end
+	is_dep = is_dep + isDep(lineRead(which(dep_files{j})),allfiles);
 end
-dep_files =  unique([dep_files allfiles(is_dep)]);
+is_dep(is_dep>0) = 1;
+dep_files =  unique([dep_files allfiles(logical(is_dep))]);
 
 % remove default
 dep_files(strcmp('default',dep_files)) = [];
