@@ -128,8 +128,14 @@ for i = 1:length(p)
 			disp(strcat('Updating package:',char(repo_name)))
 			install_this = 1;
 		end
+
+		% check if a git repo exists there
+		if exist([install_path '/.git'],'dir') == 7
+			error('toolbox already exists, and has git. Cowardly refusing to proceed.')
+		end
+
 	else
-		install_this=1;
+		install_this = 1;
 	end
 
 	if isempty(install_path)

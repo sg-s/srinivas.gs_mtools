@@ -1,6 +1,7 @@
-function [build_numbers] = checkDeps(toolboxes)
+function [build_numbers, req_update] = checkDeps(toolboxes)
 
 build_numbers = NaN(length(toolboxes),1);
+req_update = false(length(toolboxes),1);
 
 try
     if online
@@ -17,8 +18,9 @@ try
                         disp(['You have build ' oval(build_numbers(i))])
 
                         update_string = ['install -f sg-s/' toolboxes{i}]; 
-                        disp_string = ['<a href="matlab:' update_string '">click here to update</a>'];
+                        disp_string = ['<a href="matlab:' update_string '">This toolbox may be automatically updated. Click here to manually update now.</a>'];
                         disp(disp_string)
+                        req_update(i) = true;
                     else
                         disp(['You have the latest version of ' toolboxes{i} ' -- build ' oval(build_numbers(i))])
                     end
