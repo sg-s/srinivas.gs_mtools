@@ -69,10 +69,14 @@ else
         try
             all_y(:,i) = interp1(x(:,i),y(:,i),all_x);
         catch
+            [~,ux] = unique(x(:,i));
+            all_y(:,i) = interp1(x(ux,i),y(ux,i),all_x);
         end
     end
     rm_this = (width(A) - sum(isnan(all_y)') < round(width(A)/2));
     % re-sample
+
+
     all_x = all_x(~rm_this); all_x = [all_x(1) all_x(end)];
     all_x = all_x(1):(diff(all_x)/nbins):all_x(end);
     all_y = NaN(length(all_x),width(A));
