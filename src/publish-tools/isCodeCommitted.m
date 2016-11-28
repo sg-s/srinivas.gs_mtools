@@ -63,25 +63,30 @@ for i = 1:length(allfolders)
 end
 allfolders =  unique(git_folder_name(is_git)');
 
+ok = true;
+
 for i = 1:length(allfolders)
 	repo_name = allfolders{i}(max(strfind(allfolders{i},oss))+1:end);
 	cd(allfolders{i})
 
 	% check if there are any uncommitted files here
-	[~,m] = unix('git status | grep "modified" | wc -l');
+	[~,m] = system('git status | grep "modified" | wc -l');
 	if str2double(m) > 0 
-		warning(['You have unmodified files that have not been committed on this git repo: ' allfolders{i}])
-
+		cprintf('red','MODIFIED  ')
+		cprintf('text',[repo_name '\n'])
+		ok = false;
+	else
+		cprintf('green','OK        ')
+		cprintf('text',[repo_name '\n'])
 	end
 
-
-	[status,m] = system('git rev-parse HEAD');
-	if ~status
-		disp(['repo name:  ' repo_name ' (' m(1:end-1) ')'])
-	end
 end
 
 % go back from whence you came
 cd(original_folder)
+fprintf('\n')
+
+assert(ok,'Uncommitted changes in your code; refusing to shut down.')
+
 
 
