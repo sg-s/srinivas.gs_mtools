@@ -6,10 +6,8 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [] = showDependencyHash(this_file)
+function [] = isCodeCommitted()
 
-assert(ischar(this_file),'input argument should be a string')
-assert(exist(this_file,'file')==2,'file not found.')
 
 original_folder = pwd;
 
@@ -33,19 +31,7 @@ for i = 1:length(allfiles)
 	allfiles{i} = allfiles{i}(1:end-2);
 end
 
-% find the functions that this file depends on
-dep_files = allfiles(isDep(lineRead(which(this_file)),allfiles));
-
-% we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
-is_dep = false(length(allfiles),1);
-for j = 1:length(dep_files)
-	is_dep = is_dep + isDep(lineRead(which(dep_files{j})),allfiles);
-end
-is_dep(is_dep>0) = 1;
-dep_files =  unique([dep_files allfiles(logical(is_dep))]);
-
-% remove default
-dep_files(strcmp('default',dep_files)) = [];
+dep_files = allfiles;
 
 % find which folders they are in
 allfolders = {};
