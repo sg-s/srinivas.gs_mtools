@@ -18,6 +18,7 @@ end
 
 xdata = xdata - x_offset;
 r = (xdata.^n)./(xdata.^n + K_D^n);
+r(~isreal(r)) = 0;
 r(xdata<eps) = 0;
 r = r*A;
 	
