@@ -16,7 +16,7 @@ if version_number == 7.3
 end
 
 % load all the variables and re-save 
-load(path_to_file);
+load(path_to_file,'-mat');
 clear version_number 
 variable_names = whos;
 variable_names(find(strcmp('path_to_file',{variable_names.name}))) = [];
