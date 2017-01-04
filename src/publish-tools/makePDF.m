@@ -114,26 +114,6 @@ archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pd
 archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
 copyfile(f,archive_file_name);
 
-% % check if github release is installed
-% path1 = getenv('PATH');
-% if isempty(strfind(path1,':/usr/local/go/bin/bin'))
-% 	path1 = [path1 pathsep '/usr/local/go/bin/bin'];
-% end
-% setenv('PATH', path1);
-% [notok,temp] = unix('github-release');
-% if ~notok
-% 	% github-release is installed
-
-% 	% load github token
-% 	[~,github_token]=unix('echo $(<~/.git.yale.edu-token)');
-
-% 	% make a tag name
-% 	[~,tag_name] = fileparts(archive_file_name);
-
-% 	% assume that the user tagged it and pushed the tags
-
-% end
-
 % open the PDF
 open(f)
 
