@@ -8,6 +8,16 @@
 
 function [] = convertMATFileTo73(path_to_file)
 
+
+if any(strfind(path_to_file,'*'))
+	% attempt to find all the files that match this, and run recursively on this list
+	allfiles = dir(path_to_file);
+	for i = 1:length(allfiles)
+		convertMATFileTo73(allfiles(i).name);
+	end
+	return
+end
+
 assert(any(exist(path_to_file,'file')),'Input argument must be a valid path to a MATLAB .mat file')
 
 version_number = findMATFileVersion(path_to_file);

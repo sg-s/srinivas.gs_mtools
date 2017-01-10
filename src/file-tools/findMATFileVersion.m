@@ -8,6 +8,16 @@
 
 function [version_number] = findMATFileVersion(path_to_file)
 
+if any(strfind(path_to_file,'*'))
+	% attempt to find all the files that match this, and run recursively on this list
+	allfiles = dir(path_to_file);
+	version_number = NaN(length(allfiles),1);
+	for i = 1:length(allfiles)
+		version_number(i) = findMATFileVersion(allfiles(i).name);
+	end
+	return
+end
+
 assert(any(exist(path_to_file,'file')),'Input argument must be a valid path to a MATLAB .mat file')
 % from https://stackoverflow.com/questions/29379826/how-can-i-determine-the-version-of-a-mat-file-from-matlab
 fid=fopen(path_to_file);
