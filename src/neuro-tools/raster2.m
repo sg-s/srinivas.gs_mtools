@@ -1,5 +1,5 @@
 % raster2.m
-% makes a raster plot of two different neurons. A (or B) can be either a logical matrix with 1 where a spike occurs, or long (zero padded) matrices of spike times. The time step is assumed to be 1e-4s
+% makes a raster plot of two different neurons. A (or B) can be either a logical matrix with 1 where a spike occurs, or long (zero padded) matrices of spike times. The time step is assumed to be 1e-4s if not specified
 % This function is designed to be faster the the original raster
 % 
 % 
@@ -10,20 +10,43 @@
 
 
 
-function raster2(A,B,yoffset,colour)
+function raster2(A,B,varargin)
 
-switch nargin 
-case 0
-    help raster2
+
+% options and defaults
+options.colour = [1 0 0; 0 0 1];
+options.yoffset = 0;
+options.deltat = 1e-4;
+options.fill_fraction = .95;
+
+if nargout && ~nargin 
+    varargout{1} = options;
     return
-case 1
-    B = [];
-    yoffset = 0;
-case 2
-    yoffset = 0;
 end
 
-fill_fraction = .95;
+% validate and accept options
+if iseven(length(varargin))
+    for ii = 1:2:length(varargin)-1
+    temp = varargin{ii};
+    if ischar(temp)
+        if ~any(find(strcmp(temp,fieldnames(options))))
+            disp(['Unknown option: ' temp])
+            disp('The allowed options are:')
+            disp(fieldnames(options))
+            error('UNKNOWN OPTION')
+        else
+            options.(temp) = varargin{ii+1};
+        end
+    end
+end
+elseif isstruct(varargin{1})
+    % should be OK...
+    options = varargin{1};
+else
+    error('Inputs need to be name value pairs')
+end
+
+
 % plot A and B spikes
 s = size(A);
 if s(1) > s(2)
@@ -35,14 +58,11 @@ for i = 1:ntrials
     A(i,isnan(A(i,:))) = 0;
     st = find(A(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
-    y = reshape([(yoffset+i-1+zeros(1,length(st))); (yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
-    y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
+    y = reshape([(options.yoffset+i-1+zeros(1,length(st))); (options.yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
+    y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
  
-    if nargin < 4
-        plot(x*1e-4,y,'r'), hold on
-    else
-        plot(x*1e-4,y,'Color',colour), hold on
-    end
+    plot(x*options.deltat,y,'Color',options.colour(1,:)), hold on
+
 end
 
 s = size(B);
@@ -54,13 +74,11 @@ for i = 1:ntrials
     B(i,isnan(B(i,:))) = 0;
     st = find(B(i,:));
     x = reshape([st;st;NaN(1,length(st))],1,[]);
-    y = reshape([(yoffset+ntrials-1+i+zeros(1,length(st))); (yoffset+ntrials-1+i+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
-    y(y==max(y)) = min(y)+fill_fraction*(max(y)-min(y));
-    if nargin < 4
-        plot(x*1e-4,y,'b'), hold on
-    else
-        plot(x*1e-4,y,'Color',colour), hold on
-    end
+    y = reshape([(options.yoffset+ntrials-1+i+zeros(1,length(st))); (options.yoffset+ntrials-1+i+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
+    y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
+
+    plot(x*options.deltat,y,'Color',options.colour(2,:)), hold on
+
 end
 
 if nargin > 1
