@@ -6,6 +6,7 @@
 function fileList = getAllFiles(dirName)
 if ~nargin 
   help getAllFiles
+  fileList = {};
   return
 end
 dirData = dir(dirName);      % Get the data for the current directory
