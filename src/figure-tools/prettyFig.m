@@ -130,7 +130,10 @@ for i = 1:length(axesHandles)
 			end
 		else
 			if strcmp(get(axesHandles(i),'XLimMode'),'auto')
-				set(axesHandles(i),'XLim',[minx-options.plot_buffer*rx maxx+options.plot_buffer*rx])
+				try
+					set(axesHandles(i),'XLim',[minx-options.plot_buffer*rx maxx+options.plot_buffer*rx])
+				catch
+				end
 			end
 		end
 
