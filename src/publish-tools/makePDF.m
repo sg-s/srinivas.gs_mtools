@@ -69,7 +69,21 @@ if str2double(m) > 0 && ~force
 end
 
 % run publish to generate the .tex file
-f = publish(filename,options);
+try
+	f = publish(filename,options);
+catch err
+	if strcmp(err.identifier,'MATLAB:publish:DirNotWritable')
+		if ismac
+			disp('It looks like you dont have permissions to write to the target directory. This may be because of stupid fucking Dropbox fucking shit up. Attempting to fix...')
+			a = strfind(err.message,'"');
+			unix(['chflags -R nouchg '  err.message(a(1):a(2))]);
+			f = publish(filename,options);
+		end
+	else
+		error(err.message)
+	end
+
+end
 
 % tell stupid MATLAB to get the path right
 [~,v] = unix('sw_vers -productVersion'); % Mac OS X specific
