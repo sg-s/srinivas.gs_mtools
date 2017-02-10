@@ -16,10 +16,9 @@ if ~nargin
 
 end
 
+assert(n>0,'You requested 0 subplots. WTF?')
+assert(isint(n),'The number of subplots should be an integer')
 
-if n > 18
-	error('too many subplots!')
-end
 if nargin < 3
 	PreferLong = 0;
 end
@@ -60,7 +59,14 @@ switch n
 		a = 3; b = 6;
 	case 18
 		a = 3; b = 6;
+	otherwise
+		a = floor(sqrt(n));
+		b = ceil(n/a);
+
 end
+
+
+
 if PreferLong
 	temp = a;
 	a = b;
