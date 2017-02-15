@@ -29,7 +29,6 @@ switch nargin
 			load('cached.mat','hash')
 			disp('Here is a list of hashes in the current hash table:')
 			temp = setdiff(hash,'hash');
-			keyboard
 			disp(temp(:))
 		catch
 		end
@@ -71,6 +70,9 @@ end
 
 
 if nargin == 1
+
+	assert(length(varargin{1}) < 50,'hash too long, cannot be stored in hash table')
+
 	if isempty(find(strcmp(varargin{1}, hash)))
 		retrieved_data = [];
 		return
