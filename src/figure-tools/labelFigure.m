@@ -125,25 +125,7 @@ for i = length(axesHandles):-1:1
 end
 
 for i = length(axesHandles):-1:1
-	p = axesHandles(i).Position;
-	x = p(1) + options.x_offset;
-	y = p(2) + p(4) + options.y_offset;
-	label_handles(i) = uicontrol('style','text');
-	label_handles(i).Units = 'normalized';
-
-	label_handles(i).Position(1) = x;
-	label_handles(i).Position(2) = y;
-	% trim the position -- they're always too wide
-	label_handles(i).Position(3) = label_handles(i).Position(3)/3;
-	label_handles(i).Position(4) = 1.2*label_handles(i).Position(4);
-
-	label_handles(i).String = L{i};
-	label_handles(i).FontSize = options.font_size;
-	label_handles(i).FontWeight = options.font_weight;
-	label_handles(i).BackgroundColor = get(gcf,'Color');
-	label_handles(i).Tag = 'axes-label';
-	uistack(label_handles(i),'top')
-
+	label_handles(i) = labelAxes(axesHandles(i),L{i},options);
 end
 
 if nargout == 2
