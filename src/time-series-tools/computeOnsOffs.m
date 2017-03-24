@@ -37,7 +37,7 @@ ons = ons+1; % correct for derivative shift
 if length(ons) > length(offs)
 	offs = [offs; length(x)];
 elseif length(offs) > length(ons)
-	keyboard
+	error('fatal: for unknown reasons, the length of offs and ons are not the same')
 else
 	% all OK
 end
