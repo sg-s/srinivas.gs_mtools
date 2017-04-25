@@ -18,12 +18,30 @@ Functions in this repository are organized into:
 10. `string-tools` tools to work with strings. For example, `randomString(100)` spits out a 100 random characters. 
 11. `time-series-tools` tools to work with time series. For example, `fastFilter` speeds up convolutions using GPUs and Fourier Transforms for long time series. 
 
+# Installation
+
+The reccomended way to install this is to use my package manager (which is included in this repo): 
+
+```matlab
+urlwrite('http://srinivas.gs/install.m','install.m');
+install sg-s/srinivas.gs_mtools
+```
+
+or you can install using `git`
+
+```bash
+git clone https://github.com/sg-s/srinivas.gs_mtools.git
+```
+
+If you do the latter, make sure you get add the paths to the subfolders to your `MATLAB` path. 
+
+
 ## General Notes on Usage
 
 All functions here have help above the function definition, and you can get help about any file using `help`:
 
 ```
->> help raster2
+help raster2
 ```
 
 shows:
@@ -43,22 +61,6 @@ shows:
 
 You can also call most functions with no arguments and it will return help, if at least one argument is required for that function. So `raster2` is the same as `help raster2`
 
-# Installation
-
-The reccomended way to install this is to use my package manager (which is included in this repo): 
-
-```
->> urlwrite('http://srinivas.gs/install.m','install.m');
->> install sg-s/srinivas.gs_mtools
-```
-
-or you can install using `git`
-
-```
-$ git clone https://github.com/sg-s/srinivas.gs_mtools.git
-```
-
-If you do the latter, make sure you get add the paths to the subfolders to your `MATLAB` path. 
 
 # Detailed Notes	
 
