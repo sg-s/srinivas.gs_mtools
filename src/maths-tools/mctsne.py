@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-
-from __future__ import print_function
+# from __future__ import print_function
 from MulticoreTSNE import MulticoreTSNE as TSNE
 import scipy.io
 import numpy as np

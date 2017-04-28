@@ -8,7 +8,7 @@
 
 function R = mctsne(Vs)
 
-save('Vs.mat','Vs')
+save('Vs.mat','Vs','-v7.3')
 
 system([fileparts(which('mctsne')) oss 'mctsne.py'])
 
