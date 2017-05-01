@@ -40,6 +40,8 @@ options.x_minor_ticks = false;
 options.y_minor_ticks = false;
 options.font_units = 'points';
 options.legend_box = false;
+options.tick_dir = 'out';
+options.axis_box = 'on';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -199,7 +201,7 @@ for i = 1:length(axesHandles)
 
 
 	% find all errorbar plots and set those line widths appropriately
-	ph=get(axesHandles(i),'Children');
+	ph = get(axesHandles(i),'Children');
 	for j = 1:length(ph)
 		try
 			% only change the Line Width if default
@@ -209,8 +211,16 @@ for i = 1:length(axesHandles)
 		catch
 			% probably an image or something.
 			% so reverse tick direction
-			set(gca,'TickDir','out')
-			box on
+			if strcmp(options.TickDir,'out')
+				set(gca,'TickDir','out')
+			else
+				set(gca,'TickDir','in')
+			end
+			if strcmp(options.axis_box,'on')
+				box on
+			else
+				box off
+			end
 		end
 	end
 
