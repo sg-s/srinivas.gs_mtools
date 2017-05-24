@@ -211,7 +211,7 @@ for i = 1:length(axesHandles)
 		catch
 			% probably an image or something.
 			% so reverse tick direction
-			if strcmp(options.TickDir,'out')
+			if strcmp(options.tick_dir,'out')
 				set(gca,'TickDir','out')
 			else
 				set(gca,'TickDir','in')
