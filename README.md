@@ -2,6 +2,14 @@
 
 This repository contains a bunch of useful scripts and functions that make working in MATLAB much easier. All my other MATLAB repositories depend on this. Feel free to do with functions that I have written what you will. Some functions written by others are also included here, with licenses and attribution where possible. 
 
+## Some of the things you can do with this toolbox
+
+| What you want to do                            | Use this |
+| --------------------                           | -------  |
+| Visualise animated phase plot                  | [animatePhasePlot](src/figure-tools/animatePhasePlot.m) |
+| Make subplots without worrying about layout    | autoPlot | 
+
+
 ## Contents
 
 Functions in this repository are organized into:
