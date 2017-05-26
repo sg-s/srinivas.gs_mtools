@@ -22,9 +22,7 @@ This repository contains a bunch of useful scripts and functions that make worki
 | Reduce data in plot by discarding visually indiscernible data  | [shrinkDataInPlot](src/figure-tools/shrinkDataInPlot.m) |
 | Make visually identical figures by throwing out data  | [shrinkFigure](src/figure-tools/shrinkFigure.m) |
 | Use splines to make smooth histograms | [splineHist](src/figure-tools/splineHist.m) |
-| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
-| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
-| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
+| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) , [supererr](src/figure-tools/supererr.m)|
 | Convert ABF spike files to kontroller files | [abf2kontroller](src/file-tools/abf2kontroller.m) |
 | Load ABF spike files in MATLAB | [abfload](src/file-tools/abfload.m) |
 | Convert .avi movie files to .mat files | [avi2mat](src/file-tools/avi2mat.m) |
@@ -40,6 +38,7 @@ This repository contains a bunch of useful scripts and functions that make worki
 | Recursively list all folders | [rdir.m](src/file-tools/rdir.m) |
 | Save .mat files quickly and without compression | [savefast.m](src/file-tools/savefast.m) |
 | Search MATLAB path for a given folder | [searchPath.m](src/file-tools/searchPath.m) |
+| Invert curve fit: Given f(x), find x such that f(x) = y | [cfinvert.m](src/math-tools/cfinvert.m) |
 
 ## Contents
 
