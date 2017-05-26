@@ -7,8 +7,39 @@ This repository contains a bunch of useful scripts and functions that make worki
 | What you want to do                            | Use this |
 | --------------------                           | -------  |
 | Visualise animated phase plot                  | [animatePhasePlot](src/figure-tools/animatePhasePlot.m) |
-| Make subplots without worrying about layout    | autoPlot | 
-
+| Make subplots without worrying about layout    | [autoPlot](src/figure-tools/autoPlot.m) | 
+| Make bar chart with errorbars | [barwitherr](src/figure-tools/barwitherr.m) |
+| Introduce breaks in axes | [breakPlot](src/figure-tools/breakPlot.m) |
+| prevent X and Y axes from intersecting | [deintersectAxes](src/figure-tools/deintersectAxes.m) |
+| make a copy of the current figure | [duplicateFigure](src/figure-tools/duplicateFigure.m) |
+| Visualise matrix with missing data | [imagescnan](src/figure-tools/imagescnan.m) |
+| Add a label to a panel/axes/plot | [labelAxes](src/figure-tools/labelAxes.m) |
+| Add labels to all panels in a figure | [labelFigure](src/figure-tools/labelFigure.m) |
+| Move a plot left, right, etc. | [movePlot](src/figure-tools/movePlot.m) |
+| Quickly plot multiple time series | [multiPlot](src/figure-tools/multiPlot.m) |
+| Make your plots prettier, fixes MATLAB's horrible defaults | [prettyFig](src/figure-tools/prettyFig.m) |
+| Add shading to plot showing error | [shadedErrorBar](src/figure-tools/shadedErrorBar.m) |
+| Reduce data in plot by discarding visually indiscernible data  | [shrinkDataInPlot](src/figure-tools/shrinkDataInPlot.m) |
+| Make visually identical figures by throwing out data  | [shrinkFigure](src/figure-tools/shrinkFigure.m) |
+| Use splines to make smooth histograms | [splineHist](src/figure-tools/splineHist.m) |
+| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
+| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
+| Make error bars with p-values | [superbar](src/figure-tools/superbar.m) |
+| Convert ABF spike files to kontroller files | [abf2kontroller](src/file-tools/abf2kontroller.m) |
+| Load ABF spike files in MATLAB | [abfload](src/file-tools/abfload.m) |
+| Convert .avi movie files to .mat files | [avi2mat](src/file-tools/avi2mat.m) |
+| cache data using hashes | [cache](src/file-tools/cache.m) |
+| Convert .mat file to v7.3  | [convertMATFileTo73.m](src/file-tools/convertMATFileTo73.m) |
+| Convert TDMS files to .mat files  | [convertTDMS.m](src/file-tools/convertTDMS.m) |
+| Hash data, files  | [dataHash.m](src/file-tools/dataHash.m) |
+| Find the version of .mat files  | [findMATFileVersion.m](src/file-tools/findMATFileVersion.m) |
+| Find all files recursively | [findAllFiles.m](src/file-tools/findAllFiles.m) |
+| Get hash of current commit of git repository  | [gitHash.m](src/file-tools/gitHash.m) |
+| Check if .mat file is compressed | [isMATFileCompressed.m](src/file-tools/isMATFileCompressed.m) |
+| Hash using md5 | [md5.m](src/file-tools/md5.m) |
+| Recursively list all folders | [rdir.m](src/file-tools/rdir.m) |
+| Save .mat files quickly and without compression | [savefast.m](src/file-tools/savefast.m) |
+| Search MATLAB path for a given folder | [searchPath.m](src/file-tools/searchPath.m) |
 
 ## Contents
 
