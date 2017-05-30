@@ -50,7 +50,12 @@ label_handle.Position(1) = x;
 label_handle.Position(2) = y;
 % trim the position -- they're always too wide
 label_handle.Position(3) = label_handle.Position(3)/3;
-label_handle.Position(4) = 1.3*label_handle.Position(4);
+v = version;
+if str2double(v(1:3)) > 9.1
+    label_handle.Position(4) = 2*label_handle.Position(4);
+else
+    label_handle.Position(4) = 1.3*label_handle.Position(4);
+end
 
 label_handle.String = label;
 label_handle.FontSize = options.font_size;
