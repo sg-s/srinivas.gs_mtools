@@ -30,10 +30,9 @@ load(path_to_file,'-mat');
 clear version_number 
 variable_names = whos;
 variable_names(find(strcmp('path_to_file',{variable_names.name}))) = [];
-eval_str = ['save(', char(39), path_to_file, char(39),','];
+eval_str = ['savefast(', char(39), path_to_file, char(39)];
 for i = 1:length(variable_names)
-	eval_str = [eval_str, char(39), variable_names(i).name, char(39),','];
+	eval_str = [eval_str, ',', char(39), variable_names(i).name, char(39)];
 end
-eval_str = [eval_str, char(39), '-v7.3', char(39),');'];
-
+eval_str = [eval_str ')'];
 eval(eval_str)
