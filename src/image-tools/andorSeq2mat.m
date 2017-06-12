@@ -79,7 +79,11 @@ for ai = 1:length(all_folders)
 	z = strfind(txt(a+10:a+1e3),'"');
 	z = z(1);
 	use_name = txt(a+10:a+z+8);
-	savefast([path_name 'video_' use_name '.mat'],'images','andor_elapsed_time','elapsed_time','absolute_time','time')
+	if size(images,3) > 1
+		savefast([path_name 'video_' use_name '.mat'],'images','andor_elapsed_time','elapsed_time','absolute_time','time')
+	else
+		disp('Something went wrong; acquisition probably aborted')
+	end
 
 
 end
