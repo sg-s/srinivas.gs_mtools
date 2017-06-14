@@ -4,7 +4,7 @@
 
 function [] = andorSeq2mat(path_name)
 
-t_end = 180;
+t_end = 260;
 
 if nargin == 0
 	path_name = pwd;
