@@ -4,6 +4,8 @@ This repository contains a bunch of useful scripts and functions that make worki
 
 ## Some of the things you can do with this toolbox
 
+### Plot tools
+
 | What you want to do                            | Use this |
 | --------------------                           | -------  |
 | Visualise animated phase plot                  | [animatePhasePlot](src/figure-tools/animatePhasePlot.m) |
@@ -23,6 +25,11 @@ This repository contains a bunch of useful scripts and functions that make worki
 | Make visually identical figures by throwing out data  | [shrinkFigure](src/figure-tools/shrinkFigure.m) |
 | Use splines to make smooth histograms | [splineHist](src/figure-tools/splineHist.m) |
 | Make error bars with p-values | [superbar](src/figure-tools/superbar.m) , [supererr](src/figure-tools/supererr.m)|
+
+### File and path tools
+
+| What you want to do                            | Use this |
+| --------------------                           | -------  |
 | Convert ABF spike files to kontroller files | [abf2kontroller](src/file-tools/abf2kontroller.m) |
 | Load ABF spike files in MATLAB | [abfload](src/file-tools/abfload.m) |
 | Convert .avi movie files to .mat files | [avi2mat](src/file-tools/avi2mat.m) |
@@ -38,23 +45,32 @@ This repository contains a bunch of useful scripts and functions that make worki
 | Recursively list all folders | [rdir.m](src/file-tools/rdir.m) |
 | Save .mat files quickly and without compression | [savefast.m](src/file-tools/savefast.m) |
 | Search MATLAB path for a given folder | [searchPath.m](src/file-tools/searchPath.m) |
+| Read a text file line-by-line | [lineRead.m](src/file-tools/lineRead.m) |
+
+### Maths tools
+
+| What you want to do                            | Use this |
+| --------------------                           | -------  |
 | Invert curve fit: Given f(x), find x such that f(x) = y | [cfinvert.m](src/math-tools/cfinvert.m) |
+| Cluster data using the [density peaks](http://science.sciencemag.org/content/344/6191/1492) algorithm| [densityPeaks.m](src/math-tools/densityPeaks.m) |
+| Run t-SNE on multiple CPU cores. faster than MATLAB's implementation. Requires [this repo](https://github.com/sg-s/Multicore-TSNE) | [mctsne.m](src/math-tools/mctsne.m) |
+| Randomly sample from arbitrary distribution| [pdfrnd.m](src/math-tools/pdfrnd.m) |
 
-## Contents
+### Time series tools
+| What you want to do                            | Use this |
+| --------------------                           | -------  |
+| Find autocorrelation time of a time series | [autoCorrelationTime.m](src/time-series-tools/autoCorrelationTime.m) |
+| compute when a binary time series turns on and off | [computeOnsOffs.m](src/time-series-tools/computeOnsOffs.m) |
 
-Functions in this repository are organized into:
+### String tools
 
-1. `beta` don't use this. 
-2. `figure-tools` Tools to make better plots. For example, [prettyFig](https://github.com/sg-s/srinivas.gs_mtools/blob/master/src/figure-tools/prettyFig.m) makes pretty figures. 
-3. `file-tools` tools for working with files on your computer. For example, `abf2kontroller`, which converts AutoSpike files into [kontroller](https://github.com/sg-s/kontroller) compatible files. 
-4. `image-tools` tools to help you with working with images. For example, `saturationPlane` computes the saturation plane from a colour image. 
-5. `internet-tools` to help you work over HTTP connections. `install` is my package manager that installs toolboxes from GitHub. 
-6. `maths-tools` are functions for various mathematical operations. e.g., `spear` computes the Spearman rank correlation. 
-7. `matlab-tools` MATLAB-specific tools, to work around various quirks and missing bits in MATLAB. For example, the excellent `swap` swaps two variable in place. 
-8. `neuro-tools` tools specific to neuroscience. For example, `raster2` plots a raster of spike times from two neurons. 
-9. `publish-tools` This toolset is built around MATLAB's `publish` function. For details on what you can do with this, look at this [repo](https://github.com/sg-s/awesome-matlab-notebook).
-10. `string-tools` tools to work with strings. For example, `randomString(100)` spits out a 100 random characters. 
-11. `time-series-tools` tools to work with time series. For example, `fastFilter` speeds up convolutions using GPUs and Fourier Transforms for long time series. 
+| What you want to do                            | Use this |
+| --------------------                           | -------  |
+| Generate a random string| [randomString.m](src/string-tools/randomString.m) |
+| round a number and convert to string for display | [oval.m](src/string-tools/oval.m) |
+
+There are lots more functions in the toolbox which aren't on the list -- dig around and see if there's something you might use. 
+
 
 # Installation
 
