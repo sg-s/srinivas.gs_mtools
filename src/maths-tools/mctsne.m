@@ -28,6 +28,6 @@ system([fileparts(which('mctsne')) oss 'mctsne.py ' oval(perplexity) ' ' oval(n_
 R = h5read('data.h5','/R');
 
 % clean up
-% delete('data.h5')
-% delete('Vs.mat')
+delete('data.h5')
+delete('Vs.mat')
 
