@@ -10,8 +10,7 @@
 % created by Srinivas Gorur-Shandilya at 11:07 , 27 July 2011. Contact me
 % at http://srinivas.gs/contact/
 % this was written a long while ago, and these usage notes have been added later:
-% usage:
-% [x, frec] = deconvolve(a,y)
+
 function C = deconvolve(K,T)
 if ~nargin
 	help deconvolve
