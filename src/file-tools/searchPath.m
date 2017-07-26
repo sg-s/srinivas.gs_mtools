@@ -40,6 +40,12 @@ else
         end
         loc(rm_this) = [];
     end
+
+    if isempty(loc)
+        inpath = false;
+        full_path = '';
+        return
+    end
 	
     full_path=p(sep_points(find(sep_points<loc,1,'last'))+1:sep_points(find(sep_points>loc,1,'first'))-1);
 	if isempty(full_path)
