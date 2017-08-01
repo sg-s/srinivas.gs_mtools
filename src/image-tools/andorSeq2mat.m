@@ -13,7 +13,7 @@ if nargin < 2
 	error('Not enough arguments. You need to specify the path_name and t_end')
 end
 
-if isemtpy(varargin{1})
+if isempty(varargin{1})
 	path_name = pwd;
 end
 
