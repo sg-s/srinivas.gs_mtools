@@ -15,6 +15,22 @@
 
 function [] = equalizeAxes(varargin)
 
+
+% grab figure handle, if it exists 
+for i = 1:nargin
+	if strcmp(class(varargin{i}),'matlab.ui.figure')
+		fig_handle = varargin{i};
+		break
+	else
+		continue
+	end
+end
+if ~exist('fig_handle','var')
+	fig_handle = gcf;
+end
+
+
+
 % grab axes handles, if they exist 
 ax_handles = [];
 for i = 1:nargin
@@ -26,31 +42,31 @@ for i = 1:nargin
 	end
 end
 if isempty(ax_handles)
-	% grab figure handle, if it exists 
-	for i = 1:nargin
-		if strcmp(class(varargin{i}),'matlab.ui.figure')
-			fig_handle = varargin{i};
-			break
-		else
-			continue
-		end
-	end
-	if ~exist('fig_handle','var')
-		fig_handle = gcf;
-	end
-	error('not coded')
+	ax_handles = fig_handle.Children;
 end
 
 
-eq_x = true;
-eq_y = true;
+
+eq_x = false;
+eq_y = false;
+eq_z = false;
 for i = 1:nargin
 	if strcmp(varargin{i},'x')
-		eq_y = false;
+		eq_y = true;
 	end
 	if strcmp(varargin{i},'y')
-		eq_x = false;
+		eq_x = true;
 	end
+	if strcmp(varargin{i},'z')
+		eq_z = true;
+	end
+end
+
+if ~eq_x & ~eq_y & ~eq_z
+	% equalize nothing doesn't make sense. so let's equalize everything
+	eq_x = true;
+	eq_y = true;
+	eq_z = true;
 end
 
 if eq_x
@@ -70,6 +86,16 @@ if eq_y
 
 	for i = 1:length(ax_handles)
 		ax_handles(i).YLim = [min_y max_y];
+	end
+end
+
+if eq_z
+	zlims = reshape([ax_handles.ZLim],2,length(ax_handles));
+	min_z = min(zlims(1,:));
+	max_z = max(zlims(2,:));
+
+	for i = 1:length(ax_handles)
+		ax_handles(i).ZLim = [min_z max_z];
 	end
 end
 
