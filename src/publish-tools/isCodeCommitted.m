@@ -70,7 +70,7 @@ for i = 1:length(allfolders)
 	cd(allfolders{i})
 
 	% check if there are any uncommitted files here
-	[~,m] = system('git status | grep "modified" | wc -l');
+	[~,m] = system('git status --porcelain | wc -l');
 	if str2double(m) > 0 
 		cprintf('red','MODIFIED  ')
 		cprintf('text',[repo_name '\n'])
