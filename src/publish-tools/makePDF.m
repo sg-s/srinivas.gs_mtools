@@ -104,6 +104,9 @@ end
 % move to the correct directory
 cd('html')
 
+% escape spaces in the file name 
+f = strrep(f,' ','\ ');
+
 % convert the .tex to a PDF
 unix(['pdflatex ' f]);
 
@@ -126,10 +129,10 @@ end
 [~,git_hash] = unix('git rev-parse HEAD');
 archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
 archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
-copyfile(f,archive_file_name);
+unix(['cp ' f ' ' archive_file_name])
 
 % open the PDF
-open(f)
+unix(['open ' f])
 
 function filename = findFileToPublish()
 	% run on the last modified file

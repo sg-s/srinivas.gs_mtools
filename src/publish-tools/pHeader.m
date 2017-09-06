@@ -20,7 +20,7 @@ elseif ismac
 	end
 	setenv('PATH', path1);
 else
-	error('Im too lazy to write this section for linux. Please send me a PR.')
+	error('Im too lazy to write this section for GNU/Linux. Please send me a PR.')
 end
 
 % common code
@@ -31,8 +31,11 @@ if ~isempty(calling_func)
 		being_published = 1;
 		if ismac
 			try
-				unix(['tag -a publish-failed ',which(mfilename)]);
-				unix(['tag -r published ',which(mfilename)]);
+				[e,~] = unix('tag');
+				if e == 0
+					unix(['tag -a publish-failed ',which(mfilename)]);
+					unix(['tag -r published ',which(mfilename)]);
+				end
 			catch
 				% probably no tag. no big deal.
 			end

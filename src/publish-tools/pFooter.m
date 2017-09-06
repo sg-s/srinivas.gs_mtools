@@ -36,8 +36,11 @@ disp(strcat(oval(t,3),' seconds.'))
 if being_published
 	if ismac
 		try
-			unix(['tag -a published ',which(calling_func)]);
-			unix(['tag -r publish-failed ',which(calling_func)]);
+			[e,~] = unix('tag');
+			if e == 0
+				unix(['tag -a published ',which(calling_func)]);
+				unix(['tag -r publish-failed ',which(calling_func)]);
+			end
 		catch
 		end
 	end
