@@ -16,7 +16,7 @@ for i = 1:length(f)
 		% go one level deeper
 		[this_v, this_name] = struct2vec(s.(f{i}));
 		for j = 1:length(this_name)
-			this_name{j} = [this_name{j} f{i} '_' inputname(1)];
+			this_name{j} = [inputname(1)  '_' f{i}   this_name{j} ];
 		end
 		names = [names; this_name(:)];
 		v = [v; this_v(:)];
@@ -25,7 +25,7 @@ for i = 1:length(f)
 
 			v = [v; s.(f{i})];
 
-			this_name = [f{i} '_' inputname(1)];
+			this_name = [inputname(1) '_' f{i}  ];
 			names = [names; this_name];
 		end
 	end

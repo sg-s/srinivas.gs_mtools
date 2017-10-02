@@ -1,2 +1,8 @@
 .DS_Store
 *.mat
+*.mexmaci64
+*.mexa64
+*.mexa64
+*.lyx#
+*.eps
+*.png
