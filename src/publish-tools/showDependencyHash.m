@@ -18,7 +18,24 @@ p = path;
 p = [pathsep p];
 c = strfind(p,pathsep);
 
+% augment the path with folders beginning with a @ within those folders
+pp = '';
+
+for i = 2:length(c)
+	this_folder = p(c(i-1)+1:c(i)-1);
+	if ~any(strfind(this_folder,'MATLAB_R'))
+		class_folders = dir([this_folder oss '@*']);
+		for j = 1:length(class_folders)
+			pp = [pp pathsep class_folders(j).folder oss class_folders(j).name];
+		end
+	end
+end
+
+p = [pp p];
+c = strfind(p,pathsep);
+
 allfiles = {};
+
 
 for i = 2:length(c)
 	this_folder = p(c(i-1)+1:c(i)-1);
@@ -39,7 +56,11 @@ dep_files = allfiles(isDep(lineRead(which(this_file)),allfiles));
 % we now have a bunch of dependencies. now look one level down -- at the dependencies of the dependencies 
 is_dep = false(length(allfiles),1);
 for j = 1:length(dep_files)
-	is_dep = is_dep + isDep(lineRead(which(dep_files{j})),allfiles);
+	try
+		is_dep = is_dep + isDep(lineRead(which(dep_files{j})),allfiles);
+	catch
+		% one reason for an error here is that there is a method called "plot" in a class that is on the path, but "plot" also exists in a protected MATLAB workspace, and which(plot) resolves to the MATLAB builtin, not the class method
+	end
 end
 is_dep(is_dep>0) = 1;
 dep_files =  unique([dep_files allfiles(logical(is_dep))]);
