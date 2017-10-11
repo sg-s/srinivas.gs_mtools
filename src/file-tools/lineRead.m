@@ -13,6 +13,7 @@ if ~nargin
 	help lineRead
 	return
 end
+assert(exist(filename)~=0,'File not found!')
 fid = fopen(filename, 'rt'); 
 lines = textscan(fid,'%[^\n]'); %reads line by line 
 fclose(fid); 

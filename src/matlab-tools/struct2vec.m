@@ -3,6 +3,7 @@
 % into a vector, with a corresponding list 
 % of names
 % it ignores elements that are not numbers 
+% you can invert this using vec2struct
 
 function [v, names] = struct2vec(s)
 
@@ -24,6 +25,7 @@ for i = 1:length(f)
 		if ~ischar(s.(f{i}))
 
 			v = [v; s.(f{i})];
+
 
 			this_name = [inputname(1) '_' f{i}  ];
 			names = [names; this_name];
