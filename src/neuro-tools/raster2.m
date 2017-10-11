@@ -5,9 +5,6 @@
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-
 
 
 function raster2(A,B,varargin)
@@ -47,12 +44,23 @@ else
 end
 
 
+
 % plot A and B spikes
 s = size(A);
 if s(1) > s(2)
     A = A';
 end
 ntrials = size(A,1);
+
+% if A and B are zero-padded spiketimes, convert them into logical arrays 
+if max(max(A)) > 1
+    t_end = max([max(max(A)) max(max(B))]);
+    new_A = zeros(ntrials,t_end);
+    for i = 1:ntrials
+        new_A(i,nonzeros(A(i,:))) = 1; 
+    end
+    A = new_A;
+end
 
 for i = 1:ntrials
     A(i,isnan(A(i,:))) = 0;
