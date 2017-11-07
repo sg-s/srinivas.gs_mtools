@@ -81,7 +81,12 @@ git_folder_name = {};
 for i = 1:length(allfolders)
 	this_folder = allfolders{i};
 
-	if exist([allfolders{i} oss '.git'],'file') == 7
+	% make sure this folder is not a MATLAB classdef folder
+	if any(strfind(this_folder,'@'))
+		continue
+	end
+
+	if exist([this_folder oss '.git'],'file') == 7
 		is_git(i) = true;
 		git_folder_name{i} = this_folder;
 	else
