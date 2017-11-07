@@ -1,6 +1,6 @@
 # mtools by srinivas.gs
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)]()
+[![GitHub last commit](https://img.shields.io/github/last-commit/sg-s/srinivas.gs_mtools.svg)]()
 
 This repository contains a bunch of useful scripts and functions that make working in MATLAB much easier. All my other MATLAB repositories depend on this. Feel free to do with functions that I have written what you will. Some functions written by others are also included here, with licenses and attribution where possible. 
 
