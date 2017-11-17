@@ -65,13 +65,18 @@ end
 is_dep(is_dep>0) = 1;
 dep_files =  unique([dep_files allfiles(logical(is_dep))]);
 
-% remove default
+% remove default and some other files to ignore
 dep_files(strcmp('default',dep_files)) = [];
+dep_files(strcmp('temp',dep_files)) = [];
+dep_files(strcmp('finish',dep_files)) = [];
+
 
 % find which folders they are in
 allfolders = {};
 for i = 1:length(dep_files)
-	allfolders = [allfolders fileparts(which(dep_files{i}))];
+	this_folder = fileparts(which(dep_files{i}));
+
+	allfolders = [allfolders this_folder];
 end
 allfolders = unique(allfolders);
 
@@ -96,6 +101,7 @@ for i = 1:length(allfolders)
 			if exist([this_folder oss '.git'],'file') == 7
 				is_git(i) = true;
 				git_folder_name{i} = this_folder;
+
 				continue;
 			end
 		end 
