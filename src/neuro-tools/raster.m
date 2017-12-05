@@ -126,7 +126,7 @@ for j = 1:length(A)
         y = reshape([(options.yoffset+i-1+zeros(1,length(st))); (options.yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
         y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
      
-        plot(x*options.deltat,y,'Color',options.colour(1,:)), hold on
+        plot(x*options.deltat,y,'Color',options.Color(1,:)), hold on
 
     end
 end
