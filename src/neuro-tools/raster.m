@@ -21,23 +21,21 @@ assert(ismatrix(A),'expected first argument to be a matrix')
 
 A = {A};
 
+
 if length(varargin) > 0
-    goon = false;
-    if length(varargin{1}) == length(A{1})
-        goon = true;
-    end
-    while goon
-        if length(varargin{1}) == length(A{1})
-            A{length(A)+1} = varargin{1};
-            varargin(1) = [];
-        else
-            goon = false;
+    while length(varargin{1}) == length(A{1})
+        A{length(A)+1} = varargin{1};
+        varargin(1) = [];
+        if length(varargin) == 0
+            break
         end
     end
 end
 
+
+
 % options and defaults
-options.Color = [1 0 0; 0 0 1];
+options.Color = lines(length(A));
 options.yoffset = 0;
 options.deltat = 1e-4;
 options.fill_fraction = .95;
@@ -125,8 +123,12 @@ for j = 1:length(A)
         x = reshape([st;st;NaN(1,length(st))],1,[]);
         y = reshape([(options.yoffset+i-1+zeros(1,length(st))); (options.yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
         y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
+
+        if j > 1
+            y = y  + sum(ntrials(1:j-1));
+        end
      
-        plot(x*options.deltat,y,'Color',options.Color(1,:)), hold on
+        plot(x*options.deltat,y,'Color',options.Color(j,:)), hold on
 
     end
 end
