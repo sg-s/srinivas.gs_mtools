@@ -13,6 +13,7 @@
 
 function raster(A,varargin)
 
+A = squeeze(A);
 assert(ismatrix(A),'expected first argument to be a matrix')
 
 % in any of the varargin are the same size as A, 
@@ -111,6 +112,9 @@ if nanmax(A{1}(:)) > 1
     A = B;
 elseif  all([0 1] == unique(A{1}(:)))
     % data is a logical array
+    % but needs to be rotated
+    A{1} = A{1}';
+elseif all([0; 1] == unique(A{1}(:)))
 else
     error('unrecognised data type')
 end

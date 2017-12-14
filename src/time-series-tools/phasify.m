@@ -20,6 +20,7 @@ metrics.std_rho = NaN;
 % options and defaults
 options.period_fine_tune = [.9 1.1];
 options.dt = 1; % ms
+options.default_T = NaN;
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -56,6 +57,7 @@ Fs = 1/(options.dt*1e-3); % Hz
 
 Y = fft(X,NFFT)/L;
 f = Fs/2*[linspace(0,1,NFFT/2) linspace(1,0,NFFT/2)]; 
+
 
 [~,idx] = max(abs(Y));
 
@@ -95,7 +97,7 @@ end
 % now compute the mean radius around the circle 
 % and other metrics round the circle 
 % we do so by binning the circle into 100 segments 
-% and pooling data in those bings
+% and pooling data in those bins
 
 % but first, snip off a bit from the front
 X = X(floor(T/2):end);
