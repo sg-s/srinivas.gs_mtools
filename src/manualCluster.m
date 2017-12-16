@@ -18,10 +18,8 @@
 % 
 % created by Srinivas Gorur-Shandilya at 10:53 , 03 September 2015. Contact me at http://srinivas.gs/contact/
 % 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function idx = manualCluster(R,X,labels,runOnClick,runOnClick_data)
+function [idx, labels] = manualCluster(R,X,labels,runOnClick,runOnClick_data)
 
 if ~nargin
     help manualCluster
@@ -33,7 +31,6 @@ if size(R,1) ~= 2
     R = R';
 end
 assert(length(R)==length(X),'reduced and full data should be of equal lengths')
-assert(length(labels)>1,'there should be at least two labels provided')
 assert(iscell(labels),'Labels should be cell array')
 
 idx = zeros(1,length(R)); % stores the cluster ID

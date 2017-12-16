@@ -16,11 +16,11 @@ if ~nargin
 end
 
 try
-	if ~strcmp(repo(end),'/')
-		repo = [repo '/'];
+	if ~strcmp(repo(end),oss)
+		repo = [repo oss];
 	end
-	if ~strcmp(repo(1),'/')
-		repo = ['/' repo];
+	if ~strcmp(repo(1),oss)
+		repo = [oss repo];
 	end
 	u = ['https://raw.githubusercontent.com' repo 'master/build_number'];
 	v = str2double(webread(u));

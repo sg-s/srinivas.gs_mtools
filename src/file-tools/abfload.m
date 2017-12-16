@@ -119,7 +119,7 @@ function [d,si,h]=abfload(fn,varargin)
 % -------------------------------------------------------------------------
 %                       PART 1: check of input vars
 % -------------------------------------------------------------------------
-disp(['** ' mfilename])
+% disp(['** ' mfilename])
 % --- defaults   
 % gap-free
 start=0.0;
@@ -164,7 +164,7 @@ end
 % -------------------------------------------------------------------------
 %                       PART 2a: determine abf version
 % -------------------------------------------------------------------------
-disp(['opening ' fn '..']);
+% disp(['opening ' fn '..']);
 [fid,messg]=fopen(fn,'r',machineF);
 if fid == -1,
   error(messg);
@@ -429,17 +429,17 @@ else
 end
 if eflag
   fclose(fid);
-  disp('**** available channels:');
-  disp(h.recChNames);
-  disp(' ');
-  disp('**** requested channels:');
-  disp(channels);
+  % disp('**** available channels:');
+  % disp(h.recChNames);
+  % disp(' ');
+  % disp('**** requested channels:');
+  % disp(channels);
   error('at least one of the requested channels does not exist in data file (see above)');
 end
 % display available channels if in info mode
 if ~doLoadData
-  disp('**** available channels:');
-  disp(h.recChNames);
+  % disp('**** available channels:');
+  % disp(h.recChNames);
 end
 
 % gain of telegraphed instruments, if any
@@ -500,7 +500,7 @@ end
 % -------------------------------------------------------------------------
 switch h.nOperationMode
   case 1
-    disp('data were acquired in event-driven variable-length mode');
+    % disp('data were acquired in event-driven variable-length mode');
     if h.fFileVersionNumber>=2.0
       errordlg('abfload currently does not work with data acquired in event-driven variable-length mode and ABF version 2.0','ABF version issue');
     else
@@ -573,13 +573,13 @@ switch h.nOperationMode
     end
     
   case {2,4,5}
-    if h.nOperationMode==2
-      disp('data were acquired in event-driven fixed-length mode');
-    elseif h.nOperationMode==4
-      disp('data were acquired in high-speed oscilloscope mode');
-    else
-      disp('data were acquired in waveform fixed-length mode');
-    end
+    % if h.nOperationMode==2
+    %   disp('data were acquired in event-driven fixed-length mode');
+    % elseif h.nOperationMode==4
+    %   disp('data were acquired in high-speed oscilloscope mode');
+    % else
+    %   disp('data were acquired in waveform fixed-length mode');
+    % end
     % extract timing information on sweeps
     if (h.lSynchArrayPtr<=0 || h.lSynchArraySize<=0),
       fclose(fid);
@@ -668,7 +668,7 @@ switch h.nOperationMode
     end
     
   case 3
-    disp('data were acquired in gap-free mode');
+    % disp('data were acquired in gap-free mode');
     % from start, stop, headOffset and h.fADCSampleInterval calculate first point to be read
     %  and - unless stop is given as 'e' - number of points
     startPt=floor(1e6*start*(1/h.fADCSampleInterval));
@@ -693,11 +693,11 @@ switch h.nOperationMode
     end
     tmp=1e-6*h.lActualAcqLength*h.fADCSampleInterval;
     if verbose
-      disp(['total length of recording: ' num2str(tmp,'%5.1f') ' s ~ ' num2str(tmp/60,'%3.0f') ' min']);
-      disp(['sampling interval: ' num2str(h.si,'%5.0f') ' µs']);
+      % disp(['total length of recording: ' num2str(tmp,'%5.1f') ' s ~ ' num2str(tmp/60,'%3.0f') ' min']);
+      % disp(['sampling interval: ' num2str(h.si,'%5.0f') ' µs']);
       % 8 bytes per data point expressed in Mb
-      disp(['memory requirement for complete upload in matlab: '...
-        num2str(round(8*h.lActualAcqLength/2^20)) ' MB']);
+      % disp(['memory requirement for complete upload in matlab: '...
+      %   num2str(round(8*h.lActualAcqLength/2^20)) ' MB']);
     end
     % recording start and stop times in seconds from midnight
     h.recTime=h.lFileStartTime;
@@ -751,7 +751,7 @@ switch h.nOperationMode
         dix(:,2)=dix(:,1)+chunkPtsPerChan-1;
         dix(end,2)=h.dataPtsPerChan;
         if verbose && nChunk
-          disp(['reading file in ' int2str(nChunk) ' chunks of ~' num2str(chunk) ' Mb']);
+          % disp(['reading file in ' int2str(nChunk) ' chunks of ~' num2str(chunk) ' Mb']);
         end
         % do it: if no remainder exists loop through all rows of dix,
         % otherwise spare last row for the lines below (starting with
@@ -800,7 +800,7 @@ switch h.nOperationMode
       end
     end
   otherwise
-    disp('unknown recording mode -- returning empty matrix');
+    % disp('unknown recording mode -- returning empty matrix');
     d=[];
     h.si=[];
 end

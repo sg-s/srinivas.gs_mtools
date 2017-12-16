@@ -1,24 +1,22 @@
 % joinPath
-% small utility to join two paths
+% small utility to join strings together
+% so that they form a valid path
 % works on any operating system
 % usage:
-% joined_path = joinPath('/wow/so/path','many.txt')
+% joined_path = joinPath('/wow/so/path','doge','many.txt')
 
-function [c] = joinPath(a,b)
+function c = joinPath(varargin)
 
-assert(ischar(a),'First argument must be a string')
-assert(ischar(b),'2nd argument must be a string')
-
-% remove terminal slash from a
-if strcmp(a(end),oss)
-	a(end) = [];
+for i = 1:length(varargin)
+	assert(ischar(varargin{i}),'argument must be a string')
 end
 
-% remove initial slash from b
-if strcmp(b(1),oss)
-	b(1) = [];
+c = [];
+for i = 1:length(varargin)
+	if strcmp(varargin{i}(end),oss)
+		varargin{i}(end) = [];
+	end
+	c = [c varargin{i} oss];
 end
 
-c = [a oss b];
-
-
+c(end)  = [];

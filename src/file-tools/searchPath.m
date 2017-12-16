@@ -26,20 +26,21 @@ else
 	inpath = 1;
 	sep_points = strfind(p,c);
 	loc = strfind(p,char(name));
-	rm_this = [];
-	if length(loc) > 0
-		rm_this = [];
-		% there is more than location?
-		for i = 1:length(loc)
-			next_sep_point = sep_points(find(sep_points>loc(i),1,'first'));
-			this_string = p(loc(i):next_sep_point);
-			this_string = strrep(this_string,c,'');
-			if ~strcmp(this_string,name)
-				rm_this = [rm_this i];
-			end
-        end
-        loc(rm_this) = [];
-    end
+	loc = loc(1);
+	% rm_this = [];
+	% if length(loc) > 0
+	% 	rm_this = [];
+	% 	% there is more than location?
+	% 	for i = 1:length(loc)
+	% 		next_sep_point = sep_points(find(sep_points>loc(i),1,'first'));
+	% 		this_string = p(loc(i):next_sep_point);
+	% 		this_string = strrep(this_string,c,'');
+	% 		if ~strcmp(this_string,name)
+	% 			rm_this = [rm_this i];
+	% 		end
+ %        end
+ %        loc(rm_this) = [];
+ %    end
 
     if isempty(loc)
         inpath = false;
