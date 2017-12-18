@@ -12,14 +12,14 @@
 % idx is a vector N elements long
 % 
 % in addition, you can also two more arguments:
-% idx = manualCluster(R,X,labels,runOnClick,runOnClick_data)
+% idx = manualCluster(R,X,labels,runOnClick)
 % where runOnClick is a function handle that manualCluster will attempt to run as follows:
-% runOnClick(runOnClick_data,idx,cp)
+% runOnClick(idx)
 % 
 % created by Srinivas Gorur-Shandilya at 10:53 , 03 September 2015. Contact me at http://srinivas.gs/contact/
 % 
 
-function [idx, labels] = manualCluster(R,X,labels,runOnClick,runOnClick_data)
+function [idx, labels] = manualCluster(R,X,labels,runOnClick)
 
 if ~nargin
     help manualCluster
@@ -156,8 +156,9 @@ uiwait(hmc);
 
             % also run the external callback
             try
-                runOnClick(runOnClick_data,idx,cp)
+                runOnClick(cp)
             catch
+                warning('manualCluster::error running callback function')
             end
         end
      
