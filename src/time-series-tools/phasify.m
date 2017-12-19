@@ -50,6 +50,7 @@ else
 end
 
 
+
 % FFT it to find the approximate period 
 L = length(X);
 NFFT = 2^nextpow2(L);
@@ -58,10 +59,15 @@ Fs = 1/(options.dt*1e-3); % Hz
 Y = fft(X,NFFT)/L;
 f = Fs/2*[linspace(0,1,NFFT/2) linspace(1,0,NFFT/2)]; 
 
+min_f = 1/(length(X)*options.dt*1e-3);
 
-[~,idx] = max(abs(Y));
+Y = abs(Y);
+Y(f<2*min_f) = 0;
+
+[~,idx] = max((Y));
 
 T = 1e3*(1./f(idx));
+
 
 if isinf(T)
 	% can't estimate T, give up
@@ -74,7 +80,7 @@ r2 = NaN*all_delays;
 
 for i = 1:length(all_delays)
 	Y = circshift(X,all_delays(i));
-	r2(i) = rsquare(X,Y);
+	r2(i) = corr(X,Y);
 end
 
 [~,idx] = max(r2);
