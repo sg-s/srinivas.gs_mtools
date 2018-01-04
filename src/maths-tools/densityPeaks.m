@@ -60,8 +60,8 @@ d = pdist2(X,X);
 
 if options.show_plot
     temp = figure; hold on
-    c = lines(3);
-    for i = 1:3
+    c = lines(max(L));
+    for i = 1:max(L)
         plot(X(L==i,1),X(L==i,2),'+','Color',c(i,:))
     end
     prettyFig

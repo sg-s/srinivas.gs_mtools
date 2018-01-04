@@ -49,24 +49,34 @@ else
 	error('Inputs need to be name value pairs')
 end
 
+% we use two different ways of finding the approximate
+% period, because this seems to be a hard problem
+% if one of them is funky, we throw it out
 
+cycle_periods = diff(computeOnsOffs(X>max(X)/2));
+cycle_periods(cycle_periods > mean(cycle_periods) + 3*std(cycle_periods)) = [];
+T = mean(cycle_periods);
 
-% FFT it to find the approximate period 
-L = length(X);
-NFFT = 2^nextpow2(L);
-Fs = 1/(options.dt*1e-3); % Hz 
+if isnan(T) || isinf(T) || T < 0
+	% try the minimums 
 
-Y = fft(X,NFFT)/L;
-f = Fs/2*[linspace(0,1,NFFT/2) linspace(1,0,NFFT/2)]; 
+	cycle_periods = diff(computeOnsOffs(X>min(X)/2));
+	cycle_periods(cycle_periods > mean(cycle_periods) + 3*std(cycle_periods)) = [];
+	T = mean(cycle_periods);
+end
 
-min_f = 1/(length(X)*options.dt*1e-3);
-
-Y = abs(Y);
-Y(f<2*min_f) = 0;
-
-[~,idx] = max((Y));
-
-T = 1e3*(1./f(idx));
+if isnan(T) || isinf(T) || T < 0
+	% something went wrong, try the FFT method
+	% FFT it to find the approximate period 
+	L = length(X);
+	NFFT = 2^nextpow2(L);
+	Fs = 1/(options.dt*1e-3); % Hz 
+	Y = fft(X,NFFT)/L;
+	f = Fs/2*[linspace(0,1,NFFT/2) linspace(1,0,NFFT/2)]; 
+	Y = abs(Y);
+	[~,idx] = max((Y));
+	T = 1e3*(1./f(idx));
+end
 
 
 if isinf(T)
@@ -99,6 +109,15 @@ end
 
 % convert into polar coods
 [theta,rho] = cart2pol(X,Y);
+
+
+% figure('outerposition',[300 300 1200 600],'PaperUnits','points','PaperSize',[1200 600]); hold on
+% scatter(X,Y,64,[.5 .5 .5]*1.5)
+% for i = 1:length(X)
+% 	plot(X(i),Y(i),'k+')
+% 	pause(.01)
+% 	drawnow;
+% end
 
 % now compute the mean radius around the circle 
 % and other metrics round the circle 

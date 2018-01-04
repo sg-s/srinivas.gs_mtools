@@ -6,11 +6,13 @@
 % if X is a matrix,
 % X is shuffled along the longer dimension, for each element in the shorter dimension
 
-function XS = shuffle(X)
+function [XS, idx] = shuffle(X)
 
 if isvector(X)
 	assert(isvector(X),'Argument must be a vector');
-	XS = X(randperm(length(X)));
+	idx = randperm(length(X));
+	XS = X(idx);
+	[~,idx] = sort(idx);
 	return
 else
 	sz = size(X);
@@ -20,8 +22,9 @@ else
 		flip = true;
 	end
 	sz = size(X);
+	XS = X; idx = X;
 	for i = 1:sz(2)
-		XS(:,i) = shuffle(X(:,i));
+		[XS(:,i), idx(:,i)] = shuffle(X(:,i));
 	end
 	if flip
 		XS = XS';
