@@ -9,7 +9,19 @@ assert(ischar(file_name),'First argument should be a string')
 assert(iscell(lines),'2nd argument should be a cell array')
 
 fileID = fopen(file_name,'w');
-for i = 1:length(lines)
-	fprintf(fileID, [lines{i} '\n']);
+
+if ispc
+
+	for i = 1:length(lines)
+		fprintf(fileID, [lines{i} '\r\n']);
+	end
+
+else
+	for i = 1:length(lines)
+		fprintf(fileID, [lines{i} '\n']);
+	end
+	
 end
+
+
 fclose(fileID);
