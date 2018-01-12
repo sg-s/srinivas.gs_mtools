@@ -34,14 +34,14 @@ disp(strcat(oval(t,3),' seconds.'))
 
 % tag the file as being published (only on Mac OS X)
 if being_published
-	if ismac
-		try
-			[e,~] = unix('tag');
-			if e == 0
-				unix(['tag -a published ',which(calling_func)]);
-				unix(['tag -r publish-failed ',which(calling_func)]);
-			end
-		catch
-		end
-	end
+	% if ismac
+	% 	try
+	% 		[e,~] = unix('tag');
+	% 		if e == 0
+	% 			unix(['tag -a published ',which(calling_func)]);
+	% 			unix(['tag -r publish-failed ',which(calling_func)]);
+	% 		end
+	% 	catch
+	% 	end
+	% end
 end

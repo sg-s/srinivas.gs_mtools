@@ -29,17 +29,17 @@ being_published = 0;
 if ~isempty(calling_func)
 	if find(strcmp('publish',{calling_func.name}))
 		being_published = 1;
-		if ismac
-			try
-				[e,~] = unix('tag');
-				if e == 0
-					unix(['tag -a publish-failed ',which(mfilename)]);
-					unix(['tag -r published ',which(mfilename)]);
-				end
-			catch
-				% probably no tag. no big deal.
-			end
-		end
+		% if ismac
+		% 	try
+		% 		[e,~] = unix('tag');
+		% 		if e == 0
+		% 			unix(['tag -a publish-failed ',which(mfilename)]);
+		% 			unix(['tag -r published ',which(mfilename)]);
+		% 		end
+		% 	catch
+		% 		% probably no tag. no big deal.
+		% 	end
+		% end
 	end
 end
 
