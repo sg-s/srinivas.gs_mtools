@@ -64,14 +64,11 @@ else
     fid = fopen(filename,'r','ieee-le');
 end
 
-[pathname, name] = fileparts(fopen(fid));
-if ~isempty(pathname)
-    pathname = [pathname filesep];
-end
-matfilename = [pathname name '.mat'];
-FileInfo = SONFileHeader(fid);
-% ...overwriting any existing file
-save(matfilename,'FileInfo')
+% [pathname, ~] = fileparts(fopen(fid));
+% if ~isempty(pathname)
+%     pathname = [pathname filesep];
+% end
+% FileInfo = SONFileHeader(fid);
 
 % get list of valid channels
 c = SONChanList(fid);
@@ -89,6 +86,6 @@ for i = length(c):-1:1
 
 end
 
-fclose(fid)
+fclose(fid);
 
 

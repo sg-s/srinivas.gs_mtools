@@ -29,9 +29,7 @@ end
 
 % orient data correctly 
 if ~isvector(R)
-    if size(R,1) ~= 2
-        R = R';
-    end
+
 else
     R = R(:);
     R = [R randn(length(R),1)];
