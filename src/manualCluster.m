@@ -55,8 +55,8 @@ handles.ax(1) = axes('parent',handles.main_fig,'position',[-0.1 0.1 0.85 0.85],'
 handles.ax(2) = axes('parent',handles.main_fig,'position',[0.6 0.1 0.3 0.3],'box','on','TickDir','out');axis square, hold on  ; title('Raw data'), set(gca,'YLim',[min(min(R)) max(max(R))]);
 uicontrol(handles.main_fig,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
 uicontrol(handles.main_fig,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','FontSize',24,'String','Add to:');
-plot_handles = [];
-plot_handles2 = [];
+
+handles.reduced_data = [];
 
 prettyFig('font_units','points');
 
@@ -114,13 +114,14 @@ uiwait(handles.main_fig);
     end
 
 	function clusterPlot(~,~)
-        if isempty(plot_handles)
+        if isempty(handles.reduced_data)
             % plotting for the first time
             for i = 1:length(labels)
-                plot_handles(i+1) = plot(NaN,NaN);
+                handles.reduced_data(i+1) = plot(NaN,NaN);
+                handles.sorted_full_data(i) = plot(handles.ax(2),NaN,NaN,'Color',c(i,:),'LineWidth',2);
             end
             % plot unassigned data
-            plot_handles(1) = plot(handles.ax(1),R(1,:),R(2,:),'+','Color',[.5 .5 .5]);
+            handles.reduced_data(1) = plot(handles.ax(1),R(1,:),R(2,:),'+','Color',[.5 .5 .5]);
             
             if length(X) > 100
                 plotX = X(:,1:floor(length(X)/100):end);
@@ -128,13 +129,20 @@ uiwait(handles.main_fig);
                 plotX = X;
             end
             plot(handles.ax(2),plotX,'Color',[.5 .5 .5]);
-            plot_handles2 = plot(handles.ax(2),NaN,NaN);
+            handles.current_pt_raw_data = plot(handles.ax(2),NaN,NaN);
             set(handles.ax(2),'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
         else
             
-            set(plot_handles(1),'XData',R(1,idx==0),'YData',R(2,idx==0),'Parent',handles.ax(1),'Marker','+','LineStyle','none','MarkerFaceColor','none','Color',[.5 .5 .5]);
+            set(handles.reduced_data(1),'XData',R(1,idx==0),'YData',R(2,idx==0),'Parent',handles.ax(1),'Marker','+','LineStyle','none','MarkerFaceColor','none','Color',[.5 .5 .5]);
             for i = 2:length(labels)+1
-                set(plot_handles(i),'XData',R(1,idx==i-1),'YData',R(2,idx==i-1),'Parent',handles.ax(1),'Marker','o','LineStyle','none','MarkerFaceColor',c(i-1,:),'MarkerEdgeColor',c(i-1,:));
+                set(handles.reduced_data(i),'XData',R(1,idx==i-1),'YData',R(2,idx==i-1),'Parent',handles.ax(1),'Marker','o','LineStyle','none','MarkerFaceColor',c(i-1,:),'MarkerEdgeColor',c(i-1,:));
+            end
+
+            % average the raw data over the sorted clusters and plot those
+            for i = 1:length(labels)
+                plotX = X(:,idx == 2);
+                handles.sorted_full_data(i).XData = 1:length(plotX);
+                handles.sorted_full_data(i).YData = mean(plotX,2);
             end
             
         end
@@ -161,9 +169,9 @@ uiwait(handles.main_fig);
             % now plot the data vector corresponding to this plot on the secondary axis
             if idx(cp) == 0
                 % gray point
-                set(plot_handles2,'Parent',handles.ax(2),'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color','k','LineWidth',3);
+                set(handles.current_pt_raw_data,'Parent',handles.ax(2),'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color','k','LineWidth',3);
             else
-                set(plot_handles2,'Parent',handles.ax(2),'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color',c(idx(cp),:),'LineWidth',3);
+                set(handles.current_pt_raw_data,'Parent',handles.ax(2),'YData',X(:,cp),'XData',1:length(X(:,cp)),'Color',c(idx(cp),:),'LineWidth',3);
             end
 
             % update the Ylims to focus on the current data 
