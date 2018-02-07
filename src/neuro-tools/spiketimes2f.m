@@ -1,6 +1,9 @@
 % spikestimes2f.m
-% accepts a vector of spike times and returns a firing rate estimate using a Gaussian smoothing window. 
-% Usage: f =  spiketimes2f(spiketimes,time,dt,window,algo)
+% accepts a vector of spike times and returns a 
+% firing rate estimate using a various kernels
+% 
+% Usage: 
+% [f, t] =  spiketimes2f(spiketimes,time,dt,window,algo)
 % 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
@@ -87,34 +90,23 @@ switch algo
 	case 'gauss'
 		error('not coded')
 
-	case 'causal-conv'
-		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
-		t=min(time):dt:max(time);
-		alpha = 1/window; 
-		f = zeros(length(t),ntrials);
-		deltat = time(2)-time(1);
-		tt=0:deltat:1;
-		K = ((alpha^2)*exp(-alpha*tt).*tt);
-		for i = 1:ntrials
-			ff = filter(K,1,full(spiketimes(:,i)));
-			% subsample this to desired sampling rate
-			if length(time) ~= length(ff)
-				% something fucked, let's try to fix it
-				% warning('The time vector does not match the data. Will attempt to fix as best as possible...')
-				time = mean(diff(time))*(1:length(ff));
-			end
-			f(:,i) = interp1(time,ff,t);
-		end
+
 	case 'causal'
-		% uses a causal exponential Kernel, see pg 14 of Dayan & Abott Theoretical Neuroscience
-		t=min(time):dt:max(time);
+		% uses a causal exponential Kernel, 
+		% see pg 14 of Dayan & Abott Theoretical Neuroscience
+		% here we compute the convolution manually
+		% by repeated addition 
+		t = min(time):dt:max(time);
 		alpha = 1/window; 
 		ff = zeros(length(time),ntrials);
 		f = zeros(length(t),ntrials);
 		deltat = time(2)-time(1);
-		tt=0:deltat:1;
+		tt = 0:deltat:floor(window*20);
 		K = ((alpha^2)*exp(-alpha*tt).*tt);
-		K = (K(1:20*round(window/deltat))); K = K(:);
+		% trim the filter to ignore parts that don't matter
+		[M,idx] = max(K);
+		z = find(K(idx:end) < M/100,1,'first') + idx;
+		K = K(1:z); K = K(:);
 		for i = 1:ntrials
 			spike_locs = find(spiketimes(:,i));
 			for j = 1:length(spike_locs)

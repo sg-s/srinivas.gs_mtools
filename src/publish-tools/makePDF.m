@@ -85,30 +85,29 @@ catch err
 
 end
 
-% tell stupid MATLAB to get the path right
-[~,v] = unix('sw_vers -productVersion'); % Mac OS X specific
-v = str2double(v);
-path1 = getenv('PATH');
-if v < 10.11
-	if isempty(strfind(path1,':/usr/texbin'))
-		path1 = [path1 pathsep '/usr/texbin'];
+if ismac
+	% tell stupid MATLAB to get the path right
+	[~,v] = unix('sw_vers -productVersion'); % Mac OS X specific
+	v = str2double(v);
+	path1 = getenv('PATH');
+	if v < 10.11
+		if isempty(strfind(path1,':/usr/texbin'))
+			path1 = [path1 pathsep '/usr/texbin'];
+		end
+		setenv('PATH', path1);
+	else
+		if isempty(strfind(path1,':/Library/TeX/texbin'))
+			path1 = [path1 pathsep '/Library/TeX/texbin'];
+		end
+		setenv('PATH', path1);
 	end
-	setenv('PATH', path1);
-else
-	if isempty(strfind(path1,':/Library/TeX/texbin'))
-		path1 = [path1 pathsep '/Library/TeX/texbin'];
-	end
-	setenv('PATH', path1);
 end
 
 % move to the correct directory
 cd('html')
 
-% escape spaces in the file name 
-f = strrep(f,' ','\ ');
-
 % convert the .tex to a PDF
-unix(['pdflatex ' f]);
+system(['pdflatex "' f '"']);
 
 % clean up
 cd(orig_dir)
@@ -120,16 +119,20 @@ close all
 f = strrep(f,'.tex','.pdf');
 
 % archive this PDF in html/archive/ with the date and the git hash
-if exist([fileparts(f) oss 'archive'],'file') == 7
-else
-	mkdir([fileparts(f) oss 'archive'])
+if exist([fileparts(f) filesep 'archive'],'dir') ~= 7
+	mkdir([fileparts(f) filesep 'archive'])
 end
 
 [~,archive_file_name] = fileparts(f);
-[~,git_hash] = unix('git rev-parse HEAD');
-archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
-archive_file_name = [fileparts(f) oss 'archive' oss archive_file_name];
-unix(['cp ' f ' ' archive_file_name])
+[e,git_hash] = system('git rev-parse HEAD');
+if e == 0
+	archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
+else
+	warning('Could not read git hash -- PDF will be archived without the git hash')
+	archive_file_name = [archive_file_name '-' datestr(today)  '.pdf'];
+end
+archive_file_name = [fileparts(f) filesep 'archive' filesep archive_file_name];
+copyfile(f,archive_file_name)
 
 % open the PDF
 unix(['open ' f])
