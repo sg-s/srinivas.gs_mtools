@@ -2,7 +2,7 @@
 % makes a raster plot of spikes
 % the input can be any of the following:
 % (a) a sparse matrix where 1 = spike
-% (b) a zero or NaN-padded matrix
+% (b) a zero or NaN-padded matrix of spike times
 %
 % raster allows your to send in as many 
 % different spike trains as you want, with
