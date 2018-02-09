@@ -132,7 +132,6 @@ uiwait(handles.main_fig);
             handles.current_pt_raw_data = plot(handles.ax(2),NaN,NaN);
             set(handles.ax(2),'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
         else
-            
             set(handles.reduced_data(1),'XData',R(1,idx==0),'YData',R(2,idx==0),'Parent',handles.ax(1),'Marker','+','LineStyle','none','MarkerFaceColor','none','Color',[.5 .5 .5]);
             for i = 2:length(labels)+1
                 set(handles.reduced_data(i),'XData',R(1,idx==i-1),'YData',R(2,idx==i-1),'Parent',handles.ax(1),'Marker','o','LineStyle','none','MarkerFaceColor',c(i-1,:),'MarkerEdgeColor',c(i-1,:));
@@ -140,10 +139,12 @@ uiwait(handles.main_fig);
 
             % average the raw data over the sorted clusters and plot those
             for i = 1:length(labels)
-                plotX = X(:,idx == 2);
-                handles.sorted_full_data(i).XData = 1:length(plotX);
-                handles.sorted_full_data(i).YData = mean(plotX,2);
+                plotX = X(:,idx == i);
+                handles.sorted_full_data(i).XData = 1:size(plotX,1);
+                handles.sorted_full_data(i).YData = nanmean(plotX,2);
+                uistack(handles.sorted_full_data(i),'top')
             end
+            drawnow
             
         end
     end
