@@ -132,25 +132,26 @@ else
 	archive_file_name = [archive_file_name '-' datestr(today)  '.pdf'];
 end
 archive_file_name = [fileparts(f) filesep 'archive' filesep archive_file_name];
-copyfile(f,archive_file_name)
+
+copyfile(f,archive_file_name);
 
 % open the PDF
-unix(['open ' f])
+system(['open "' f '"']);
 
-function filename = findFileToPublish()
-	% run on the last modified file
-	d = dir('*.m');
+	function filename = findFileToPublish()
+		% run on the last modified file
+		d = dir('*.m');
 
-	% find the last modified file
-	[~,idx] = max([d.datenum]);
+		% find the last modified file
+		[~,idx] = max([d.datenum]);
 
-	% name of file
-	try
-		filename = d(idx).name;
-	catch
-		error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
+		% name of file
+		try
+			filename = d(idx).name;
+		catch
+			error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
+		end
+
 	end
-
-end
 
 end
