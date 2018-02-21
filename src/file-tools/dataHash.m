@@ -134,7 +134,9 @@ persistent usetypecastx
 if isempty(usetypecastx)
    usetypecastx = ~isempty(which('typecastx'));  % Run the slow WHICH once only
 end
-if ispc
+if ismac
+   usetypecastx = true;
+else
    usetypecastx = false;
 end
 
