@@ -139,7 +139,30 @@ archive_file_name = [fileparts(f) filesep 'archive' filesep archive_file_name];
 copyfile(f,archive_file_name);
 
 % open the PDF
-system(['open "' f '"']);
+if ismac
+	system(['open "' f '"']);
+else
+	try
+		system(['xdg-open "' f '"']);
+	catch
+	end
+	try
+		system(['gvfs-open "' f '"']);
+	catch
+	end
+
+	try
+		system(['evince "' f '"']);
+	catch
+	end
+
+	try
+		system(['okular "' f '"']);
+	catch
+	end
+end
+
+
 
 	function filename = findFileToPublish()
 		% run on the last modified file
