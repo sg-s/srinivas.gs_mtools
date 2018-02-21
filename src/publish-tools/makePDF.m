@@ -123,13 +123,16 @@ if exist([fileparts(f) filesep 'archive'],'dir') ~= 7
 	mkdir([fileparts(f) filesep 'archive'])
 end
 
+today_string = datestr(now);
+today_string = today_string(1:11);
+
 [~,archive_file_name] = fileparts(f);
 [e,git_hash] = system('git rev-parse HEAD');
 if e == 0
-	archive_file_name = [archive_file_name '-' datestr(today) '-' git_hash(1:7) '.pdf'];
+	archive_file_name = [archive_file_name '-' today_string '-' git_hash(1:7) '.pdf'];
 else
 	warning('Could not read git hash -- PDF will be archived without the git hash')
-	archive_file_name = [archive_file_name '-' datestr(today)  '.pdf'];
+	archive_file_name = [archive_file_name '-' today_string  '.pdf'];
 end
 archive_file_name = [fileparts(f) filesep 'archive' filesep archive_file_name];
 
