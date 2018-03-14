@@ -37,6 +37,7 @@ end
 
 % options and defaults
 options.Color = lines(length(A));
+options.LineWidth = 1;
 options.yoffset = 0;
 options.deltat = 1e-4;
 options.fill_fraction = .95;
@@ -97,7 +98,7 @@ if nanmax(A{1}(:)) > 1
     % convert to logical array
     max_size = 0;
     for i = 1:length(A)
-        max_size = max([max_size nanmax(A{1})]);
+        max_size = ceil(max([max_size nanmax(A{1})]));
     end
     for i = 1:length(A)
         B{i} = zeros(size(A{i},1),max_size);
@@ -132,7 +133,7 @@ for j = 1:length(A)
             y = y  + sum(ntrials(1:j-1));
         end
      
-        plot(x*options.deltat,y,'Color',options.Color(j,:)), hold on
+        plot(x*options.deltat,y,'Color',options.Color(j,:),'LineWidth',options.LineWidth), hold on
 
     end
 end

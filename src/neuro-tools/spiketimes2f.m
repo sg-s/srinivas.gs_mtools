@@ -38,7 +38,7 @@ case 4
 end
 f=NaN;
 
-debug_mode = 0;
+debug_mode = 1;
 
 
 % validate spiketimes 
@@ -107,6 +107,7 @@ switch algo
 		[M,idx] = max(K);
 		z = find(K(idx:end) < M/100,1,'first') + idx;
 		K = K(1:z); K = K(:);
+
 		for i = 1:ntrials
 			spike_locs = find(spiketimes(:,i));
 			for j = 1:length(spike_locs)
