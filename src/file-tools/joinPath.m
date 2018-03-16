@@ -13,10 +13,10 @@ end
 
 c = [];
 for i = 1:length(varargin)
-	if strcmp(varargin{i}(end),oss)
+	if strcmp(varargin{i}(end),filesep)
 		varargin{i}(end) = [];
 	end
-	c = [c varargin{i} oss];
+	c = [c varargin{i} filesep];
 end
 
 c(end)  = [];

@@ -7,5 +7,5 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [f] = folderName()
 temp = cd;
-s=strfind(temp,oss);
+s=strfind(temp,filesep);
 f = temp(s(end)+1:end);

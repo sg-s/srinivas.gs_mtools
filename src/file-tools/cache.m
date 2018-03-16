@@ -42,7 +42,7 @@ end
 
 maxCacheSize = 1000; % in MB
 
-root = [pwd oss];
+root = [pwd filesep];
 
 hash = '';
 % check if cache exists
@@ -53,7 +53,7 @@ if exist(strcat(root,'cached.mat'),'file')
 		if any(strfind(err.message,'corrupt'))
 			% corrupt cache. use a global cache
 			[~,root]=searchpath('mtools');
-			root = [root oss];
+			root = [root filesep];
 			warning('Local cache is corrupted. Falling back to global cache...')
 			% check if there is a global cache
 			if ~exist(strcat(root,'cached.mat'),'file')

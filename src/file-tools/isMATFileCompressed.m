@@ -22,11 +22,11 @@ if isdir(file_name)
 	if strcmp(file_name(end),'/')
 		file_name(end) = [];
 	end
-	allfiles = dir([file_name oss '*.mat']);
+	allfiles = dir([file_name filesep '*.mat']);
 	is_compressed = NaN*(1:length(allfiles));
 	file_names = cell(length(allfiles),1);
 	for i = 1:length(allfiles)
-		file_names{i} = [file_name oss allfiles(i).name];
+		file_names{i} = [file_name filesep allfiles(i).name];
 		is_compressed(i) = isMATFileCompressed(file_names{i});
 	end
 

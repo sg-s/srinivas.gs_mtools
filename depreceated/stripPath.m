@@ -7,7 +7,7 @@ if ~nargin
 	return
 end
 
-p = regexp(s,oss);
+p = regexp(s,filesep);
 if ~isempty(p)
     f = s(p(end)+1:end);
     p = s(1:p(end));

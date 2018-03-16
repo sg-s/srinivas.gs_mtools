@@ -29,7 +29,7 @@ for i = 1:n
 
 	for j = 1:min([batch_size length(allfiles)])
 		
-		movefile(allfiles(j).name,strcat(thisfolder,oss,allfiles(j).name))
+		movefile(allfiles(j).name,strcat(thisfolder,filesep,allfiles(j).name))
 
 	end
 	% mark it as moved
@@ -41,7 +41,7 @@ disp('All done.')
 
 % save where this is 
 temp=mfilename('fullpath');
-s=strfind(temp,oss);
+s=strfind(temp,filesep);
 temp = temp(1:s(end));
 filename = strcat(temp,'batch_task.mat');
 data_here = cd;

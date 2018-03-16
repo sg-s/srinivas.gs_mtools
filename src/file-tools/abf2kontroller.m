@@ -49,8 +49,8 @@ else
 end
 
 if isdir(file_name)
-	if ~strcmp(file_name(end),oss)
-		file_name = [file_name oss];
+	if ~strcmp(file_name(end),filesep)
+		file_name = [file_name filesep];
 	end
 	allfiles = dir([file_name  '*.abf']);
 	for i = 1:length(allfiles)

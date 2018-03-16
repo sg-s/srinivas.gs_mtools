@@ -29,13 +29,13 @@ else
 end
 
 % see if there is a pref.m file in the folder we have to look in
-if exist([look_here oss 'pref.m'],'file') == 2
-	line_content = lineRead([look_here oss 'pref.m']);
+if exist([look_here filesep 'pref.m'],'file') == 2
+	line_content = lineRead([look_here filesep 'pref.m']);
 else
 	% maybe there is a default.m? 
-	if exist([look_here oss 'default.m'],'file') == 2
-		copyfile([look_here oss 'default.m'],[look_here oss 'pref.m']);
-		line_content = lineRead([look_here oss 'default.m']);
+	if exist([look_here filesep 'default.m'],'file') == 2
+		copyfile([look_here filesep 'default.m'],[look_here filesep 'pref.m']);
+		line_content = lineRead([look_here filesep 'default.m']);
 	else
 		error('No preference file found!')
 	end

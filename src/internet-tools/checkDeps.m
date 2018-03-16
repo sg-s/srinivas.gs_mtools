@@ -11,7 +11,7 @@ try
                 if isempty(p)
                     disp([toolboxes{i} ' not installed'])
                 else
-                    build_numbers(i) = str2double(fileread([p oss 'build_number']));
+                    build_numbers(i) = str2double(fileread([p filesep 'build_number']));
                     v = checkForNewestVersionOnGitHub(['/sg-s/' toolboxes{i}]);
                     if v > build_numbers(i)
                         disp(['A new version of ' toolboxes{i} ' is available: build' oval(v)])

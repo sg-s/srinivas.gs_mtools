@@ -18,8 +18,8 @@ if isempty(varargin{1})
 end
 
 assert(exist(path_name,'file')==7,'Input argument should be a valid path')
-if ~strcmp(path_name(end),oss)
-	path_name = [path_name oss];
+if ~strcmp(path_name(end),filesep)
+	path_name = [path_name filesep];
 end
 
 
@@ -28,8 +28,8 @@ all_folders = getAllFolders(path_name);
 for ai = 1:length(all_folders)
 
 	this_folder = all_folders{ai};
-	if ~strcmp(this_folder(end),oss)
-		this_folder = [this_folder oss];
+	if ~strcmp(this_folder(end),filesep)
+		this_folder = [this_folder filesep];
 	end
 
 	allfiles = dir(this_folder);

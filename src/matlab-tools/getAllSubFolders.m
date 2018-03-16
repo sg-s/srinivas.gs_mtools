@@ -14,7 +14,7 @@ all_files = getAllFiles(path_name);
 % then stupidly parse them to figure out the subfolders
 all_subfolders =  all_files;
 for i = 1:length(all_subfolders)
-	temp = strfind(all_subfolders{i},oss);
+	temp = strfind(all_subfolders{i},filesep);
 	all_subfolders{i} = all_subfolders{i}(1:temp(end));
 end
 

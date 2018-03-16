@@ -29,8 +29,8 @@ for i = 1:length(allpaths)
 	temp = allpaths{i};
 	
 	if isdir(allpaths{i})
-		if ~strcmp(temp(end),oss)
-			allpaths{i} = [allpaths{i} oss];
+		if ~strcmp(temp(end),filesep)
+			allpaths{i} = [allpaths{i} filesep];
 		end
 		these_files = dir([allpaths{i} '*.m']);
 		allfiles = [allfiles {these_files.name}];
@@ -38,7 +38,7 @@ for i = 1:length(allpaths)
 	else
 		[a,b,c]=fileparts(allpaths{i});
 		allfiles = [allfiles [b c]];
-		parent_folder = [parent_folder ; [a oss]];
+		parent_folder = [parent_folder ; [a filesep]];
 	end
 end
 

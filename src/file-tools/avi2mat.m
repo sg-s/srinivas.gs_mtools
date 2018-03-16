@@ -19,20 +19,20 @@ if strcmp(path_name(end),'/') ||  strcmp(path_name(end),'\')
 end
 
 % get all .avi files in the path
-all_files = dir([path_name, oss, '*.avi']);
+all_files = dir([path_name, filesep, '*.avi']);
 
 for i = 1:length(all_files)
 	disp(all_files(i).name)
 
 	% check if this .mat file already exists
 	[~,temp]=fileparts(all_files(i).name);
-	matfile_name = [path_name oss temp '.mat'];
+	matfile_name = [path_name filesep temp '.mat'];
 	if exist(matfile_name,'file')==2
 		disp('.mat file already exists. Skipping...')
 	else
 		% import using importdata
 		disp('Importing data...')
-		movie = importdata([path_name oss all_files(i).name]);
+		movie = importdata([path_name filesep all_files(i).name]);
 
 		% convert it into a 3D matrix
 		disp('Converting to a 3D matrix...')

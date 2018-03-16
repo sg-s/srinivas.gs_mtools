@@ -21,7 +21,7 @@ allfiles = {};
 for i = 2:length(c)
 	this_folder = p(c(i-1)+1:c(i)-1);
 	if ~any(strfind(this_folder,'MATLAB_R'))
-		files_in_this_folder = dir([this_folder oss '*.m']);
+		files_in_this_folder = dir([this_folder filesep '*.m']);
 		allfiles = [allfiles files_in_this_folder.name];
 	end
 end
@@ -46,14 +46,14 @@ git_folder_name = {};
 for i = 1:length(allfolders)
 	this_folder = allfolders{i};
 
-	if exist([allfolders{i} oss '.git'],'file') == 7
+	if exist([allfolders{i} filesep '.git'],'file') == 7
 		is_git(i) = true;
 		git_folder_name{i} = this_folder;
 	else
 		% look up 10 levels
 		for j = 1:10
 			this_folder = fileparts(this_folder);
-			if exist([this_folder oss '.git'],'file') == 7
+			if exist([this_folder filesep '.git'],'file') == 7
 				is_git(i) = true;
 				git_folder_name{i} = this_folder;
 				continue;
@@ -66,7 +66,7 @@ allfolders =  unique(git_folder_name(is_git)');
 ok = true;
 
 for i = 1:length(allfolders)
-	repo_name = allfolders{i}(max(strfind(allfolders{i},oss))+1:end);
+	repo_name = allfolders{i}(max(strfind(allfolders{i},filesep))+1:end);
 	cd(allfolders{i})
 
 	% check if there are any uncommitted files here

@@ -15,7 +15,7 @@ case 0
 	return
 end
 
-slashes = strfind(filename,oss);
+slashes = strfind(filename,filesep);
 
 if isempty(slashes)
 	h = '000000';
@@ -24,7 +24,7 @@ else
 	root = filename(1:slashes(end));
 
 	try
-		h=fileread(strcat(root,'.git',oss,'refs',oss,'heads',oss,'master'));
+		h=fileread(strcat(root,'.git',filesep,'refs',filesep,'heads',filesep,'master'));
 		h = h(1:40);
 	catch
 		h = '000000';

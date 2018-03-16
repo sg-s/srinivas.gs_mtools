@@ -40,7 +40,7 @@ for i = 2:length(c)
 			% find the sub_folders beginning with a @
 			for j = 1:length(sub_folders)
 				if strcmp(sub_folders{j}(1),'@')
-					pp = [pp pathsep this_folder oss sub_folders{j}];
+					pp = [pp pathsep this_folder filesep sub_folders{j}];
 				end
 			end
 		end
@@ -54,7 +54,7 @@ c = [strfind(p,pathsep) length(p)+1];
 for i = 2:length(c)
 	this_folder = p(c(i-1)+1:c(i)-1);
 	if ~any(strfind(this_folder,'MATLAB_R'))
-		files_in_this_folder = dir([this_folder oss '*.m']);
+		files_in_this_folder = dir([this_folder filesep '*.m']);
 		allfiles = [allfiles files_in_this_folder.name];
 	end
 end
