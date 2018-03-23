@@ -11,14 +11,16 @@ assert(iscell(lines),'2nd argument should be a cell array')
 fileID = fopen(file_name,'w');
 
 if ispc
-
+	
 	for i = 1:length(lines)
-		fprintf(fileID, [lines{i} '\r\n']);
+		this_line = strrep(lines{i},'%','%%');
+		fprintf(fileID, [this_line '\r\n']);
 	end
 
 else
 	for i = 1:length(lines)
-		fprintf(fileID, [lines{i} '\n']);
+		this_line = strrep(lines{i},'%','%%');
+		fprintf(fileID, [this_line '\n']);
 	end
 	
 end
