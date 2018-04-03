@@ -23,5 +23,5 @@ if ret ~= 0,
       name = getenv('HOSTNAME');      
    end
 end
-name = lower(name);
+name = strtrim(lower(name));
 
