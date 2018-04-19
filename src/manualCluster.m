@@ -37,7 +37,7 @@ else
 end
 
 
-assert(length(R) == length(X),'reduced and full data should be of equal lengths')
+assert(length(R) == size(X,2),'reduced and full data should be of equal lengths')
 assert(iscell(labels),'Labels should be cell array')
 
 idx = zeros(1,length(R)); % stores the cluster ID
