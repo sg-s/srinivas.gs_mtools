@@ -9,19 +9,19 @@ assert(ischar(file_name),'First argument should be a string')
 assert(iscell(lines),'2nd argument should be a cell array')
 
 
-
+fileID = fopen(file_name,'w');
 if ispc
-	fclose('all')
-	this_line = strrep(lines{1},'%','%%');
-	system(['echo ' this_line ' > ' file_name] );
-	for i = 2:length(lines)
+	%this_line = strrep(lines{1},'%','%%');
+	%system(['echo ' this_line ' > ' file_name] );
+	for i = 1:length(lines)
 		this_line = strrep(lines{i},'%','%%');
-		%fprintf(fileID, [this_line '\r\n']);
-		system(['echo ' this_line ' >> ' file_name] );
+		this_line = strrep(lines{i},'\','\\');
+		fprintf(fileID, [this_line '\r\n']);
+		%system(['echo ' this_line ' >> ' file_name] );
 	end
 
 else
-	fileID = fopen(file_name,'w');
+	
 	for i = 1:length(lines)
 		this_line = strrep(lines{i},'%','%%');
 		fprintf(fileID, [this_line '\n']);
