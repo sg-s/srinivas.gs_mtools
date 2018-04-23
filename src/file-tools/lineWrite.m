@@ -11,8 +11,10 @@ assert(iscell(lines),'2nd argument should be a cell array')
 
 
 if ispc
-	
-	for i = 1:length(lines)
+	fclose('all')
+	this_line = strrep(lines{1},'%','%%');
+	system(['echo ' this_line ' > ' file_name] )
+	for i = 2:length(lines)
 		this_line = strrep(lines{i},'%','%%');
 		%fprintf(fileID, [this_line '\r\n']);
 		system(['echo ' this_line ' >> ' file_name] )
