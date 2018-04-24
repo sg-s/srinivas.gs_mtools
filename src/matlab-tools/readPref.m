@@ -28,6 +28,28 @@ else
 	end
 end
 
+% first load the default, then overwrite with pref
+if exist([look_here filesep 'default.m'],'file') == 2
+	line_content = lineRead([look_here filesep 'default.m']);
+else
+	error('No default preference file found!')
+end
+
+for i = 1:length(line_content)
+	this_line = line_content{i};
+	this_line(strfind(this_line,'%'):end) = [];
+	if ~isempty(this_line)
+		try 
+			eval(['pref.' this_line ';'])
+		catch err
+			disp(err)
+		end
+	end
+end
+
+clear line_content
+
+
 % see if there is a pref.m file in the folder we have to look in
 if exist([look_here filesep 'pref.m'],'file') == 2
 	line_content = lineRead([look_here filesep 'pref.m']);
