@@ -15,40 +15,52 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [] = makePDF(varargin)
 
-% defaults 
-force = false;
-dirty = false;
-filename = '';
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
-filename = findFileToPublish;
-if ~nargin
-else
-	% figure out which arguments are options and handle them
-	for i = 1:nargin
-		if strcmp(varargin{i},'-f') || strcmp(varargin{i},'--force') 
-			force = true;
-		elseif strcmp(varargin{i},'-d') || strcmp(varargin{i},'--dirty') 
-			dirty = true;
-		elseif ~any(strfind(varargin{i},'-')) 
-			filename = varargin{i};
-			if strcmp(filename(end-1:end),'.m')
-				filename = [filename '.m'];
-			end
-		end
-	end
-	assert(exist(filename,'file') == 2,'Cant find the file you told me to compile');
-end
 
 orig_dir = cd;
 close all 
 
-% compile to .tex
+% defaults 
 options.showCode = false;
 options.format = 'latex';
 options.imageFormat= 'pdf';
 options.figureSnapMethod=  'print';
+options.force = false;
+options.dirty = false;
+options.filename = '';
 
+% validate and accept options
+if iseven(length(varargin))
+	for ii = 1:2:length(varargin)-1
+	temp = varargin{ii};
+    if ischar(temp)
+    	if ~any(find(strcmp(temp,fieldnames(options))))
+    		disp(['Unknown option: ' temp])
+    		disp('The allowed options are:')
+    		disp(fieldnames(options))
+    		error('UNKNOWN OPTION')
+    	else
+    		options.(temp) = varargin{ii+1};
+    	end
+    end
+end
+elseif isstruct(varargin{1})
+	% should be OK...
+	options = varargin{1};
+else
+	error('Inputs need to be name value pairs')
+end
+
+if isempty(options.filename)
+	options.filename = findFileToPublish;
+end
+
+publish_options = struct;
+publish_options.showCode = options.showCode;
+publish_options.format = options.format;
+publish_options.imageFormat = options.imageFormat;
+publish_options.figureSnapMethod = options.figureSnapMethod;
 
 % use a custom stylesheet, if it exists
 a = dir('*.xsl');
@@ -57,27 +69,27 @@ switch length(a)
 		% no custom stylesheet
 	case 1
 		% use this!
-		options.stylesheet = a.name;
+		publish_options.stylesheet = a.name;
 	case 2
 		error('Too many custom stylesheets in working directory. makePDF does not know what to do. Make sure there is only one .xsl file in the working directory.')
 end
 
 % check to make sure all changes are committed to git
 [~,m] = unix('git status | grep "modified" | wc -l');
-if str2double(m) > 0 && ~force
+if str2double(m) > 0 && ~options.force
 	error('You have unmodified files that have not been committed to your git repo. Cowardly refusing to proceed till you commit all files.')
 end
 
 % run publish to generate the .tex file
 try
-	f = publish(filename,options);
+	f = publish(options.filename,publish_options);
 catch err
 	if strcmp(err.identifier,'MATLAB:publish:DirNotWritable')
 		if ismac
 			disp('It looks like you dont have permissions to write to the target directory. This may be because of stupid fucking Dropbox fucking shit up. Attempting to fix...')
 			a = strfind(err.message,'"');
 			unix(['chflags -R nouchg '  err.message(a(1):a(2))]);
-			f = publish(filename,options);
+			f = publish(options.filename,publish_options);
 		end
 	else
 		error(err.message)
@@ -111,7 +123,7 @@ system(['pdflatex "' f '"']);
 
 % clean up
 cd(orig_dir)
-if ~dirty
+if ~options.dirty
 	cleanPublish;
 end
 close all
