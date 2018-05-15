@@ -56,12 +56,14 @@ for i = 1:length(figure_children)
 end
 delete(figure_children(rm_this))
 
-% get all the axes from the current figure
-axesHandles = findall(gcf,'type','axes');
-
 if options.delete_all
 	return
 end
+
+
+% get all the axes from the current figure
+axesHandles = [findall(gcf,'type','polaraxes'); findall(gcf,'type','axes')];
+
 
 % ignore specified handles
 rm_this = false(length(axesHandles),1);
@@ -120,8 +122,14 @@ end
 axesHandles = temp; clear temp
 
 L = {};
-for i = length(axesHandles):-1:1
-	L{i} = char(96+i);
+if options.capitalise
+	for i = length(axesHandles):-1:1
+		L{i} = char(64+i);
+	end
+else
+	for i = length(axesHandles):-1:1
+		L{i} = char(96+i);
+	end
 end
 
 for i = length(axesHandles):-1:1
