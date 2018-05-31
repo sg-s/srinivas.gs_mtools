@@ -32,8 +32,8 @@ options.plw = 2; % plot line width
 options.fs = 18; % font size
 options.EqualiseY = false;
 options.EqualiseX = false;
-options.FixLogX = false;
-options.FixLogY = false;
+options.FixLogX = true;
+options.FixLogY = true;
 options.plot_buffer = 0; % how much should you zoom out of the data to show extremes?
 options.tick_length = 0.01; 
 options.x_minor_ticks = false;
@@ -177,7 +177,10 @@ for i = 1:length(axesHandles)
 		a = floor(log10(minlog));
 		z = ceil(log10(maxlog));
 
-		set(axesHandles(i),'XTick',10.^(a:z));
+		az = a:z;
+		az = az(1:floor(length(az)/3):end);
+
+		set(axesHandles(i),'XTick',10.^(az));
 		
 	else
 	end
@@ -193,7 +196,9 @@ for i = 1:length(axesHandles)
 		a = floor(log10(minlog));
 		z = ceil(log10(maxlog));
 
-		set(axesHandles(i),'YTick',10.^(a:z));
+		az = a:z;
+		az = az(1:floor(length(az)/3):end);
+		set(axesHandles(i),'YTick',10.^(az));
 		
 	else
 	end
