@@ -82,7 +82,7 @@ UnitTestFcn = '';
 doDebug     = false;
 debugFlag   = {};
 force32     = false;
-replace     = false;
+replace     = true;
 
 % First input is the name of the source file:
 if ~ischar(SourceFile)
