@@ -34,7 +34,7 @@ end
 
 [urepos, idx] = unique(repo_name);
 for i = 1:length(idx)
-	disp([urepos{i} ' (' git_hashes{i} ')'])
+	disp([urepos{i} ' (' git_hashes{idx(i)} ')'])
 end
 
 % go back from whence you came
