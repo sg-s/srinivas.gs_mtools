@@ -168,39 +168,45 @@ for i = 1:length(axesHandles)
 
 	% there should be more than 2 Xtick when we have a log scale
 	if  length(get(axesHandles(i),'XTick')) < 3 && strcmp(get(axesHandles(i),'XScale'),'log') && options.FixLogX
-		c = get(axesHandles(i),'Children');
-		minlog = Inf; maxlog = -Inf;
-		for k = 1:length(c)
-			minlog = min([ min(nonzeros(abs(get(c(k),'XData')))) minlog]);
-			maxlog = max([ max(nonzeros(abs(get(c(k),'XData')))) maxlog]);
+	
+		a = floor(log10(axesHandles(i).XLim(1)));
+		z = ceil(log10(axesHandles(i).XLim(2)));
+
+
+		if isinf(a) | isinf(z)
+		else
+			az = a:z;
+
+			az = [az(1) az(1:ceil(length(az)/5):end) az(end)];
+			az = unique(az);
+
+			axesHandles(i).XLim = [10^az(1) 10^az(end)];
+			set(axesHandles(i),'XTick',10.^(az));
 		end
-		a = floor(log10(minlog));
-		z = ceil(log10(maxlog));
-
-		az = a:z;
-		az = az(1:floor(length(az)/3):end);
-
-		set(axesHandles(i),'XTick',10.^(az));
 		
 	else
 	end
 
+
+
 	% there should be more than 1 Ytick when we have a log scale
 	if  length(get(axesHandles(i),'YTick')) < 3 && strcmp(get(axesHandles(i),'YScale'),'log') && options.FixLogY
-		c = get(axesHandles(i),'Children');
-		minlog = Inf; maxlog = -Inf;
-		for k = 1:length(c)
-			minlog = min([ min(nonzeros(abs(get(c(k),'YData')))) minlog]);
-			maxlog = max([ max(nonzeros(abs(get(c(k),'YData')))) maxlog]);
-		end
-		a = floor(log10(minlog));
-		z = ceil(log10(maxlog));
 
-		az = a:z;
-		az = az(1:floor(length(az)/3):end);
-		set(axesHandles(i),'YTick',10.^(az));
+		a = floor(log10(axesHandles(i).YLim(1)));
+		z = ceil(log10(axesHandles(i).YLim(2)));
+
+
+		if isinf(a) | isinf(z)
+		else
+			az = a:z;
+
+			az = [az(1) az(1:ceil(length(az)/5):end) az(end)];
+			az = unique(az);
+
+			axesHandles(i).YLim = [10^az(1) 10^az(end)];
+			set(axesHandles(i),'YTick',10.^(az));
+		end
 		
-	else
 	end
 
 
