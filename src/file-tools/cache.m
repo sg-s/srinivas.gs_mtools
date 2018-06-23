@@ -48,13 +48,26 @@ if nargin == 1
 end
 
 if nargin > 1
+
+	if nargin == 2 && isempty(varargin{1})
+		% delete mode
+		try
+			delete([look_here filesep '.cache' filesep hash '.mat'])
+		catch
+		end
+	end
+
+
 	% store mode 
-
-
 	v = {};
 	for i = 1:length(varargin)
 		eval([inputname(i+1) '=varargin{' mat2str(i) '};'])
 		v{i} = inputname(i+1);
+	end
+
+	% check if .cache exists
+	if ~exist([look_here filesep '.cache'],'dir') == 7
+		mkdir([look_here filesep '.cache'])
 	end
 
 	savefast([look_here filesep '.cache' filesep hash '.mat'],v{:})
