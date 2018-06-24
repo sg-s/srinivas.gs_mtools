@@ -27,7 +27,7 @@ ErrID = ['JSimon:', mfilename];
 
 % Initial values: --------------------------------------------------------------
 if nargin == 0
-   doSpeed = true;
+   doSpeed = false;
 end
 
 % Program Interface: -----------------------------------------------------------
