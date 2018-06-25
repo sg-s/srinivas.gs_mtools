@@ -66,7 +66,7 @@ if nargin > 1
 	end
 
 	% check if .cache exists
-	if ~exist([look_here filesep '.cache'],'dir') == 7
+	if ~(exist([look_here filesep '.cache'],'dir') == 7)
 		mkdir([look_here filesep '.cache'])
 	end
 
