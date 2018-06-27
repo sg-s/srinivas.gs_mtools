@@ -55,6 +55,7 @@ if nargin > 1
 			delete([look_here filesep '.cache' filesep hash '.mat'])
 		catch
 		end
+		return
 	end
 
 
