@@ -16,15 +16,13 @@ original_folder = pwd;
 
 [f,p]=matlab.codetools.requiredFilesAndProducts(this_file);
 git_hashes = {};
-repo_names = {};
 % check each dep for whether it lives within a git repo
 
 for i = length(f):-1:1
 	cd(fileparts(f{i}))
 	[s,m] = system('git rev-parse --show-toplevel');
 	if s == 0
-		[~,repo_name{i}]=fileparts(m);
-		repo_name{i} = strtrim(repo_name{i});
+		repo_name{i} = strtrim(m);
 		[status,m] = system('git rev-parse HEAD');
 		if ~status
 			git_hashes{i} = m(1:end-1);
@@ -32,7 +30,14 @@ for i = length(f):-1:1
 	end
 end
 
+
 [urepos, idx] = unique(repo_name);
+
+for i = 1:length(urepos)
+	[~,temp1,temp2] = fileparts(urepos{i});
+	urepos{i} = [temp1 temp2];
+end
+
 for i = 1:length(idx)
 	disp([urepos{i} ' (' git_hashes{idx(i)} ')'])
 end
