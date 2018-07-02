@@ -14,7 +14,13 @@ if ~nargin
 	return
 end
 assert(exist(filename)~=0,'File not found!')
-fid = fopen(filename, 'rt'); 
-lines = textscan(fid,'%[^\n]'); %reads line by line 
-fclose(fid); 
-lines = lines{1};
+
+if ispc
+	fid = fopen(filename, 'rt'); 
+	lines = textscan(fid,'%[^\n]'); %reads line by line 
+	fclose(fid); 
+	lines = lines{1};
+else
+	lines = strsplit(fileread(filename),'\n','CollapseDelimiters',false);
+	lines = lines(:);
+end
