@@ -23,7 +23,7 @@ else
 		this_line = strrep(this_line,'\','\\');
 		fprintf(fileID, [this_line '\n']);
 	end
-	fclose(fileID);
+
 end
 
-
+fclose(fileID);
