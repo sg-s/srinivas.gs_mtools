@@ -7,7 +7,7 @@
 % part of mtools, which lives here:
 % https://github.com/sg-s/srinivas.gs_mtools
 
-function [] = movePlot(plot_handle,direction,frac_dist)
+function movePlot(plot_handle,direction,frac_dist)
 
 if ~nargin	
 	help movePlot
@@ -18,7 +18,16 @@ assert(strcmp(class(plot_handle),'matlab.graphics.axis.Axes'),'First argument sh
 assert(strcmp(class(direction),'char'),'Second argument should be a direction: up, down, left or right')
 assert(any(strcmp(direction,{'up','down','left','right'})),'Second argument should be a direction: up, down, left or right')
 
+
+if length(plot_handle) > 1
+	for i = 1:length(plot_handle)
+		movePlot(plot_handle(i),direction,frac_dist)
+	end
+	return
+end
+
 old_pos = plot_handle.Position;
+
 
 switch direction
 	case 'up'
