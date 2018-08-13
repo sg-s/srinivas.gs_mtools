@@ -13,6 +13,26 @@ if ~nargin
 	help angularDifference
 	return
 end
+
+if length(a) > 1 
+	d = NaN*a;
+
+	if length(b) == length(a)
+
+		for i = 1:length(a)
+			d(i) = angularDifference(a(i),b(i));
+		end
+		return
+
+	else
+		for i = 1:length(a)
+			d(i) = angularDifference(a(i),b(1));
+		end
+		return
+	end
+
+end
+
 a = mod(a,360);
 b = mod(b,360);
 d1=abs(a-b);
