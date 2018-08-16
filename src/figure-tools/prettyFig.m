@@ -35,7 +35,7 @@ options.EqualiseX = false;
 options.FixLogX = true;
 options.FixLogY = true;
 options.plot_buffer = 0; % how much should you zoom out of the data to show extremes?
-options.tick_length = 0.01; 
+options.tick_length = 5; % pixels
 options.x_minor_ticks = false;
 options.y_minor_ticks = false;
 options.font_units = 'points';
@@ -237,13 +237,13 @@ for i = 1:length(axesHandles)
 
 	% find the length of the longest axis
 	pos_temp = get(axesHandles(i),'Position');
-	longest_axes_length(i) = max(pos_temp(3:4));
+	longest_axes_length(i) = max(pos_temp(3:4).*use_this_figure.Position(3:4));
 
 end
 clear i
 
 % set all tick marks to be the same absolute length
-tl = max(longest_axes_length)*options.tick_length;
+tl = options.tick_length;
 for i = 1:length(axesHandles)
 	tl_temp = get(axesHandles(i),'TickLength');
 	tl_temp(1) =  tl/longest_axes_length(i);

@@ -14,6 +14,8 @@
 % 
 function [] = deintersectAxes(varargin)
 
+warning('The use of deintersectAxes is discouraged. Use seperateAxes() instead')
+
 % options and defaults
 options.pixel_offset = 10;
 
