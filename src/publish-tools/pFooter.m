@@ -11,10 +11,10 @@ calling_func = dbstack;
 calling_func = calling_func(2).name; % it's always going to be #2 
 disp(calling_func)
 
+
 try
 	disp('md5 hash of file that made this is:')
-	Opt.Input = 'file';
-	disp(dataHash(strcat(calling_func,'.m'),Opt))
+	disp(GetMD5(strcat(calling_func,'.m'),'File'))
 catch
 end
 
