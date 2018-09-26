@@ -23,6 +23,7 @@ properties
 	% stopping conditions
 	min_mesh_size = 1e-6;
 	max_fun_eval = 1e4;
+	mean_mesh_size = 2e-5;
 
 	make_plot = true;
 
@@ -33,6 +34,17 @@ methods
 
 
 	function test(self)
+
+
+		% test the log case
+		self.sim_func = @self.test_log;
+		self.x_range = [1e-2 1e2];
+		self.y_range = [1e-4 1e2];
+		self.n_seed = 5;
+		self.x_scale = 'log';
+		self.y_scale = 'log';
+		self.find();
+		close all
 
 		% test the linear case
 		self.sim_func = @self.test_linear;
@@ -45,17 +57,8 @@ methods
 		y = rand(10,1);
 		x(1) = .5; y(1) = .5;
 		self.find(x,y);
+		close all
 
-		return
-
-		% configure
-		self.sim_func = @self.test_func;
-		self.x_range = [1e-2 1e2];
-		self.y_range = [1e-4 1e2];
-		self.n_seed = 10;
-
-
-		self.find();
 
 	end
 
@@ -92,7 +95,7 @@ methods
 			end
 		end
 
-		% make sure the seed has the edges and corners
+		% make sure the seed has all the corners
 		edge_x(1) = self.x_range(1);
 		edge_y(1) = self.y_range(1);
 
@@ -120,19 +123,30 @@ methods
 		n = N;
 
 		if self.make_plot
-			figure('outerposition',[300 300 1200 901],'PaperUnits','points','PaperSize',[1200 901]); hold on
+			figure('outerposition',[300 300 1200 601],'PaperUnits','points','PaperSize',[1200 601]); hold on
+			clear ax
+			ax(1) = subplot(1,2,1); hold on
+			ax(2) = subplot(1,2,2); hold on
+			title(ax(1),'Real space')
+			title(ax(2),'Coordinate space')
 
 			% show this
-			handles0 = plot(self.x(self.R==0),self.y(self.R==0),'r.','MarkerSize',24);
-			handles1 = plot(self.x(self.R==1),self.y(self.R==1),'b.','MarkerSize',24);
+			handles0 = plot(ax(1),self.x(self.R==0),self.y(self.R==0),'r.','MarkerSize',24);
+			handles1 = plot(ax(1),self.x(self.R==1),self.y(self.R==1),'b.','MarkerSize',24);
 
-			set(gca,'XLim',self.x_range,'YLim',self.y_range)
+			handles0c = plot(ax(2),NaN,NaN,'r.','MarkerSize',24);
+			handles1c = plot(ax(2),NaN,NaN,'b.','MarkerSize',24);
+
+			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
+			set(ax(2),'XLim',[0 1],'YLim',[0 1])
+
+			bline = plot(ax(2),NaN,NaN,'k-','LineWidth',4);
 
 			if strcmp(self.x_scale,'log')
-				set(gca,'XScale','log')
+				set(ax(1),'XScale','log')
 			end
 			if strcmp(self.y_scale,'log')
-				set(gca,'YScale','log')
+				set(ax(1),'YScale','log')
 			end
 
 		end
@@ -140,7 +154,8 @@ methods
 
 		goon = true;
 
-		dlt = plot(NaN,NaN,'k');
+		dlt = plot(ax(1),NaN,NaN,'k');
+		dlt_c = plot(ax(2),NaN,NaN,'k');
 
 		while goon
 
@@ -149,8 +164,7 @@ methods
 			X = self.x(1:n);
 			Y = self.y(1:n);
 			if strcmp(self.x_scale,'log')
-				X = log(X);
-				X = X - self.x_range(1);
+				X = log(X) - log(self.x_range(1));
 				X = X/( log(self.x_range(2)) - log(self.x_range(1)));
 			else
 				X = X - self.x_range(1);
@@ -158,8 +172,7 @@ methods
 			end
 
 			if strcmp(self.y_scale,'log')
-				Y = log(Y);
-				Y = Y - self.y_range(1);
+				Y = log(Y) - log(self.y_range(1));
 				Y = Y/( log(self.y_range(2)) - log(self.y_range(1)));
 			else
 				Y = Y - self.y_range(1);
@@ -167,7 +180,13 @@ methods
 			end
 
 
-	
+			% % show X and Y in 2nd plot
+			% handles0c.XData = X(self.R == 0);
+			% handles0c.YData = Y(self.R == 0);
+
+			% handles1c.XData = X(self.R == 1);
+			% handles1c.YData = Y(self.R == 1);
+
 
 			% find the delaunay triangulation of these points
 			DT = delaunayTriangulation(X,Y);
@@ -182,12 +201,12 @@ methods
 
 				% OK, at least one different
 
-				x1 = self.x(DT.ConnectivityList(i,1));
-				x2 = self.x(DT.ConnectivityList(i,2));
-				x3 = self.x(DT.ConnectivityList(i,3));
-				y1 = self.y(DT.ConnectivityList(i,1));
-				y2 = self.y(DT.ConnectivityList(i,2));
-				y3 = self.y(DT.ConnectivityList(i,3));
+				x1 = X(DT.ConnectivityList(i,1));
+				x2 = X(DT.ConnectivityList(i,2));
+				x3 = X(DT.ConnectivityList(i,3));
+				y1 = Y(DT.ConnectivityList(i,1));
+				y2 = Y(DT.ConnectivityList(i,2));
+				y3 = Y(DT.ConnectivityList(i,3));
 
 				A(i) = 1/2*abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
 
@@ -204,16 +223,20 @@ methods
 
 
 			if strcmp(self.x_scale,'log')
-				new_x = exp((log(self.x_range(2)) - log(self.x_range(1)))*new_x) + self.x_range(1);
+
+				new_x = exp(new_x*(log(self.x_range(2)) - log(self.x_range(1))) + log(self.x_range(1)));
 			else
 				new_x = self.x_range(1) + new_x*diff(self.x_range);
 			end
 
 			if strcmp(self.y_scale,'log')
-				new_y = exp((log(self.y_range(2)) - log(self.y_range(1)))*new_y) + self.y_range(1);
+				new_y = exp(new_y*(log(self.y_range(2)) - log(self.y_range(1))) + log(self.y_range(1)));
 			else
 				new_y = self.y_range(1) + new_y*diff(self.y_range);
 			end
+
+			assert(new_y >= self.y_range(1) & new_y <= self.y_range(2),'247')
+			assert(new_x >= self.x_range(1) & new_x <= self.x_range(2),'247')
 
 			% add it
 			n = n + 1;
@@ -229,6 +252,13 @@ methods
 			handles1.XData = self.x(self.R==1);
 			handles1.YData = self.y(self.R==1);
 
+
+
+			if mean(A) < self.mean_mesh_size
+				disp('Stopping because mean mesh size was reached')
+				goon = false;
+			end
+
 			if A_max < self.min_mesh_size
 				disp('Stopping because minimum mesh size was reached')
 				goon = false;
@@ -239,17 +269,44 @@ methods
 				goon = false;
 			end
 
+			% draw a boundary line
+
+			% find all points closer than some distance
+			% where they have different labels 
+			E = edges(DT);
+			L = Inf(length(E),1);
+			for i = 1:length(E)
+				if diff(self.R(E(i,:))) == 0
+					continue
+				end
+
+				L(i) = (X(E(i,1)) - X(E(i,2)))^2 + (Y(E(i,1)) - Y(E(i,2)))^2;
+			end
+			L = sqrt(L);
+
+			if length(find(L<.1) ) > 4
+				temp_X = mean(X(E(L<.1,:)),2);
+				temp_Y = mean(Y(E(L<.1,:)),2);
+
+				[~,sort_idx] = sort(temp_X );
+
+
+				[temp_X,temp_Y] = thread.unravel(temp_X,temp_Y);
+
+				%[temp_X,temp_Y]=points2contour(temp_X,temp_Y,sort_idx(1),'ccw');
+
+				temp_X(end) = NaN;
+				temp_Y(end) = NaN;
+
+				bline.XData = temp_X;
+				bline.YData = temp_Y;
+			end
+
 	
 			drawnow
 		
-
-
-			
-
 		end % while
 
-		% need to actually extract the border
-		keyboard
 
 
 
