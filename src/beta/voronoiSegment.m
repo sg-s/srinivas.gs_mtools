@@ -28,12 +28,20 @@ properties
 	n_classes = 2
 
 
+	labels@cell
+
 	% stopping conditions
 	min_mesh_size = 1e-6;
 	max_fun_eval = 1e4;
 	mean_mesh_size = 2e-5;
 
-	make_plot = true;
+	make_plot = false;
+
+
+	% you can use this to store anything you 
+	% want. this will be sent to the function
+	% 
+	data
 
 end % props
 
@@ -42,6 +50,20 @@ methods
 
 
 	function test(self)
+
+		self.make_plot = true;
+
+				% test the log case
+		self.sim_func = @self.test_log;
+		self.x_range = [1e-2 1e2];
+		self.y_range = [1e-4 1e2];
+		self.n_classes = 3;
+		self.n_seed = 5;
+		self.x_scale = 'log';
+		self.y_scale = 'log';
+		self.find();
+		close all
+
 
 		% test the linear case
 		self.sim_func = @self.test_linear;
@@ -57,16 +79,6 @@ methods
 		close all
 
 
-		% test the log case
-		self.sim_func = @self.test_log;
-		self.x_range = [1e-2 1e2];
-		self.y_range = [1e-4 1e2];
-		self.n_classes = 3;
-		self.n_seed = 5;
-		self.x_scale = 'log';
-		self.y_scale = 'log';
-		self.find();
-		close all
 
 		
 
@@ -75,7 +87,6 @@ methods
 
 
 	function find(self, seed_x, seed_y)
-
 		self.x = NaN(self.max_fun_eval,1);
 		self.y = NaN(self.max_fun_eval,1);
 		self.R = NaN(self.max_fun_eval,1);
@@ -90,7 +101,7 @@ methods
 
 
 		else
-			
+			assert(~isempty(self.n_seed),'n_seed not defined')
 			N = self.n_seed;
 			if strcmp(self.x_scale,'log')
 
@@ -128,7 +139,7 @@ methods
 
 		% evaluate function here 
 		for i = 1:N
-			self.R(i) = self.sim_func(self.x(i),self.y(i));
+			self.R(i) = self.sim_func(self.x(i),self.y(i),self.data);
 		end
 
 		n = N;
@@ -144,28 +155,36 @@ methods
 			% create placeholders for all classes
 			c = parula(self.n_classes);
 			for i = 1:self.n_classes
-				handles(i) = plot(ax(1),self.x(self.R==i),self.y(self.R==i),'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+				handles(i) = plot(ax(1),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+				phandles(i) = plot(ax(2),polyshape());
+			end
+			for i = 1:self.n_classes
+				handles(i).XData = self.x(self.R == i);
+				handles(i).YData = self.y(self.R == i);
+			end
+			if ~isempty(self.labels)
+				legend(handles,self.labels)
 			end
 
 			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
-			set(ax(2),'XLim',[0 1],'YLim',[0 1])
+			set(ax(2),'XLim',self.x_range,'YLim',self.y_range)
 
 			bline = plot(ax(2),NaN,NaN,'k-','LineWidth',4);
 
 			if strcmp(self.x_scale,'log')
 				set(ax(1),'XScale','log')
+				set(ax(2),'XScale','log')
 			end
 			if strcmp(self.y_scale,'log')
 				set(ax(1),'YScale','log')
+				set(ax(2),'YScale','log')
 			end
 
 		end
 	
 
 		goon = true;
-
-		dlt = plot(ax(1),NaN,NaN,'k');
-		dlt_c = plot(ax(2),NaN,NaN,'k');
+		warning('off','MATLAB:polyshape:repairedBySimplify')
 
 		while goon
 
@@ -218,11 +237,6 @@ methods
 			new_x = ic(idx,1);
 			new_y = ic(idx,2);
 
-
-			dlt.XData = repmat(self.x(DT.ConnectivityList(idx,:)),2,1);
-			dlt.YData = repmat(self.y(DT.ConnectivityList(idx,:)),2,1);
-
-
 			if strcmp(self.x_scale,'log')
 
 				new_x = exp(new_x*(log(self.x_range(2)) - log(self.x_range(1))) + log(self.x_range(1)));
@@ -245,7 +259,7 @@ methods
 			self.y(n) = new_y;
 
 			% evaluate this new point
-			self.R(n) = self.sim_func(new_x,new_y);
+			self.R(n) = self.sim_func(new_x,new_y,self.data);
 
 	
 			% update plots
@@ -273,42 +287,59 @@ methods
 
 			% draw a boundary line
 
-			% find all points closer than some distance
-			% where they have different labels 
+
+			% now for each class of points, find the boundary
 			E = edges(DT);
 			L = Inf(length(E),1);
 			for i = 1:length(E)
 				if diff(self.R(E(i,:))) == 0
 					continue
 				end
-
 				L(i) = (X(E(i,1)) - X(E(i,2)))^2 + (Y(E(i,1)) - Y(E(i,2)))^2;
 			end
 			L = sqrt(L);
 
-			if length(find(L<.1) ) > 4
-				temp_X = mean(X(E(L<.1,:)),2);
-				temp_Y = mean(Y(E(L<.1,:)),2);
-
-				[~,sort_idx] = sort(temp_X );
 
 
-				[temp_X,temp_Y] = thread.unravel(temp_X,temp_Y);
 
-				%[temp_X,temp_Y]=points2contour(temp_X,temp_Y,sort_idx(1),'ccw');
+			for i = 1:self.n_classes
+				% find all the edges where at least one 
+				% vertex is i
+				
+				region_edges = self.R(E(:,1)) == i | self.R(E(:,2)) == i;
 
-				temp_X(end) = NaN;
-				temp_Y(end) = NaN;
+				look_at_these = L < .1 & region_edges;
+				if sum(look_at_these) > 5
+					
+					temp_X = mean(self.x(E(look_at_these,:)),2);
+					temp_Y = mean(self.y(E(look_at_these,:)),2);
 
-				bline.XData = temp_X;
-				bline.YData = temp_Y;
+					% add to this all points in this region
+					% that are on the boundary
+
+					this_x = self.x(self.R == i);
+					this_y = self.y(self.R == i);
+
+					keep = this_x == self.x_range(2) | this_x == self.x_range(1) | this_y == self.y_range(2) | this_y == self.y_range(1);
+					temp_X = [temp_X; this_x(keep)];
+					temp_Y = [temp_Y; this_y(keep)];
+
+					[temp_X, temp_Y] = thread.unravel(temp_X,temp_Y);
+
+					
+					phandles(i).Shape = (polyshape(temp_X,temp_Y,'Simplify',true));
+					
+
+				end
+
 			end
+
 
 	
 			drawnow
 		
 		end % while
-
+		warning('on','MATLAB:polyshape:repairedBySimplify')
 
 
 
@@ -321,7 +352,7 @@ end % methods
 methods (Static)
 
 
-	function R = test_linear(x,y)
+	function R = test_linear(x,y,~)
 
 		R = 1;
 		if x < .3
@@ -343,7 +374,7 @@ methods (Static)
 
 	end
 
-	function R = test_log(x,y)
+	function R = test_log(x,y,~)
 
 		R = 1;
 
