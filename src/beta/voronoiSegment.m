@@ -1,7 +1,13 @@
-% class that helps you find a border 
-% given some objective function 
+% voronoiSegment
+% class that helps draw borders between
+% regions in 2D space given some 
+% function that returns discrete values
+% when given an argument from the plane 
+%
+% usage:
+% see voronoiSegment.test()
 
-classdef borderline < handle
+classdef voronoiSegment < handle
 
 
 properties
@@ -19,6 +25,8 @@ properties
 	y
 	R
 
+	n_classes = 2
+
 
 	% stopping conditions
 	min_mesh_size = 1e-6;
@@ -35,17 +43,6 @@ methods
 
 	function test(self)
 
-
-		% test the log case
-		self.sim_func = @self.test_log;
-		self.x_range = [1e-2 1e2];
-		self.y_range = [1e-4 1e2];
-		self.n_seed = 5;
-		self.x_scale = 'log';
-		self.y_scale = 'log';
-		self.find();
-		close all
-
 		% test the linear case
 		self.sim_func = @self.test_linear;
 		self.x_range = [0 1];
@@ -58,6 +55,20 @@ methods
 		x(1) = .5; y(1) = .5;
 		self.find(x,y);
 		close all
+
+
+		% test the log case
+		self.sim_func = @self.test_log;
+		self.x_range = [1e-2 1e2];
+		self.y_range = [1e-4 1e2];
+		self.n_classes = 3;
+		self.n_seed = 5;
+		self.x_scale = 'log';
+		self.y_scale = 'log';
+		self.find();
+		close all
+
+		
 
 
 	end
@@ -130,12 +141,11 @@ methods
 			title(ax(1),'Real space')
 			title(ax(2),'Coordinate space')
 
-			% show this
-			handles0 = plot(ax(1),self.x(self.R==0),self.y(self.R==0),'r.','MarkerSize',24);
-			handles1 = plot(ax(1),self.x(self.R==1),self.y(self.R==1),'b.','MarkerSize',24);
-
-			handles0c = plot(ax(2),NaN,NaN,'r.','MarkerSize',24);
-			handles1c = plot(ax(2),NaN,NaN,'b.','MarkerSize',24);
+			% create placeholders for all classes
+			c = parula(self.n_classes);
+			for i = 1:self.n_classes
+				handles(i) = plot(ax(1),self.x(self.R==i),self.y(self.R==i),'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+			end
 
 			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
 			set(ax(2),'XLim',[0 1],'YLim',[0 1])
@@ -178,15 +188,6 @@ methods
 				Y = Y - self.y_range(1);
 				Y = Y/(diff(self.y_range));
 			end
-
-
-			% % show X and Y in 2nd plot
-			% handles0c.XData = X(self.R == 0);
-			% handles0c.YData = Y(self.R == 0);
-
-			% handles1c.XData = X(self.R == 1);
-			% handles1c.YData = Y(self.R == 1);
-
 
 			% find the delaunay triangulation of these points
 			DT = delaunayTriangulation(X,Y);
@@ -247,10 +248,11 @@ methods
 			self.R(n) = self.sim_func(new_x,new_y);
 
 	
-			handles0.XData = self.x(self.R==0);
-			handles0.YData = self.y(self.R==0);
-			handles1.XData = self.x(self.R==1);
-			handles1.YData = self.y(self.R==1);
+			% update plots
+			for i = 1:self.n_classes
+				handles(i).XData = self.x(self.R==i);
+				handles(i).YData = self.y(self.R==i);
+			end
 
 
 
@@ -321,7 +323,7 @@ methods (Static)
 
 	function R = test_linear(x,y)
 
-		R = 0;
+		R = 1;
 		if x < .3
 			return
 		end
@@ -337,7 +339,7 @@ methods (Static)
 			return
 		end
 
-		R = 1;
+		R = 2;
 
 	end
 
@@ -346,22 +348,20 @@ methods (Static)
 		R = 1;
 
 		if y < 1e-2
-			R = 1;
 			return
 		end
 
 		if x > .5 & x < 2
-			R = 1;
 			return
 		end
 
-		if y > 1/x
-			R = 0;
+		if y > 1/x & x > .5
+			R = 2;
 			return
 		end
 
 		if y > x
-			R = 0;
+			R = 3;
 			return
 		end
 
