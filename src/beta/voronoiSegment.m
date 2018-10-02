@@ -38,6 +38,7 @@ properties
 	mean_mesh_size = 2e-5;
 
 	make_plot = false;
+	Display = 'iter'
 
 
 	% you can use this to store anything you 
@@ -226,6 +227,11 @@ methods
 		goon = true;
 		warning('off','MATLAB:polyshape:repairedBySimplify')
 
+		if strcmp(self.Display,'iter')
+			fprintf('N        Mean Mesh Size    Min Mesh Size\n')
+			fprintf('----------------------------------------\n')
+		end
+
 		while goon
 
 
@@ -301,6 +307,10 @@ methods
 			% evaluate this new point
 			self.R(n) = self.sim_func(new_x,new_y,self.data);
 
+
+			if strcmp(self.Display,'iter')
+				fprintf([flstring(oval(n),10)  ' ' flstring(oval(mean(A)),10) ' ' flstring(oval(A_max),10) '\n' ])
+			end
 	
 			% update plots
 			for i = 1:self.n_classes
@@ -360,9 +370,11 @@ methods
 					this_x = self.x(self.R == i);
 					this_y = self.y(self.R == i);
 
-					keep = this_x == self.x_range(2) | this_x == self.x_range(1) | this_y == self.y_range(2) | this_y == self.y_range(1);
+					keep = aeq(this_x,self.x_range(2)) | aeq(this_x,self.x_range(1)) | aeq(this_y,self.y_range(2)) | aeq(this_y,self.y_range(1));
 					temp_X = [temp_X; this_x(keep)];
 					temp_Y = [temp_Y; this_y(keep)];
+
+
 
 					bhandles(i).XData = temp_X;
 					bhandles(i).YData = temp_Y;
