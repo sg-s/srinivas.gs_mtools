@@ -25,6 +25,8 @@ properties
 	y
 	R
 
+	boundaries
+
 	n_classes = 2
 
 
@@ -59,13 +61,17 @@ methods
 		self.y_range = [1e-4 1e2];
 		self.n_classes = 3;
 		self.n_seed = 5;
+		self.max_fun_eval = 200;
 		self.x_scale = 'log';
 		self.y_scale = 'log';
 		self.find();
+		drawnow
+		pause(5)
 		close all
 
 
 		% test the linear case
+		self.n_classes = 2;
 		self.sim_func = @self.test_linear;
 		self.x_range = [0 1];
 		self.y_range = [0 1];
@@ -76,6 +82,8 @@ methods
 		y = rand(10,1);
 		x(1) = .5; y(1) = .5;
 		self.find(x,y);
+		drawnow
+		pause(5)
 		close all
 
 
@@ -92,6 +100,18 @@ methods
 		self.R = NaN(self.max_fun_eval,1);
 
 
+		if strcmp(self.x_scale,'log')
+			xgrid = logspace(log10(self.x_range(1)),log10(self.x_range(2)),10);
+		else
+			xgrid = linspace(self.x_range(1),self.x_range(2),10);
+		end
+
+		if strcmp(self.y_scale,'log')
+			ygrid = logspace(log10(self.y_range(1)),log10(self.y_range(2)),10);
+		else
+			ygrid = linspace(self.y_range(1),self.y_range(2),10);
+		end
+
 
 		% start with a seed if none provided 
 		if nargin == 3
@@ -104,36 +124,37 @@ methods
 			assert(~isempty(self.n_seed),'n_seed not defined')
 			N = self.n_seed;
 			if strcmp(self.x_scale,'log')
-
+				
 				self.x(1:N) = exp(log(self.x_range(1)) + diff(log(self.x_range))*rand(N,1));
 
 			else
+				
 				self.x(1:N) = rand(N,1)*diff(self.x_range) + self.x_range(1);
 			end
 			if strcmp(self.y_scale,'log')
 				self.y(1:N) = exp(log(self.y_range(1)) + diff(log(self.y_range))*rand(N,1));
 			else
+	
 				self.y(1:N) = rand(N,1)*diff(self.y_range) + self.y_range(1);
 			end
 		end
 
 		% make sure the seed has all the corners
-		edge_x(1) = self.x_range(1);
-		edge_y(1) = self.y_range(1);
+		% and has lots of points on all the 
+		% edges
 
-		edge_x(2) = self.x_range(2);
-		edge_y(2) = self.y_range(1);
+		gridx = [xgrid xgrid xgrid*0 + xgrid(1) xgrid*0 + xgrid(end)];
+		gridy = [ygrid*0 + ygrid(1) ygrid*0 + ygrid(end) ygrid ygrid];
+		self.x(N+1:N+length(gridx)) = gridx;
+		self.y(N+1:N+length(gridy)) = gridy;
 
-		edge_x(3) = self.x_range(2);
-		edge_y(3) = self.y_range(2);
+		temp = [self.x, self.y];
+		temp = unique(temp,'rows');
+		self.x = temp(:,1);
+		self.y = temp(:,2);
 
-		edge_x(4) = self.x_range(1);
-		edge_y(4) = self.y_range(2);
 
-		self.x(N+1:N+4) = edge_x(:);
-		self.y(N+1:N+4) = edge_y(:);
-
-		N = N + 4;
+		N = find(isnan(temp(:,1)),1,'first') - 1;
 
 
 
@@ -145,18 +166,23 @@ methods
 		n = N;
 
 		if self.make_plot
-			figure('outerposition',[300 300 1200 601],'PaperUnits','points','PaperSize',[1200 601]); hold on
+			figure('outerposition',[300 300 1501 502],'PaperUnits','points','PaperSize',[1501 502]); hold on
 			clear ax
-			ax(1) = subplot(1,2,1); hold on
-			ax(2) = subplot(1,2,2); hold on
-			title(ax(1),'Real space')
-			title(ax(2),'Coordinate space')
+			ax(1) = subplot(1,3,1); hold on
+			ax(2) = subplot(1,3,2); hold on
+			ax(3) = subplot(1,3,3); hold on
+			title(ax(1),'Samples')
+			title(ax(2),'Boundary points')
+			title(ax(3),'Segmented space')
 
 			% create placeholders for all classes
 			c = parula(self.n_classes);
 			for i = 1:self.n_classes
 				handles(i) = plot(ax(1),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
-				phandles(i) = plot(ax(2),polyshape());
+
+				bhandles(i) = plot(ax(2),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+
+				phandles(i) = plot(ax(3),polyshape());
 			end
 			for i = 1:self.n_classes
 				handles(i).XData = self.x(self.R == i);
@@ -168,20 +194,34 @@ methods
 
 			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
 			set(ax(2),'XLim',self.x_range,'YLim',self.y_range)
-
-			bline = plot(ax(2),NaN,NaN,'k-','LineWidth',4);
+			set(ax(3),'XLim',self.x_range,'YLim',self.y_range)
 
 			if strcmp(self.x_scale,'log')
 				set(ax(1),'XScale','log')
 				set(ax(2),'XScale','log')
+				set(ax(3),'XScale','log')
 			end
 			if strcmp(self.y_scale,'log')
 				set(ax(1),'YScale','log')
 				set(ax(2),'YScale','log')
+				set(ax(3),'YScale','log')
 			end
 
 		end
 	
+
+		if strcmp(self.x_scale,'log')
+			logx = true;
+		else
+			logx = false;
+		end
+
+		if strcmp(self.y_scale,'log')
+			logy = true;
+		else
+			logy = false;
+		end
+
 
 		goon = true;
 		warning('off','MATLAB:polyshape:repairedBySimplify')
@@ -324,11 +364,12 @@ methods
 					temp_X = [temp_X; this_x(keep)];
 					temp_Y = [temp_Y; this_y(keep)];
 
-					[temp_X, temp_Y] = thread.unravel(temp_X,temp_Y);
+					bhandles(i).XData = temp_X;
+					bhandles(i).YData = temp_Y;
 
-					
-					phandles(i).Shape = (polyshape(temp_X,temp_Y,'Simplify',true));
-					
+					self.boundaries(i).x = temp_X;
+					self.boundaries(i).y = temp_Y;
+
 
 				end
 
@@ -341,6 +382,14 @@ methods
 		end % while
 		warning('on','MATLAB:polyshape:repairedBySimplify')
 
+		% now attempt to make the regions
+		for i = 1:self.n_classes
+			[temp_X, temp_Y] = thread.unravel(self.boundaries(i).x,self.boundaries(i).y,logx,logy);
+
+			phandles(i).Shape = (polyshape(temp_X,temp_Y,'Simplify',true));
+		end		
+
+		drawnow
 
 
 	end
