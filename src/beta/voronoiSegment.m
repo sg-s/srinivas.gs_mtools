@@ -46,6 +46,11 @@ properties
 	% 
 	data
 
+	% additional results returned by
+	% objective function for post-hoc
+	% analysis 
+	results@Data
+
 end % props
 
 
@@ -96,75 +101,84 @@ methods
 
 
 	function find(self, seed_x, seed_y)
-		self.x = NaN(self.max_fun_eval,1);
-		self.y = NaN(self.max_fun_eval,1);
-		self.R = NaN(self.max_fun_eval,1);
+		if isempty(self.x)
+			self.x = NaN(self.max_fun_eval,1);
+			self.y = NaN(self.max_fun_eval,1);
+			self.R = NaN(self.max_fun_eval,1);
 
 
-		if strcmp(self.x_scale,'log')
-			xgrid = logspace(log10(self.x_range(1)),log10(self.x_range(2)),10);
-		else
-			xgrid = linspace(self.x_range(1),self.x_range(2),10);
-		end
-
-		if strcmp(self.y_scale,'log')
-			ygrid = logspace(log10(self.y_range(1)),log10(self.y_range(2)),10);
-		else
-			ygrid = linspace(self.y_range(1),self.y_range(2),10);
-		end
-
-
-		% start with a seed if none provided 
-		if nargin == 3
-			N = length(seed_x);
-			self.x(1:N) = seed_x;
-			self.y(1:N) = seed_y;
-
-
-		else
-			assert(~isempty(self.n_seed),'n_seed not defined')
-			N = self.n_seed;
 			if strcmp(self.x_scale,'log')
-				
-				self.x(1:N) = exp(log(self.x_range(1)) + diff(log(self.x_range))*rand(N,1));
-
+				xgrid = logspace(log10(self.x_range(1)),log10(self.x_range(2)),10);
 			else
-				
-				self.x(1:N) = rand(N,1)*diff(self.x_range) + self.x_range(1);
+				xgrid = linspace(self.x_range(1),self.x_range(2),10);
 			end
+
 			if strcmp(self.y_scale,'log')
-				self.y(1:N) = exp(log(self.y_range(1)) + diff(log(self.y_range))*rand(N,1));
+				ygrid = logspace(log10(self.y_range(1)),log10(self.y_range(2)),10);
 			else
-	
-				self.y(1:N) = rand(N,1)*diff(self.y_range) + self.y_range(1);
+				ygrid = linspace(self.y_range(1),self.y_range(2),10);
 			end
+
+
+			% start with a seed if none provided 
+			if nargin == 3
+				N = length(seed_x);
+				self.x(1:N) = seed_x;
+				self.y(1:N) = seed_y;
+
+
+			else
+				assert(~isempty(self.n_seed),'n_seed not defined')
+				N = self.n_seed;
+				if strcmp(self.x_scale,'log')
+					
+					self.x(1:N) = exp(log(self.x_range(1)) + diff(log(self.x_range))*rand(N,1));
+
+				else
+					
+					self.x(1:N) = rand(N,1)*diff(self.x_range) + self.x_range(1);
+				end
+				if strcmp(self.y_scale,'log')
+					self.y(1:N) = exp(log(self.y_range(1)) + diff(log(self.y_range))*rand(N,1));
+				else
+		
+					self.y(1:N) = rand(N,1)*diff(self.y_range) + self.y_range(1);
+				end
+			end
+
+			% make sure the seed has all the corners
+			% and has lots of points on all the 
+			% edges
+
+			gridx = [xgrid xgrid xgrid*0 + xgrid(1) xgrid*0 + xgrid(end)];
+			gridy = [ygrid*0 + ygrid(1) ygrid*0 + ygrid(end) ygrid ygrid];
+			self.x(N+1:N+length(gridx)) = gridx;
+			self.y(N+1:N+length(gridy)) = gridy;
+
+			temp = [self.x, self.y];
+			temp = unique(temp,'rows');
+			self.x = temp(:,1);
+			self.y = temp(:,2);
+
+
+			N = find(isnan(temp(:,1)),1,'first') - 1;
+
+
+
+			% evaluate function here 
+			[self.R(1), self.results] = self.sim_func(self.x(1),self.y(1),self.data);
+
+			for i = 2:N
+				[self.R(i), results] = self.sim_func(self.x(i),self.y(i),self.data);
+				self.results + results;
+			end
+
+			n = N;
+
+		else
+			n = find(~isnan(self.x),1,'last');
+
 		end
-
-		% make sure the seed has all the corners
-		% and has lots of points on all the 
-		% edges
-
-		gridx = [xgrid xgrid xgrid*0 + xgrid(1) xgrid*0 + xgrid(end)];
-		gridy = [ygrid*0 + ygrid(1) ygrid*0 + ygrid(end) ygrid ygrid];
-		self.x(N+1:N+length(gridx)) = gridx;
-		self.y(N+1:N+length(gridy)) = gridy;
-
-		temp = [self.x, self.y];
-		temp = unique(temp,'rows');
-		self.x = temp(:,1);
-		self.y = temp(:,2);
-
-
-		N = find(isnan(temp(:,1)),1,'first') - 1;
-
-
-
-		% evaluate function here 
-		for i = 1:N
-			self.R(i) = self.sim_func(self.x(i),self.y(i),self.data);
-		end
-
-		n = N;
 
 		if self.make_plot
 			figure('outerposition',[300 300 1501 502],'PaperUnits','points','PaperSize',[1501 502]); hold on
@@ -305,7 +319,8 @@ methods
 			self.y(n) = new_y;
 
 			% evaluate this new point
-			self.R(n) = self.sim_func(new_x,new_y,self.data);
+			[self.R(n), results] = self.sim_func(new_x,new_y,self.data);
+			self.results + results;
 
 
 			if strcmp(self.Display,'iter')
@@ -392,16 +407,19 @@ methods
 			drawnow
 		
 		end % while
-		warning('on','MATLAB:polyshape:repairedBySimplify')
+		
 
 		% now attempt to make the regions
 		for i = 1:self.n_classes
 			[temp_X, temp_Y] = thread.unravel(self.boundaries(i).x,self.boundaries(i).y,logx,logy);
 
 			phandles(i).Shape = (polyshape(temp_X,temp_Y,'Simplify',true));
+			drawnow
 		end		
 
-		drawnow
+
+		warning('on','MATLAB:polyshape:repairedBySimplify')
+		
 
 
 	end
@@ -413,9 +431,10 @@ end % methods
 methods (Static)
 
 
-	function R = test_linear(x,y,~)
+	function [R, D] = test_linear(x,y,~)
 
 		R = 1;
+		D = Data;
 		if x < .3
 			return
 		end
@@ -432,12 +451,14 @@ methods (Static)
 		end
 
 		R = 2;
+		
 
 	end
 
-	function R = test_log(x,y,~)
+	function [R, D] = test_log(x,y,~)
 
 		R = 1;
+		D = Data;
 
 		if y < 1e-2
 			return
