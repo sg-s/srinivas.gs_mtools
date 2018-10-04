@@ -50,6 +50,7 @@ properties
 	% objective function for post-hoc
 	% analysis 
 	results@Data
+	handles
 
 end % props
 
@@ -57,42 +58,52 @@ end % props
 methods 
 
 
-	function test(self)
+	function test(self,show_this)
 
 		self.make_plot = true;
 
-				% test the log case
-		self.sim_func = @self.test_log;
-		self.x_range = [1e-2 1e2];
-		self.y_range = [1e-4 1e2];
-		self.n_classes = 3;
-		self.n_seed = 5;
-		self.max_fun_eval = 200;
-		self.x_scale = 'log';
-		self.y_scale = 'log';
-		self.find();
-		drawnow
-		pause(5)
-		close all
+		if nargin < 2
+			show_this = {'log-funnel','linear-island'};
+		end
+
+		% test the log case
+		if any(strcmp(show_this,'log-funnel'))
+			self.sim_func = @self.test_log;
+			self.x_range = [1e-2 1e2];
+			self.y_range = [1e-4 1e2];
+			self.n_classes = 3;
+			self.n_seed = 5;
+			self.max_fun_eval = 200;
+			self.x_scale = 'log';
+			self.y_scale = 'log';
+			self.find();
+			drawnow
+			pause(5)
+			close all
+			self.x = [];
+			self.y = [];
+			self.R = [];
+		end
 
 
 		% test the linear case
-		self.n_classes = 2;
-		self.sim_func = @self.test_linear;
-		self.x_range = [0 1];
-		self.y_range = [0 1];
-		self.n_seed = 10;
-		self.x_scale = 'linear';
-		self.y_scale = 'linear';
-		x = rand(10,1);
-		y = rand(10,1);
-		x(1) = .5; y(1) = .5;
-		self.find(x,y);
-		drawnow
-		pause(5)
-		close all
+		if any(strcmp(show_this,'linear-island'))
+			self.n_classes = 2;
+			self.sim_func = @self.test_linear;
+			self.x_range = [0 1];
+			self.y_range = [0 1];
+			self.n_seed = 10;
+			self.x_scale = 'linear';
+			self.y_scale = 'linear';
+			x = rand(10,1);
+			y = rand(10,1);
+			x(1) = .5; y(1) = .5;
+			self.find(x,y);
+			drawnow
+			pause(5)
+			close all
 
-
+		end
 
 		
 
@@ -101,6 +112,52 @@ methods
 
 
 	function find(self, seed_x, seed_y)
+
+		if self.make_plot
+			self.handles.fig = figure('outerposition',[300 300 1501 502],'PaperUnits','points','PaperSize',[1501 502]); hold on
+			clear ax
+			ax(1) = subplot(1,3,1); hold on
+			ax(2) = subplot(1,3,2); hold on
+			ax(3) = subplot(1,3,3); hold on
+			title(ax(1),'Samples')
+			title(ax(2),'Boundary points')
+			title(ax(3),'Segmented space')
+
+			% create placeholders for all classes
+			c = parula(self.n_classes);
+			for i = 1:self.n_classes
+				handles(i) = plot(ax(1),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+
+				bhandles(i) = plot(ax(2),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+
+				phandles(i) = plot(ax(3),polyshape());
+			end
+			for i = 1:self.n_classes
+				handles(i).XData = self.x(self.R == i);
+				handles(i).YData = self.y(self.R == i);
+			end
+			if ~isempty(self.labels)
+				legend(handles,self.labels)
+			end
+
+			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
+			set(ax(2),'XLim',self.x_range,'YLim',self.y_range)
+			set(ax(3),'XLim',self.x_range,'YLim',self.y_range)
+
+			if strcmp(self.x_scale,'log')
+				set(ax(1),'XScale','log')
+				set(ax(2),'XScale','log')
+				set(ax(3),'XScale','log')
+			end
+			if strcmp(self.y_scale,'log')
+				set(ax(1),'YScale','log')
+				set(ax(2),'YScale','log')
+				set(ax(3),'YScale','log')
+			end
+		end
+	
+
+
 		if isempty(self.x)
 			self.x = NaN(self.max_fun_eval,1);
 			self.y = NaN(self.max_fun_eval,1);
@@ -171,6 +228,14 @@ methods
 			for i = 2:N
 				[self.R(i), results] = self.sim_func(self.x(i),self.y(i),self.data);
 				self.results + results;
+
+				% update plots
+				for j = 1:self.n_classes
+					handles(j).XData = self.x(self.R==j);
+					handles(j).YData = self.y(self.R==j);
+				end
+				drawnow
+
 			end
 
 			n = N;
@@ -180,50 +245,7 @@ methods
 
 		end
 
-		if self.make_plot
-			figure('outerposition',[300 300 1501 502],'PaperUnits','points','PaperSize',[1501 502]); hold on
-			clear ax
-			ax(1) = subplot(1,3,1); hold on
-			ax(2) = subplot(1,3,2); hold on
-			ax(3) = subplot(1,3,3); hold on
-			title(ax(1),'Samples')
-			title(ax(2),'Boundary points')
-			title(ax(3),'Segmented space')
 
-			% create placeholders for all classes
-			c = parula(self.n_classes);
-			for i = 1:self.n_classes
-				handles(i) = plot(ax(1),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
-
-				bhandles(i) = plot(ax(2),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
-
-				phandles(i) = plot(ax(3),polyshape());
-			end
-			for i = 1:self.n_classes
-				handles(i).XData = self.x(self.R == i);
-				handles(i).YData = self.y(self.R == i);
-			end
-			if ~isempty(self.labels)
-				legend(handles,self.labels)
-			end
-
-			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
-			set(ax(2),'XLim',self.x_range,'YLim',self.y_range)
-			set(ax(3),'XLim',self.x_range,'YLim',self.y_range)
-
-			if strcmp(self.x_scale,'log')
-				set(ax(1),'XScale','log')
-				set(ax(2),'XScale','log')
-				set(ax(3),'XScale','log')
-			end
-			if strcmp(self.y_scale,'log')
-				set(ax(1),'YScale','log')
-				set(ax(2),'YScale','log')
-				set(ax(3),'YScale','log')
-			end
-
-		end
-	
 
 		if strcmp(self.x_scale,'log')
 			logx = true;
