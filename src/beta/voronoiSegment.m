@@ -52,6 +52,10 @@ properties
 	results@Data
 	handles
 
+
+	% stores the triangulation
+	DT@delaunayTriangulation
+
 end % props
 
 
@@ -111,6 +115,54 @@ methods
 	end
 
 
+
+	function [X,Y] = normalize(self)
+		% convert to normalized coordinates
+		n = find(~isnan(self.x),1,'last');
+		X = self.x(1:n);
+		Y = self.y(1:n);
+		if strcmp(self.x_scale,'log')
+			X = log(X) - log(self.x_range(1));
+			X = X/( log(self.x_range(2)) - log(self.x_range(1)));
+		else
+			X = X - self.x_range(1);
+			X = X/(diff(self.x_range));
+		end
+
+		if strcmp(self.y_scale,'log')
+			Y = log(Y) - log(self.y_range(1));
+			Y = Y/( log(self.y_range(2)) - log(self.y_range(1)));
+		else
+			Y = Y - self.y_range(1);
+			Y = Y/(diff(self.y_range));
+		end
+	end
+
+
+	function A = findAreas(self,X,Y)
+		% find areas of all triangles
+		A = zeros(size(DT,1),1);
+		for i = 1:size(A,1)
+			% only if the vertices are different 
+			if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
+				continue
+			end
+
+			% OK, at least one different
+
+			x1 = X(DT.ConnectivityList(i,1));
+			x2 = X(DT.ConnectivityList(i,2));
+			x3 = X(DT.ConnectivityList(i,3));
+			y1 = Y(DT.ConnectivityList(i,1));
+			y2 = Y(DT.ConnectivityList(i,2));
+			y3 = Y(DT.ConnectivityList(i,3));
+
+			A(i) = 1/2*abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
+
+		end
+	end
+
+
 	function find(self, seed_x, seed_y)
 
 		if self.make_plot
@@ -137,7 +189,7 @@ methods
 				handles(i).YData = self.y(self.R == i);
 			end
 			if ~isempty(self.labels)
-				legend(handles,self.labels)
+				legend(handles,self.labels,'Location','northwestoutside')
 			end
 
 			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
@@ -271,48 +323,12 @@ methods
 		while goon
 
 
-			% convert to normalized coordinates
-			X = self.x(1:n);
-			Y = self.y(1:n);
-			if strcmp(self.x_scale,'log')
-				X = log(X) - log(self.x_range(1));
-				X = X/( log(self.x_range(2)) - log(self.x_range(1)));
-			else
-				X = X - self.x_range(1);
-				X = X/(diff(self.x_range));
-			end
-
-			if strcmp(self.y_scale,'log')
-				Y = log(Y) - log(self.y_range(1));
-				Y = Y/( log(self.y_range(2)) - log(self.y_range(1)));
-			else
-				Y = Y - self.y_range(1);
-				Y = Y/(diff(self.y_range));
-			end
+			[X,Y] = self.normalize;
 
 			% find the delaunay triangulation of these points
-			DT = delaunayTriangulation(X,Y);
+			self.DT = delaunayTriangulation(X,Y);
 
-			% find areas of all triangles
-			A = zeros(size(DT,1),1);
-			for i = 1:size(A,1)
-				% only if the vertices are different 
-				if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
-					continue
-				end
-
-				% OK, at least one different
-
-				x1 = X(DT.ConnectivityList(i,1));
-				x2 = X(DT.ConnectivityList(i,2));
-				x3 = X(DT.ConnectivityList(i,3));
-				y1 = Y(DT.ConnectivityList(i,1));
-				y2 = Y(DT.ConnectivityList(i,2));
-				y3 = Y(DT.ConnectivityList(i,3));
-
-				A(i) = 1/2*abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
-
-			end
+			A = self.findAreas(X,Y);
 
 			[A_max,idx] = max(A);
 			ic = incenter(DT);
@@ -375,55 +391,7 @@ methods
 			% draw a boundary line
 
 
-			% now for each class of points, find the boundary
-			E = edges(DT);
-			L = Inf(length(E),1);
-			for i = 1:length(E)
-				if diff(self.R(E(i,:))) == 0
-					continue
-				end
-				L(i) = (X(E(i,1)) - X(E(i,2)))^2 + (Y(E(i,1)) - Y(E(i,2)))^2;
-			end
-			L = sqrt(L);
-
-
-
-
-			for i = 1:self.n_classes
-				% find all the edges where at least one 
-				% vertex is i
-				
-				region_edges = self.R(E(:,1)) == i | self.R(E(:,2)) == i;
-
-				look_at_these = L < .1 & region_edges;
-				if sum(look_at_these) > 5
-					
-					temp_X = mean(self.x(E(look_at_these,:)),2);
-					temp_Y = mean(self.y(E(look_at_these,:)),2);
-
-					% add to this all points in this region
-					% that are on the boundary
-
-					this_x = self.x(self.R == i);
-					this_y = self.y(self.R == i);
-
-					keep = aeq(this_x,self.x_range(2)) | aeq(this_x,self.x_range(1)) | aeq(this_y,self.y_range(2)) | aeq(this_y,self.y_range(1));
-					temp_X = [temp_X; this_x(keep)];
-					temp_Y = [temp_Y; this_y(keep)];
-
-
-
-					bhandles(i).XData = temp_X;
-					bhandles(i).YData = temp_Y;
-
-					self.boundaries(i).x = temp_X;
-					self.boundaries(i).y = temp_Y;
-
-
-				end
-
-			end
-
+			self.findBoundaries;
 
 	
 			drawnow
@@ -445,6 +413,96 @@ methods
 
 
 	end
+
+
+	function findBoundaries(self, make_plot)
+
+
+		if nargin < 2
+			make_plot = false;
+		end
+
+		[X,Y] = self.normalize;
+
+		if isempty(self.DT) 
+			self.DT = delaunayTriangulation(X,Y);
+		end
+
+		% now for each class of points, find the boundary
+		E = edges(self.DT);
+		L = Inf(length(E),1);
+		for i = 1:length(E)
+			if diff(self.R(E(i,:))) == 0
+				continue
+			end
+			L(i) = (X(E(i,1)) - X(E(i,2)))^2 + (Y(E(i,1)) - Y(E(i,2)))^2;
+		end
+		L = sqrt(L);
+
+
+		if make_plot
+
+			figure('outerposition',[300 300 601 600],'PaperUnits','points','PaperSize',[601 600]); hold on
+
+			c = lines;
+
+			for i = 1:self.n_classes
+				bhandles(i) = plot(NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
+			end
+
+			if strcmp(self.x_scale,'log')
+				set(gca,'XScale','log')
+			end
+			if strcmp(self.y_scale,'log')
+				set(gca,'YScale','log')
+			end
+
+		end
+
+
+		for i = 1:self.n_classes
+			% find all the edges where at least one 
+			% vertex is i
+			
+			region_edges = self.R(E(:,1)) == i | self.R(E(:,2)) == i;
+
+			look_at_these = L < .1 & region_edges;
+			if sum(look_at_these) > 5
+				
+				temp_X = mean(self.x(E(look_at_these,:)),2);
+				temp_Y = mean(self.y(E(look_at_these,:)),2);
+
+				% add to this all points in this region
+				% that are on the boundary
+
+				this_x = self.x(self.R == i);
+				this_y = self.y(self.R == i);
+
+				keep = aeq(this_x,self.x_range(2)) | aeq(this_x,self.x_range(1)) | aeq(this_y,self.y_range(2)) | aeq(this_y,self.y_range(1));
+
+
+				temp_X = [temp_X; this_x(keep)];
+				temp_Y = [temp_Y; this_y(keep)];
+
+
+
+				bhandles(i).XData = temp_X;
+				bhandles(i).YData = temp_Y;
+
+				self.boundaries(i).x = temp_X;
+				self.boundaries(i).y = temp_Y;
+
+
+			end
+
+		end
+
+
+
+
+
+	end % findBoundaires
+
 
 
 end % methods

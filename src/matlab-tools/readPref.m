@@ -42,7 +42,7 @@ for i = 1:length(line_content)
 		try 
 			eval(['pref.' this_line ';'])
 		catch err
-			disp(err)
+
 		end
 	end
 end
@@ -71,7 +71,6 @@ for i = 1:length(line_content)
 		try 
 			eval(['pref.' this_line ';'])
 		catch err
-			disp(err)
 		end
 	end
 end

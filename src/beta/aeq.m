@@ -6,4 +6,4 @@
 %
 function L = aeq(x,y)
 
-L = abs(x - y) < eps;
+L = abs(x - y) < eps('single');

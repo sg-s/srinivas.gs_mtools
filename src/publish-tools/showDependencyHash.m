@@ -11,6 +11,12 @@ function [] = showDependencyHash(this_file)
 assert(ischar(this_file),'input argument should be a string')
 assert(exist(this_file,'file')==2,'file not found.')
 
+d = dbstack;
+
+if ~any(strcmp({d.name},'publish'))
+	disp('Not being published, skipping...')
+	return
+end
 
 original_folder = pwd;
 
