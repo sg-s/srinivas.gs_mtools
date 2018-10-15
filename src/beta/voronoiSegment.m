@@ -415,6 +415,7 @@ methods
 	end
 
 
+
 	function findBoundaries(self, make_plot)
 
 
@@ -422,86 +423,134 @@ methods
 			make_plot = false;
 		end
 
+		% work in normalized co-ordinates
 		[X,Y] = self.normalize;
 
-		if isempty(self.DT) 
-			self.DT = delaunayTriangulation(X,Y);
-		end
 
-		% now for each class of points, find the boundary
-		E = edges(self.DT);
-		L = Inf(length(E),1);
-		for i = 1:length(E)
-			if diff(self.R(E(i,:))) == 0
-				continue
+		self.DT = delaunayTriangulation(X,Y);
+
+		% define a large raster matrix 
+		R = NaN(1e3,1e3);
+		R = R(:);
+
+		% make a list of all the points here
+		all_x = linspace(0,1,1e3);
+		all_y = linspace(0,1,1e3);
+
+		[all_x,all_y] = meshgrid(all_x,all_y);
+		all_x = all_x(:);
+		all_y = all_y(:);
+
+		% only if the vertices are different 
+		DT = self.DT;
+		for i = 1:size(DT,1)
+			if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
+				
+				% OK, all the same
+				inp = inpolygon(all_x,all_y,X(DT.ConnectivityList(i,:)),Y(DT.ConnectivityList(i,:)));
+				R(inp) = min(self.R(DT.ConnectivityList(i,:)));
+
+
+
 			end
-			L(i) = (X(E(i,1)) - X(E(i,2)))^2 + (Y(E(i,1)) - Y(E(i,2)))^2;
 		end
-		L = sqrt(L);
+
+		% fill in NaNs using nerest neighbours
+		R = reshape(R,1e3,1e3);
+		all_x = linspace(0,1,1e3);
+		all_y = linspace(0,1,1e3);
 
 
-		if make_plot
+		for i = 1:1e3
+			for j = 1:1e3
+				if ~isnan(R(i,j))
+					continue
+				end
+				[~,idx]=min((X - all_x(j)).^2 + (Y - all_y(i)).^2);
+				R(i,j) = self.R(idx);
+				self.R(idx);
 
+			end
+
+		end
+		R = R';
+
+
+		if strcmp(self.x_scale,'log')
+			all_x = logspace(log10(self.x_range(1)),log10(self.x_range(2)),1e3);
+		else
+			all_x = linspace(self.x_range(1),self.x_range(2),1e3);
+		end
+		if strcmp(self.y_scale,'log')
+			all_y = logspace(log10(self.y_range(1)),log10(self.y_range(2)),1e3);
+		else
+			all_y = linspace(self.y_range(1),self.y_range(2),1e3);
+		end
+
+
+		% ok, we now have a labelled, rasterized image
+		% find the boundaries of each class of data
+		for i = 1:self.n_classes
+
+			this_R = (R==i);
+
+			% check if there are mulitple connected components
+			% in this map
+			L = bwlabel(this_R);
+			n_comp = length(unique(L(:))) - 1;
+
+			
+			for j = 1:n_comp
+				% trace boundaries
+				B = bwboundaries(L == j);
+				bx = B{1}(:,1);
+				by = B{1}(:,2);
+
+				% un-normalize
+				self.boundaries(i).regions(j).x = all_x(bx);
+				self.boundaries(i).regions(j).y = all_y(by);
+			end
+
+
+		end
+
+
+
+		if isa(make_plot,'matlab.graphics.axis.Axes')
+			plot_here =  make_plot;
+		elseif islogical(make_plot)
 			figure('outerposition',[300 300 601 600],'PaperUnits','points','PaperSize',[601 600]); hold on
-
-			c = lines;
-
-			for i = 1:self.n_classes
-				bhandles(i) = plot(NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
-			end
-
-			if strcmp(self.x_scale,'log')
-				set(gca,'XScale','log')
-			end
-			if strcmp(self.y_scale,'log')
-				set(gca,'YScale','log')
-			end
-
+			plot_here = gca;
+			hold on
+		else
+			return
 		end
 
+		c = lines;
+
+		if strcmp(self.x_scale,'log')
+			set(plot_here,'XScale','log')
+		end
+		if strcmp(self.y_scale,'log')
+			set(plot_here,'YScale','log')
+		end
 
 		for i = 1:self.n_classes
-			% find all the edges where at least one 
-			% vertex is i
-			
-			region_edges = self.R(E(:,1)) == i | self.R(E(:,2)) == i;
-
-			look_at_these = L < .1 & region_edges;
-			if sum(look_at_these) > 5
-				
-				temp_X = mean(self.x(E(look_at_these,:)),2);
-				temp_Y = mean(self.y(E(look_at_these,:)),2);
-
-				% add to this all points in this region
-				% that are on the boundary
-
-				this_x = self.x(self.R == i);
-				this_y = self.y(self.R == i);
-
-				keep = aeq(this_x,self.x_range(2)) | aeq(this_x,self.x_range(1)) | aeq(this_y,self.y_range(2)) | aeq(this_y,self.y_range(1));
-
-
-				temp_X = [temp_X; this_x(keep)];
-				temp_Y = [temp_Y; this_y(keep)];
-
-
-
-				bhandles(i).XData = temp_X;
-				bhandles(i).YData = temp_Y;
-
-				self.boundaries(i).x = temp_X;
-				self.boundaries(i).y = temp_Y;
-
-
+			for j = 1:length(self.boundaries(i).regions)
+				bx = self.boundaries(i).regions(j).x;
+				by = self.boundaries(i).regions(j).y;
+				ph = plot(plot_here,polyshape(bx,by));
+				ph.FaceColor = c(i,:);
 			end
-
 		end
 
+		
 
 
 
 
-	end % findBoundaires
+	end % find boundaries
+
 
 
 
