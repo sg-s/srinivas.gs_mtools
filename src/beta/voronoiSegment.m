@@ -38,6 +38,7 @@ properties
 	mean_mesh_size = 2e-5;
 
 	make_plot = false;
+	segment_regions = true;
 	Display = 'iter'
 
 
@@ -81,6 +82,9 @@ methods
 			self.x_scale = 'log';
 			self.y_scale = 'log';
 			self.find();
+
+			self.findBoundaries(self.handles.ax(2))
+
 			drawnow
 			pause(5)
 			close all
@@ -103,9 +107,12 @@ methods
 			y = rand(10,1);
 			x(1) = .5; y(1) = .5;
 			self.find(x,y);
+			self.findBoundaries(self.handles.ax(2))
 			drawnow
 			pause(5)
 			close all
+
+
 
 		end
 
@@ -140,6 +147,7 @@ methods
 
 
 	function A = findAreas(self,X,Y)
+		DT = self.DT;
 		% find areas of all triangles
 		A = zeros(size(DT,1),1);
 		for i = 1:size(A,1)
@@ -166,23 +174,19 @@ methods
 	function find(self, seed_x, seed_y)
 
 		if self.make_plot
-			self.handles.fig = figure('outerposition',[300 300 1501 502],'PaperUnits','points','PaperSize',[1501 502]); hold on
+			self.handles.fig = figure('outerposition',[300 300 1000 502],'PaperUnits','points','PaperSize',[1000 502]); hold on
 			clear ax
-			ax(1) = subplot(1,3,1); hold on
-			ax(2) = subplot(1,3,2); hold on
-			ax(3) = subplot(1,3,3); hold on
+			ax(1) = subplot(1,2,1); hold on
+			ax(2) = subplot(1,2,2); hold on
 			title(ax(1),'Samples')
-			title(ax(2),'Boundary points')
-			title(ax(3),'Segmented space')
+			title(ax(2),'Segmented space')
 
 			% create placeholders for all classes
 			c = parula(self.n_classes);
 			for i = 1:self.n_classes
 				handles(i) = plot(ax(1),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
 
-				bhandles(i) = plot(ax(2),NaN,NaN,'.','MarkerSize',24,'MarkerFaceColor',c(i,:));
-
-				phandles(i) = plot(ax(3),polyshape());
+				phandles(i) = plot(ax(2),polyshape());
 			end
 			for i = 1:self.n_classes
 				handles(i).XData = self.x(self.R == i);
@@ -194,18 +198,17 @@ methods
 
 			set(ax(1),'XLim',self.x_range,'YLim',self.y_range)
 			set(ax(2),'XLim',self.x_range,'YLim',self.y_range)
-			set(ax(3),'XLim',self.x_range,'YLim',self.y_range)
 
 			if strcmp(self.x_scale,'log')
 				set(ax(1),'XScale','log')
 				set(ax(2),'XScale','log')
-				set(ax(3),'XScale','log')
 			end
 			if strcmp(self.y_scale,'log')
 				set(ax(1),'YScale','log')
 				set(ax(2),'YScale','log')
-				set(ax(3),'YScale','log')
 			end
+
+			self.handles.ax = ax;
 		end
 	
 
@@ -313,7 +316,6 @@ methods
 
 
 		goon = true;
-		warning('off','MATLAB:polyshape:repairedBySimplify')
 
 		if strcmp(self.Display,'iter')
 			fprintf('N        Mean Mesh Size    Min Mesh Size\n')
@@ -331,7 +333,7 @@ methods
 			A = self.findAreas(X,Y);
 
 			[A_max,idx] = max(A);
-			ic = incenter(DT);
+			ic = incenter(self.DT);
 			new_x = ic(idx,1);
 			new_y = ic(idx,2);
 
@@ -388,29 +390,11 @@ methods
 				goon = false;
 			end
 
-			% draw a boundary line
-
-
-			self.findBoundaries;
-
-	
 			drawnow
 		
 		end % while
+
 		
-
-		% now attempt to make the regions
-		for i = 1:self.n_classes
-			[temp_X, temp_Y] = thread.unravel(self.boundaries(i).x,self.boundaries(i).y,logx,logy);
-
-			phandles(i).Shape = (polyshape(temp_X,temp_Y,'Simplify',true));
-			drawnow
-		end		
-
-
-		warning('on','MATLAB:polyshape:repairedBySimplify')
-		
-
 
 	end
 
