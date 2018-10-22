@@ -234,6 +234,7 @@ methods
 
 			% start with a seed if none provided 
 			if nargin == 3
+				disp('Using provided seed...')
 				N = length(seed_x);
 				self.x(1:N) = seed_x;
 				self.y(1:N) = seed_y;
@@ -274,6 +275,9 @@ methods
 
 
 			N = find(isnan(temp(:,1)),1,'first') - 1;
+			if isempty(N)
+				N = length(temp);
+			end
 
 
 
@@ -402,6 +406,7 @@ methods
 
 	function findBoundaries(self, make_plot)
 
+		warning('off','MATLAB:polyshape:repairedBySimplify')
 
 		if nargin < 2
 			make_plot = false;
@@ -532,7 +537,7 @@ methods
 
 
 
-
+		warning('on','MATLAB:polyshape:repairedBySimplify')
 	end % find boundaries
 
 
