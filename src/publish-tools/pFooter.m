@@ -9,28 +9,7 @@
 % figure out which file is calling it;
 calling_func = dbstack;
 calling_func = calling_func(2).name; % it's always going to be #2 
-disp(calling_func)
 
 
-try
-	disp('md5 hash of file that made this is:')
-	disp(GetMD5(strcat(calling_func,'.m'),'File'))
-catch
-end
-
-disp('it should be in this commit:')
-status = false;
-[status,m] = system('git rev-parse HEAD');
-if ~status
-	disp(m)
-else
-	disp('Error reading git commit.')
-end
-
-disp('This file has the following external dependencies:')
 showDependencyHash(calling_func);
 
-t = toc;
-
-disp('This document was built in:')
-disp(strcat(oval(t,3),' seconds.'))

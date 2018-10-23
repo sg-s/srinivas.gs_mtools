@@ -507,7 +507,7 @@ methods
 
 		if isa(make_plot,'matlab.graphics.axis.Axes')
 			plot_here =  make_plot;
-		elseif islogical(make_plot)
+		elseif islogical(make_plot) && make_plot
 			figure('outerposition',[300 300 601 600],'PaperUnits','points','PaperSize',[601 600]); hold on
 			plot_here = gca;
 			hold on
@@ -534,7 +534,8 @@ methods
 		end
 
 		
-
+		plot_here.XLim = self.x_range;
+		plot_here.YLim = self.y_range;
 
 
 		warning('on','MATLAB:polyshape:repairedBySimplify')

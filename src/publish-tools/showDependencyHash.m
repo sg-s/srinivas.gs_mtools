@@ -22,6 +22,7 @@ original_folder = pwd;
 
 [f,p]=matlab.codetools.requiredFilesAndProducts(this_file);
 git_hashes = {};
+git_urls = {};
 % check each dep for whether it lives within a git repo
 
 for i = length(f):-1:1
@@ -31,6 +32,15 @@ for i = length(f):-1:1
 		repo_name{i} = strtrim(m);
 		[status,m] = system('git rev-parse HEAD');
 		if ~status
+			
+			% also get the url
+			[s,url]=system('git remote');
+			url = strsplit(url);
+			url = url{1};
+			url= strtrim(url);
+			[s,url] = system(['git remote get-url ' url]);
+			git_urls{i} = strtrim(url);
+
 			git_hashes{i} = m(1:end-1);
 		end
 	end
@@ -45,7 +55,8 @@ for i = 1:length(urepos)
 end
 
 for i = 1:length(idx)
-	disp([urepos{i} ' (' git_hashes{idx(i)} ')'])
+	disp(['git clone ' git_urls{idx(i)} ' ' repo_name{idx(i)}])
+	disp(['git checkout  ' git_hashes{idx(i)}])
 end
 
 % go back from whence you came
