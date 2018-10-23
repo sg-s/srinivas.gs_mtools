@@ -47,13 +47,12 @@ if any(strfind(loc,'+'))
 		func_name = loc(z+1:end-2);
 
 		% use undocumented feature to get info about static methods
-		eval(['[m,s] = methods(' package_name '.' class_name ');']);
-		s = s(:,1);
+		eval(['m = methods(' package_name '.' class_name ',' char(39) '-full'  char(39) ');']);
 		
-		this_func = find(strcmp(m,func_name));
+		this_func = lineFind(m,func_name);
 		assert(~isempty(this_func),'Function not defined in class')
 
-		assert(strcmp(s{this_func},'Static'),'Function is not a static method of class')
+		assert(any(strfind(m{this_func},'Static')),'Function is not a static method of class')
 
 
 	end
