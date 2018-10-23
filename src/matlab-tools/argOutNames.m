@@ -9,7 +9,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [names] = argOutNames(fname)
+function names = argOutNames(fname)
 if ~nargin 
 	help argoutnames
 	return
@@ -31,6 +31,16 @@ fid = fopen(funcfile, 'rt');
 lines = textscan(fid,'%[^\n]'); %reads line by line 
 fclose(fid); 
 lines = lines{1};
+
+
+N_out = nargout(fname);
+
+dots = strfind(fname,'.');
+if ~isempty(dots)
+	% this is not a simple function
+	dots = dots(end);
+	fname = fname(dots+1:end);
+end
 
 % find the line of the function definition 
 func_def_line = [];
@@ -72,7 +82,7 @@ if isempty(a) && isempty(z)
 	z=  strfind(thisline,'=')-1;
 end
 
-if nargout(fname) == 1
+if N_out == 1
 	
 	names{1} = thisline(a:z);
 else
@@ -86,7 +96,7 @@ else
 	names{1} = thisline(aa:zz);
 
 	% grab the middle ones
-	for i = 2:nargout(fname)-1
+	for i = 2:N_out-1
 		aa = c(i-1) + 1;
 		zz = c(i) -1;
 		names{i} = thisline(aa:zz);
