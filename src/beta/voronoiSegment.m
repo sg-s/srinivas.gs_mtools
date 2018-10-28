@@ -171,6 +171,22 @@ methods
 	end
 
 
+	function [new_x,new_y] = deNormalize(self, x,y)
+		if strcmp(self.x_scale,'log')
+				new_x = exp(x*(log(self.x_range(2)) - log(self.x_range(1))) + log(self.x_range(1)));
+		else
+			new_x = self.x_range(1) + x*diff(self.x_range);
+		end
+
+		if strcmp(self.y_scale,'log')
+			new_y = exp(y*(log(self.y_range(2)) - log(self.y_range(1))) + log(self.y_range(1)));
+		else
+			new_y = self.y_range(1) + y*diff(self.y_range);
+		end
+
+	end % deNormalize
+
+
 	function find(self, seed_x, seed_y)
 
 		if self.make_plot
@@ -341,18 +357,8 @@ methods
 			new_x = ic(idx,1);
 			new_y = ic(idx,2);
 
-			if strcmp(self.x_scale,'log')
+			[new_x,new_y] = self.deNormalize(new_x,new_y);
 
-				new_x = exp(new_x*(log(self.x_range(2)) - log(self.x_range(1))) + log(self.x_range(1)));
-			else
-				new_x = self.x_range(1) + new_x*diff(self.x_range);
-			end
-
-			if strcmp(self.y_scale,'log')
-				new_y = exp(new_y*(log(self.y_range(2)) - log(self.y_range(1))) + log(self.y_range(1)));
-			else
-				new_y = self.y_range(1) + new_y*diff(self.y_range);
-			end
 
 			assert(new_y >= self.y_range(1) & new_y <= self.y_range(2),'247')
 			assert(new_x >= self.x_range(1) & new_x <= self.x_range(2),'247')
@@ -430,7 +436,6 @@ methods
 		all_x = all_x(:);
 		all_y = all_y(:);
 
-		% only if the vertices are different 
 		DT = self.DT;
 		for i = 1:size(DT,1)
 			if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
@@ -444,7 +449,7 @@ methods
 			end
 		end
 
-		% fill in NaNs using nerest neighbours
+		% fill in NaNs using nearest neighbors
 		R = reshape(R,1e3,1e3);
 		all_x = linspace(0,1,1e3);
 		all_y = linspace(0,1,1e3);
@@ -477,13 +482,13 @@ methods
 		end
 
 
-		% ok, we now have a labelled, rasterized image
+		% ok, we now have a labeled, rasterized image
 		% find the boundaries of each class of data
 		for i = 1:self.n_classes
 
 			this_R = (R==i);
 
-			% check if there are mulitple connected components
+			% check if there are multiple connected components
 			% in this map
 			L = bwlabel(this_R);
 			n_comp = length(unique(L(:))) - 1;
@@ -502,6 +507,26 @@ methods
 
 
 		end
+
+
+
+		% % now find boundaries the traditional way
+		% incenters = incenter(DT);
+		% boundary_pts = NaN(size(DT.ConnectivityList,1),2);
+		% for i = 1:size(DT.ConnectivityList,1)
+		% 	% only if the vertices are different 
+		% 	if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
+		% 		continue
+		% 	end
+
+		% 	% OK, at least one different
+		% 	boundary_pts(i,:) = incenters(i,:);
+
+		% 	[boundary_pts(i,1),boundary_pts(i,2)] = self.deNormalize(boundary_pts(i,1),boundary_pts(i,2));
+
+		% end
+
+		
 
 
 
