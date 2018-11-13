@@ -12,8 +12,31 @@
 % - does not work when istart ~= 1
 % - If you run MATLAB via ssh over a slow connection, output may be mangled
 % - It WILL slow down your code. Don’t use if you have millions of iterations
-function [] = textbar(i,imax,message)
-%% code.
+function textbar(i,imax,message)
+
+
+persistent last_run;
+
+if isempty(last_run)
+    last_run = now;
+end
+
+% updates only every 1s
+if now - last_run < 1.1574e-05
+
+    if i == imax
+        dop = length(mat2str(floor((((i-1)/imax)*100)))) + 29;
+        printthis = '';
+        for bs = 1:dop
+            printthis = strcat(printthis,'\b');
+        end
+        printthis = strcat(printthis,'DONE.\n');
+        fprintf(printthis)
+    end
+    return
+end
+
+
 if imax < 100
     %% show fraction
     % figure out how much is on the screen
@@ -97,3 +120,6 @@ else
     end
 end
 fprintf(printthis)
+
+
+last_run = now;
