@@ -84,14 +84,14 @@ end
 for i = 1:length(A)
     sz = size(A{i});
     if sz(1) > sz(2)
-        A{i} = A{i}';
+        A{i} = transpose(A{i});
     end
     ntrials(i) = size(A{i},1);
 end
 
 % determine type of input
-
-if nanmax(A{1}(:)) > 1
+keyboard
+if any(isnan(A{1})) || any(A{1}==0)
     % data are spiketimes, with NaN or zero padding 
     % make sure all data is the same type TODO
 
@@ -114,7 +114,7 @@ if nanmax(A{1}(:)) > 1
 elseif  all([0 1] == unique(A{1}(:)))
     % data is a logical array
     % but needs to be rotated
-    A{1} = A{1}';
+    A{1} = transpose(A{1});
 elseif all([0; 1] == unique(A{1}(:)))
 else
     error('unrecognised data type')
