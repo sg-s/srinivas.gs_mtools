@@ -25,6 +25,12 @@ X = X(:);
 Y = Y(:);
 Z = Z(:);
 
+% purge NaNs
+rm_this = isnan(Z) | isnan(X) | isnan(Y);
+X(rm_this) = [];
+Y(rm_this) = [];
+Z(rm_this) = [];
+
 varargin(1:3) = [];
 
 % options and defaults

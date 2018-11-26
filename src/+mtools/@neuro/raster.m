@@ -64,7 +64,12 @@ if options.split_rows
             spiketimes{i} = transpose(spiketimes{i});
         end
         for j = 1:size(spiketimes{i},2)
-            new_spiketimes = [new_spiketimes; spiketimes{i}(:,j)];
+            if issparse(spiketimes{i}(:,j))
+                new_spiketimes = [new_spiketimes; find(spiketimes{i}(:,j))];
+            else
+                new_spiketimes = [new_spiketimes; spiketimes{i}(:,j)];
+            end
+            
         end
     end
     options.split_rows = false;
