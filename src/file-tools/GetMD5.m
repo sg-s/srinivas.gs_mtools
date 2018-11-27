@@ -88,7 +88,8 @@ function GetMD5
 % Dummy code, which calls the auto-compilation only: ---------------------------
 persistent FirstRun
 if isempty(FirstRun)
-   ok = InstallMex('GetMD5.c', 'uTest_GetMD5');
+   %ok = InstallMex('GetMD5.c', 'uTest_GetMD5');
+   ok = InstallMex('GetMD5.c');
    if ok
       FirstRun = false;
    end
