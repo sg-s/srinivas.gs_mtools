@@ -10,6 +10,11 @@
 % 
 function Y = pickN(X, N)
 
+if isempty(X)
+	Y = NaN(N,1);
+	return
+end
+
 assert(isvector(X), 'First argument should be a vector')
 X = X(:);
 
