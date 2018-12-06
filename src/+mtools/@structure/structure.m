@@ -1,4 +1,4 @@
-classdef struct
+classdef structure
 
 methods (Static)
 
