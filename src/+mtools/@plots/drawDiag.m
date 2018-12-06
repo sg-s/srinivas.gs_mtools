@@ -1,6 +1,8 @@
-function drawDiag()
+function drawDiag(ax)
 
-ax = gca;
+if nargin == 0
+	ax = gca;
+end
 
 x = ax.XLim;
 y = ax.YLim;
@@ -9,5 +11,6 @@ M = max([max(x) max(y)]);
 
 hold(ax,'on');
 
-plot(ax,[0 M],[0 M],'k--');
+X = logspace(log10(eps),log10(M),1e3);
+plot(ax,X,X,'k--');
 

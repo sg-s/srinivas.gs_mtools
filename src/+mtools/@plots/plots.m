@@ -1,7 +1,7 @@
 classdef plots
 
 methods (Static)
-	drawDiag()
+	drawDiag(ax)
 
 end
 
