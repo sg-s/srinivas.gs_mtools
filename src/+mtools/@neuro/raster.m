@@ -11,15 +11,16 @@ options.split_rows = true;
 
 fn = fieldnames(options);
 
+
 % extract spiketimes
 last_var = length(varargin);
 for i = 1:length(varargin)
-	for j = 1:length(fn)
-        if strcmp(fn{j},varargin{i}) | isstruct(varargin{i})
-            last_var = i - 1;
-            break
-        end
+
+    if any(strcmp(varargin{i},fn)) | isstruct(varargin{i})
+        last_var = i - 1;
+        break
     end
+
 end
 
 
@@ -91,6 +92,7 @@ for i = 1:length(spiketimes)
         % hope for the best and continue on
     end
 end
+
 
 for i = 1:length(spiketimes)
 
