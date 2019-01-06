@@ -25,6 +25,13 @@ methods
 			elseif isa(self.(props{i}),'char')
 				this_value = (self.(props{i}));
 				char_values = [char_values; this_value(:)];
+			else
+				% check if this object inherits from Hashable
+				s = superclasses(self.(props{i}));
+				if any(strcmp(s,'Hashable'))
+					this_hash = self.(props{i}).hash;
+					char_values = [char_values; this_hash(:)];
+				end
 			end
 		end
 		h1 = GetMD5(double_values);
