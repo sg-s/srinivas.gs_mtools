@@ -148,12 +148,12 @@ else
    mexPath = Param{index + 1};
 end
 
-fprintf('== Compile: %s\n', fullfile(SourcePath, Source));
+% fprintf('== Compile: %s\n', fullfile(SourcePath, Source));
 
 % Check if the compiled file is existing already:
 whichMex = which(mexFile);
 if ~isempty(whichMex)
-   fprintf('  Existing already:  %s\n', whichMex);
+   % fprintf('  Existing already:  %s\n', whichMex);
    
    if ~replace
       % Ask the user if a new compilation is wanted:
@@ -174,7 +174,7 @@ if ~isempty(whichMex)
          return;
       end
    end
-   fprintf('  Recompile in: %s\n\n', mexPath);
+   % fprintf('  Recompile in: %s\n\n', mexPath);
 end
 
 if ~ispc && strcmpi(Ext, '.c')
@@ -209,20 +209,21 @@ end
 % Display the compilation command:
 Flags  = cat(1, Flags(:), debugFlag, matlabVDef, Param(:), {Source});
 cmdStr = ['mex', sprintf(' %s', Flags{:})];
-fprintf('%s\n\n', cmdStr);
+% fprintf('%s\n\n', cmdStr);
 
 cd(SourcePath);
 try    % Start the compilation:
+   Flags = [Flags; '-silent'];
    mex(Flags{:});
    compiled = true;
-   fprintf('Compiled:\n  %s\n', which(mexFile));
+   % fprintf('Compiled:\n  %s\n', which(mexFile));
    
 catch ME  % Compilation failed - MException fails in Matlab 6.5!
    compiled = false;
    fprintf(2, '\n*** Compilation failed:\n%s\n\n', ME.message);
    fprintf('Matlab version: %s\n', version);
    if ~doDebug  % Compile again in debug mode if not done already:
-      fprintf('Compile with debug flag to get details:\n');
+      % fprintf('Compile with debug flag to get details:\n');
       try
          mex(Flags{:}, '-v');
       catch  % Empty - it is known already that it fails
@@ -269,7 +270,7 @@ end
 
 % Run the unit-test: -----------------------------------------------------------
 if ~isempty(UnitTestFcn) && compiled
-   fprintf('\n\n== Post processing:\n');
+   % fprintf('\n\n== Post processing:\n');
    [dum, UnitTestName] = fileparts(UnitTestFcn);  %#ok<ASGLU> % Remove extension
    if ~isempty(which(UnitTestName))
       fprintf('  Call: %s\n\n', UnitTestName);
@@ -284,7 +285,7 @@ if nargout >= 1
    Ok = compiled;
 end
 if compiled
-   fprintf('\n== %s: ready.\n', mfilename);
+   % fprintf('\n== %s: ready.\n', mfilename);
 else
    fprintf('\n== %s: failed.\n', mfilename);
 end
