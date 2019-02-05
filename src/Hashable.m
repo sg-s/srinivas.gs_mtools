@@ -7,11 +7,9 @@ classdef Hashable
 methods
 
 
-	function H = hash(self, strict_mode)
+	function H = hash(self)
 
-		if nargin == 1
-			strict_mode = false;
-		end
+
 
 		props = properties(self);
 		double_values = [];
