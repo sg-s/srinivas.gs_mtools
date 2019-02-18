@@ -17,19 +17,22 @@ methods
 
 
 		for i = 1:length(props)
-			if isa(self.(props{i}),'double') | isa(self.(props{i}),'logical')
+			s = superclasses(self.(props{i}));
+
+			if isa(self.(props{i}),'double') || isa(self.(props{i}),'logical')
 				this_value = double(self.(props{i}));
 				double_values = [double_values; this_value(:)];
 			elseif isa(self.(props{i}),'char')
 				this_value = (self.(props{i}));
 				char_values = [char_values; this_value(:)];
-			else
+			elseif any(strcmp(s,'Hashable'))
 				% check if this object inherits from Hashable
-				s = superclasses(self.(props{i}));
-				if any(strcmp(s,'Hashable'))
-					this_hash = self.(props{i}).hash;
-					char_values = [char_values; this_hash(:)];
-				end
+				this_hash = self.(props{i}).hash;
+				char_values = [char_values; this_hash(:)];
+			elseif isenum(self.(props{i}))
+				% cast into char
+				this_value = char(self.(props{i}));
+				char_values = [char_values; this_value(:)];
 			end
 		end
 		h1 = GetMD5(double_values);
