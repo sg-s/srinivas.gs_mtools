@@ -2,7 +2,7 @@
 % cleans a string of whitespace, leading numbers, etc.
 % makes clean variables names in MATLAB
 
-function s = cleanString(s)
+function s = clean(s)
 
 % replace minus signs with underscores
 s = strrep(s,'-','_');

@@ -1,7 +1,7 @@
 % finds the index ofa vector that is closest to some value
 % 
 % usage:
-% idx = closest([0, 1, 2.01, 3, 4],2); % returns 2
+% idx = closest([0, 1, 2.01, 3, 4],2); % returns 3
 % 
 function idx = closest(vec, value)
 
