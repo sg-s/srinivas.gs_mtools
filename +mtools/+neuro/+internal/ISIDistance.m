@@ -11,12 +11,12 @@ if A_z == 0 && B_z == 0
 end
 
 if A_z == 0
-	D = sum(B(1:B_z));
+	D = B_z;
 	return
 end
 
 if B_z == 0
-	D = sum(A(1:A_z));
+	D = A_z;
 	return
 end
 
