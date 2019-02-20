@@ -84,7 +84,7 @@ end
 for i = 1:length(spiketimes)
     if any(isnan(spiketimes{i}))
         % NaN padded
-        spiketimes{i} = nonnans(spiketimes{i});
+        spiketimes{i} = mtools.vector.nonnans(spiketimes{i});
     elseif length(unique(spiketimes{1})) == 2
         disp('binary data')
         keyboard
