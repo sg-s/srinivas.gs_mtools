@@ -12,20 +12,23 @@
 % - does not work when istart ~= 1
 % - If you run MATLAB via ssh over a slow connection, output may be mangled
 % - It WILL slow down your code. Don’t use if you have millions of iterations
-function textbar()
+function textbar(ii,imax)
 
 
 persistent last_run;
+
 
 if isempty(last_run)
     last_run = now;
 end
 
+
+
 % updates only every 1s
 if now - last_run < 1.1574e-05
 
-    if i == imax
-        dop = length(mat2str(floor((((i-1)/imax)*100)))) + 29;
+    if ii == imax
+        dop = length(mat2str(floor((((ii-1)/imax)*100)))) + 29;
         printthis = '';
         for bs = 1:dop
             printthis = strcat(printthis,'\b');
@@ -40,15 +43,15 @@ end
 if imax < 100
     %% show fraction
     % figure out how much is on the screen
-    if i > 1
+    if ii > 1
         % delete old progress
-        dop = length(strcat(mat2str(imax),mat2str(i-2))) + 27;
+        dop = length(strcat(mat2str(imax),mat2str(ii-2))) + 27;
         printthis = '';
         for bs = 1:dop
             printthis = strcat(printthis,'\b');
         end
         % write new progress
-        progress = floor((i/imax)*20);
+        progress = floor((ii/imax)*20);
         if progress > 0
             pbar = '';
             for pi = 1:progress
@@ -62,14 +65,14 @@ if imax < 100
         else
             printthis = strcat(printthis,'--------------------');
         end
-        printthis = strcat(printthis,']   (',mat2str(i-1),'/', mat2str(imax),')');
+        printthis = strcat(printthis,']   (',mat2str(ii-1),'/', mat2str(imax),')');
         
     else
         % first run
-        printthis = (strcat('[--------------------]   (',mat2str(i-1),'/', mat2str(imax),')'));
+        printthis = (strcat('[--------------------]   (',mat2str(ii-1),'/', mat2str(imax),')'));
     end
-    if i == imax
-        dop = length(strcat(mat2str(imax),mat2str(i-2))) + 28;
+    if ii == imax
+        dop = length(strcat(mat2str(imax),mat2str(ii-2))) + 28;
         printthis = '';
         for bs = 1:dop
             printthis = strcat(printthis,'\b');
@@ -78,11 +81,11 @@ if imax < 100
     end
 else
     %% show percentage
-    disi = floor((i/imax)*100);
+    disi = floor((ii/imax)*100);
     
     % figure out how much is on the screen
-    if i > 1
-        op = length(mat2str(floor((((i-1)/imax)*100))));
+    if ii > 1
+        op = length(mat2str(floor((((ii-1)/imax)*100))));
         % delete old progress
         dop = 3 + op + 24;
         printthis = '';
@@ -110,8 +113,8 @@ else
         % first run
         printthis = (strcat('[--------------------]   (',mat2str(disi),'%%)'));
     end
-    if i == imax
-        dop = length(mat2str(floor((((i-1)/imax)*100)))) + 29;
+    if ii == imax
+        dop = length(mat2str(floor((((ii-1)/imax)*100)))) + 29;
         printthis = '';
         for bs = 1:dop
             printthis = strcat(printthis,'\b');
