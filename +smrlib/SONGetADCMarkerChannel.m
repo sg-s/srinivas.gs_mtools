@@ -1,15 +1,15 @@
 function[data,h]=SONGetADCMarkerChannel(fid, chan, varargin)
-% SONGETADCMARKERCHANNEL reads an ADCMark channel from a SON file.
+% smrlib.SONGetADCMarkerChannel reads an ADCMark channel from a SON file.
 %
-% [DATA {, HEADER}]=SONGETADCMARKERCHANNEL(FID, CHAN{, START{, STOP{, OPTIONS}}})
+% [DATA {, HEADER}]=smrlib.SONGetADCMarkerChannel(FID, CHAN{, START{, STOP{, OPTIONS}}})
 % FID is the matlab file handle, CHAN is the channel number (1=max)
 %
-% [DATA, HEADER]=SONGETADCMARKERCHANNEL(FID, 1{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCMarkerChannel(FID, 1{, OPTIONS})
 %       reads all the data on channel 1
-% [DATA, HEADER]=SONGETADCMARKERCHANNEL(FID, 1, 10{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCMarkerChannel(FID, 1, 10{, OPTIONS})
 %       reads disc block 10 for continuous data or epoch 10 for triggered
 %       data
-% [DATA, HEADER]=SONGETADCMARKERCHANNEL(FID, 1, 10, 20{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCMarkerChannel(FID, 1, 10, 20{, OPTIONS})
 %       reads disc blocks 10-20
 %
 % DATA is a structure with 3 fields.
@@ -21,7 +21,7 @@ function[data,h]=SONGetADCMarkerChannel(fid, chan, varargin)
 % are:
 % 'ticks', 'microseconds', 'milliseconds' and 'seconds' cause times to
 %    be scaled to the appropriate unit (seconds by default)in HEADER
-% 'scale' - calls SONADCToDouble to apply the channel scale and offset to
+% 'scale' - calls smrlib.SONADCToDouble to apply the channel scale and offset to
 %    DATA.ADC which will  be cast to double precision
 % 'progress' - causes a progress bar to be displayed during the read.
 %
@@ -31,11 +31,11 @@ function[data,h]=SONGetADCMarkerChannel(fid, chan, varargin)
 %
 % Example:
 % options={'scale' 'microseconds'}
-% [data, header]=SONGetADCMarkerChannel(fid, 1, 20, 40, options{:})
+% [data, header]=smrlib.SONGetADCMarkerChannel(fid, 1, 20, 40, options{:})
 %    reads blocks 20-40 from channel 1 and displays a progress bar.
 %   Timestamps in data.timings wil be in microseconds
 %   data.adc will be returned in double-precision floating point after
-%   scaling and applying the offset stored on disc via SONADCToDouble.
+%   scaling and applying the offset stored on disc via smrlib.SONADCToDouble.
 %
 % in this case HEADER could have the following example field values
 %          FileName: 'c:\matlab704\work\02feb00.smr'
@@ -61,7 +61,7 @@ function[data,h]=SONGetADCMarkerChannel(fid, chan, varargin)
 % Updated 09/05 ML
 % Copyright © The Author & King's College London 2002-2006
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 
 if isempty (Info)
     data=[];
@@ -70,7 +70,7 @@ if isempty (Info)
 end;
 
 if Info.kind ~=6
-    warning('SONGetADCMarkerChannel: Channel %d No data or wrong channel type', chan);
+    warning('smrlib.SONGetADCMarkerChannel: Channel %d No data or wrong channel type', chan);
     data=[];
     h=[];
     return;
@@ -110,9 +110,9 @@ switch arguments
 end;
 
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 NumberOfMarkers=sum(header(5,startBlock:endBlock)); % Sum of samples in required blocks
 
 
@@ -158,7 +158,7 @@ if(nargout>1)
     h.preTrig=Info.preTrig;
     h.comment=Info.comment;
     h.title=Info.title;
-    h.sampleinterval=SONGetSampleInterval(fid,chan);
+    h.sampleinterval=smrlib.SONGetSampleInterval(fid,chan);
     h.scale=Info.scale;
     h.offset=Info.offset;
     h.units=Info.units;
@@ -169,11 +169,11 @@ if(nargout>1)
     end;
 end;
 
-[data.timings,h.TimeUnits]=SONTicksToSeconds(fid,data.timings,varargin{:});                % Convert time
+[data.timings,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,data.timings,varargin{:});                % Convert time
 h.Epochs={startBlock endBlock 'of' Info.blocks 'blocks'};
 
 if ScaleData
-    [data, h]=SONADCToDouble(data, h);
+    [data, h]=smrlib.SONADCToDouble(data, h);
 end;
 
 if ShowProgress==1

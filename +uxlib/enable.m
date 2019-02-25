@@ -1,7 +1,7 @@
 % enables and shows a thing
 % enable is an implicit show
 
-% usage: mtools.ux.show(object)
+% usage: uxlib.show(object)
 
 function enable(thing)
 
@@ -9,7 +9,7 @@ assert(nargin == 1,'Wrong number of input arguments')
 
 if length(thing) > 1
 	for i = 1:length(thing)
-		mtools.ux.enable(thing(i));
+		uxlib.enable(thing(i));
 	end
 	return
 end
@@ -24,7 +24,7 @@ end
 if isprop(thing,'Children')
 	C = thing.Children;
 	for i = 1:length(C)
-		mtools.ux.enable(C(i));
+		uxlib.enable(C(i));
 	end
 	return
 end

@@ -1,9 +1,9 @@
 function[interval, start]=SONGetSampleInterval(fid,chan)
-% SONGETSAMPLEINTERVAL returns the sampling interval in microseconds 
+% smrlib.SONGetSampleInterval returns the sampling interval in microseconds 
 % on a waveform data channel in a SON file, i.e. the reciprocal of the
 % sampling rate for the channel, together with the time of the first sample
 %
-% [INTERVAL{, START}]=SONGETSAMPLEINTERVAL(FID, CHAN)
+% [INTERVAL{, START}]=smrlib.SONGetSampleInterval(FID, CHAN)
 % FID is the matlab file handle and CHAN is the channel number (1-max)
 % The sampling INTERVAL and, if requested START time for the data are
 % returned in seconds.
@@ -16,9 +16,9 @@ function[interval, start]=SONGetSampleInterval(fid,chan)
 % Copyright © The Author & King's College London 2002-2006
 
 
-FileH=SONFileHeader(fid);                                   % File header
-Info=SONChannelInfo(fid,chan);                              % Channel header
-header=SONGetBlockHeaders(fid,chan);
+FileH=smrlib.SONFileHeader(fid);                                   % File header
+Info=smrlib.SONChannelInfo(fid,chan);                              % Channel header
+header=smrlib.SONGetBlockHeaders(fid,chan);
 switch Info.kind                                            % Disk block headers
     case {1,6,7,9}
         switch FileH.systemID
@@ -27,7 +27,7 @@ switch Info.kind                                            % Disk block headers
                     interval=Info.divide*FileH.usPerTime*FileH.timePerADC;
                     start=header(2,1)*FileH.usPerTime*FileH.timePerADC;
                 else
-                    warning('SONGetSampleInterval: ldivide not defined Channel #%d', chan);
+                    warning('smrlib.SONGetSampleInterval: ldivide not defined Channel #%d', chan);
                     interval=[];
                     start=[];
                 end;
@@ -36,7 +36,7 @@ switch Info.kind                                            % Disk block headers
                 start=header(2,1)*FileH.usPerTime*FileH.dTimeBase;
         end;
     otherwise
-        warning('SONGetSampleInterval: Invalid channel type Channel #%d',chan);
+        warning('smrlib.SONGetSampleInterval: Invalid channel type Channel #%d',chan);
         interval=[];
         start=[];
         return;

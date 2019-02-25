@@ -90,7 +90,7 @@ persistent is_compiled
 if isempty(is_compiled)
 
    % compile
-   mtools.crypto.m5compile;
+   hashlib.m5compile;
 
 
 end

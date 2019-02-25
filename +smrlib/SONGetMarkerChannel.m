@@ -1,5 +1,5 @@
 function[data,h]=SONGetMarkerChannel(fid, chan, varargin)
-% SONGETMARKERCHANNEL reads a marker channel from a SON file.
+% smrlib.SONGetMarkerChannel reads a marker channel from a SON file.
 %
 % [data{, h}]=SONGETMARKER(FID, CHAN)
 % FID is the MATLAB file handle and CHAN is the channel number (1 to Max)
@@ -20,23 +20,23 @@ function[data,h]=SONGetMarkerChannel(fid, chan, varargin)
 % Updated 10/06 ML
 % Copyright © The Author & King's College London 2002-2006
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 if isempty (Info)
     data=[];
     h=[];
     return;
 end;
 if(Info.kind ~= 5) 
-    warning('SONGetMarkerChannel: Channel #%d No data or not a marker channel', chan);
+    warning('smrlib.SONGetMarkerChannel: Channel #%d No data or not a marker channel', chan);
     data=[];
     h=[];
     return;
 end;
 
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 
 if isempty(header)
     data=[];
@@ -114,7 +114,7 @@ if(nargout>1)
     h.title=Info.title;
 end;
 
-[data.timings,h.TimeUnits]=SONTicksToSeconds(fid,data.timings, varargin{:});                % Convert time
+[data.timings,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,data.timings, varargin{:});                % Convert time
 h.Epochs={startBlock endBlock 'of' Info.blocks 'blocks'};
 if ShowProgress==1
     close(progbar);

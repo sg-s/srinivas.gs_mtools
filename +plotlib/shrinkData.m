@@ -20,7 +20,7 @@
 function [] = shrinkData(handle_to_plot_object,distance_to_next_point)
 
 if ~nargin
-	help mtools.plots.shrinkData
+	help plotlib.shrinkData
 	return
 end
 
@@ -29,13 +29,13 @@ assert(nargin == 2,'2 arguments needed')
 if isa(handle_to_plot_object,'matlab.graphics.axis.Axes')
 	if length(handle_to_plot_object) > 1
 		for i = 1:length(handle_to_plot_object)
-			mtools.plots.shrinkData(handle_to_plot_object(i),distance_to_next_point);
+			plotlib.shrinkData(handle_to_plot_object(i),distance_to_next_point);
 		end
 		return
 	else
 		temp = handle_to_plot_object.Children;
 		for i = 1:length(temp)
-			mtools.plots.shrinkData(temp(i),distance_to_next_point);
+			plotlib.shrinkData(temp(i),distance_to_next_point);
 		end
 		return
 	end

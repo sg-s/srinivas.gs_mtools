@@ -1,16 +1,16 @@
 function[data,h]=SONGetRealWaveChannel(fid, chan, varargin)
-% SONGETREALWAVECHANNEL reads an ADC (waveform) channel from a SON file.
+% smrlib.SONGetRealWaveChannel reads an ADC (waveform) channel from a SON file.
 %
-% [DATA {, HEADER}]=SONGETREALWAVECHANNEL(FID,...
+% [DATA {, HEADER}]=smrlib.SONGetRealWaveChannel(FID,...
 %                       CHAN{, START{, STOP{, OPTIONS}}})
 % FID is the matlab file handle, CHAN is the channel number (1=max)
 %
-% [DATA, HEADER]=SONGETREALWAVECHANNEL(FID, 1{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealWaveChannel(FID, 1{, OPTIONS})
 %       reads all the data on channel 1
-% [DATA, HEADER]=SONGETREALWAVECHANNEL(FID, 1, 10{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealWaveChannel(FID, 1, 10{, OPTIONS})
 %       reads disc block 10 for continuous data or epoch 10 for triggered
 %       data
-% [DATA, HEADER]=SONGETREALWAVECHANNEL(FID, 1, 10, 20{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealWaveChannel(FID, 1, 10, 20{, OPTIONS})
 %       reads disc blocks 10-20 for continuous data or epochs 10-20
 %       for triggered data
 %
@@ -21,7 +21,7 @@ function[data,h]=SONGetRealWaveChannel(fid, chan, varargin)
 % 'progress' - causes a progress bar to be displayed during the read.
 % 'mat' - the loaded data will be appended to the MAT-file specified 
 %         in the next optional input e.g.:
-%       [d,h]=SONGetADCChannel(fid,1,'progress','mat','myfile.mat');
+%       [d,h]=smrlib.SONGetADCChannel(fid,1,'progress','mat','myfile.mat');
 
 %
 % For continuously sampled data, DATA is a simple vector.
@@ -29,12 +29,12 @@ function[data,h]=SONGetRealWaveChannel(fid, chan, varargin)
 % with each epoch (frame) of data in a separate row.
 %
 % Examples:
-% [data, header]=SONGetADCChannel(fid, 1, 'ticks')
+% [data, header]=smrlib.SONGetADCChannel(fid, 1, 'ticks')
 %      reads all data on channel 1 returning an int16 vector or matrix
 %      Times in header will be in clock ticks
 %
 % options={'progress' 'ticks'}
-% [data, header]=SONGetRealWaveChannel(fid, 1, 200, 399, options{:})
+% [data, header]=smrlib.SONGetRealWaveChannel(fid, 1, 200, 399, options{:})
 %    reads epochs 200-399 from channel 1 and displays a progress bar. Data is
 %    returned in double-precision floating point. If sampling was
 %    continuous, data will be a vector containing data blocks 200-399.
@@ -68,11 +68,11 @@ function[data,h]=SONGetRealWaveChannel(fid, chan, varargin)
 %
 %   See also 
 %
-%   See also SONGETADCCHANNEL
+%   See also smrlib.SONGetADCChannel
 %
 % 11/03/06
 % Memory pre-allocations changed to speed up execution
-% SONADCToDouble code embedded in function
+% smrlib.SONADCToDouble code embedded in function
 % Memory mapping embedded in function
 % 20/5/06
 % Varargin handling tidied
@@ -93,14 +93,14 @@ v=ver;
 v=str2double(v(1).Version);
 
 % Get Channel information
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 if isempty (Info)
     data=[];
     h=[];
     return;
 end;
 if Info.kind ~=9
-    warning('SONGetRealWaveChannel: Channel #%d No data or not a RealWave channel',chan);
+    warning('smrlib.SONGetRealWaveChannel: Channel #%d No data or not a RealWave channel',chan);
     data=[];
     h=[];
     return;
@@ -129,7 +129,7 @@ for i=1:length(varargin)
                 fh=OpenMATFile(fname);
                 temp=whos(['chan' num2str(chan)],'-file',fname);
                 if ~isempty(temp)
-                    warning('SONGetADCChannel: This channel has already been saved to %s',fname);
+                    warning('smrlib.SONGetADCChannel: This channel has already been saved to %s',fname);
                     data=[];
                     h=[];
 					fclose(fh);
@@ -148,9 +148,9 @@ if MatFlag==1
 end
 
 % Set up header
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 
 
 SampleInterval=(header(3,1)-header(2,1))/(header(5,1)-1);   % Sample interval in clock ticks
@@ -165,7 +165,7 @@ if(nargout>1)
     %h.preTrig=Info.preTrig;
     h.comment=Info.comment;
     h.title=Info.title;
-    h.sampleinterval=SONGetSampleInterval(fid,chan);
+    h.sampleinterval=smrlib.SONGetSampleInterval(fid,chan);
     h.scale=6535.6;% added 16/8/06
     h.offset=0;
     h.min=Inf;
@@ -224,7 +224,7 @@ if (startEpoch>Info.blocks || startEpoch>endEpoch)
     data=[];
     h=[];
     close(progbar);
-    warning('SONGetRealWaveChannel: Invalid START and/or STOP')
+    warning('smrlib.SONGetRealWaveChannel: Invalid START and/or STOP')
     return;
 end;
 if endEpoch>Info.blocks
@@ -349,8 +349,8 @@ if NumFrames==1
 else
     h.Epochs={startEpoch endEpoch 'of' NumFrames 'epochs'};
 end;
-[h.start,h.TimeUnits]=SONTicksToSeconds(fid,h.start,varargin{:});
-[h.stop,h.TimeUnits]=SONTicksToSeconds(fid,h.stop,varargin{:});
+[h.start,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,h.start,varargin{:});
+[h.stop,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,h.stop,varargin{:});
 
 
 h.transpose=1;

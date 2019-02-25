@@ -1,7 +1,7 @@
 function [Head]=SONFileHeader(fid)
-% SONFILEHEADER reads the file header for a SON file
+% smrlib.SONFileHeader reads the file header for a SON file
 %
-% HEADER=SONFILEHEADER(FID)
+% HEADER=smrlib.SONFileHeader(FID)
 %
 % Used internally by the library. 
 % See CED documentation of SON system for details.
@@ -15,7 +15,7 @@ function [Head]=SONFileHeader(fid)
 try
     frewind(fid);
 catch
-    warning(['SONFileHeader:' ferror(fid) 'Invalid file handle?' ]);
+    warning(['smrlib.SONFileHeader:' ferror(fid) 'Invalid file handle?' ]);
     Head=[];
     return;
 end;

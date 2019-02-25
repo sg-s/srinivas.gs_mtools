@@ -16,7 +16,7 @@ if isempty(X)
 end
 
 assert(N>0,'N must be a positive number')
-assert(mtools.maths.iswhole(N),'N must be an integer')
+assert(mathlib.iswhole(N),'N must be an integer')
 assert(isvector(X), 'First argument should be a vector')
 X = X(:);
 

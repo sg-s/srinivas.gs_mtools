@@ -1,7 +1,7 @@
 function[ChanList]=SONChanList(fid)
-% SONCHANLIST returns a structure with details of active channels in a SON file
+% smrlib.SONChanList returns a structure with details of active channels in a SON file
 % 
-% LIST=SONCHANLIST(FID)
+% LIST=smrlib.SONChanList(FID)
 %
 % FID is the file handle.
 % List is a structure with field for the channel number, kind, title,
@@ -11,7 +11,7 @@ function[ChanList]=SONChanList(fid)
 % Updated 10/06 ML
 % Copyright © The Author & King's College London 2002-2006
 
-h=SONFileHeader(fid);
+h=smrlib.SONFileHeader(fid);
 
 if isempty(h)
     ChanList=[];
@@ -21,7 +21,7 @@ end;
 AcChan=0;
 ChanList=struct();
 for i=1:h.channels
-    c=SONChannelInfo(fid,i);
+    c=smrlib.SONChannelInfo(fid,i);
     if(c.kind>0)                   % Only look at channels that are active
         AcChan=AcChan+1;
         ChanList(AcChan).number=i;

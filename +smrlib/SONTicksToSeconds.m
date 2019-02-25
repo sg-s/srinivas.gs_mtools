@@ -1,7 +1,7 @@
 function[out,timeunits]=SONTicksToSeconds(fid, in, varargin)
-% SONTICKSTOSECONDS scales timestamp vector IN
+% smrlib.SONTicksToSeconds scales timestamp vector IN
 %
-% [OUT,{ TIMEUNITS}]= SONTICKSTOSECONDS(FID, IN{, OPTIONS})
+% [OUT,{ TIMEUNITS}]= smrlib.SONTicksToSeconds(FID, IN{, OPTIONS})
 % FID is the matlab file handle, IN is a vector of timestamps from the file.
 % 
 % OPTIONS if present, may contain:
@@ -16,7 +16,7 @@ function[out,timeunits]=SONTicksToSeconds(fid, in, varargin)
 % Updated 06/05 ML
 % Copyright © The Author & King's College London 2002-2006
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 
 if nargin>2
     for i=1:length(varargin)

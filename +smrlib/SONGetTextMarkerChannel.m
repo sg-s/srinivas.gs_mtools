@@ -1,5 +1,5 @@
 function[data,h]=SONGetTextMarkerChannel(fid, chan, varargin)
-% SONGETTEXTMARKERCHANNEL reads a marker channel from a SON file.
+% smrlib.SONGetTextMarkerChannel reads a marker channel from a SON file.
 %
 % [data{, h}]=SONGETMARKER(FID, CHAN)
 % FID is the MATLAB file handle and CHAN is the channel number (1 to Max)
@@ -18,7 +18,7 @@ function[data,h]=SONGetTextMarkerChannel(fid, chan, varargin)
 % 
 % Revised
 % 01/05/06
-% Bug: Remove double call to SONTicksToSeconds introduced with v2.00.
+% Bug: Remove double call to smrlib.SONTicksToSeconds introduced with v2.00.
 % 26/9/06
 % Change: Now returns uint8
 %
@@ -26,7 +26,7 @@ function[data,h]=SONGetTextMarkerChannel(fid, chan, varargin)
 % Updated 06/05 ML
 % Copyright © The Author & King's College London 2002-2006
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 
 if isempty (Info)
     data=[];
@@ -35,15 +35,15 @@ if isempty (Info)
 end;
 
 if(Info.kind~=8) 
-    warning('SONGetTextMarkerChannel: Channel %d No data or not a TextMark channel',chan);
+    warning('smrlib.SONGetTextMarkerChannel: Channel %d No data or not a TextMark channel',chan);
     data=[];
     h=[];
     return;
 end;
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 ShowProgress=0;
 arguments=nargin;
 TickFlag=false;
@@ -126,7 +126,7 @@ if(nargout>1)
     h.interleave=1;
 end;
 
-[data.timings,h.TimeUnits]=SONTicksToSeconds(fid,data.timings, varargin{:});                % Convert time
+[data.timings,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,data.timings, varargin{:});                % Convert time
 h.Epochs={startBlock endBlock 'of' Info.blocks 'blocks'};
 if ShowProgress==1
     close(progbar);

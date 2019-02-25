@@ -7,9 +7,9 @@ function[interval,start]=SONGetSampleTicks(fid,chan)
 % Copyright © The Author & King's College London 2002-2006
 
 
-FileH=SONFileHeader(fid);                                   % File header
-Info=SONChannelInfo(fid,chan);                              % Channel header
-header=SONGetBlockHeaders(fid,chan);                        % Disk block headers
+FileH=smrlib.SONFileHeader(fid);                                   % File header
+Info=smrlib.SONChannelInfo(fid,chan);                              % Channel header
+header=smrlib.SONGetBlockHeaders(fid,chan);                        % Disk block headers
 switch Info.kind
     case {1,6,7,9}
         switch FileH.systemID
@@ -26,7 +26,7 @@ switch Info.kind
                 start=header(2,1);
         end;
     otherwise
-        warning('SONGetSampleTicks: Invalid channel type');
+        warning('smrlib.SONGetSampleTicks: Invalid channel type');
         return
 end;
 

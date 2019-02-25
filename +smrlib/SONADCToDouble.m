@@ -1,7 +1,7 @@
 function[out,h]=SONADCToDouble(in,header)
-% SONADCTODOUBLE scales a SON ADC channel to double precision floating point
+% smrlib.SONADCToDouble scales a SON ADC channel to double precision floating point
 %
-% [OUT {, HEADER}]=SONADCTODOUBLE(IN {, HEADER})
+% [OUT {, HEADER}]=smrlib.SONADCToDouble(IN {, HEADER})
 %
 % Applies the scale and offset supplied in HEADER to the data contained in
 % IN. These values are derived form the channel header on disc.
@@ -25,7 +25,7 @@ end;
 if isstruct(header)
     if(isfield(header,'kind'))
         if header.kind~=1 && header.kind~=6
-            warning('SONADCToDouble: Not an  ADC or ADCMark channel on input');
+            warning('smrlib.SONADCToDouble: Not an  ADC or ADCMark channel on input');
             out=[];
             h=[];
             return;
@@ -35,7 +35,7 @@ end;
 
 if ~isstruct(in)
     if strcmp(class(in),'int16')~=1 % ADC Data
-        warning('SONADCToDouble: 16 bit integer expected');
+        warning('smrlib.SONADCToDouble: 16 bit integer expected');
         out=[];
         h=[];
         return;

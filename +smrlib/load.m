@@ -1,4 +1,4 @@
-function [data,header] = loadSMR(filename)
+function [data,header] = load(filename)
 % this is a wrapper-rewrite of an older function
 % called SONImport that could load SMR files
 % it was pretty hard to use and a number of baroque
@@ -26,7 +26,7 @@ function [data,header] = loadSMR(filename)
 % are:
 % 'ticks', 'microseconds', 'milliseconds' and 'seconds' cause times to
 %    be scaled to the appropriate unit (seconds by default)in HEADER
-% 'scale' - calls SONADCToDouble to apply the channel scale and offset to DATA
+% 'scale' - calls smrlib.SONADCToDouble to apply the channel scale and offset to DATA
 %    which will  be cast to double precision
 % Other options will have no effect
 %
@@ -34,9 +34,9 @@ function [data,header] = loadSMR(filename)
 %
 % SONIMPORT stores data in a Level 5 Version 6 compatible MAT-file that can
 % be read on any MATLAB supported platform.
-% SONIMPORT copies the FileHeader returned by SONFileHeader to the MAT-file
+% SONIMPORT copies the FileHeader returned by smrlib.SONFileHeader to the MAT-file
 % then loads each channel in turn. The DATA and HEADER fields that would be
-% returned by SONGETCHANNEL are then saved. The DATA vector, matrix or
+% returned by smrlib.SONGetChannel are then saved. The DATA vector, matrix or
 % structure is saved as CHANX where X is the channel number e.g.
 % CHAN1 for channel 1. The HEADER is saved as a structure named
 % HEADX.
@@ -46,8 +46,8 @@ function [data,header] = loadSMR(filename)
 % particularly when scaling waveform data to double precision. 
 % SONIMPORT issues a warning when this happens and attempts to recover by
 % calling
-%   SONGETCHANNEL(FID, CHAN, 'MAT', 'MATFILENAME' {,OPTIONS})
-% The waveform load routines (SONGETADCCHANNEL and SONGETREALWAVECHANNEL)
+%   smrlib.SONGetChannel(FID, CHAN, 'MAT', 'MATFILENAME' {,OPTIONS})
+% The waveform load routines (smrlib.SONGetADCChannel and smrlib.SONGetRealWaveChannel)
 % will add the data for the specified channel block-by-block (or
 % frame-by-frame) using low-level I/O without having all the data loaded at
 % once. If this fails, an incomplete channel entry will be left corrupting
@@ -68,20 +68,20 @@ end
 % if ~isempty(pathname)
 %     pathname = [pathname filesep];
 % end
-% FileInfo = SONFileHeader(fid);
+% FileInfo = smrlib.SONFileHeader(fid);
 
 % get list of valid channels
-c = SONChanList(fid);
+c = smrlib.SONChanList(fid);
 
 % Import the data.
 for i = length(c):-1:1
     chan=c(i).number;
 
-    [data{i},header{i}] = SONGetChannel(fid, chan);
+    [data{i},header{i}] = smrlib.SONGetChannel(fid, chan);
 
     % convert to double
     if ~isstruct(data{i}) && ~isempty(data{i})
-    	data{i} = SONADCToDouble(data{i},header{i});
+    	data{i} = smrlib.SONADCToDouble(data{i},header{i});
     end
 
 end

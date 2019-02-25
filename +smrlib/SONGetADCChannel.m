@@ -1,15 +1,15 @@
 function[data,h]=SONGetADCChannel(fid, chan, varargin)
-% SONGETADCCHANNEL reads an ADC (waveform) channel from a SON file.
+% smrlib.SONGetADCChannel reads an ADC (waveform) channel from a SON file.
 %
-% [DATA {, HEADER}]=SONGETADCCHANNEL(FID, CHAN{, START{, STOP{, OPTIONS}}})
+% [DATA {, HEADER}]=smrlib.SONGetADCChannel(FID, CHAN{, START{, STOP{, OPTIONS}}})
 % FID is the matlab file handle, CHAN is the channel number (1=max)
 %
-% [DATA, HEADER]=SONGETADCCHANNEL(FID, 1{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCChannel(FID, 1{, OPTIONS})
 %       reads all the data on channel 1
-% [DATA, HEADER]=SONGETADCCHANNEL(FID, 1, 10{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCChannel(FID, 1, 10{, OPTIONS})
 %       reads disc block 10 for continuous data or epoch 10 for triggered
 %       data
-% [DATA, HEADER]=SONGETADCCHANNEL(FID, 1, 10, 20{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetADCChannel(FID, 1, 10, 20{, OPTIONS})
 %       reads disc blocks 10-20 for continuous data or epochs 10-20
 %       for triggered data
 %
@@ -17,12 +17,12 @@ function[data,h]=SONGetADCChannel(fid, chan, varargin)
 % are:
 % 'ticks', 'microseconds', 'milliseconds' and 'seconds' cause times to
 %    be scaled to the appropriate unit (seconds by default)in HEADER
-% 'scale' - calls SONADCToDouble to apply the channel scale and offset to DATA
+% 'scale' - calls smrlib.SONADCToDouble to apply the channel scale and offset to DATA
 %    which will  be cast to double precision
 % 'progress' - causes a progress bar to be displayed during the read.
 % 'mat' - the loaded data will be appended to the MAT-file specified
 %         in the next optional input e.g.:
-%       [d,h]=SONGetADCChannel(fid,1,'progress','mat','myfile.mat');
+%       [d,h]=smrlib.SONGetADCChannel(fid,1,'progress','mat','myfile.mat');
 %
 % Returns the signed 16 bit integer ADC values in DATA (scaled, offset and
 % cast to double if 'scale' is used as an option). If present, HEADER
@@ -33,12 +33,12 @@ function[data,h]=SONGetADCChannel(fid, chan, varargin)
 % with each epoch (frame) of data in a separate column.
 %
 % Examples:
-% [data, header]=SONGetADCChannel(fid, 1, 'ticks')
+% [data, header]=smrlib.SONGetADCChannel(fid, 1, 'ticks')
 %      reads all data on channel 1 returning an int16 vector or matrix
 %      Times in header will be in clock ticks
 %
 % options={'progress' 'scale' 'ticks'}
-% [data, header]=SONGetADCChannel(fid, 1, 200, 399, options{:})
+% [data, header]=smrlib.SONGetADCChannel(fid, 1, 200, 399, options{:})
 %    reads epochs 200-399 from channel 1 and displays a progress bar. Data is
 %    returned in double-precision floating point after scaling and applying
 %    the offset stored on disc. If sampling was
@@ -77,7 +77,7 @@ function[data,h]=SONGetADCChannel(fid, chan, varargin)
 %
 % 11/03/06
 % Memory pre-allocations changed to speed up execution
-% SONADCToDouble code embedded in function
+% smrlib.SONADCToDouble code embedded in function
 % Memory mapping embedded in function
 % 31/3/06
 % Use Version 7.0 "zeros" for int16 pre-allocation - include if/else
@@ -101,14 +101,14 @@ v=version;
 v=str2double(v(1:3));
 
 % Get Channel information
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 if isempty (Info)
     data=[];
     h=[];
     return;
 end;
 if Info.kind ~=1
-    warning('SONGetADCChannel: Channel %d No data or wrong channel type', chan);
+    warning('smrlib.SONGetADCChannel: Channel %d No data or wrong channel type', chan);
     data=[];
     h=[];
     return;
@@ -135,7 +135,7 @@ for i=1:length(varargin)
                 fh=OpenMATFile(fname);
                 temp=whos(['chan' num2str(chan)],'-file',fname);
                 if ~isempty(temp)
-                    warning('SONGetADCChannel: This channel has already been saved to %s',fname);
+                    warning('smrlib.SONGetADCChannel: This channel has already been saved to %s',fname);
                     data=[];
                     h=[];
                     fclose(fh);
@@ -150,9 +150,9 @@ if MatFlag==1
 end
 
 % Set up header
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 
 
 SampleInterval=(header(3,1)-header(2,1))/(header(5,1)-1);   % Sample interval in clock ticks
@@ -167,7 +167,7 @@ if(nargout>1)
     %h.preTrig=Info.preTrig;
     h.comment=Info.comment;
     h.title=Info.title;
-    h.sampleinterval=SONGetSampleInterval(fid,chan);
+    h.sampleinterval=smrlib.SONGetSampleInterval(fid,chan);
     h.scale=Info.scale;
     h.offset=Info.offset;
     h.min=Inf;
@@ -225,7 +225,7 @@ end;
 if (startEpoch>Info.blocks || startEpoch>endEpoch)
     data=[];
     h=[];
-    warning('SONGetADCChannel: Invalid START and/or STOP')
+    warning('smrlib.SONGetADCChannel: Invalid START and/or STOP')
     return;
 end;
 if endEpoch>Info.blocks
@@ -367,8 +367,8 @@ if NumFrames==1
 else
     h.Epochs={startEpoch endEpoch 'of' NumFrames 'epochs'};
 end;
-[h.start,h.TimeUnits]=SONTicksToSeconds(fid,h.start,varargin{:});
-[h.stop,h.TimeUnits]=SONTicksToSeconds(fid,h.stop,varargin{:});
+[h.start,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,h.start,varargin{:});
+[h.stop,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,h.stop,varargin{:});
 
 % Scale the data if it has not been done
 if ScaleData==1 && MatFlag==0

@@ -1,10 +1,10 @@
 function [TChannel]= SONChannelInfo(fid,chan)
-% SONCHANNELINFO reads the SON file channel header for a channel 
+% smrlib.SONChannelInfo reads the SON file channel header for a channel 
 % Output follows the CED disk header structure but a FileName field 
 % is added to tag the returned structure with its source file.
 %
 %
-% INFO=SONCHANNELINFO(FID, CHAN)
+% INFO=smrlib.SONChannelInfo(FID, CHAN)
 % where FID is the matlab file handle and CHAN is the channel number (1-Max)
 %
 % Malcolm Lidierth 02/02
@@ -18,9 +18,9 @@ function [TChannel]= SONChannelInfo(fid,chan)
 % add channel number field and return all  fields for all
 % channel types
 
-FileH=SONFileHeader(fid);           % Get file header
+FileH=smrlib.SONFileHeader(fid);           % Get file header
 if(FileH.channels<chan)
-    warning('SONChannelInfo: Channel number #%d too large for this file',chan);
+    warning('smrlib.SONChannelInfo: Channel number #%d too large for this file',chan);
     TChannel=[];
 end;
 

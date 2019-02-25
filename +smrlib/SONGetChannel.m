@@ -1,7 +1,7 @@
 function[data,header]=SONGetChannel(fid, chan, varargin)
-% SONGETCHANNEL provides a gateway to the individual channel read functions.
+% smrlib.SONGetChannel provides a gateway to the individual channel read functions.
 %
-% [DATA{, HEADER}]=SONGETCHANNEL(FID, CHAN{, OPTIONS});
+% [DATA{, HEADER}]=smrlib.SONGetChannel(FID, CHAN{, OPTIONS});
 % where:
 %         FID is the matlab file handle
 %         CHAN is the channel number to read (1 to Max)
@@ -15,12 +15,12 @@ function[data,header]=SONGetChannel(fid, chan, varargin)
 % are:
 % 'ticks', 'microseconds', 'milliseconds' and 'seconds' cause times to
 %    be scaled to the appropriate unit (seconds by default)in HEADER
-% 'scale' - calls SONADCToDouble to apply the channel scale and offset to DATA
+% 'scale' - calls smrlib.SONADCToDouble to apply the channel scale and offset to DATA
 %    which will  be cast to double precision
 % 'progress' - causes a progress bar to be displayed during the read.
 % 'mat' - the loaded data will be appended to the MAT-file whose name
 %         is supplied in the next optional input e.g.:
-%       [d,h]=SONGetADCChannel(fid,5,'progress','mat','myfile.mat');
+%       [d,h]=smrlib.SONGetADCChannel(fid,5,'progress','mat','myfile.mat');
 %       In this case, d will be stored in variable chan5.
 %       Use SONImport in preference to  this option or, better, ImportSMR in
 %       sigTOOL.
@@ -43,7 +43,7 @@ else
 end
 
 if ischar(fid)==1
-    warning('SONGetChannel: expecting a file handle from fopen(), not a string "%s" on input',fid );
+    warning('smrlib.SONGetChannel: expecting a file handle from fopen(), not a string "%s" on input',fid );
     data=[];
     header=[];
     return;
@@ -52,14 +52,14 @@ end;
 
 [path, name, ext]=fileparts(fopen(fid));
 if strcmpi(ext,'.smr') ~=1 && strcmpi(ext,'.son') ~=1
-    warning('SONGetChannel: file handle points to "%s". \nThis is not a valid Spike file',fopen(fid));
+    warning('smrlib.SONGetChannel: file handle points to "%s". \nThis is not a valid Spike file',fopen(fid));
     data=[];
     header=[];
     return;
 end;
 
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 if(Info.kind==0)
     data=[];
     header=[];
@@ -75,27 +75,27 @@ end
 
 switch Info.kind
     case {1}
-        [data,header]=SONGetADCChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetADCChannel(fid,chan,varargin{:});
     case {2,3,4}
-        [data,header]=SONGetEventChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetEventChannel(fid,chan,varargin{:});
     case {5}
-        [data,header]=SONGetMarkerChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetMarkerChannel(fid,chan,varargin{:});
     case {6}
-        [data,header]=SONGetADCMarkerChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetADCMarkerChannel(fid,chan,varargin{:});
         data.adc=data.adc';
         header.transpose=1;
     case {7}
-        [data,header]=SONGetRealMarkerChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetRealMarkerChannel(fid,chan,varargin{:});
         data.real=data.real';
         header.transpose=1;
     case {8}
-        [data,header]=SONGetTextMarkerChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetTextMarkerChannel(fid,chan,varargin{:});
         data.text=data.text';
         header.transpose=1;
     case {9}
-        [data,header]=SONGetRealWaveChannel(fid,chan,varargin{:});
+        [data,header]=smrlib.SONGetRealWaveChannel(fid,chan,varargin{:});
     otherwise
-        warning('SONGetChannel: Channel type not supported');
+        warning('smrlib.SONGetChannel: Channel type not supported');
         data=[];
         header=[];
         return;

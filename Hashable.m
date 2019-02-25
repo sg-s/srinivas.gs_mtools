@@ -35,9 +35,9 @@ methods
 				char_values = [char_values; this_value(:)];
 			end
 		end
-		h1 = mtools.crypto.md5hash(double_values);
-		h2 = mtools.crypto.md5hash(char_values);
-		H = mtools.crypto.md5hash([h1 h2]);
+		h1 = hashlib.md5hash(double_values);
+		h2 = hashlib.md5hash(char_values);
+		H = hashlib.md5hash([h1 h2]);
 	end
 
 end

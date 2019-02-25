@@ -8,7 +8,7 @@
 function h2 = duplicate(h1)
 switch nargin 
 case 0
-	help mtools.fig.duplicate
+	help figlib.duplicate
 	return
 end
 h2=figure;

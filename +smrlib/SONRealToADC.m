@@ -1,9 +1,9 @@
 function[out,hout]=SONRealToADC(in,header)
-% SONREALTOADC Converts floating point array to int16
+% smrlib.SONRealToADC Converts floating point array to int16
 % and returns a header with updated scale and offset
 %
 % Example:
-% [OUT,HOUT]=SONREALTOADC(IN, HIN)
+% [OUT,HOUT]=smrlib.SONRealToADC(IN, HIN)
 % The input data are scaled to fill the maximum range of the int16
 % output array. Scale and offset in HOUT are updated in SON format.
 %

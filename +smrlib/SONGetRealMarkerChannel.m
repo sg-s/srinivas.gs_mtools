@@ -1,15 +1,15 @@
 function[data,h]=SONGetRealMarkerChannel(fid, chan, varargin)
-% SONGETREALMARKERCHANNEL reads an RealMark channel from a SON file.
+% smrlib.SONGetRealMarkerChannel reads an RealMark channel from a SON file.
 %
-% [DATA {, HEADER}]=SONGETREALMARKERCHANNEL(FID, CHAN{, START{, STOP{, OPTIONS}}})
+% [DATA {, HEADER}]=smrlib.SONGetRealMarkerChannel(FID, CHAN{, START{, STOP{, OPTIONS}}})
 % FID is the matlab file handle, CHAN is the channel number (1=max)
 % 
-% [DATA, HEADER]=SONGETREALMARKERCHANNEL(FID, 1{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealMarkerChannel(FID, 1{, OPTIONS})
 %       reads all the data on channel 1
-% [DATA, HEADER]=SONGETREALMARKERCHANNEL(FID, 1, 10{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealMarkerChannel(FID, 1, 10{, OPTIONS})
 %       reads disc block 10 for continuous data or epoch 10 for triggered
 %       data
-% [DATA, HEADER]=SONGETREALMARKERCHANNEL(FID, 1, 10, 20{, OPTIONS})
+% [DATA, HEADER]=smrlib.SONGetRealMarkerChannel(FID, 1, 10, 20{, OPTIONS})
 %       reads disc blocks 10-20
 %
 % DATA is a structure with 3 fields.
@@ -30,7 +30,7 @@ function[data,h]=SONGetRealMarkerChannel(fid, chan, varargin)
 % Copyright © The Author & King's College London 2002-2006
 
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 
 if isempty (Info)
     data=[];
@@ -39,7 +39,7 @@ if isempty (Info)
 end;
 
 if(Info.kind~=7) 
-    warning('SONGetRealMarkerChannel: Channel %d No data or wrong channel type',chan);
+    warning('smrlib.SONGetRealMarkerChannel: Channel %d No data or wrong channel type',chan);
     return;
 end;
 
@@ -74,9 +74,9 @@ switch arguments
 end;
 
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 NumberOfMarkers=sum(header(5,startBlock:endBlock)); % Sum of samples in required blocks
 
 nValues=Info.nExtra/4;                                      % Each value has 4 bytes (single precision)
@@ -121,7 +121,7 @@ if(nargout>1)
     h.preTrig=Info.preTrig;
     h.comment=Info.comment;
     h.title=Info.title;
-    h.sampleinterval=SONGetSampleInterval(fid,chan);
+    h.sampleinterval=smrlib.SONGetSampleInterval(fid,chan);
     h.min=Info.min;
     h.max=Info.max;
     h.units=Info.units;
@@ -130,7 +130,7 @@ if(nargout>1)
     end;
 end;
 
-[data.timings,h.TimeUnits]=SONTicksToSeconds(fid,data.timings,varargin{:});                % Convert time
+[data.timings,h.TimeUnits]=smrlib.SONTicksToSeconds(fid,data.timings,varargin{:});                % Convert time
 h.Epochs={startBlock endBlock 'of' Info.blocks 'blocks'};
 if ShowProgress==1
     close(progbar);

@@ -1,5 +1,5 @@
 function[header]=SONGetBlockHeaders(fid,chan)
-% SONGETBLOCKHEADERS returns a matrix containing the SON data block headers
+% smrlib.SONGetBlockHeaders returns a matrix containing the SON data block headers
 % in file 'fid' for channel 'chan'.
 % The returned header in memory contains, for each disk block,
 % a column with rows 1-5 representing:
@@ -16,10 +16,10 @@ function[header]=SONGetBlockHeaders(fid,chan)
 % Copyright © The Author & King's College London 2002-2006
 
 succBlock=2;
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 
 if(Info.firstblock==-1)
-%    warning('SONGetBlockHeaders: No data on channel #%d', chan);
+%    warning('smrlib.SONGetBlockHeaders: No data on channel #%d', chan);
     header=[];
     return;
 end;

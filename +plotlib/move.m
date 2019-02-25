@@ -21,7 +21,7 @@ assert(any(strcmp(direction,{'up','down','left','right'})),'Second argument shou
 
 if length(plot_handle) > 1
 	for i = 1:length(plot_handle)
-		mtools.plots.move(plot_handle(i),direction,frac_dist)
+		plotlib.move(plot_handle(i),direction,frac_dist)
 	end
 	return
 end

@@ -1,7 +1,7 @@
 function[data,h]=SONGetEventChannel(fid, chan, varargin)
-% SONGETEVENTCHANNEL reads an event channel from a SON file
+% smrlib.SONGetEventChannel reads an event channel from a SON file
 %
-% DATA{, H}]=SONGETEVENTCHANNEL(FID, CHAN{, START{, STOP{, OPTIONS}}})
+% DATA{, H}]=smrlib.SONGetEventChannel(FID, CHAN{, START{, STOP{, OPTIONS}}})
 %
 % FID is the matlab file handle and chan is the channel number (1-max)
 % If START/STOP are absent, all data is read. When present, START or
@@ -17,20 +17,20 @@ function[data,h]=SONGetEventChannel(fid, chan, varargin)
 % channel header.
 %
 % e.g.
-% [data,h]=SONGetEventChannel(fid, 1, 10, 11, 'microseconds')
+% [data,h]=smrlib.SONGetEventChannel(fid, 1, 10, 11, 'microseconds')
 %     reads Block 10-11 of Channel 1 and returns that data in microseconds
-% [data,h]=SONGetEventChannel(fid, 1, 'ticks')
+% [data,h]=smrlib.SONGetEventChannel(fid, 1, 'ticks')
 %     reads all blocks returning data in clock ticks
 %
-% See also SONGetMarkerChannel, SONGetADCMarkerChannel,
-% SONGetRealMarkerChannel, SONGetTextMarkerChannel
+% See also smrlib.SONGetMarkerChannel, smrlib.SONGetADCMarkerChannel,
+% smrlib.SONGetRealMarkerChannel, smrlib.SONGetTextMarkerChannel
 %
 % Malcolm Lidierth 02/02
 % Updated 10/06 ML
 % Copyright © The Author & King's College London 2002-2006
 
 
-Info=SONChannelInfo(fid,chan);
+Info=smrlib.SONChannelInfo(fid,chan);
 
 if isempty (Info)
     data=[];
@@ -39,7 +39,7 @@ if isempty (Info)
 end;
 
 if(Info.kind < 2 || Info.kind > 4) 
-    warning('SONGetEventChannel: Channel #%d Not an event channel',chan);
+    warning('smrlib.SONGetEventChannel: Channel #%d Not an event channel',chan);
     data=[];
     h=[];
     return;
@@ -51,9 +51,9 @@ if Info.blocks==0
     return;
 end;
 
-FileH=SONFileHeader(fid);
+FileH=smrlib.SONFileHeader(fid);
 SizeOfHeader=20;                                            % Block header is 20 bytes long
-header=SONGetBlockHeaders(fid,chan);
+header=smrlib.SONGetBlockHeaders(fid,chan);
 
 ShowProgress=0;
 arguments=nargin;
@@ -122,7 +122,7 @@ end;
     end;
 
 
-[data,h.TimeUnits]=SONTicksToSeconds(fid, data, varargin{:});      % Convert time
+[data,h.TimeUnits]=smrlib.SONTicksToSeconds(fid, data, varargin{:});      % Convert time
 h.Epochs={startBlock endBlock 'of' Info.blocks 'blocks'};
 if ShowProgress==1
     close(progbar);
