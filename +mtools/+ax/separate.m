@@ -3,7 +3,7 @@
 % this is a better version of deIntersectAxes()
 % and works without needing to draw a new, fake axes
 
-function mask_handles = separateAxes(varargin)
+function mask_handles = separate(varargin)
 
 
 % options and defaults
@@ -29,9 +29,9 @@ else
 			mask_handles = struct('x',[],'y',[]);
 			for i = 1:length(ax)
 				if ~isempty(varargin)
-					mask_handles(i) = separateAxes(ax(i),varargin);
+					mask_handles(i) = separate(ax(i),varargin);
 				else
-					mask_handles(i) = separateAxes(ax(i));
+					mask_handles(i) = separate(ax(i));
 				end
 			end
 			return

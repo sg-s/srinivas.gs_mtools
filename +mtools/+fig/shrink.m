@@ -4,7 +4,7 @@
 % DO NOT use this on figures that you treat as data -- this is meant purely for optimisation 
 % for printing and export. 
 
-function [varargout] = shrinkFigure(varargin)
+function [varargout] = shrink(varargin)
 
 % get options from dependencies 
 options = getOptionsFromDeps(mfilename);

@@ -1,16 +1,16 @@
-% movePlot.m
+% move.m
 % moves the given plot up down, left or right
 % usage:
-% movePlot(axis_handle,'up',0.1) % units are normalised 
-% movePlot(axis_handle,'right',0.1)
+% move(axis_handle,'up',0.1) % units are normalised 
+% move(axis_handle,'right',0.1)
 % 
 % part of mtools, which lives here:
 % https://github.com/sg-s/srinivas.gs_mtools
 
-function movePlot(plot_handle,direction,frac_dist)
+function move(plot_handle,direction,frac_dist)
 
 if ~nargin	
-	help movePlot
+	help move
 	return
 end
 
@@ -21,7 +21,7 @@ assert(any(strcmp(direction,{'up','down','left','right'})),'Second argument shou
 
 if length(plot_handle) > 1
 	for i = 1:length(plot_handle)
-		movePlot(plot_handle(i),direction,frac_dist)
+		mtools.plots.move(plot_handle(i),direction,frac_dist)
 	end
 	return
 end

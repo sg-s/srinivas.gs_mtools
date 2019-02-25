@@ -20,10 +20,10 @@
 % Contact me at http://srinivas.gs/contact/
 % 
 
-function [idx, labels] = manualCluster(R,X,labels,runOnClick)
+function [idx, labels] = manual(R,X,labels,runOnClick)
 
 if ~nargin
-    help manualCluster
+    help mtools.cluster.manual
     return
 end
 

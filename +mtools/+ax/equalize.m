@@ -13,7 +13,7 @@
 % equalizeAxes('y') % equalize all Y but not X axes in all subplots in in current figure
 % 
 
-function [] = equalizeAxes(varargin)
+function [] = equalize(varargin)
 
 
 % grab figure handle, if it exists 

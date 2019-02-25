@@ -1,4 +1,4 @@
-% labelFigure.m
+% label.m
 % adds labels to each subplot of a figure so you can directly drop into a paper
 % 
 % created by Srinivas Gorur-Shandilya at 2:04 , 15 March 2016. Contact me at http://srinivas.gs/contact/
@@ -6,7 +6,7 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [varargout] = labelFigure(varargin)
+function [varargout] = label(varargin)
 
 % options and defaults
 options.capitalise = false;
