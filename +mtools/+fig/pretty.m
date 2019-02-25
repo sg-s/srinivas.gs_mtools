@@ -1,4 +1,4 @@
-% prettyFig.m
+% pretty.m
 % makes current figure prettier, and overrides MATLAB's horrible defaults. 
 % 
 % usage:
@@ -21,7 +21,7 @@
 % part of mtools, which lives here:
 % https://github.com/sg-s/srinivas.gs_mtools
 
-function [varargout] = prettyFig(varargin)
+function [varargout] = pretty(varargin)
 
 warning off
 

@@ -15,7 +15,7 @@ global R
 rho = NaN(length(D),1);
 for i = 1:length(rho)
     % find the M closest points
-    [sd,idx] = sort(D(:,i),'ascend');
+    [sd,~] = sort(D(:,i),'ascend');
     sd(sd>mean(mean(D))) = NaN;
     rho(i) = 1/nanmean(sd(2:options.M+1));
 end

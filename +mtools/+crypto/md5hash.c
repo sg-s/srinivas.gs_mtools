@@ -1,7 +1,7 @@
-// GetMD5.c
-// GetMD5 - 128 bit MD5 checksum: file, string, array, byte stream
+// md5.c
+// md5 - 128 bit MD5 checksum: file, string, array, byte stream
 // This function calculates a 128 bit checksum for arrays or files.
-// Digest = GetMD5(Data, Mode, Format)
+// Digest = md5(Data, Mode, Format)
 // INPUT:
 //   Data:   File name or array.
 //   Mode:   String to declare the type of the 1st input. Not case-sensitive.
@@ -30,44 +30,44 @@
 //   Digest: A 128 bit number is replied in the specified format.
 //
 // NOTE:
-// * The M-file GetMD5_helper is called for sparse arrays, function handles,
+// * The M-file md5_helper is called for sparse arrays, function handles,
 //   java and user-defined objects .
 // * This is at least 2 times faster than the Java method.
 //
 // EXAMPLES:
 // Three methods to get the MD5 of a file:
 //   1. Direct file access (recommended):
-//     MD5 = GetMD5(which('GetMD5.m'), 'File')
+//     MD5 = md5(which('md5.m'), 'File')
 //   2. Import the file to a CHAR array (no text mode for exact line breaks!):
-//     FID = fopen(which('GetMD5.m'), 'r');
+//     FID = fopen(which('md5.m'), 'r');
 //     S   = fread(FID, inf, 'uchar=>char');
 //     fclose(FID);
-//     MD5 = GetMD5(S, '8bit')
+//     MD5 = md5(S, '8bit')
 //   3. Import file as a byte stream:
-//     FID = fopen(which('GetMD5.m'), 'r');
+//     FID = fopen(which('md5.m'), 'r');
 //     S   = fread(FID, inf, 'uint8=>uint8');
 //     fclose(FID);
-//     MD5 = GetMD5(S, 'bin');  % 'bin' can be omitted here
+//     MD5 = md5(S, 'bin');  % 'bin' can be omitted here
 //
 //   Test data:
-//     GetMD5(char(0:511), '8bit', 'HEX')      % Consider 8bit part only
+//     md5(char(0:511), '8bit', 'HEX')      % Consider 8bit part only
 //       % => F5C8E3C31C044BAE0E65569560B54332
-//     GetMD5(char(0:511), 'bin')              % Matlab's CHAR are 16 bit!
+//     md5(char(0:511), 'bin')              % Matlab's CHAR are 16 bit!
 //       % => 3484769D4F7EBB88BBE942BB924834CD
-//     GetMD5(char(0:511), 'array')            % Consider 16 bit, type and size
+//     md5(char(0:511), 'array')            % Consider 16 bit, type and size
 //       % => b9a955ae730b25330d4f4ebb0a51e8f0
-//     GetMD5('abc')                           % implicit: 8bit for CHAR input
+//     md5('abc')                           % implicit: 8bit for CHAR input
 //       % => 900150983cd24fb0d6963f7d28e17f72
 //
 // COMPILE:
 // On demand a C-compiler must be installed at first, see: "mex -setup"
-// Automatic: Call GetMD5 without inputs.
+// Automatic: Call md5 without inputs.
 // Manually:
-//   mex -O GetMD5.c
+//   mex -O md5.c
 // Consider C99 comments under Linux:
-//   mex -O CFLAGS="\$CFLAGS -std=c99" GetMD5.c
+//   mex -O CFLAGS="\$CFLAGS -std=c99" md5.c
 // Pre-compiled MEX files can be downloaded: http:\\www.n-simon.de\mex
-// Run the unit-test uTest_GetMD5 after the compilation.
+// Run the unit-test uTest_md5 after the compilation.
 //
 // Tested: Matlab 6.5, 7.7, 7.8, 7.13, 8.6, WinXP/32, Win7/64
 //         Compiler: LCC2.4/3.8, BCC5.5, OWC1.8, MSVC2008/2010
@@ -103,8 +103,8 @@
 /*
 % $JRev: R5f V:061 Sum:0K6boVfyKe5t Date:17-Oct-2017 00:06:02 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $UnitTest: uTest_GetMD5 $
-% $File: Tools\Mex\Source\GetMD5.c $
+% $UnitTest: uTest_md5 $
+% $File: Tools\Mex\Source\md5.c $
 % History:
 % 011: 20-Oct-2006 20:50, [16 x 1] -> [1 x 16] replied as double.
 % 012: 01-Nov-2006 23:10, BUGFIX: hex output for 'Hex' input now.
@@ -116,7 +116,7 @@
 % 032: 06-Jul-2010 23:23, Indirect CONST pointer in ToHex for BCC5.5.
 % 037: 14-May-2011 13:14, Default input type: char->byte.
 % 042: 27-Jan-2015 23:00, 64 bit arrays, nicer error messages, 10% faster.
-%      "CalcMD5" -> "GetMD5".
+%      "CalcMD5" -> "md5".
 % 046: 16-Feb-2015 00:10, "Array" type: consider type and dimensions.
 %      The "Array" type works for cells and structs also.
 % 050: 09-Mar-2015 23:08, Faster hash code of Alexander Peslyak.
@@ -223,12 +223,12 @@ typedef struct StringRec {
 } StringRec;
 
 // Error and warning messages:
-#define ERR_HEAD  "*** GetMD5[mex]: "
-#define ERR_ID    "JSimon:GetMD5:"
+#define ERR_HEAD  "*** md5[mex]: "
+#define ERR_ID    "JSimon:md5:"
 #define ERROR(id,msg) mexErrMsgIdAndTxt(ERR_ID id, ERR_HEAD msg);
 #define ERROR3(id,msg,arg) mexErrMsgIdAndTxt(ERR_ID id, ERR_HEAD msg, arg);
 
-#define WARN_HEAD "### GetMD5[mex]: "
+#define WARN_HEAD "### md5[mex]: "
 #define WARN(id,msg) mexWarnMsgIdAndTxt(ERR_ID id, WARN_HEAD msg);
 
 // Prototypes:
@@ -533,7 +533,7 @@ void ArrayCore(MD5_CTX *context, const mxArray *V)
   // is a string, because the ClassID number has been changed during different
   // Matlab versions in the past.
   // Sparse arrays, function handles, java- and user-defined classes are
-  // forwarded to the M-function GetMD5_helper, where the user can defined how
+  // forwarded to the M-function md5_helper, where the user can defined how
   // the data is converted to a byte stream.
   
   uchar_T      *dataReal, *dataImag;
@@ -623,13 +623,13 @@ void ArrayCore(MD5_CTX *context, const mxArray *V)
         // Treat deep recursion as an error:
         if (++RecursionCount > MAX_RECURSION) {
            ERROR("DeepRecursion", "Cannot serialize recursive data type.\n"
-                 "Try:  GetMD5(getByteStreamFromArray(Data))");
+                 "Try:  md5(getByteStreamFromArray(Data))");
         }
                 
         // Call the M-helper function to be more flexible:
-        ok = mexCallMATLAB(1, Arg, 1, &V, "GetMD5_helper");
+        ok = mexCallMATLAB(1, Arg, 1, &V, "md5_helper");
         if (ok != 0) {
-           ERROR("HelperFailed", "Calling GetMD5_helper failed.");
+           ERROR("HelperFailed", "Calling md5_helper failed.");
         }
         
         // Get hash for array replied by the helper:

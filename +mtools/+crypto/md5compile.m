@@ -1,12 +1,12 @@
-function Ok = InstallMex(SourceFile, varargin)
-% INSTALLMEX - Compile and install Mex file
+function Ok = md5compile(varargin)
+% md5compile - Compile and install Mex file
 % The C, C++ or FORTRAN mex file is compiled and additional installation
 % routines are started. Advanced users can call MEX() manually instead, but some
 % beginners are overwhelmed by instructions for a compilation sometimes.
 % Therefore this function can be called automatically from an M-function, when
 % the compiled Mex-Function does not exist already.
 %
-% Ok = InstallMex(SourceFile, ...)
+% Ok = md5compile(SourceFile, ...)
 % INPUT:
 %   SourceFile: Name of the source file, with or without absolute or partial
 %               path. The default extension '.c' is appended on demand.
@@ -31,9 +31,9 @@ function Ok = InstallMex(SourceFile, varargin)
 %
 % EXAMPLES:
 % Compile func1.c with LAPACK libraries:
-%   InstallMex('func1', {'libmwlapack.lib', 'libmwblas.lib'})
+%   md5compile('func1', {'libmwlapack.lib', 'libmwblas.lib'})
 % Compile func2.cpp, enable debugging and call a test function:
-%   InstallMex('func2.cpp', '-debug', 'Test_func2');
+%   md5compile('func2.cpp', '-debug', 'Test_func2');
 % These commands can be appended after the help section of an M-file, when the
 % compilation should be started automatically, if the compiled MEX is not found.
 %
@@ -47,7 +47,7 @@ function Ok = InstallMex(SourceFile, varargin)
 
 % $JRev: R5J V:035 Sum:2nORyg1Xr1iA Date:03-Jan-2017 15:58:22 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $File: Tools\GLSource\InstallMex.m $
+% $File: Tools\GLSource\md5compile.m $
 % History:
 % 001: 27-Jul-2012 09:06, First version.
 % 005: 29-Jul-2012 17:11, Run the unit-test instead of showing a link only.
@@ -65,6 +65,8 @@ function Ok = InstallMex(SourceFile, varargin)
 % ### START: ADJUST TO USER NEEDS
 Precompiled = 'http://www.n-simon.de/mex';
 % ### END
+
+SourceFile = [fileparts(which('mtools.crypto.md5compile')) filesep 'md5hash.c'];
 
 % Initial values: --------------------------------------------------------------
 bakCD   = cd;
@@ -84,10 +86,8 @@ debugFlag   = {};
 force32     = false;
 replace     = true;
 
-% First input is the name of the source file:
-if ~ischar(SourceFile)
-   error_L('BadTypeInput1', '1st input must be a string.');
-end
+
+
 
 % Additional inputs are identified by their type:
 % String:      unit-test function or the flag to enable debugging.
@@ -251,7 +251,8 @@ end
 % Restore original directory and check precedence: -----------------------------
 cd(bakCD);
 if compiled
-   allWhich = which(mexName, '-all');
+   allWhich = which(['mtools.crypto.' mexName],'-all');
+
    if ~strcmpi(allWhich{1}, fullfile(mexPath, mexFile))
       Spec  = sprintf('  %%-%ds   ', max(cellfun('length', allWhich)));
       fprintf(2, '\n*** Failed: Compiled function is shadowed:\n');

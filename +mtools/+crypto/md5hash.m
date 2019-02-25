@@ -1,7 +1,7 @@
-function GetMD5
-% GetMD5 - 128 bit MD5 checksum: file, string, array, byte stream
+function md5
+% md5 - 128 bit MD5 checksum: file, string, array, byte stream
 % This function calculates a 128 bit checksum for arrays or files.
-% Digest = GetMD5(Data, Mode, Format)
+% Digest = md5(Data, Mode, Format)
 % INPUT:
 %   Data:   File name or array.
 %   Mode:   String to declare the type of the 1st input. Not case-sensitive.
@@ -31,37 +31,37 @@ function GetMD5
 %
 % NOTE:
 %   For sparse arrays, function handles, java and user-defined objects the
-%   M-file GetMD5_helper is called.
+%   M-file md5_helper is called.
 %
 % EXAMPLES:
 % Three methods to get the MD5 of a file:
 %   1. Direct file access (recommended):
-%     MD5 = GetMD5(which('GetMD5.m'), 'File')
+%     MD5 = md5(which('md5.m'), 'File')
 %   2. Import the file to a CHAR array (no text mode for exact line breaks!):
-%     FID = fopen(which('GetMD5.m'), 'r');
+%     FID = fopen(which('md5.m'), 'r');
 %     S   = fread(FID, inf, 'uchar=>char');
 %     fclose(FID);
-%     MD5 = GetMD5(S, '8bit')
+%     MD5 = md5(S, '8bit')
 %   3. Import file as a byte stream:
-%     FID = fopen(which('GetMD5.m'), 'r');
+%     FID = fopen(which('md5.m'), 'r');
 %     S   = fread(FID, inf, 'uint8=>uint8');
 %     fclose(FID);
-%     MD5 = GetMD5(S, 'bin');  % 'bin' can be omitted here
+%     MD5 = md5(S, 'bin');  % 'bin' can be omitted here
 %
 %   Test data:
-%     GetMD5(char(0:511), '8bit', 'HEX')
+%     md5(char(0:511), '8bit', 'HEX')
 %       % => F5C8E3C31C044BAE0E65569560B54332
-%     GetMD5(char(0:511), 'bin')
+%     md5(char(0:511), 'bin')
 %       % => 3484769D4F7EBB88BBE942BB924834CD
-%     GetMD5(char(0:511), 'array')
+%     md5(char(0:511), 'array')
 %       % => b9a955ae730b25330d4f4ebb0a51e8f0
-%     GetMD5('abc')   % implicit '8bit' for CHAR string
+%     md5('abc')   % implicit '8bit' for CHAR string
 %       % => 900150983cd24fb0d6963f7d28e17f72
 %
 % COMPILATION:
 %   The C-Mex-file is compiled automatically, when this function is called the
 %   first time.
-%   See GetMD5.c for details or a manual compilation.
+%   See md5.c for details or a manual compilation.
 %
 % Tested: Matlab/64 7.8, 7.13, 8.6, 9.1, Win7/64
 % Author: Jan Simon, Heidelberg, (C) 2009-2017 matlab.2010(a)n(MINUS)simon.de
@@ -76,8 +76,8 @@ function GetMD5
 
 % $JRev: R5A V:032 Sum:Uc4I3TNDzn7/ Date:03-Jan-2017 13:59:12 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $UnitTest: uTest_GetMD5 $
-% $File: Tools\GLFile\GetMD5.m $
+% $UnitTest: uTest_md5 $
+% $File: Tools\GLFile\md5.m $
 % History:
 % 015: 15-Dec-2009 16:53, BUGFIX: UINT32 has 32 bits on 64 bit systems now.
 %      Thanks to Sebastiaan Breedveld!
@@ -86,23 +86,13 @@ function GetMD5
 % 031: 04-Jun-2016 22:26, Structs and cells are handled.
 
 % Dummy code, which calls the auto-compilation only: ---------------------------
-persistent FirstRun
-if isempty(FirstRun)
-   %ok = InstallMex('GetMD5.c', 'uTest_GetMD5');
-   ok = InstallMex('GetMD5.c');
-   if ok
-      FirstRun = false;
-   end
+persistent is_compiled
+if isempty(is_compiled)
 
-   try
-      dummy = GetMD5_helper([]);  %#ok<NASGU>
-   catch ME
-      error(['JSimon:', mfilename, ':NoHelper'], ...
-         '### %s: GetMD5_Helper.m: %s', mfilename, ME.message);
-   end
-else
-   error(['JSimon:', mfilename, ':MissMEX'], ...
-      'Cannot find Mex file: %s', [mfilename, '.', mexext]);
+   % compile
+   mtools.crypto.m5compile;
+
+
 end
 
 % return;
