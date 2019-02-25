@@ -20,8 +20,8 @@ function Y = stagger(X, bin_size, slide_step)
 
 assert(isvector(X),'first argument should be a vector')
 X = X(:);
-assert(isscalar(bin_size) && isint(bin_size),' bin_size should be a scalar integer')
-assert(isscalar(slide_step) && isint(slide_step),' slide_step should be a scalar integer')
+assert(isscalar(bin_size) && mtools.maths.isint(bin_size),' bin_size should be a scalar integer')
+assert(isscalar(slide_step) && mtools.maths.isint(slide_step),' slide_step should be a scalar integer')
 
 step_starts = 1:slide_step:(length(X) - bin_size);
 M = length(step_starts);
