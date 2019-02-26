@@ -4,7 +4,7 @@
 % move(axis_handle,'up',0.1) % units are normalised 
 % move(axis_handle,'right',0.1)
 % 
-% part of mtools, which lives here:
+
 % https://github.com/sg-s/srinivas.gs_mtools
 
 function move(plot_handle,direction,frac_dist)

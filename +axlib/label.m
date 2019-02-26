@@ -3,7 +3,7 @@
 % usage:
 % labelAxes(ax_handle,label)
 % labelAxes is meant to label axes on the top left corner only. You can specify an offset in X or Y, but don't use these offset to place the label elsewhere. 
-function [label_handle] = labelAxes(ax_handle,label,varargin)
+function [label_handle] = label(ax_handle,label,varargin)
 
 % options and defaults
 options.capitalise = false;

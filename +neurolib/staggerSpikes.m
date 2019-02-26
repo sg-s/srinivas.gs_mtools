@@ -51,7 +51,7 @@ S = temp; clear temp;
 window_size = round(options.window_size/options.precision);
 step_size = round(options.step_size/options.precision);
 
-X = mtools.vector.stagger(S,window_size,step_size);
+X = veclib.stagger(S,window_size,step_size);
 
 % find the max number of spikes in each row
 N = max(full(sum(X)));

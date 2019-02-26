@@ -23,7 +23,7 @@
 function [idx, labels] = manual(R,X,labels,runOnClick)
 
 if ~nargin
-    help mtools.cluster.manual
+    help clusterlib.manual
     return
 end
 

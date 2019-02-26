@@ -10,7 +10,7 @@
 
 function lines = read(filename)
 if ~nargin
-	help mtools.file.read
+	help filelib.read
 	return
 end
 assert(exist(filename)~=0,'File not found!')

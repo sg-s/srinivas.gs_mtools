@@ -18,8 +18,6 @@
 % To see this help message, type:
 % help prettyFig
 %
-% part of mtools, which lives here:
-% https://github.com/sg-s/srinivas.gs_mtools
 
 function [varargout] = pretty(varargin)
 

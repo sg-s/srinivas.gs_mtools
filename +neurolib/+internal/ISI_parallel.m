@@ -8,5 +8,5 @@ D = zeros(N,1);
 
 for j = i+1:N
 	B = X(:,j);
-	D(j) = mtools.neuro.internal.ISIDistance(A,B);
+	D(j) = neurolib.internal.ISIDistance(A,B);
 end

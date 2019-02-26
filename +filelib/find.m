@@ -1,4 +1,4 @@
-% mtools.file.find.m
+% filelib.find.m
 % finds patterns in lines of text
 % lines is a cell array, for example, if 
 % lines is from lineRead();

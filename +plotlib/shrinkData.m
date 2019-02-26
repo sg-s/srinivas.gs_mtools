@@ -13,8 +13,6 @@
 % WARNING: 
 % shrinkDataInPlot irreversibly alters data on your plot. You will have to redo your plot if you want to undo changes.
 % 
-% part of mtools, which lives here:
-% https://github.com/sg-s/srinivas.gs_mtools
 
 
 function [] = shrinkData(handle_to_plot_object,distance_to_next_point)

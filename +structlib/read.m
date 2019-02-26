@@ -1,12 +1,4 @@
-% mtools.structure.read()
-% reads out values of a nested structure
-% using subsref
-% usage:
-% X = mtools.structure.read(S,F)
-%
-% where S is a structure
-% and F is a string that references a nested
-% entry in S
+
 % 
 function X = read(S,F)
 

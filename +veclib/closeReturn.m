@@ -50,7 +50,7 @@ parfor i = 1:length(X)
 		continue
 	end
 
-	ons = mtools.vector.computeOnsOffs(X(i:i+D)>X(i));
+	ons = veclib.computeOnsOffs(X(i:i+D)>X(i));
 
 	if length(ons) < 2
 		continue

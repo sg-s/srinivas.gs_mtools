@@ -15,6 +15,6 @@ end
 rm_this = isnan(X);
 
 % linearly interpolate
-X(rm_this) = interp1(find(~isnan(X)),mtools.vector.nonnans(X),find(isnan(X)));
+X(rm_this) = interp1(find(~isnan(X)),veclib.nonnans(X),find(isnan(X)));
 
 Y = filtfilt(ones(filter_size,1),filter_size,X);

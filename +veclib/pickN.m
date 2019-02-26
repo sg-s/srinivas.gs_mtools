@@ -1,4 +1,4 @@
-% mtools.vector.pickN
+% pickN
 % 
 % picks N elements from a vector
 % this is guaranteed to return N
@@ -15,7 +15,7 @@ if isempty(X)
 	return
 end
 
-assert(N>0,'N must be a positive number')
+assert(N > 0,'N must be a positive number')
 assert(mathlib.iswhole(N),'N must be an integer')
 assert(isvector(X), 'First argument should be a vector')
 X = X(:);
