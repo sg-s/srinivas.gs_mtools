@@ -1,6 +1,14 @@
 % plots a raster of spikes
 function raster(varargin)
 
+
+if isa(varargin{1},'matlab.graphics.axis.Axes')
+    ax = varargin{1};
+    varargin(1) = [];
+else
+    ax = gca;
+end
+
 % options and defaults
 options.Color = lines;
 options.LineWidth = 1;
@@ -74,7 +82,7 @@ if options.split_rows
         end
     end
     options.split_rows = false;
-    neurolib.raster(new_spiketimes{:},options);
+    neurolib.raster(ax,new_spiketimes{:},options);
     return
     
 end
@@ -104,7 +112,7 @@ for i = 1:length(spiketimes)
     y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
 
 
-    plot(x*options.deltat,y,'Color',options.Color(i,:),'LineWidth',options.LineWidth), hold on
+    plot(ax,x*options.deltat,y,'Color',options.Color(i,:),'LineWidth',options.LineWidth), hold on
 
 
 end
