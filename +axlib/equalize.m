@@ -1,19 +1,26 @@
-% equalizeAxes
-% equalizes axes for multiple subplots in a figure
-% usage:
-% 
-% equalizeAxes() % equalize all X and Y axes in all subplots in current figure
 %
-% equalizeAxes(fig_handle) % equalize all X and Y axes in all subplots in given figure
+% **Syntax**
 %
-% equalizeAxes(axes_handles) % equalize all X and Y axes in all subplots in only these axes
-% 
-% equalizeAxes('x') % equalize all X but not Y axes in all subplots in in current figure
-% 
-% equalizeAxes('y') % equalize all Y but not X axes in all subplots in in current figure
-% 
+% ```matlab
+% axlib.equalize()
+% axlib.equalize(fig_handle)
+% axlib.equalize(ax_handle)
+% axlib.equalize(ax_handle,'x')
+% axlib.equalize(ax_handle,'y')
+% axlib.equalize(ax_handle,'x','y')
+% ```
+%
+% **Description**
+%
+% Equalizes X or Y or Z axes across multiple axes. 
+%
+% !!! info "See Also"
+%     ->axlib.separate
+%
 
-function [] = equalize(varargin)
+
+
+function equalize(varargin)
 
 
 % grab figure handle, if it exists 

@@ -1,7 +1,26 @@
-% magical function that "deintersects" axes
-% to that the X and Y axes do not touch
-% this is a better version of deIntersectAxes()
-% and works without needing to draw a new, fake axes
+%
+% **Syntax**
+%
+% ```matlab
+% axlib.separate()
+% axlib.separate(ax_handle)
+% axlib.separate(ax_handle,'mask_y',true)
+% axlib.separate(ax_handle,'mask_x',true)
+% axlib.separate(ax_handle,'mask_x',true,'offset',.1)
+% axlib.separate(ax_handle,options)
+% ```
+%
+% **Description**
+%
+% Visually alters a plot so that it appears as though the X and Y
+% axes are non-intersecting. It achieves this by plotting lines 
+% that obscure that part of the axes. 
+%
+% !!! info "See Also"
+%     ->axlib.equalize
+%
+
+
 
 function mask_handles = separate(varargin)
 
