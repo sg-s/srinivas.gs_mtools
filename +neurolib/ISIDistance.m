@@ -6,8 +6,15 @@ N = size(X,2);
 
 D = NaN(N);
 
+if N > 1e3
+
+	parfor i = 1:N
+		D(:,i) = neurolib.internal.ISI_parallel(X,i);
+	end
 
 
-parfor i = 1:N
-	D(:,i) = neurolib.internal.ISI_parallel(X,i);
+else
+	for i = 1:N
+		D(:,i) = neurolib.internal.ISI_parallel(X,i);
+	end
 end

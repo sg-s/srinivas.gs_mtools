@@ -76,6 +76,8 @@ methods
         self.handles.current_point.XData = self.reduced_data(cp,1);
         self.handles.current_point.YData = self.reduced_data(cp,2);
 
+        title(self.handles.main_ax,strlib.oval(cp));
+
         self.callback_function(self.handles.ax(1),self.full_data(:,cp))
 
 
