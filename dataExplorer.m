@@ -33,6 +33,9 @@ methods
 
 		self.handles.main_fig = figure('Name','dataExplorer','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Color','w'); hold on,axis off
 
+		self.handles.menu_name(1) = uimenu('Label','Cluster');
+		uimenu(self.handles.menu_name(1),'Label','Add to cluster...','Callback',@clusterlib.interactive);
+
 		if self.make_axes
 			self.handles.main_ax(1) = axes('parent',self.handles.main_fig,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');axis square, hold on ; title('Reduced Data'); hold on
 
@@ -60,7 +63,8 @@ methods
 	end
 
 
-	function mouseCallback(self,src,value)
+	function mouseCallback(self,~,~)
+
 
 		pp = get(self.handles.main_ax,'CurrentPoint');
         p(1) = (pp(1,1)); p(2) = pp(1,2);
