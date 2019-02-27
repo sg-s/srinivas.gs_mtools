@@ -11,5 +11,5 @@ calling_func = dbstack;
 calling_func = calling_func(2).name; % it's always going to be #2 
 
 
-showDependencyHash(calling_func);
+pdflib.showDependencyHash(calling_func);
 

@@ -24,12 +24,12 @@ else
 end
 
 % common code
-calling_func = dbstack;
-being_published = 0;
-if ~isempty(calling_func)
-	if find(strcmp('publish',{calling_func.name}))
-		being_published = 1;
-	end
-end
+% calling_func = dbstack;
+% being_published = 0;
+% if ~isempty(calling_func)
+% 	if find(strcmp('publish',{calling_func.name}))
+% 		being_published = 1;
+% 	end
+% end
 
 tic
