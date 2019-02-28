@@ -11,10 +11,11 @@ end
 
 
 isis = veclib.nonnans(varargin{1});
+varargin(1) = [];
 
 spiketimes = cumsum(isis);
 spiketimes = spiketimes(:);
 spiketimes = [0; spiketimes];
 
 
-neurolib.raster(ax,spiketimes)
+neurolib.raster(ax,spiketimes,varargin{:})

@@ -15,7 +15,7 @@ else
 		if isa(src.Parent,'matlab.ui.Figure')
 			fig_handle = src.Parent;
 			goon = false;
-		else
+		elsep
 			src = src.Parent;
 		end
 	end
