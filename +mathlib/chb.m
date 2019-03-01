@@ -1,3 +1,4 @@
+% change base of number
 function B = chb(A,a,b) 
 
 % B = chb(A,a,b) change numerical base:

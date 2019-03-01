@@ -1,3 +1,4 @@
+% computes the [geometric medium](http://en.wikipedia.org/wiki/Geometric_median) of a matrix 
 function [C,E]=GeometricMedian(X,Co,opt,W)
 % This function takes as input a d-dimensional (d>1) dataset composed on N
 % samples and computes its geometric median. The geometric median of a 

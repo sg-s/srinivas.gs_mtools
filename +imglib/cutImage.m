@@ -1,4 +1,3 @@
-% cutImage.m
 % cuts a small square of an image out a bigger image.
 % 
 % if the requested portion is too large, cut image pads the image

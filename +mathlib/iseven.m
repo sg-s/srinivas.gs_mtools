@@ -1,4 +1,3 @@
-% iseven.m
 % is the number even or not?
 % 
 % created by Srinivas Gorur-Shandilya at 2:51 , 08 July 2015. Contact me at http://srinivas.gs/contact/

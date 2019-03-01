@@ -1,3 +1,4 @@
+% regress data using elasticnet regularization 
 function [b info] = elasticnet(X, y, delta, stop, storepath, verbose)
 %ELASTICNET Regularization and variable selection for regression via the
 %   Elastic Net.

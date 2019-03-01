@@ -1,4 +1,3 @@
-% cfinvert.m
 % given a curve fit object cf, find x such that cf(x) = y
 % using linear interpolation
 % usage:

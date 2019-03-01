@@ -1,3 +1,4 @@
+% distinguishable colormaps 
 function colors = dcol(n_colors,bg,func)
 % DISTINGUISHABLE_COLORS: pick colors that are maximally perceptually distinct
 %

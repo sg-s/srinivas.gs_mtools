@@ -1,5 +1,4 @@
-% metadata2timestamps.m
-% converts a metadata file created by Micro-Manager into useful timestamps
+% converts a metadata file created by Micro-Manager into timestamps
 % 
 % created by Srinivas Gorur-Shandilya at 2:40 , 01 December 2015. Contact me at http://srinivas.gs/contact/
 % 

@@ -1,4 +1,3 @@
-% isint.m
 % returns 1 if input is an integer, 0 if otherwise
 % 
 % created by Srinivas Gorur-Shandilya at 11:41 , 13 September 2015. Contact me at http://srinivas.gs/contact/

@@ -1,3 +1,4 @@
+% compute the Gini coefficient 
 function cheese=gini(vs, pop)
 % FORMAT: gini(values, population)
 % Givne these values, this computes the GINI coefficient according to

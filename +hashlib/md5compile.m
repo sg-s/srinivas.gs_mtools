@@ -1,3 +1,4 @@
+% Compile and install mdhash MEX C file
 function Ok = md5compile(varargin)
 % md5compile - Compile and install Mex file
 % The C, C++ or FORTRAN mex file is compiled and additional installation

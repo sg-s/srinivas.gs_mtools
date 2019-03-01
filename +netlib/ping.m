@@ -1,5 +1,3 @@
-% netlib.ping
-% 
 % pings a remote server
 % to check that it's online
 

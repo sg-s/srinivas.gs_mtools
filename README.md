@@ -25,12 +25,17 @@ What can you do with this? Read on:
 
 | Name | Use |
 | -------- | ------- |
-|cluster_dp|  cluster 2D data using the density peaks algorithm|
-|cluster_dp2|  cluster_dp2.m|
-|densityPeaks|  wrapper function for density Peaks clustering|
-|getInteractiveLabels| function [L, names] = getInteractiveLabels(ax_handle)|
+|densityPeaks|  cluster 2D data using the density peaks algorithm|
 |interactive|  Interactively cluster 2D data|
 |manual|  Manually cluster 2D data|
+
+
+ ## [colormaps](./+colormaps/)
+
+| Name | Use |
+| -------- | ------- |
+|dcol|  distinguishable colormaps |
+|linspecer|  generate colormaps|
 
 
  ## [corelib](./+corelib/)
@@ -58,7 +63,6 @@ What can you do with this? Read on:
 |autoPlot|  automatically create subplots|
 |duplicate|  creates a duplicate of the figure that you have right now|
 |label|  adds labels to each subplot of a figure |
-|linspecer|  generate colormaps|
 |pretty|  makes a figure prettier, and overrides MATLAB's horrible defaults. |
 |shrink|  removes data in figure that is not visually relevant |
 |tileFigs|  tile all open figures on the screen|
@@ -91,56 +95,54 @@ What can you do with this? Read on:
 | Name | Use |
 | -------- | ------- |
 |GetMD5_helper| function S = GetMD5_helper(V)|
-|md5compile| function Ok = md5compile(varargin)|
-|md5hash| function md5|
+|md5compile|  Compile and install mdhash MEX C file|
+|md5hash|  compute the md5sum of data, arrays, files|
 
 
  ## [imglib](./+imglib/)
 
 | Name | Use |
 | -------- | ------- |
-|ACI|  ACI.m|
-|andorSeq2mat|  andorSeq2mat.m|
-|cutImage|  cutImage.m|
-|dcol| function colors = dcol(n_colors,bg,func)|
-|metadata2timestamps|  metadata2timestamps.m|
-|saturationPlane|  saturationPlane.m|
-|triangle|  triangle.m|
+|ACI|  computes the activity correlated image from a time series of images|
+|andorSeq2mat|  convert image sequence to a matrix|
+|cutImage|  cuts a small square of an image out a bigger image.|
+|metadata2timestamps|  converts a metadata file created by Micro-Manager into timestamps|
+|saturationPlane|  calculates the saturation plane from a 3-channel image. |
+|triangle|  draws a equliateral triangle at a given point and orientation|
 
 
  ## [mathlib](./+mathlib/)
 
 | Name | Use |
 | -------- | ------- |
-|GeometricMedian| function [C,E]=GeometricMedian(X,Co,opt,W)|
+|GeometricMedian|  computes the [geometric medium](http://en.wikipedia.org/wiki/Geometric_median) of a matrix |
 |aeq|  approximate equality function|
-|barfit|  barfit(A,b)|
-|cfinvert|  cfinvert.m|
-|chb (1)| function B = chb(A,a,b) |
-|chb| function B = chb(A,a,b) |
-|elasticnet| function [b info] = elasticnet(X, y, delta, stop, storepath, verbose)|
-|factor2|  factor2.m|
-|gini| function cheese=gini(vs, pop)|
-|iseven|  iseven.m|
-|isint|  isint.m|
-|iswhole|  checks if a given variable is a whole number|
-|l1eq_pd|  l1eq_pd.m|
-|larsen|  larsen.m|
-|matrixMin|  matrixMin|
+|barfit|  Finds x which minimizes |Ax - b|_1 using the Barrowdale/Roberts algorithm |
+|cfinvert|  given a curve fit object cf, find x such that cf(x) = y|
+|chb|  change base of number|
+|elasticnet|  regress data using elasticnet regularization |
+|factor2|  Returns all factors of k, including k itself.|
+|gini|  compute the Gini coefficient |
+|iseven|  is the number even or not?|
+|isint|  returns 1 if input is an integer, 0 if otherwise|
+|iswhole|  checks if a given array is a whole number|
+|l1eq_pd|  finds the solution to min_x ||x||_1  s.t.  Ax = b, recast as a linear program|
+|larsen|  The LARS-EN algorithm for estimating Elastic Net solutions.|
+|matrixMin|  returns the minimum of a matrix, together with the array index|
 |modd|  a better remainder/modulo function|
-|outliers| function [mu,S,RD,chi_crt]=outliers(X,n_out,id_in,vis)|
+|outliers|  detect outliers in data|
 |outliers_demo| function outliers_demo(N,f)|
-|totient|  totient.m|
+|totient|  calculates the totient function  of any positive integer n.|
 
 
  ## [netlib](./+netlib/)
 
 | Name | Use |
 | -------- | ------- |
-|copyFiles|  netlib.copyFiles|
+|copyFiles|  copies a set of files over to a remote|
 |copyFun|  copies a function specified by a function handle|
-|online|  online.m|
-|ping|  netlib.ping|
+|online|  checks to see if your computer is online|
+|ping|  pings a remote server|
 
 
  ## [neurolib](./+neurolib/)
@@ -149,7 +151,7 @@ What can you do with this? Read on:
 | -------- | ------- |
 |ISIDistance|  measures the distance between pairs of ISI sets|
 |ISIraster| function ISIraster(varargin)|
-|geffenMeister|  GeffenMeister.m|
+|geffenMeister|  performs a trial-wise analysis of model fits as done in Geffen and Meister 2009|
 |raster|  plots a raster of spikes|
 |staggerSpikes| function X = staggerSpikes(S, varargin)|
 

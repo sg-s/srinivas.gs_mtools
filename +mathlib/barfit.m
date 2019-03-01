@@ -1,5 +1,5 @@
-% barfit(A,b)
-% Finds x which minimizes |Ax - b|_1 (ie. 1-norm of the residuals) using the Barrowdale/Roberts algorithm (Comm.of the ACM June 1974)
+% Finds x which minimizes |Ax - b|_1 using the Barrowdale/Roberts algorithm 
+% (Comm.of the ACM June 1974)
 % 
 %
 % Last row and col of tableau store indices so we can extract sol’n when done

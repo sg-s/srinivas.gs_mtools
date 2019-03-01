@@ -1,5 +1,4 @@
-% online.m
-% checks to see if the computer is online
+% checks to see if your computer is online
 % pings google.com, and waits for a second or less
 % returns 0 if not online, 1 if online
 % 

@@ -1,4 +1,3 @@
-% netlib.copyFiles
 % copies a set of files over to a remote
 % machine. tries to make 10 copies, so that
 % we can balance minimixing SSH connections

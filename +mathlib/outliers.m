@@ -1,3 +1,4 @@
+% detect outliers in data
 function [mu,S,RD,chi_crt]=outliers(X,n_out,id_in,vis)
 % Detect outliers contained in a normally distributed multivariate dataset
 % using procedure described in [1].

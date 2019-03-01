@@ -1,4 +1,3 @@
-%% cluster_dp2.m
 % density peaks based clustering with some automatic cluster center detection
 % see: http://eric-yuan.me/clustering-fast-search-find-density-peaks/
 % modified version of cluster_dp.m

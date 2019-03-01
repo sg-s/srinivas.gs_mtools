@@ -1,4 +1,3 @@
-% ACI.m
 % computes the activity correlated image from a time series of images
 % minimal usage:
 %

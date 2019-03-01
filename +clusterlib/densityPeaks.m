@@ -1,4 +1,4 @@
-%% wrapper function for density Peaks clustering
+%% cluster 2D data using the density peaks algorithm
 % usage:
 % [L] = densityPeaks(X)
 % where X is a 2xN matrix specifying co-ordinates of the points you want to cluster

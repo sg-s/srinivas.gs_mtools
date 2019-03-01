@@ -1,4 +1,3 @@
-% GeffenMeister.m
 % performs a trial-wise analysis of model fits as done in Geffen and Meister 2009
 % usage
 % [qx qy] = GeffenMeister(resp,pred)

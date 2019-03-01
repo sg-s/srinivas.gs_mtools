@@ -1,4 +1,5 @@
-function md5
+% compute the md5sum of data, arrays, files
+function md5hash
 % md5 - 128 bit MD5 checksum: file, string, array, byte stream
 % This function calculates a 128 bit checksum for arrays or files.
 % Digest = md5(Data, Mode, Format)

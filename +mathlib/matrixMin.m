@@ -1,4 +1,3 @@
-%% matrixMin
 % returns the minimum of a matrix, together with the array index
 % of the minimum
 % 

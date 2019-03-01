@@ -1,4 +1,3 @@
-% totient.m
 % calculates the totient function  of any positive integer n.
 % 
 function [t] = totient(n)

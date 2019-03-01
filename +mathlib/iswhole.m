@@ -1,4 +1,4 @@
-% checks if a given variable is a whole number
+% checks if a given array is a whole number
 
 function L =  iswhole(X)
 

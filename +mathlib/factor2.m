@@ -1,5 +1,4 @@
-% factor2.m
-% Returns the factors (not only the prime factors) of k, including k itself.
+% Returns all factors of k, including k itself.
 % This complements the usage of TMW's factor function, which returns only
 % prime factors. 
 % E.g., >> a=factor(1365), b=factor2(1365)
