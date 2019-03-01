@@ -1,4 +1,3 @@
-%
 % Add a label to an axes. 
 % 
 % **Syntax**

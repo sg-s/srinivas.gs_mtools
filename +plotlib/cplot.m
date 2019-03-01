@@ -1,5 +1,4 @@
-% plots X and Y dots and colors each dot
-% by a value V
+% plots X and Y dots and colors each dot by a value V
 % X, Y and V should be vectors of the same length
 % 
 % usage:

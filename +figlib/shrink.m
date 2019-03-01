@@ -1,3 +1,4 @@
+% removes data in figure that is not visually relevant 
 % shrinkFigure.m
 % shrinks MATLAB figures by downsampling, omitting, and re-plotting data
 % use this to make figures that are visually identical, but much smaller

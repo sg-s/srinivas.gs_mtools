@@ -14,7 +14,7 @@ function[out,timeunits]=SONTicksToSeconds(fid, in, varargin)
 %     
 % Malcolm Lidierth 03/02
 % Updated 06/05 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 FileH=smrlib.SONFileHeader(fid);
 

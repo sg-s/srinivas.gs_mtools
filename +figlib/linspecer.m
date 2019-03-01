@@ -1,3 +1,4 @@
+% generate colormaps
 % function lineStyles = linspecer(N)
 % This function creates an Nx3 array of N [R B G] colors
 % These can be used to plot lots of lines with distinguishable and nice
@@ -39,7 +40,7 @@
 % 
 %   See also NDHIST, NHIST, PLOT, COLORMAP, 43700-cubehelix-colormaps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% by Jonathan Lansey, March 2009-2013 – Lansey at gmail.com               %
+% by Jonathan Lansey, March 2009-2013 â€“ Lansey at gmail.com               %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 %% credits and where the function came from

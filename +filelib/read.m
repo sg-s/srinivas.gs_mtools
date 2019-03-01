@@ -1,4 +1,3 @@
-% lineRead.m
 % reads a text file line by line and returns the text as a cell array
 % usage:
 % lines = lineRead(filename)

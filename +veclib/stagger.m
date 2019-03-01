@@ -1,5 +1,4 @@
-% stagger.m
-% converts into a vector into a matrix
+% stagger into a vector into a matrix using overlapping bins
 % where we take a bin and slide it over the vector
 % usage:
 % Y = stagger(X,bin_size,slide_step)

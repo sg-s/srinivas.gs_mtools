@@ -1,4 +1,3 @@
-% labelByPercentile
 % labels a vector by percentile bin
 % usage:
 % l = labelByPercentile(x,nbins);

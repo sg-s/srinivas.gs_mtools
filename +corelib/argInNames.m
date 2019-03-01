@@ -1,4 +1,4 @@
-% argInNames.m
+% Find names of arguments to function
 % returns a cell containing the names of the variables that are returned by a function, as defined in the function. 
 % Usage:
 % names=argInNames('function_name')

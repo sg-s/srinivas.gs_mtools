@@ -1,4 +1,3 @@
-% dift.m
 % derivative of a non-regularly sampled time series
 % 
 % dift.m is a function that differentiates the time series x,

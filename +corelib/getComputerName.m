@@ -1,5 +1,4 @@
-% getComputerName.m
-% returns the host name of the computer
+% get the host name of the computer
 %
 % GETCOMPUTERNAME returns the name of the computer (hostname)
 % name = getComputerName()

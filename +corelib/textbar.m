@@ -1,5 +1,4 @@
-% textbar
-% textbar is the text equivalent of waitbar.
+% high-performance text equivalent of waitbar
 % usage: insert textbar(i,imax) in the first line of your for loop
 % where the for loop is like for i = 1:1:imax
 % it uses minimal resources to display an elegant progress bar

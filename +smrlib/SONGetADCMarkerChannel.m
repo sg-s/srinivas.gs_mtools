@@ -59,7 +59,7 @@ function[data,h]=SONGetADCMarkerChannel(fid, chan, varargin)
 %
 % Malcolm Lidierth 02/02
 % Updated 09/05 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 Info=smrlib.SONChannelInfo(fid,chan);
 

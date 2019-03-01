@@ -23,7 +23,7 @@ for toolbox in sorted(glob.glob("./*/",recursive=True)):
 	if toolbox.find("+") > 0:
 
 		# each toolbox gets a heading 
-		outfile.write("\n # ")
+		outfile.write("\n ## ")
 		toolbox_name = toolbox.replace("/","")
 		toolbox_name = toolbox_name.replace("+","")
 		toolbox_name = toolbox_name.replace(".","")
@@ -48,7 +48,16 @@ for toolbox in sorted(glob.glob("./*/",recursive=True)):
 			
 
 			outfile.write(fname)
-			outfile.write("|   |")
+			outfile.write("| ")
+
+			# read out first line
+			f = open(file, "r")
+			print(file)
+			first_line = f.readline()
+			first_line = first_line.replace("%","")
+			first_line = first_line.replace("\n","")
+			outfile.write(first_line + "|")
+			f.close()
 
 	outfile.write("\n\n")
 

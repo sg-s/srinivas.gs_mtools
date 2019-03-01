@@ -1,4 +1,3 @@
-% percentile.m
 % returns the value from a data vector X that is at the Pth percentile
 % usage
 % Y = percentile(X,0.1) % returns data at 10%ile

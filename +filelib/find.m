@@ -1,5 +1,5 @@
-% filelib.find.m
-% finds patterns in lines of text
+% find patterns in lines of text 
+% 
 % lines is a cell array, for example, if 
 % lines is from lineRead();
 % also supports wildcard matching using regex

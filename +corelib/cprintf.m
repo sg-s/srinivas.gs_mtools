@@ -1,4 +1,4 @@
-function count = cprintf(style,format,varargin)
+% Displays styled formatted text in the Command Window
 % CPRINTF displays styled formatted text in the Command Window
 %
 % Syntax:
@@ -104,7 +104,7 @@ function count = cprintf(style,format,varargin)
 %    2011-03-04: Performance improvement
 %    2010-06-27: Fix for R2010a/b; fixed edge case reported by Sharron; CPRINTF with no args runs the demo
 %    2009-09-28: Fixed edge-case problem reported by Swagat K
-%    2009-05-28: corrected nargout behavior suggested by Andreas Gäb
+%    2009-05-28: corrected nargout behavior suggested by Andreas GÃ¤b
 %    2009-05-13: First version posted on <a href="http://www.mathworks.com/matlabcentral/fileexchange/authors/27420">MathWorks File Exchange</a>
 %
 % See also:
@@ -115,6 +115,8 @@ function count = cprintf(style,format,varargin)
 
 % Programmed and Copyright by Yair M. Altman: altmany(at)gmail.com
 % $Revision: 1.10 $  $Date: 2015/06/24 01:29:18 $
+
+function count = cprintf(style,format,varargin)
 
   persistent majorVersion minorVersion
   if isempty(majorVersion)

@@ -1,3 +1,4 @@
+% parse a human-readable preference file
 % readPref.m
 % reads a preferences file, which is a human readable (and editable) text file and return formatted data
 % 

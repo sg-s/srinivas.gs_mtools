@@ -1,3 +1,4 @@
+% automatically create subplots
 % autoPlot.m
 % autoPlot is a wrapper for subplot that allows you to simplify figure creation where you know the number of plots, but don't want to bother to calcualte how many subplots you want in the X and Y directions. 
 % autoPlot does this for you.

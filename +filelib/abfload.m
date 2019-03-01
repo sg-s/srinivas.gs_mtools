@@ -1,3 +1,4 @@
+% load ABF files into MATLAB
 function [d,si,h]=abfload(fn,varargin)
 % ** function [d,si,h]=abfload(fn,varargin)
 % loads and returns data in ABF (Axon Binary File) format.

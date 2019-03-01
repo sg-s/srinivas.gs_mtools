@@ -1,3 +1,4 @@
+% Find closest point of a vector to some value
 % finds the index ofa vector that is closest to some value
 % 
 % usage:

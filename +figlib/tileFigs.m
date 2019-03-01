@@ -1,3 +1,4 @@
+% tile all open figures on the screen
 function tileFigs(figs)
 %TILEFIGS Tile all open figure windows around on the screen.
 %

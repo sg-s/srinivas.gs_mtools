@@ -1,3 +1,4 @@
+% makes a plot who's y-axis skips to avoid unecessary blank space
 function h = breakp(x,y,y_break_start,y_break_end,break_type)
 % breakPlot(x,y,y_break_start,y_break_end,break_type)
 % Produces a plot who's y-axis skips to avoid unecessary blank space

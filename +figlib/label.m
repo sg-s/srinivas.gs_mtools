@@ -1,5 +1,4 @@
-% label.m
-% adds labels to each subplot of a figure so you can directly drop into a paper
+% adds labels to each subplot of a figure 
 % 
 % created by Srinivas Gorur-Shandilya at 2:04 , 15 March 2016. Contact me at http://srinivas.gs/contact/
 % 

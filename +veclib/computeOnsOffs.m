@@ -1,4 +1,4 @@
-% computeOnsOffs.m
+% find rising and falling edges in a logical vector
 % given a logical vector x, this function returns the on and off times of the logical vector
 % usage:
 %  [ons,offs] = computeOnsOffs(x)

@@ -13,7 +13,7 @@ function[interval, start]=SONGetSampleInterval(fid,chan)
 %
 % Malcolm Lidierth 02/02
 % Updated 09/06 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 
 FileH=smrlib.SONFileHeader(fid);                                   % File header

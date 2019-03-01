@@ -1,3 +1,4 @@
+%  Scale data and display as image with uncolored NaNs.
 function [H,HNAN] = imagescnan(varargin)
 %IMAGESCNAN   Scale data and display as image with uncolored NaNs.
 %

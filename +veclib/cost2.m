@@ -1,4 +1,4 @@
-% cost2.m
+% Euclidean cost for two vectors
 % computes a cost for two vectors
 % created by Srinivas Gorur-Shandilya at 13:36 on 02-April-2014. Contact me at http://srinivas.gs/
 % usage: c = Cost2(a,b)

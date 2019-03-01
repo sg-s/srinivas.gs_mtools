@@ -1,4 +1,3 @@
-% cleanString.m
 % cleans a string of whitespace, leading numbers, etc.
 % makes clean variables names in MATLAB
 

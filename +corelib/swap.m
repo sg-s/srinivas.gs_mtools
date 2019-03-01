@@ -1,5 +1,6 @@
+% swap contents of two variables in place
 function swap(A,B)
-% SWAP - swap contents of two variables
+% SWAP - 
 %   SWAP(A,B) puts the contents of variable A into variable B and vice versa.
 %   You can use either function syntax 'swap(A,B)' or command syntax 'swap A B'.
 %

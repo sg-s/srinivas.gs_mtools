@@ -1,4 +1,3 @@
-%
 % Equalize X or Y or Z axes across multiple axes. 
 % 
 % **Syntax**

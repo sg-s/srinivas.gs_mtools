@@ -1,4 +1,4 @@
-% write.m
+% write a cell array to a text file
 % the opposite of lineRead.m
 % writes lines to a text file
 % where lines is a cell array

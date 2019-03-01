@@ -1,4 +1,4 @@
-% uid.m
+% return a unique ID 
 % make a Unique ID every time this is run
 % based on getComputerName, as well as the clock
 % 

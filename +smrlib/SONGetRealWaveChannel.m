@@ -83,7 +83,7 @@ function[data,h]=SONGetRealWaveChannel(fid, chan, varargin)
 %
 % Malcolm Lidierth 03/02
 % Updated 07/06 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 try
 

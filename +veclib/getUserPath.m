@@ -1,4 +1,3 @@
-%% getUserPath
 % returns the user path of the path
 % you would imagine userpath does this, but it doesn't
 % 

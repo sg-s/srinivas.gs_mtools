@@ -1,4 +1,3 @@
-% move.m
 % moves the given plot up down, left or right
 % usage:
 % move(axis_handle,'up',0.1) % units are normalised 

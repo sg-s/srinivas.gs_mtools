@@ -1,4 +1,3 @@
-% duplicateFigure.m
 % creates a duplicate of the figure that you have right now
 %
 % created by Srinivas Gorur-Shandilya at 2:51 , 08 July 2015. Contact me at http://srinivas.gs/contact/

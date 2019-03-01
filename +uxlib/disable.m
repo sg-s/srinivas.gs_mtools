@@ -1,6 +1,6 @@
-% makes visible a GUI object
+% disables a UX element
 
-% usage: uxlib.show(object)
+% usage: uxlib.disable(object)
 
 function disable(thing)
 

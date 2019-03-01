@@ -1,4 +1,4 @@
-% flstring
+% force a string to have a fixed length
 % fixed length string
 % forces a string to be a fixed length
 

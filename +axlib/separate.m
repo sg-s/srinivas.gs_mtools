@@ -1,4 +1,5 @@
-%
+% Prevent axes from intersecting 
+% 
 % **Syntax**
 %
 % ```matlab

@@ -15,7 +15,7 @@ function[out,h]=SONADCToDouble(in,header)
 %
 % Malcolm Lidierth 03/02
 % Updated 03/06 ML
-% Copyright © The Author & King's College London 2005-2006
+% Copyright Â© The Author & King's College London 2005-2006
 
 if(nargin<2)
     header.scale=1;

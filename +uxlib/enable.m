@@ -1,4 +1,4 @@
-% enables and shows a thing
+% enables and shows a UX element
 % enable is an implicit show
 
 % usage: uxlib.show(object)

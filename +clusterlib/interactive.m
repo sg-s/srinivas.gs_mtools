@@ -1,3 +1,4 @@
+% Interactively cluster 2D data
 % function to help you interactive
 % cluster data. can be built on top of any 
 % figure! 

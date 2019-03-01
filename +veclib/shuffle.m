@@ -1,4 +1,3 @@
-%% shuffle.m
 % shuffles a vector or a matrix
 % usage:
 % 

@@ -1,4 +1,3 @@
-% getAllFiles.m
 % recursively get all files from a specific directory 
 % from:
 % http://stackoverflow.com/questions/2652630/how-to-get-all-files-under-a-specific-directory-in-matlab

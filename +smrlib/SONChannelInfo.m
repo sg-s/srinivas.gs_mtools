@@ -9,7 +9,7 @@ function [TChannel]= SONChannelInfo(fid,chan)
 %
 % Malcolm Lidierth 02/02
 % Updated 06/05 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 % Fix:
 % 25/6/05 interleave and divide reads now 'int32' instead of 'int16'

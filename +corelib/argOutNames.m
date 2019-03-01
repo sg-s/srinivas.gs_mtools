@@ -1,4 +1,4 @@
-% argoutnames.m
+% Find names of outputs of function
 % returns a cell containing the names of the variables that are returned by a function, as defined in the function. 
 % Usage:
 % names=argoutnames('function_name')

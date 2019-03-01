@@ -1,4 +1,3 @@
-% randomString.m
 % makes a random string
 % 
 % created by Srinivas Gorur-Shandilya at 2:50 , 08 July 2015. Contact me at http://srinivas.gs/contact/

@@ -1,4 +1,4 @@
-% like logspace, but better
+% A more usable version of logspace
 % usage:
 % corelib.logrange([10, 100]) % 100 points b/w 10 and 100
 % corelib.logrange(10,100) % 100 points b/w 10 and 100

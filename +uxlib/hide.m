@@ -1,4 +1,4 @@
-% makes visible a GUI object
+% hides a UX element
 
 % usage: uxlib.show(object)
 

@@ -1,5 +1,3 @@
-% pickN
-% 
 % picks N elements from a vector
 % this is guaranteed to return N
 % elements, no longer how long or short the input vector is

@@ -1,4 +1,3 @@
-% nonnans.m
 % removes NaNs from a vector
 % 
 % created by Srinivas Gorur-Shandilya at 11:25 , 19 June 2015. Contact me at http://srinivas.gs/contact/

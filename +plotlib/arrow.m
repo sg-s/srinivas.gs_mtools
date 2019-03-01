@@ -1,3 +1,4 @@
+% create an arrow on a plot
 function hn=arrow(p1,p2,s,w,h,ip,alpha,beta)
 % arrow (R13)
 %   arrow(P1,P2) draws lines from P1 to P2 with directional arrowheads.

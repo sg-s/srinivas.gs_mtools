@@ -1,4 +1,4 @@
-
+% read nested field from a structure
 % 
 function X = read(S,F)
 

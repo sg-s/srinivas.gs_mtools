@@ -1,3 +1,4 @@
+% Manually cluster 2D data
 % manualCluster
 % creates a GUI to manually cluster 1D or 2D data into clusters
 % the number of the clusters and the labels are defined in labels, which is a cell array

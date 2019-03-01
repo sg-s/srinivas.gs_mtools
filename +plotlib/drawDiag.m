@@ -1,3 +1,4 @@
+% draw a diagonal line on a plot
 function drawDiag(ax)
 
 if nargin == 0

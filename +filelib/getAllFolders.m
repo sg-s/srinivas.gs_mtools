@@ -1,4 +1,3 @@
-%% getAllFolders
 % gets all folders in a given folder, recursively searching the entire tree
 % 
 % usage:

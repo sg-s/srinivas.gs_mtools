@@ -1,5 +1,4 @@
-% pretty.m
-% makes current figure prettier, and overrides MATLAB's horrible defaults. 
+% makes a figure prettier, and overrides MATLAB's horrible defaults. 
 % 
 % usage:
 % prettyFig; % will automatically make the current figure prettier

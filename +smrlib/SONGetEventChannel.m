@@ -27,7 +27,7 @@ function[data,h]=SONGetEventChannel(fid, chan, varargin)
 %
 % Malcolm Lidierth 02/02
 % Updated 10/06 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 
 Info=smrlib.SONChannelInfo(fid,chan);

@@ -8,7 +8,7 @@ function[out,hout]=SONRealToADC(in,header)
 % output array. Scale and offset in HOUT are updated in SON format.
 %
 % Malcolm Lidierth Updated 10/06
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 %
 % Changes: 06/07 casting order changed to reduce rounding effects
 %          09/07 Scale factor: correct to 65535

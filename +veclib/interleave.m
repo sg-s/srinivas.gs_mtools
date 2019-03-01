@@ -1,4 +1,3 @@
-% interleave.m
 % interleaves N vectors X1, X2, .. XN
 % where
 % all vectors have the same length (M)

@@ -1,3 +1,4 @@
+% throw away data in plot object that doesn't change the plot visibly 
 %% shrinkDataInPlot
 % custom compression engine that selectively throws away points in a plot to keep them visually identical, but much smaller in size
 % use this to make EPS figures that are crisp but small

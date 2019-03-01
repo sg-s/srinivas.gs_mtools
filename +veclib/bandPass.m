@@ -1,3 +1,4 @@
+% band pass a vector using a discrete filter
 % bandPass.m 
 % bandpasses input signal to spikes and/or slow fluctuations
 % usage:

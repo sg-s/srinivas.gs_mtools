@@ -13,7 +13,7 @@ function[header]=SONGetBlockHeaders(fid,chan)
 %
 % Malcolm Lidierth 02/02
 % Updated 06/05 ML
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 succBlock=2;
 Info=smrlib.SONChannelInfo(fid,chan);

@@ -1,4 +1,3 @@
-% powerspec.m
 % power spectral density of an input time series
 %
 % usage: [f mx] = powerspec(Fs,x,v)

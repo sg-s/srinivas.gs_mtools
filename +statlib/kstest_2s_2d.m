@@ -1,5 +1,4 @@
-function [H, pValue, KSstatistic] = kstest_2s_2d(x1, x2, alpha)
-
+% Two-sample Two-diensional Kolmogorov-Smirnov 
 % kstest_2s_2d - FUNCTION Two-sample Two-diensional Kolmogorov-Smirnov Test
 %
 % Usage:[H, pValue, KSstatistic] = kstest_2s_2d(x1, x2 <, alpha>)
@@ -34,6 +33,9 @@ function [H, pValue, KSstatistic] = kstest_2s_2d(x1, x2, alpha)
 % 13th October, 2012
 
 %%
+
+function [H, pValue, KSstatistic] = kstest_2s_2d(x1, x2, alpha)
+
 
 if nargin < 2
    error('stats:kstest2:TooFewInputs','At least 2 inputs are required.');

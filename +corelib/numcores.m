@@ -1,3 +1,5 @@
+% Find number of cores on a CPU
+% 
 function [logical_cores, physical_cores] = numcores()
 
 core_info = evalc('feature(''numcores'')');

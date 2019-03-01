@@ -1,4 +1,4 @@
-function [data,header] = load(filename)
+% load SMR file
 % this is a wrapper-rewrite of an older function
 % called SONImport that could load SMR files
 % it was pretty hard to use and a number of baroque
@@ -56,7 +56,9 @@ function [data,header] = load(filename)
 % Mac or other big-endian platforms.
 %
 % Malcolm Lidierth 07/06
-% Copyright © The Author & King's College London 2006
+% Copyright Â© The Author & King's College London 2006
+
+function [data,header] = load(filename)
 
 if ispc 
     fid = fopen(filename);

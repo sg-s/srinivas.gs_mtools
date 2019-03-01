@@ -1,4 +1,3 @@
-% errorShade.m
 % a fast error-shading plot function
 % it's (really) fast because it doesn't use patch (for large datasets, see note below). 
 % it also creates only 2 plot objects, irrespective of the size of the data. 

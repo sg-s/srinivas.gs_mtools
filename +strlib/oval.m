@@ -1,4 +1,4 @@
-% oval.m
+% round off a number and convert to a string
 % oval is a version of round, which rounds to how many ever significant digits you want and returns a string. supports fractions. 
 % 
 % 

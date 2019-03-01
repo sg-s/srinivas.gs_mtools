@@ -1,5 +1,4 @@
-% creates a small dialog box that allows you to choose from
-% a list of items, or enter a new one 
+% creates a UX element that allows you to choose from a list of items, or enter a new one 
 
 
 function choice = chooseGroup(group_names)

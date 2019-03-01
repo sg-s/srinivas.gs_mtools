@@ -1,4 +1,3 @@
-% binByPercentile
 % finds n bins so that each bin has the same number of points
 % usage:
 % bin_edges = binByPercentile(X,n_bins)

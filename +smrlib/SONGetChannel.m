@@ -30,7 +30,7 @@ function[data,header]=SONGetChannel(fid, chan, varargin)
 % Malcolm Lidierth 02/02
 % Updated 06/07 ML
 %       Error checking now allows Spike for Mac files to be loaded
-% Copyright © The Author & King's College London 2002-2006
+% Copyright Â© The Author & King's College London 2002-2006
 
 MatFlag=0;
 SizeOfHeader=20;    % Block header is 20 bytes long
