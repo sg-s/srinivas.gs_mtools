@@ -27,7 +27,7 @@ for toolbox in sorted(glob.glob("./*/",recursive=True)):
 		toolbox_name = toolbox.replace("/","")
 		toolbox_name = toolbox_name.replace("+","")
 		toolbox_name = toolbox_name.replace(".","")
-		outfile.write("[" + toolbox_name + "](./" + toolbox_name + '/)')
+		outfile.write("[" + toolbox_name + "](./+" + toolbox_name + '/)')
 		
 		# make the table headings
 		outfile.write("\n\n| Name | Use |")

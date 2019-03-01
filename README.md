@@ -11,7 +11,7 @@ toolboxes, which means that:
 What can you do with this? Read on:
 
 
- # [axlib](./axlib/)
+ # [axlib](./+axlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -21,7 +21,7 @@ What can you do with this? Read on:
 |test|   |
 
 
- # [clusterlib](./clusterlib/)
+ # [clusterlib](./+clusterlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -33,7 +33,7 @@ What can you do with this? Read on:
 |manual|   |
 
 
- # [corelib](./corelib/)
+ # [corelib](./+corelib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -51,7 +51,7 @@ What can you do with this? Read on:
 |vectorise|   |
 
 
- # [figlib](./figlib/)
+ # [figlib](./+figlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -64,7 +64,7 @@ What can you do with this? Read on:
 |tileFigs|   |
 
 
- # [filelib](./filelib/)
+ # [filelib](./+filelib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -77,7 +77,7 @@ What can you do with this? Read on:
 |write|   |
 
 
- # [geomlib](./geomlib/)
+ # [geomlib](./+geomlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -86,7 +86,7 @@ What can you do with this? Read on:
 |distanceFromLineToPoint|   |
 
 
- # [hashlib](./hashlib/)
+ # [hashlib](./+hashlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -95,7 +95,7 @@ What can you do with this? Read on:
 |md5hash|   |
 
 
- # [imglib](./imglib/)
+ # [imglib](./+imglib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -108,7 +108,7 @@ What can you do with this? Read on:
 |triangle|   |
 
 
- # [mathlib](./mathlib/)
+ # [mathlib](./+mathlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -133,7 +133,7 @@ What can you do with this? Read on:
 |totient|   |
 
 
- # [netlib](./netlib/)
+ # [netlib](./+netlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -143,7 +143,7 @@ What can you do with this? Read on:
 |ping|   |
 
 
- # [neurolib](./neurolib/)
+ # [neurolib](./+neurolib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -154,7 +154,7 @@ What can you do with this? Read on:
 |staggerSpikes|   |
 
 
- # [pathlib](./pathlib/)
+ # [pathlib](./+pathlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -163,7 +163,7 @@ What can you do with this? Read on:
 |name|   |
 
 
- # [pdflib](./pdflib/)
+ # [pdflib](./+pdflib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -182,7 +182,7 @@ What can you do with this? Read on:
 |snap|   |
 
 
- # [plotlib](./plotlib/)
+ # [plotlib](./+plotlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -198,7 +198,7 @@ What can you do with this? Read on:
 |snap|   |
 
 
- # [smrlib](./smrlib/)
+ # [smrlib](./+smrlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -222,7 +222,7 @@ What can you do with this? Read on:
 |load|   |
 
 
- # [statlib](./statlib/)
+ # [statlib](./+statlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -233,7 +233,7 @@ What can you do with this? Read on:
 |spear|   |
 
 
- # [strlib](./strlib/)
+ # [strlib](./+strlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -243,14 +243,14 @@ What can you do with this? Read on:
 |rand|   |
 
 
- # [structlib](./structlib/)
+ # [structlib](./+structlib/)
 
 | Name | Use |
 | -------- | ------- |
 |read|   |
 
 
- # [uxlib](./uxlib/)
+ # [uxlib](./+uxlib/)
 
 | Name | Use |
 | -------- | ------- |
@@ -262,7 +262,7 @@ What can you do with this? Read on:
 |toggleCheckedMenu|   |
 
 
- # [veclib](./veclib/)
+ # [veclib](./+veclib/)
 
 | Name | Use |
 | -------- | ------- |
