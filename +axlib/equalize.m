@@ -1,4 +1,6 @@
 %
+% Equalize X or Y or Z axes across multiple axes. 
+% 
 % **Syntax**
 %
 % ```matlab
@@ -12,10 +14,11 @@
 %
 % **Description**
 %
-% Equalizes X or Y or Z axes across multiple axes. 
+% Equalizes X or Y or Z axes across multiple axes.
+% Use this function to make sure related axes have the same axes,
+% no matter what the data is on those axes.  
 %
-% !!! info "See Also"
-%     ->axlib.separate
+% See Also axlib.separate, axlib.label
 %
 
 

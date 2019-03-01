@@ -16,8 +16,7 @@
 % axes are non-intersecting. It achieves this by plotting lines 
 % that obscure that part of the axes. 
 %
-% !!! info "See Also"
-%     ->axlib.equalize
+% See Also axlib.equalize
 %
 
 

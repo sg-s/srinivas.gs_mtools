@@ -1,9 +1,26 @@
-% labels an axes with a label
-% meant to be called by labelFigure, but can also be called directly
-% usage:
-% labelAxes(ax_handle,label)
-% labelAxes is meant to label axes on the top left corner only. You can specify an offset in X or Y, but don't use these offset to place the label elsewhere. 
-function [label_handle] = label(ax_handle,label,varargin)
+%
+% Add a label to an axes. 
+% 
+% **Syntax**
+%
+% ```matlab
+% label_handle = axlib.label(ax_handle,label)
+% options = axlib.label()
+% label_handle = axlib.label(ax_handle,label, options)
+% ```
+%
+% **Description**
+%
+% Adds a label to an axes so you can generate publication-
+% ready figures from within MATLAB. Includes options
+% to futz with styles and placement so that you can make
+% sure the label is where you want it to be. 
+%
+% See Also axlib.separate, axlib.equalize
+%
+
+ 
+function label_handle = label(ax_handle,label,varargin)
 
 % options and defaults
 options.capitalise = false;
