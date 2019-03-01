@@ -1,5 +1,5 @@
 % draw a diagonal line on a plot
-function drawDiag(ax)
+function ph = drawDiag(ax)
 
 if nargin == 0
 	ax = gca;
@@ -13,5 +13,7 @@ M = max([max(x) max(y)]);
 hold(ax,'on');
 
 X = logspace(log10(eps),log10(M),1e3);
-plot(ax,X,X,'k--');
+ph = plot(ax,X,X,'k--');
+
+uistack(ph,'top')
 

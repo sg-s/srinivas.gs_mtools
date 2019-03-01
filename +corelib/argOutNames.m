@@ -11,7 +11,7 @@
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function names = argOutNames(fname)
 if ~nargin 
-	help argoutnames
+	help corelib.argoutnames
 	return
 end
 fname = char(fname);
