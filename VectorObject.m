@@ -1,4 +1,4 @@
-classdef VectorObject
+classdef (Abstract) VectorObject
 
 
 properties
@@ -7,9 +7,6 @@ end
 
 
 methods
-
-
-
 
 	function self = VectorObject(N)
 

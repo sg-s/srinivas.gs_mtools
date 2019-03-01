@@ -1,7 +1,7 @@
 % defines a hashable object, i.e.,
 % one that you call hash() on
 
-classdef Hashable
+classdef (Abstract) Hashable
 
 
 methods

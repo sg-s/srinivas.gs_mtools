@@ -1,7 +1,7 @@
 % a class that makes objects updatable
 % (as in, from the internet, to new version)
 
-classdef UpdateableHandle < handle
+classdef (Abstract) UpdateableHandle < handle
  
 
 
