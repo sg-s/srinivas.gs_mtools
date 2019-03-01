@@ -1,3 +1,4 @@
+% displays an image in an axis without distortion 
 % this function fixes the limits and positions 
 % of an axes object that contains an image
 % whose sole purpose is to show that image
