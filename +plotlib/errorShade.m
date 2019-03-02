@@ -70,29 +70,18 @@ assert(length(x)==length(y),'All inputs must have the same length')
 assert(length(x)==length(e),'All inputs must have the same length')
 
 % defaults
-Shading = .75;
-Color = [1 0 0];
-LineWidth = 1;
-SubSample = 1;
+options.Shading = .75;
+options.Color = [1 0 0];
+options.LineWidth = 1;
+options.SubSample = 1;
 
-if length(varargin)
-	if mathlib.iseven(length(varargin))
-		for ii = 1:2:length(varargin)-1
-	    	temp = varargin{ii};
-	    	if ischar(temp)
-	        	eval(strcat(temp,'=varargin{ii+1};'));
-	    	end
-		end
-	else
-	    error('Inputs need to be name value pairs')
-	end
-end
+options = corelib.parseNameValueArguments(options, varargin{:});
 
 % subsample
-SubSample = ceil(SubSample);
-x = x(1:SubSample:end);
-y = y(1:SubSample:end);
-e = e(1:SubSample:end);
+options.SubSample = ceil(options.SubSample);
+x = x(1:options.SubSample:end);
+y = y(1:options.SubSample:end);
+e = e(1:options.SubSample:end);
 
 if length(x) < 1e3
 	% fall back to shadedErrorBar
@@ -107,10 +96,10 @@ else
 	xe = [x x NaN*(x)]';
 	ee = ee(:);
 	xe = xe(:);
-	shade_handle = plot(h,xe,ee,'Color',[Color + Shading*(1- Color)]);
+	shade_handle = plot(h,xe,ee,'Color',[options.Color + options.Shading*(1- options.Color)]);
 
 
 	% now plot the plot
-	line_handle = plot(h,x,y,'Color',Color,'LineWidth',LineWidth);
+	line_handle = plot(h,x,y,'Color',options.Color,'LineWidth',options.LineWidth);
 end
 
