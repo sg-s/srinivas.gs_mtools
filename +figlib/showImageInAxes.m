@@ -10,6 +10,8 @@
 
 function showImageInAxes(ax, I)
 
+I = imglib.crop(I);
+
 image(ax,I);
 
 axis(ax,'image')
