@@ -1,7 +1,7 @@
 % plots a trajectory with arrows in 2D space 
 
 
-function ph = trajectory(xx,yy,varargin)
+function [ph, arrows] = trajectory(varargin)
 
 
 options.n_arrows = 3;
@@ -13,6 +13,12 @@ options.draw_base = false;
 options.log_x = true;
 options.log_y = true;
 
+[ax, varargin] = axlib.grabAxHandleFromArguments(varargin{:});
+
+xx = varargin{1};
+yy = varargin{2};
+varargin(1:2) = [];
+
 options = corelib.parseNameValueArguments(options,varargin{:});
 
 assert(isvector(xx),'xx must be a vector')
@@ -23,7 +29,7 @@ yy = yy(:);
 
 assert(length(xx) == length(yy),'xx and yy must be of equal lengths')
 
-plot(xx,yy,'LineWidth',options.LineWidth,'Color',options.Color)
+ph = plot(ax,xx,yy,'LineWidth',options.LineWidth,'Color',options.Color);
 hold on
 
 % normalize xx and yy 
@@ -76,9 +82,9 @@ for i = 1:options.n_arrows
 
 	[this_x, this_y] = plotlib.deNormalize([apex(1) left(1)],[apex(2) left(2)], XLim, YLim, options.log_x, options.log_y);
 
-	line(this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth)
+	arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
 	[this_x, this_y] = plotlib.deNormalize([apex(1) right(1)],[apex(2) right(2)], XLim, YLim, options.log_x, options.log_y);
-	line(this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth)
+	arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
 end
