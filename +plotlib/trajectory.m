@@ -35,12 +35,37 @@ hold on
 % normalize xx and yy 
 XLim = [min(xx) max(xx)];
 YLim = [min(yy) max(yy)];
-[xx,yy] = plotlib.normalize(xx,yy,XLim,YLim,options.log_x,options.log_y);
 
 
-% compute heading
-heading = atan2(diff(yy),diff(xx));
+if diff(XLim) > eps & diff(YLim) > eps
+	xx = plotlib.normalize(xx,XLim,options.log_x);
+	yy = plotlib.normalize(yy,YLim,options.log_y);
+	heading = atan2(diff(yy),diff(xx));
+elseif diff(XLim) > eps & ~(diff(YLim) > eps)
+	%  horizontal line
+	keyboard
 
+elseif diff(YLim) > eps & ~(diff(XLim) > eps)
+	% vertical line
+
+	xx = plotlib.normalize(xx,ax.XLim,options.log_x);
+	yy = plotlib.normalize(yy,YLim,options.log_y);
+	if yy(1) > yy(end)
+		heading = (3*pi/2)*(1 + 0*yy);
+	else
+		heading = (pi/2)*(1 + 0*yy);
+	end
+	
+
+else
+	% this is fucked
+	keyboard
+
+end
+
+
+
+	
 
 % compute cumulative distance along line 
 D = (xx(2:end) - xx(1:end-1)).^2 + (yy(2:end) - yy(1:end-1)).^2;
@@ -52,10 +77,8 @@ D = cumsum([0; D]);
 arrow_spacing = D(end)/(options.n_arrows + 2);
 
 
-
 for i = 1:options.n_arrows
 	idx = find(D>arrow_spacing*i,1,'first');
-
 
 	orientation = rad2deg(heading(idx));
 	centre = [xx(idx) yy(idx)];
@@ -80,11 +103,39 @@ for i = 1:options.n_arrows
 	right(2) = base(2) - c2b*cosd(orientation);
 
 
-	[this_x, this_y] = plotlib.deNormalize([apex(1) left(1)],[apex(2) left(2)], XLim, YLim, options.log_x, options.log_y);
+	if diff(XLim) > eps & diff(YLim) > eps
+		% normal
 
-	arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+		this_x = plotlib.deNormalize([apex(1) left(1)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([apex(2) left(2)], YLim, options.log_y);
 
-	[this_x, this_y] = plotlib.deNormalize([apex(1) right(1)],[apex(2) right(2)], XLim, YLim, options.log_x, options.log_y);
-	arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+		this_x = plotlib.deNormalize([apex(1) right(1)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([apex(2) right(2)], YLim, options.log_y);
+
+		arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+	elseif diff(XLim) > eps & ~(diff(YLim) > eps)
+		% horizonatal line
+		keyboard
+	elseif diff(YLim) > eps & ~(diff(XLim) > eps)
+		% vertical line
+
+		this_x = plotlib.deNormalize([apex(1) left(1)], ax.XLim, options.log_x);
+		this_y = plotlib.deNormalize([apex(2) left(2)], YLim, options.log_y);
+
+		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+		this_x = plotlib.deNormalize([apex(1) right(1)], ax.XLim, options.log_x);
+		this_y = plotlib.deNormalize([apex(2) right(2)], YLim, options.log_y);
+
+		arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+
+
+
+	end
+
 
 end

@@ -23,9 +23,10 @@ else
 	B = varargin{2};
 
 	if nargin > 2
-		N = varargin{2};
+		N = varargin{3};
 	end
 
 end
+
 
 X = logspace(log10(A),log10(B),N);
