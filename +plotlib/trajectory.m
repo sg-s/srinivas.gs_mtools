@@ -14,6 +14,8 @@ options.log_x = true;
 options.log_y = true;
 options.norm_x = true;
 options.norm_y = true;
+options.ArrowAngle = 30; % degrees
+options.ArrowLength = .1;
 
 [ax, varargin] = axlib.grabAxHandleFromArguments(varargin{:});
 
@@ -52,8 +54,9 @@ if diff(XLim) > eps & diff(YLim) > eps
 	xx = plotlib.normalize(xx,XLim,options.log_x);
 	yy = plotlib.normalize(yy,YLim,options.log_y);
 	heading = atan2(diff(yy),diff(xx));
+
 elseif diff(XLim) > eps & ~(diff(YLim) > eps)
-	%  horizontal line
+	disp('horizontal line, not coded')
 	keyboard
 
 elseif diff(YLim) > eps & ~(diff(XLim) > eps)
@@ -69,14 +72,14 @@ elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 	
 
 else
-	% this is fucked
-	keyboard
+	ph = [];
+	arrows = [];
+	return
 
 end
 
 
 
-	
 
 % compute cumulative distance along line 
 D = (xx(2:end) - xx(1:end-1)).^2 + (yy(2:end) - yy(1:end-1)).^2;
@@ -85,68 +88,53 @@ D = cumsum([0; D]);
 
 
 % find points to put arrows in
-arrow_spacing = D(end)/(options.n_arrows + 2);
+arrow_spacing = D(end)/(options.n_arrows+1);
+
 
 
 for i = 1:options.n_arrows
 	idx = find(D>arrow_spacing*i,1,'first');
 
+
+
 	orientation = rad2deg(heading(idx));
-	centre = [xx(idx) yy(idx)];
 
-	c2a = 3*options.size; % centre to apex distance
-	c2b = options.size; % centre to base distance
 
-	%% calculate points
-	% apex
-	apex(1) = centre(1) + c2a*cosd(orientation);
-	apex(2) = centre(2) + c2a*sind(orientation);
+	b(1) = yy(idx) - options.ArrowLength*sin(deg2rad(orientation - options.ArrowAngle));
+	a(1) = xx(idx) - options.ArrowLength*cos(deg2rad(orientation - options.ArrowAngle));
 
-	% base
-	base(1) = centre(1) - c2b*cosd(orientation);
-	base(2) = centre(2) - c2b*sind(orientation);
 
-	% left and right points
-	left(1) = base(1) - c2b*sind(orientation);
-	left(2) = base(2) + c2b*cosd(orientation);
-
-	right(1) = base(1) + c2b*sind(orientation);
-	right(2) = base(2) - c2b*cosd(orientation);
-
+	b(2) = yy(idx) - options.ArrowLength*sin(deg2rad(orientation + options.ArrowAngle));
+	a(2) = xx(idx) - options.ArrowLength*cos(deg2rad(orientation + options.ArrowAngle));
 
 	if diff(XLim) > eps & diff(YLim) > eps
-		% normal
 
-		this_x = plotlib.deNormalize([apex(1) left(1)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([apex(2) left(2)], YLim, options.log_y);
+		% normal
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+
 
 		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
-		this_x = plotlib.deNormalize([apex(1) right(1)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([apex(2) right(2)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(2)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([yy(idx) b(2)], YLim, options.log_y);
 
-		arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
+
 
 	elseif diff(XLim) > eps & ~(diff(YLim) > eps)
-		% horizonatal line
+		disp('horizontal line, not coded')
 		keyboard
 	elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 		% vertical line
 
-		this_x = plotlib.deNormalize([apex(1) left(1)], ax.XLim, options.log_x);
-		this_y = plotlib.deNormalize([apex(2) left(2)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+
 
 		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
-		this_x = plotlib.deNormalize([apex(1) right(1)], ax.XLim, options.log_x);
-		this_y = plotlib.deNormalize([apex(2) right(2)], YLim, options.log_y);
-
-		arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
-
-
-
-
 	end
-
-
 end
