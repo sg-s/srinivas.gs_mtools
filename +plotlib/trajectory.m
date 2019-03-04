@@ -12,6 +12,8 @@ options.Color = 'k';
 options.draw_base = false;
 options.log_x = true;
 options.log_y = true;
+options.norm_x = true;
+options.norm_y = true;
 
 [ax, varargin] = axlib.grabAxHandleFromArguments(varargin{:});
 
@@ -33,8 +35,17 @@ ph = plot(ax,xx,yy,'LineWidth',options.LineWidth,'Color',options.Color);
 hold on
 
 % normalize xx and yy 
-XLim = [min(xx) max(xx)];
-YLim = [min(yy) max(yy)];
+if options.norm_x
+	XLim = [min(xx) max(xx)];
+else
+	XLim = ax.XLim;
+end
+
+if options.norm_y
+	YLim = [min(yy) max(yy)];
+else
+	YLim = ax.YLim;
+end
 
 
 if diff(XLim) > eps & diff(YLim) > eps
