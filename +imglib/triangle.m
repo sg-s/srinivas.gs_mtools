@@ -3,14 +3,20 @@
 % 
 % created by Srinivas Gorur-Shandilya at 18:58 , 30 August 2013. Contact me
 % at http://srinivas.gs/contact/
-function [] = triangle(centre,orientation,size,colour,LineWidth)
-%% params
-c2a = 3*size; % centre to apex distance
-c2b = size; % centre to base distance
+function triangle(centre,orientation,varargin)
 
-if nargin < 5
-	LineWidth = 1;
-end
+
+
+
+options.LineWidth = 1;
+options.draw_base = true;
+options.Color = 'k';
+options.size = 1;
+
+options = corelib.parseNameValueArguments(options,varargin{:});
+
+c2a = 3*options.size; % centre to apex distance
+c2b = options.size; % centre to base distance
 
 %% calculate points
 % apex
@@ -30,7 +36,10 @@ right(2) = base(2) - c2b*cosd(orientation);
 
 %% draw the triangle
 hold on
-line([apex(1) left(1)],[apex(2) left(2)],'Color',colour,'LineWidth',LineWidth)
-line([apex(1) right(1)],[apex(2) right(2)],'Color',colour,'LineWidth',LineWidth)
-line([right(1) left(1)],[right(2) left(2)],'Color',colour,'LineWidth',LineWidth)
+line([apex(1) left(1)],[apex(2) left(2)],'Color',options.Color,'LineWidth',options.LineWidth)
+line([apex(1) right(1)],[apex(2) right(2)],'Color',options.Color,'LineWidth',options.LineWidth)
+
+if options.draw_base
+	line([right(1) left(1)],[right(2) left(2)],'Color',options.Color,'LineWidth',options.LineWidth)
+end
 

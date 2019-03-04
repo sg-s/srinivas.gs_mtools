@@ -1,4 +1,5 @@
 function [X,Y] = normalize(self)
+	
 % convert to normalized coordinates
 n = find(~isnan(self.x),1,'last');
 X = self.x(1:n);
