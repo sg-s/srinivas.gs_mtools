@@ -16,6 +16,8 @@ options.norm_x = true;
 options.norm_y = true;
 options.ArrowAngle = 30; % degrees
 options.ArrowLength = .1;
+options.TerminalArrow = true;
+options.MinTrajLength = .01;
 
 [ax, varargin] = axlib.grabAxHandleFromArguments(varargin{:});
 
@@ -57,7 +59,13 @@ if diff(XLim) > eps & diff(YLim) > eps
 
 elseif diff(XLim) > eps & ~(diff(YLim) > eps)
 	disp('horizontal line, not coded')
-	keyboard
+	yy = plotlib.normalize(yy,ax.YLim,options.log_y);
+	xx = plotlib.normalize(xx,XLim,options.log_x);
+	if xx(1) > xx(end)
+		heading = 0*xx;
+	else
+		heading = (pi)*(1 + 0*xx);
+	end
 
 elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 	% vertical line
@@ -82,14 +90,27 @@ end
 
 
 % compute cumulative distance along line 
-D = (xx(2:end) - xx(1:end-1)).^2 + (yy(2:end) - yy(1:end-1)).^2;
-D = sqrt(D); D = D(:);
-D = cumsum([0; D]);
+D = geomlib.pathlength(xx,yy);
 
+
+% should we plot an arrow? only do so if it's long enough
+if D(end) < options.MinTrajLength
+	return
+end
 
 % find points to put arrows in
 arrow_spacing = D(end)/(options.n_arrows+1);
 
+
+
+% if only one arrow is requested, put that arrow at the end of the line
+if options.n_arrows == 1 && options.TerminalArrow
+	arrow_spacing = D(end-2);
+
+	% use an average heading
+	heading(:) =  mean(heading(ceil(length(heading)/2):end));
+
+end
 
 
 for i = 1:options.n_arrows
@@ -126,7 +147,13 @@ for i = 1:options.n_arrows
 
 	elseif diff(XLim) > eps & ~(diff(YLim) > eps)
 		disp('horizontal line, not coded')
-		keyboard
+		
+
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+
+		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+
 	elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 		% vertical line
 
