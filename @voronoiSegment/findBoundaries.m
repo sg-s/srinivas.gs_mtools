@@ -96,27 +96,6 @@ for i = 1:self.n_classes
 
 end
 
-
-
-% % now find boundaries the traditional way
-% incenters = incenter(DT);
-% boundary_pts = NaN(size(DT.ConnectivityList,1),2);
-% for i = 1:size(DT.ConnectivityList,1)
-% 	% only if the vertices are different 
-% 	if min(self.R(DT.ConnectivityList(i,:))) == max(self.R(DT.ConnectivityList(i,:)))
-% 		continue
-% 	end
-
-% 	% OK, at least one different
-% 	boundary_pts(i,:) = incenters(i,:);
-
-% 	[boundary_pts(i,1),boundary_pts(i,2)] = self.deNormalize(boundary_pts(i,1),boundary_pts(i,2));
-
-% end
-
-
-
-
 self.plotBoundaries(make_plot);
 
 

@@ -115,7 +115,7 @@ else
 end
 
 for i = length(axesHandles):-1:1
-	label_handles(i) = labelAxes(axesHandles(i),L{i},options);
+	label_handles(i) = axlib.label(axesHandles(i),L{i},options);
 	uistack(label_handles(i),'top')
 end
 
