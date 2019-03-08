@@ -1,4 +1,4 @@
-function hfig = tightfig(hfig)
+function hfig = tight(hfig)
 % tightfig: Alters a figure so that it has the minimum size necessary to
 % enclose all axes in the figure without excess space around them.
 % 
