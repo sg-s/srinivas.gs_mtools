@@ -36,7 +36,7 @@ ax.YTick = ax.YLim(1) + options.voltage_scale/2;
 ax.YTickLabel = [strlib.oval(options.voltage_scale) options.voltage_units];
 
 % add a white line to mask the rest of the Y-axis
-plot(ax,[ax.XLim(1) ax.XLim(1)],[ax.YLim(1) + options.voltage_scale ax.YLim(2)],'Color','w','LineWidth',2)
+plot(ax,[ax.XLim(1) ax.XLim(1)],[ax.YLim(1) + options.voltage_scale ax.YLim(2)],'Color','w','LineWidth',3)
 
 % put only one tick on the XAxes
 ax.XTick = ax.XLim(1) + options.time_scale/2;
