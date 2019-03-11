@@ -1,6 +1,6 @@
-function S = GetMD5_helper(V)
-% GetMD5_helper: Convert non-elementary array types for GetMD5
-% The C-Mex function GetMD5 calls this function to obtain meaningful unique data
+function S = hashlib.md5hash_helper(V)
+% hashlib.md5hash_helper: Convert non-elementary array types for hashlib.md5hash
+% The C-Mex function hashlib.md5hash calls this function to obtain meaningful unique data
 % for function handles, java or user-defined objects and sparse arrays. The
 % applied processing can depend on the needs of the users, therefore it is
 % implemented as an M-function, which is easier to modify than the C-code.
@@ -25,9 +25,9 @@ function S = GetMD5_helper(V)
 
 % $JRev: R5i V:008 Sum:hPPK4pV7BpW8 Date:03-Jan-2017 13:59:12 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $File: Tools\GLFile\GetMD5_helper.m $
+% $File: Tools\GLFile\hashlib.md5hash_helper.m $
 % History:
-% 001: 28-Jun-2015 19:19, Helper for GetMD5.
+% 001: 28-Jun-2015 19:19, Helper for hashlib.md5hash.
 
 % Initialize: ==================================================================
 % Do the work: =================================================================

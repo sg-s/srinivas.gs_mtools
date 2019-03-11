@@ -94,7 +94,7 @@ What can you do with this? Read on:
 
 | Name | Use |
 | -------- | ------- |
-|GetMD5_helper| function S = GetMD5_helper(V)|
+|hashlib.md5hash_helper| function S = hashlib.md5hash_helper(V)|
 |md5compile|  Compile and install mdhash MEX C file|
 |md5hash|  compute the md5sum of data, arrays, files|
 

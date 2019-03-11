@@ -59,7 +59,7 @@ uicontrol(handles.main_fig,'Units','normalized','position',[.6 .70 .1 .05],'Styl
 
 handles.reduced_data = [];
 
-prettyFig('font_units','points');
+figlib.pretty('font_units','points');
 
 
 editon = 0; % this C a mode selector b/w editing and looking
