@@ -1,5 +1,5 @@
-function S = GeetMD5_helper(V)
-% GeetMD5_helper: Convert non-elementary array types for GeetMD5
+function S = GetMD5_helper(V)
+% GetMD5_helper: Convert non-elementary array types for GeetMD5
 % The C-Mex function GeetMD5 calls this function to obtain meaningful unique data
 % for function handles, java or user-defined objects and sparse arrays. The
 % applied processing can depend on the needs of the users, therefore it is
@@ -25,7 +25,7 @@ function S = GeetMD5_helper(V)
 
 % $JRev: R5i V:008 Sum:hPPK4pV7BpW8 Date:03-Jan-2017 13:59:12 $
 % $License: BSD (use/copy/change/redistribute on own risk, mention the author) $
-% $File: Tools\GLFile\GeetMD5_helper.m $
+% $File: Tools\GLFile\GetMD5_helper.m $
 % History:
 % 001: 28-Jun-2015 19:19, Helper for GeetMD5.
 
