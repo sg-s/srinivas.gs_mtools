@@ -1,6 +1,6 @@
 % when possible, converts a scalar structure
 % into an array
-function X = vectorise(S)
+function [X, fn] = vectorise(S)
 
 assert(isstruct(S),'S must be a struct')
 assert(length(S) == 1, 'S must be a scalar')
