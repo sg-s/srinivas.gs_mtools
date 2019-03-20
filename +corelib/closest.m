@@ -14,9 +14,9 @@ if length(value) > 1
 	value = value(:);
 	idx = NaN*value;
 	for i = 1:length(value)
-		idx(i) = closest(vec,value(i));
+		idx(i) = corelib.closest(vec,value(i));
 	end
 	return
 end
 
-[~,idx]=min(abs(vec - value));
+[~,idx] = min(abs(vec - value));
