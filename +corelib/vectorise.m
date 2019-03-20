@@ -22,6 +22,9 @@ else
 	for i = 1:length(names)
 		if isscalar(obj.(names{i})) && isnumeric(obj.(names{i}))
 			x(i) = obj.(names{i});
+		elseif isscalar(obj.(names{i})) && islogical(obj.(names{i}))
+			% convert logical into double
+			x(i) = obj.(names{i});
 		end
 	end
 
