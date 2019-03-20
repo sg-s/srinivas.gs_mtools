@@ -15,7 +15,7 @@ options.LineWidth = 1;
 options.yoffset = 0;
 options.deltat = 1e-4;
 options.fill_fraction = .95;
-options.split_rows = true;
+options.split_rows = false;
 
 fn = fieldnames(options);
 
