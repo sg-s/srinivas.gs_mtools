@@ -18,7 +18,7 @@ if ~nargin
 end
 
 assert(n>0,'You requested 0 subplots. WTF?')
-assert(isint(n),'The number of subplots should be an integer')
+assert(mathlib.isint(n),'The number of subplots should be an integer')
 
 if nargin < 3
 	PreferLong = 0;
