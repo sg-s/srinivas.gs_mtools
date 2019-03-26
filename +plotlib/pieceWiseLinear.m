@@ -1,4 +1,4 @@
-% plotPieceWiseLinear.m
+% pieceWiseLinear.m
 % creates a piecewise linear fit to the data, and then plots it
 %
 % created by Srinivas Gorur-Shandilya at 2:03 , 18 September 2015. Contact me at http://srinivas.gs/contact/
@@ -6,7 +6,7 @@
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 
-function [handles, data] = plotPieceWiseLinear(A,B,varargin)
+function [handles, data] = pieceWiseLinear(A,B,varargin)
 
 handles = [];
 data = [];
@@ -139,7 +139,7 @@ data.xe = xe;
         b(rm_this) = [];
 
         % label x axis by percentile
-        l = labelByPercentile(a,options.nbins);
+        l = veclib.labelByPercentile(a,options.nbins);
 
         x = NaN(options.nbins,1);
         y = x; ye = x; xe = x;
@@ -148,13 +148,13 @@ data.xe = xe;
             x(ci) = mean(a(l==ci));
 
             y(ci) = mean(b(l==ci));
-            ye(ci) = sem(b(l==ci));
+            ye(ci) = corelib.sem(b(l==ci));
             if options.use_std
                 xe(ci) = std(a(l==ci));
                 ye(ci) = std(b(l==ci));
             else
-                xe(ci) = sem(a(l==ci));
-                ye(ci) = sem(b(l==ci));
+                xe(ci) = corelib.sem(a(l==ci));
+                ye(ci) = corelib.sem(b(l==ci));
             end
         end
     end
