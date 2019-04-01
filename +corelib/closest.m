@@ -6,6 +6,10 @@
 % 
 function idx = closest(vec, value)
 
+if isempty(vec)
+	idx = [];
+	return
+end
 
 assert(isvector(vec),'first argument should be a vector')
 vec = vec(:);
