@@ -42,10 +42,10 @@ end
 
 % now copy the contents of each of these 10 folders
 for i = 1:10
-	textbar(i,10);
+	corelib.textbar(i,10);
 	this_folder = ['m_n_c_' mat2str(i-1)];
 
-	[e,o] = system(['scp ' files(1).folder filesep this_folder filesep '* ' server_loc]);
+	[e,~] = system(['scp ' files(1).folder filesep this_folder filesep '* ' server_loc]);
 	assert(e == 0,' Error copying files to server')
 
 end
