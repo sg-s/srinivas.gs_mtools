@@ -6,8 +6,9 @@ class_loc = '';
 
 assert( isa(func_handle,'function_handle'),'Input must be a function handle')
 
+
 info = functions(func_handle);
-if ~isempty(info.file)
+if isempty(info.workspace)
 	func_loc = info.file;
 	return
 end
