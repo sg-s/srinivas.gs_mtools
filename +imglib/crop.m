@@ -1,4 +1,5 @@
 % crop image to bounding box
+% allows a 3-pixel buffer
 function C = crop(I)
 
 I_orig = I;
@@ -15,6 +16,7 @@ Y = sum(I,2);
 
 xx = [find(diff(X),1,'first')  find(diff(X),1,'last')];
 yy = [find(diff(Y),1,'first')  find(diff(Y),1,'last')];
+
 
 
 if numel(size(I_orig)) == 3

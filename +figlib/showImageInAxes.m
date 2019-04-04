@@ -19,8 +19,8 @@ axis(ax,'off')
 
 % this actually does something--
 % it sets the mode to manual so it sticks
-ax.XLim = ax.XLim;
-ax.YLim = ax.YLim;
+ax.XLim = [-3 size(I,2)+3];
+ax.YLim = [-3 size(I,1)+3];
 
 ax.YDir = 'reverse';
 ax.XDir = 'normal';
