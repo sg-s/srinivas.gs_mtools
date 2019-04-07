@@ -6,15 +6,19 @@ N = size(X,2);
 
 D = NaN(N);
 
+corelib.partextbar()
+
 if N > 1e3
 
 	parfor i = 1:N
+
 		D(:,i) = neurolib.internal.ISI_parallel(X,i);
 	end
 
 
 else
 	for i = 1:N
+		corelib.textbar(i,N)
 		D(:,i) = neurolib.internal.ISI_parallel(X,i);
 	end
 end

@@ -1,3 +1,5 @@
+% computes the distance between two sets of ISIs
+% using my distance metric
 function D = ISIDistance(A,B)
 
 D = 0;
