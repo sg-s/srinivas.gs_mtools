@@ -6,8 +6,6 @@ N = size(X,2);
 
 D = NaN(N);
 
-corelib.partextbar()
-
 if N > 1e3
 
 	parfor i = 1:N
