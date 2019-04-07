@@ -24,8 +24,8 @@ warning off
 
 
 % options and defaults
-options.lw = 2; % line width of graphical elements
-options.plw = 2; % plot line width
+options.lw = 1.5; % line width of graphical elements
+options.plw = 1.5; % plot line width
 options.fs = 18; % font size
 options.EqualiseY = false;
 options.EqualiseX = false;

@@ -48,7 +48,7 @@ hold(h,'on');
 if nargin == 1 && width(varargin{1}) > 1
 	y = varargin{1};
 	x = 1:length(y); x = x(:);
-	e = sem(y);
+	e = corelib.sem(y);
 	y = mean2(y);
 	varargin(1)= [];
 else
@@ -86,10 +86,10 @@ e = e(1:options.SubSample:end);
 if length(x) < 1e3
 	% fall back to shadedErrorBar
 	axes(h);
-	h = shadedErrorBar(x,y,e,{'Color',Color,'LineWidth',LineWidth});
+	h = plotlib.shadedErrorBar(x,y,e,{'Color',options.Color,'LineWidth',options.LineWidth});
 	line_handle = [h.mainLine h.edge(1) h.edge(2)];
 	shade_handle = h.patch;
-	set(line_handle,'LineWidth',LineWidth);
+	set(line_handle,'LineWidth',options.LineWidth);
 else
 	% first plot the error
 	ee = [y-e y+e NaN*e]';

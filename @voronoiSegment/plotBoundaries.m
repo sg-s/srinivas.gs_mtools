@@ -1,9 +1,13 @@
-function plotBoundaries(self,make_plot, ColorMap)
+function plotBoundaries(self,make_plot, ColorMap, FaceAlpha)
 
 if nargin < 3
 	ColorMap = lines;
 end
 
+
+if nargin < 4
+	FaceAlpha = .35;
+end
 
 warning('off','MATLAB:polyshape:repairedBySimplify')
 
@@ -31,6 +35,8 @@ for i = 1:self.n_classes
 		by = self.boundaries(i).regions(j).y;
 		ph = plot(plot_here,polyshape(bx,by));
 		ph.FaceColor = ColorMap(i,:);
+		ph.FaceAlpha = FaceAlpha;
+		self.handles.regions(i).patches(j) = ph;
 	end
 end
 
