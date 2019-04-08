@@ -7,6 +7,9 @@ D = 0;
 A = veclib.nonnans(A);
 B = veclib.nonnans(B);
 
+A(A==0) = [];
+B(B==0) = [];
+
 lA = length(A);
 lB = length(B);
 
@@ -37,3 +40,4 @@ for i = 1:lB
 	[val, idx] = min(abs(B(i)-A));
 	D = D + val/(B(i) + A(idx));
 end
+
