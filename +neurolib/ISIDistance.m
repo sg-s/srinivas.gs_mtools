@@ -16,7 +16,7 @@ if N > 1e3
 
 else
 	for i = 1:N
-		corelib.textbar(i,N)
+		%corelib.textbar(i,N)
 		D(:,i) = neurolib.internal.ISI_parallel(X,i);
 	end
 end
