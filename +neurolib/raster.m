@@ -72,7 +72,7 @@ for i = 1:length(spiketimes)
     if any(isnan(spiketimes{i}))
         % NaN padded
         spiketimes{i} = veclib.nonnans(spiketimes{i});
-    elseif length(unique(spiketimes{1})) == 2
+    elseif length(unique(spiketimes{1})) == 2 && max(spiketimes{1}) == 1
         disp('binary data')
         keyboard
     else

@@ -13,31 +13,32 @@ B(B==0) = [];
 lA = length(A);
 lB = length(B);
 
+% early exits
 if lA == 0 && lB == 0
+	% no ISIs in either set
+	return
+elseif  lA == 0
+	% one set has only one spike
+	D = 1;
+	return
+elseif lB == 0
+	% one set has only one spike
+	D = 1;
 	return
 end
 
 
-
-
-if lA == 0
-	D = length(B);
-	return
-end
-
-if lB == 0
-	D = length(A);
-	return
-end
-
+DA = 0;
+DB = 0;
 
 for i = 1:lA
 	[val, idx] = min(abs(A(i)-B));
-	D = D + val/(A(i) + B(idx));
+	DA = DA + val/(A(i) + B(idx));
 end
 
 for i = 1:lB
 	[val, idx] = min(abs(B(i)-A));
-	D = D + val/(B(i) + A(idx));
+	DB = DB + val/(B(i) + A(idx));
 end
 
+D = DA/lA + DB/lB;
