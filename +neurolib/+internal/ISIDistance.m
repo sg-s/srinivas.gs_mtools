@@ -19,11 +19,11 @@ if lA == 0 && lB == 0
 	return
 elseif  lA == 0
 	% one set has only one spike
-	D = 1;
+	D = 2;
 	return
 elseif lB == 0
 	% one set has only one spike
-	D = 1;
+	D = 2;
 	return
 end
 
