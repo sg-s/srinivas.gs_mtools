@@ -4,11 +4,14 @@ function D = ISIDistance(A,B)
 
 D = 0;
 
-A = veclib.nonnans(A);
-B = veclib.nonnans(B);
 
-A(A==0) = [];
-B(B==0) = [];
+% remove junk
+rm_this = A==0 | isinf(A) | isnan(A);
+A(rm_this) = [];
+
+rm_this = B==0 | isinf(B) | isnan(B);
+B(rm_this) = [];
+
 
 lA = length(A);
 lB = length(B);
@@ -39,6 +42,7 @@ end
 for i = 1:lB
 	[val, idx] = min(abs(B(i)-A));
 	DB = DB + val/(B(i) + A(idx));
+
 end
 
 D = DA/lA + DB/lB;
