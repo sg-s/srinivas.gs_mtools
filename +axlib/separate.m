@@ -3,7 +3,7 @@
 % **Syntax**
 %
 % ```matlab
-% axlib.separate()
+% axlib.axlib.separate()
 % axlib.separate(ax_handle)
 % axlib.separate(ax_handle,'mask_y',true)
 % axlib.separate(ax_handle,'mask_x',true)
@@ -48,9 +48,9 @@ else
 			mask_handles = struct('x',[],'y',[]);
 			for i = 1:length(ax)
 				if ~isempty(varargin)
-					mask_handles(i) = separate(ax(i),varargin);
+					mask_handles(i) = axlib.separate(ax(i),varargin);
 				else
-					mask_handles(i) = separate(ax(i));
+					mask_handles(i) = axlib.separate(ax(i));
 				end
 			end
 			return
