@@ -10,7 +10,7 @@ else
 end
 
 % options and defaults
-options.Color = lines;
+options.Color = lines(1e3);
 options.LineWidth = 1;
 options.yoffset = 0;
 options.deltat = 1e-4;
