@@ -1,10 +1,9 @@
 function myStruct = setKeyValue(myStruct, varargin)
 % set any number of properties of a struct using key-value pair arguments
 %
-% myStruct = setKeyValue(myStruct, 'PropertyName', PropertyValue, ...)
+% myStruct = structlib.setKeyValue(myStruct, 'PropertyName', PropertyValue, ...)
 %
-% setKeyValue(myStruct) % prints a list of all the fields/properties
-%
+% structlib.setKeyValue(myStruct) % prints a list of all the fields/properties
 %
 % Arguments:
 %    myStruct: any struct or class with properties
