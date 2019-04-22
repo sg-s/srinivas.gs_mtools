@@ -54,6 +54,7 @@ What can you do with this? Read on:
 |textbar|  high-performance text equivalent of waitbar|
 |uid|  return a unique ID |
 |vectorise|  make an array a vector |
+|verb| display a message if condition is true|
 
 
  ## [figlib](./+figlib/)
@@ -243,6 +244,7 @@ What can you do with this? Read on:
 | Name | Use |
 | -------- | ------- |
 |read|  read nested field from a structure|
+|setKeyValue| set field/property by key-value arguments|
 
 
  ## [uxlib](./+uxlib/)
