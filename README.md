@@ -244,8 +244,6 @@ What can you do with this? Read on:
 | Name | Use |
 | -------- | ------- |
 |read|  read nested field from a structure|
-|setKeyValue| set field/property by key-value arguments|
-
 
  ## [uxlib](./+uxlib/)
 
