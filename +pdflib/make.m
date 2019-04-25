@@ -124,7 +124,7 @@ system(['pdflatex "' f '"']);
 % clean up
 cd(orig_dir)
 if ~options.dirty
-	cleanPublish;
+	pdflib.cleanPublish;
 end
 close all
 
