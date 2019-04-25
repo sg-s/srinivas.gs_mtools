@@ -13,7 +13,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = makePDF(varargin)
+function [] = make(varargin)
 
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
@@ -31,7 +31,7 @@ options.dirty = false;
 options.filename = '';
 
 % validate and accept options
-if iseven(length(varargin))
+if mathlib.iseven(length(varargin))
 	for ii = 1:2:length(varargin)-1
 	temp = varargin{ii};
     if ischar(temp)
@@ -124,7 +124,7 @@ system(['pdflatex "' f '"']);
 % clean up
 cd(orig_dir)
 if ~options.dirty
-	cleanPublish;
+	pdflib.cleanPublish;
 end
 close all
 
