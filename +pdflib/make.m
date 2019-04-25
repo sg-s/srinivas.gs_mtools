@@ -13,7 +13,7 @@
 % 
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = makePDF(varargin)
+function [] = make(varargin)
 
 
 assert(~ispc,'makePDF cannot run on a Windows computer')
