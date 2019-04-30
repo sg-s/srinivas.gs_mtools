@@ -3,26 +3,26 @@
 % This function creates an Nx3 array of N [R B G] colors
 % These can be used to plot lots of lines with distinguishable and nice
 % looking colors.
-% 
+%
 % lineStyles = linspecer(N);  makes N colors for you to use: lineStyles(ii,:)
-% 
-% colormap(linspecer); set your colormap to have easily distinguishable 
+%
+% colormap(linspecer); set your colormap to have easily distinguishable
 %                      colors and a pleasing aesthetic
-% 
+%
 % lineStyles = linspecer(N,'qualitative'); forces the colors to all be distinguishable (up to 12)
-% lineStyles = linspecer(N,'sequential'); forces the colors to vary along a spectrum 
-% 
+% lineStyles = linspecer(N,'sequential'); forces the colors to vary along a spectrum
+%
 % % Examples demonstrating the colors.
-% 
+%
 % LINE COLORS
 % N=6;
-% X = linspace(0,pi*3,1000); 
-% Y = bsxfun(@(x,n)sin(x+2*n*pi/N), X.', 1:N); 
+% X = linspace(0,pi*3,1000);
+% Y = bsxfun(@(x,n)sin(x+2*n*pi/N), X.', 1:N);
 % C = linspecer(N);
 % axes('NextPlot','replacechildren', 'ColorOrder',C);
 % plot(X,Y,'linewidth',5)
 % ylim([-1.1 1.1]);
-% 
+%
 % SIMPLER LINE COLOR EXAMPLE
 % N = 6; X = linspace(0,pi*3,1000);
 % C = linspecer(N)
@@ -32,42 +32,42 @@
 %     plot(X,Y,'color',C(ii,:),'linewidth',3);
 %     hold on;
 % end
-% 
+%
 % COLORMAP EXAMPLE
 % A = rand(15);
 % figure; imagesc(A); % default colormap
 % figure; imagesc(A); colormap(linspecer); % linspecer colormap
-% 
+%
 %   See also NDHIST, NHIST, PLOT, COLORMAP, 43700-cubehelix-colormaps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % by Jonathan Lansey, March 2009-2013 – Lansey at gmail.com               %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
+%
 %% credits and where the function came from
 % The colors are largely taken from:
 % http://colorbrewer2.org and Cynthia Brewer, Mark Harrower and The Pennsylvania State University
-% 
-% 
+%
+%
 % She studied this from a phsychometric perspective and crafted the colors
 % beautifully.
-% 
+%
 % I made choices from the many there to decide the nicest once for plotting
 % lines in Matlab. I also made a small change to one of the colors I
 % thought was a bit too bright. In addition some interpolation is going on
 % for the sequential line styles.
-% 
-% 
+%
+%
 %%
 
 function lineStyles=linspecer(N,varargin)
 
 if nargin==0 % return a colormap
-    lineStyles = linspecer(128);
+    lineStyles = colormaps.linspecer(128);
     return;
 end
 
 if ischar(N)
-    lineStyles = linspecer(128,N);
+    lineStyles = colormaps.linspecer(128,N);
     return;
 end
 
@@ -109,7 +109,7 @@ if ~isempty(varargin)>0 % you set a parameter?
         otherwise
             warning(['parameter ''' varargin{1} ''' not recognized']);
     end
-end      
+end
 % *.95
 % predefine some colormaps
   set3 = colorBrew2mat({[141, 211, 199];[ 255, 237, 111];[ 190, 186, 218];[ 251, 128, 114];[ 128, 177, 211];[ 253, 180, 98];[ 179, 222, 105];[ 188, 128, 189];[ 217, 217, 217];[ 204, 235, 197];[ 252, 205, 229];[ 255, 255, 179]}');
@@ -158,20 +158,20 @@ end
 function varIn = colorBrew2mat(varIn)
 for ii=1:length(varIn) % just divide by 255
     varIn{ii}=varIn{ii}/255;
-end        
+end
 end
 
 function varIn = brighten(varIn,varargin) % increase the brightness
 
 if isempty(varargin),
-    frac = .9; 
+    frac = .9;
 else
-    frac = varargin{1}; 
+    frac = varargin{1};
 end
 
 for ii=1:length(varIn)
     varIn{ii}=varIn{ii}*frac+(1-frac);
-end        
+end
 end
 
 function varIn = dim(varIn,f)
@@ -257,6 +257,3 @@ function cmap = interpomap(n,cmapp)
     end
     cmap = (cmap/255); % flipud??
 end
-
-
-
