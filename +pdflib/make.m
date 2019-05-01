@@ -3,15 +3,15 @@
 % needs pdflatex installed. Will not work on Windows.
 % usage:
 % makePDF  % automatically builds PDF from last modified .m file
-% makePDF --dirty % or 
-% makePDF -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.) 
+% makePDF --dirty % or
+% makePDF -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.)
 % makePDF --force % or
 % makePDF -f      % overrides warnings about git status
 % makePDF -f -d filename.m % builds PDF from filename.m
-% 
+%
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+%
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function [] = make(varargin)
 
@@ -19,9 +19,9 @@ function [] = make(varargin)
 assert(~ispc,'makePDF cannot run on a Windows computer')
 
 orig_dir = cd;
-close all 
+close all
 
-% defaults 
+% defaults
 options.showCode = false;
 options.format = 'latex';
 options.imageFormat= 'pdf';
@@ -119,7 +119,7 @@ end
 cd('html')
 
 % convert the .tex to a PDF
-system(['pdflatex "' f '"']);
+system(['xelatex "' f '"']);
 
 % clean up
 cd(orig_dir)
