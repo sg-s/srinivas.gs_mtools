@@ -16,7 +16,7 @@ classdef (Abstract) UpdateableHandle < handle
 
 methods (Static)
 
-	function update(url)
+	function update(url, repo_name)
 
 
 		original_dir = pwd;
@@ -29,8 +29,6 @@ methods (Static)
 		if any(strfind(dir_name,'@'))
 			code_dir = fileparts(code_dir);
 		end
-
-		[~,repo_name] = fileparts(code_dir);
 
 		% check if there exists a .git folder
 
@@ -60,6 +58,7 @@ methods (Static)
 				UpdateableHandle.uninstall(repo_name)
 
 				% download the new toolbox
+				% url paths assume Github releases
 				websave([repo_name '.mltbx'],[url '/releases/download/latest/' repo_name '.mltbx']);
 
 				assert(exist([repo_name '.mltbx']) == 2,'Failed to download toolbox')
