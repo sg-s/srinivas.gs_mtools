@@ -30,7 +30,7 @@ function [line_handle, shade_handle] = errorShade(varargin)
 
 
 if ~nargin
-    help errorShade
+    help plotlib.errorShade
     return
 end
 
