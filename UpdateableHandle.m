@@ -59,7 +59,16 @@ methods (Static)
 
 				% download the new toolbox
 				% url paths assume Github releases
-				websave([repo_name '.mltbx'],[url '/releases/download/latest/' repo_name '.mltbx']);
+				websave('temp',[url '/releases/latest/']);
+				txt = fileread('temp.html');
+				a = strfind(txt,[repo_name '.mltbx']);
+				z = a(end-1);
+				a = strfind(txt,'<a href=');
+				a = a(find(a < z,1,'last'));
+				tbx_url = txt(a:z+length([repo_name '.mltbx']));
+				tbx_url =  [url,strrep(tbx_url(strfind(tbx_url,'/releases/download/'):end),'"','')];
+
+				websave([repo_name '.mltbx'],tbx_url);
 
 				assert(exist([repo_name '.mltbx']) == 2,'Failed to download toolbox')
 
