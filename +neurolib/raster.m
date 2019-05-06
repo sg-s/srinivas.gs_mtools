@@ -16,6 +16,7 @@ options.yoffset = 0;
 options.deltat = 1e-4;
 options.fill_fraction = .95;
 options.split_rows = false;
+options.center = true;
 
 fn = fieldnames(options);
 
@@ -89,6 +90,10 @@ for i = 1:length(spiketimes)
     x = reshape([st;st;NaN(1,length(st))],1,[]);
     y = reshape([(options.yoffset+i-1+zeros(1,length(st))); (options.yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
     y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
+
+    if options.center
+        x = x - min(x);
+    end
 
 
     plot(ax,x*options.deltat,y,'Color',options.Color(i,:),'LineWidth',options.LineWidth), hold on
