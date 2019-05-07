@@ -49,7 +49,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     output_X = mxGetPr(plhs[0]);
     output_Y = mxGetPr(plhs[1]);
 
-
+    // initialize them with NaN
+    for (int i = 0; i < 2*N; i++){
+        output_X[i] = std::numeric_limits<double>::quiet_NaN();
+        output_Y[i] = std::numeric_limits<double>::quiet_NaN();
+    }
 
     // find min and max of vectors
     double x_max = 0;
@@ -89,7 +93,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
             if (input_X[j] > x_min + x_step*(i-1) & input_X[j] < x_min + x_step*i) {
                 output_X[i-1] = input_X[j];
                 output_Y[i-1] = input_Y[j];
-            }
+                break;
+            } 
         }
     }
 
@@ -98,9 +103,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     for (int i = 1; i < N; i++ ) {
         for (int j = 0; j < NY; j++) {
             if (input_Y[j] > y_min + y_step*(i-1) & input_Y[j] < y_min + y_step*i) {
-                output_X[i-1+N] = input_X[j];
-                output_Y[i-1+N] = input_Y[j];
-            }
+                output_X[i-2+N] = input_X[j];
+                output_Y[i-2+N] = input_Y[j];
+                break; 
+            } 
         }
     }
 
