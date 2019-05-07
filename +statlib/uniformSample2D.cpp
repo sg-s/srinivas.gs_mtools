@@ -15,6 +15,7 @@
 // [x,y] = uniformSample2D(X,Y,100);
 
 #include <cmath>
+#include <limits>
 #include "mex.h"
 
 
