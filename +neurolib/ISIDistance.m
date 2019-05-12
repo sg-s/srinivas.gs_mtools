@@ -30,7 +30,7 @@ else
 
 
 	% assume that we want to compute distances between two sets of 
-	% differnet ISIs
+	% different ISIs
 
 	N_X = size(X,2);
 	N_Y = size(Y,2);

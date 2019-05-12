@@ -26,8 +26,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double * BB = mxGetPr(prhs[1]);
 
     const mwSize *ASize, *BSize;
-    ASize = mxGetDimensions(prhs[1]);
-    BSize = mxGetDimensions(prhs[0]);
+    ASize = mxGetDimensions(prhs[0]);
+    BSize = mxGetDimensions(prhs[1]);
 
     int NA = ASize[0];
     int NB = BSize[0];
