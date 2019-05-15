@@ -2,6 +2,29 @@
 % 
 function D = ISIDistance(X, Y)
 
+% check that the binary is up-to-date
+cpp_file = [fileparts(which('neurolib.ISIDistance')) filesep '+internal' filesep 'ISIDistance.cpp'];
+hash = hashlib.md5hash(cpp_file);
+
+
+if isempty(getpref('ISIDistance'))
+	% compile
+	mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
+	setpref('ISIDistance','hash',hash)
+else
+	if isfield(getpref('ISIDistance'),'hash')
+		old_hash = getpref('ISIDistance','hash');
+		if ~strcmp(old_hash,hash)
+			% recompile
+			mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
+			setpref('ISIDistance','hash',hash)
+		end
+	else
+		% recompile
+		mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
+		setpref('ISIDistance','hash',hash)
+	end
+end
 
 if nargin == 1
 
