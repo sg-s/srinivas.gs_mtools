@@ -4,8 +4,7 @@ function D = ISIDistance(X, Y)
 
 % check that the binary is up-to-date
 cpp_file = [fileparts(which('neurolib.ISIDistance')) filesep '+internal' filesep 'ISIDistance.cpp'];
-hash = hashlib.md5hash(cpp_file);
-
+hash = hashlib.md5hash(cpp_file,'File');
 
 if isempty(getpref('ISIDistance'))
 	% compile

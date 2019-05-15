@@ -44,9 +44,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 
     for (int i = 0; i < NA; i++) {
-        if (isinf(AA[i])) {
+        if (std::isinf(AA[i])) {
             continue;
-        } else if (isnan(AA[i])) {
+        } else if (std::isnan(AA[i])) {
             continue;
         } else if (AA[i] > 0) {
             A[lA] = AA[i];
@@ -57,9 +57,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 
     for (int i = 0; i < NB; i++) {
-        if (isinf(BB[i])) {
+        if (std::isinf(BB[i])) {
             continue;
-        } else if (isnan(BB[i])) {
+        } else if (std::isnan(BB[i])) {
             continue;
         } else if (BB[i] > 0) {
             B[lB] = BB[i];
