@@ -36,6 +36,7 @@ varargin(1:3) = [];
 options.clim = [NaN NaN];
 options.use_scatter = true;
 options.n_colors = NaN;
+options.colormap = 'parula';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -58,16 +59,24 @@ if options.use_scatter
 		C = Z - options.clim(1);
 		C = C/options.clim(2);
 		C = floor(C*999 + 1);
+
+		assert(min(C) > 0,'Using the clim you specified leads to out of range array elements. Choose a better clim, or specify NaN to use automatic range detection')
+
 	end
 
-	c = parula(1e3);
+	eval(['c = ' options.colormap '(1e3);']);
 
 	scatter_handle = scatter(ax,X,Y,24,c(C,:),'filled');
 
 	scatter_handle.Marker = 's';
 
+	colormap(ax,options.colormap);
 	chandle = colorbar(ax);
-	caxis(ax,[min(Z) max(Z)])
+	if isnan(options.clim(1))
+		caxis(ax,[min(Z) max(Z)])
+	else
+		caxis(ax,options.clim)
+	end
 
 
 	if nargout == 0

@@ -49,9 +49,7 @@ options = corelib.parseNameValueArguments(options, varargin{:});
 if options.split_rows 
     new_spiketimes = {};
     for i = 1:length(spiketimes)
-        if size(spiketimes{i},2) > size(spiketimes{i},1)
-            spiketimes{i} = transpose(spiketimes{i});
-        end
+
         for j = 1:size(spiketimes{i},2)
             if issparse(spiketimes{i}(:,j))
                 new_spiketimes = [new_spiketimes; find(spiketimes{i}(:,j))];

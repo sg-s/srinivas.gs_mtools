@@ -117,7 +117,7 @@ if options.make_plot
         if options.nbins < 20
             handles = errorbar(options.plot_here,x,y,ye,'Color',options.Color,'LineWidth',options.LineWidth,'Marker',options.Marker,'LineStyle',options.LineStyle);
         else
-            [temp1, temp2] = errorShade(options.plot_here,x,y,ye,'Color',options.Color,'LineWidth',options.LineWidth,'Marker',options.Marker,'LineStyle',options.LineStyle);
+            [temp1, temp2] = plotlib.errorShade(options.plot_here,x,y,ye,'Color',options.Color,'LineWidth',options.LineWidth);
             handles.line = temp1;
             handles.shade = temp2;
         end
