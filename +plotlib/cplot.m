@@ -49,6 +49,12 @@ assert(length(X) == length(Y),'Vectors not of equal length')
 assert(length(X) == length(Z),'Vectors not of equal length')
 
 
+if length(X) == 0
+	varargout{1} = [];
+	varargout{2} = [];
+	return
+end
+
 if options.use_scatter
 	% make color scheme
 	if isnan(options.clim(1))
@@ -57,16 +63,22 @@ if options.use_scatter
 		C = floor(C*999 + 1);
 	else
 		C = Z - options.clim(1);
-		C = C/options.clim(2);
+		C = C/(options.clim(2)-options.clim(1));
 		C = floor(C*999 + 1);
 
 		assert(min(C) > 0,'Using the clim you specified leads to out of range array elements. Choose a better clim, or specify NaN to use automatic range detection')
+
 
 	end
 
 	eval(['c = ' options.colormap '(1e3);']);
 
+	% force to bounds
+	C(C>1e3)  =1e3;
+	C(C<1) = 1;
+
 	scatter_handle = scatter(ax,X,Y,24,c(C,:),'filled');
+
 
 	scatter_handle.Marker = 's';
 
