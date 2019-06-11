@@ -12,4 +12,4 @@ Y = varargin{1};
 
 X = ax.XLim;
 
-lh = plot(X,[Y,Y]);
+lh = plot(ax,X,[Y,Y]);
