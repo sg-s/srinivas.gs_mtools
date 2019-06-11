@@ -310,10 +310,15 @@ for i = 1:length(axesHandles)
 		if isempty(strfind(axesHandles(i).YLabel.String,options.LatexPrefix))
 			% first strip all $ signs
 			S = axesHandles(i).YLabel.String;
-			S = strrep(S,'$','');
+			dollar_signs = (strfind(S,'$'));
+			if length(dollar_signs) ~= 2
+				% give up
+				continue
+			end
+
 
 			% append the prefix 
-			S = ['$' options.LatexPrefix '{' S '}$'];
+			S = [S(1:dollar_signs(1)) options.LatexPrefix '{' S(dollar_signs(1)+1:dollar_signs(2)-1) '}$' S(dollar_signs(2)+1:end)];
 
 			axesHandles(i).YLabel.String = S;
 
@@ -324,10 +329,15 @@ for i = 1:length(axesHandles)
 		if isempty(strfind(axesHandles(i).XLabel.String,options.LatexPrefix))
 			% first strip all $ signs
 			S = axesHandles(i).XLabel.String;
-			S = strrep(S,'$','');
+			dollar_signs = (strfind(S,'$'));
+			if length(dollar_signs) ~= 2
+				% give up
+				continue
+			end
+
 
 			% append the prefix 
-			S = ['$' options.LatexPrefix '{' S '}$'];
+			S = [S(1:dollar_signs(1)) options.LatexPrefix '{' S(dollar_signs(1)+1:dollar_signs(2)-1) '}$' S(dollar_signs(2)+1:end)];
 
 			axesHandles(i).XLabel.String = S;
 
