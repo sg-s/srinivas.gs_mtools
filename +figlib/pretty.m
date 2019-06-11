@@ -24,21 +24,22 @@ warning off
 
 
 % options and defaults
-options.lw = 1.5; % line width of graphical elements
-options.plw = 1.5; % plot line width
-options.fs = 18; % font size
+options.LineWidth = 1.5; % line width of graphical elements
+options.PlotLineWidth = 1.5; % plot line width
+options.FontSize = 18; % font size
 options.EqualiseY = false;
 options.EqualiseX = false;
 options.FixLogX = true;
 options.FixLogY = true;
-options.plot_buffer = 0; % how much should you zoom out of the data to show extremes?
-options.tick_length = 5; % pixels
-options.x_minor_ticks = false;
-options.y_minor_ticks = false;
+options.PlotBuffer = 0; % how much should you zoom out of the data to show extremes?
+options.TickLength = 5; % pixels
+options.XMinorTicks = false;
+options.YMinorTicks = false;
 options.font_units = 'points';
 options.legend_box = false;
-options.tick_dir = 'out';
-options.axis_box = 'on';
+options.TickDir = 'out';
+options.AxisBox = 'on';
+options.LatexPrefix = '\mathrm';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -76,7 +77,7 @@ for i = 1:length(axesHandles)
 	% first change the units 
 	set(axesHandles(i),'FontUnits',options.font_units)
 	% set line width and font size
-	set(axesHandles(i),'FontSize',options.fs,'LineWidth',options.lw)
+	set(axesHandles(i),'FontSize',options.FontSize,'LineWidth',options.LineWidth)
 	% change it back to points
 	axesHandles(i).FontUnits = 'points';
 
@@ -110,7 +111,7 @@ for i = 1:length(axesHandles)
 		else
 			if strcmp(get(axesHandles(i),'XLimMode'),'auto')
 				try
-					set(axesHandles(i),'XLim',[minx-options.plot_buffer*rx maxx+options.plot_buffer*rx])
+					set(axesHandles(i),'XLim',[minx-options.PlotBuffer*rx maxx+options.PlotBuffer*rx])
 				catch
 				end
 			end
@@ -123,7 +124,7 @@ for i = 1:length(axesHandles)
 		else
 			if strcmp(get(axesHandles(i),'YLimMode'),'auto')
 				try
-					set(axesHandles(i),'YLim',[miny-options.plot_buffer*ry maxy+options.plot_buffer*ry])
+					set(axesHandles(i),'YLim',[miny-options.PlotBuffer*ry maxy+options.PlotBuffer*ry])
 				catch
 				end
 			end
@@ -131,12 +132,12 @@ for i = 1:length(axesHandles)
 	end
 
 	% turn the minor ticks on
-	if options.x_minor_ticks
+	if options.XMinorTicks
 		set(axesHandles(i),'XMinorTick','on');
 	else
 		set(axesHandles(i),'XMinorTick','off');
 	end
-	if options.y_minor_ticks
+	if options.YMinorTicks
 		set(axesHandles(i),'YMinorTick','on');
 	else
 		set(axesHandles(i),'YMinorTick','off');
@@ -194,17 +195,17 @@ for i = 1:length(axesHandles)
 		try
 			% only change the Line Width if default
 			if ph(j).LineWidth == .5
-				set(ph(j),'LineWidth',options.plw);
+				set(ph(j),'LineWidth',options.PlotLineWidth);
 			end
 		catch
 			% probably an image or something.
 			% so reverse tick direction
-			if strcmp(options.tick_dir,'out')
+			if strcmp(options.TickDir,'out')
 				set(gca,'TickDir','out')
 			else
 				set(gca,'TickDir','in')
 			end
-			if strcmp(options.axis_box,'on')
+			if strcmp(options.AxisBox,'on')
 				box on
 			else
 				box off
@@ -220,7 +221,7 @@ end
 clear i
 
 % set all tick marks to be the same absolute length
-tl = options.tick_length;
+tl = options.TickLength;
 for i = 1:length(axesHandles)
 	tl_temp = get(axesHandles(i),'TickLength');
 	tl_temp(1) =  tl/longest_axes_length(i);
@@ -234,7 +235,7 @@ end
 ph = findall(axesHandles,'type','line');
 for j = 1:length(ph)
 	if ph(j).LineWidth == .5
-		set(ph(j),'LineWidth',options.plw)
+		set(ph(j),'LineWidth',options.PlotLineWidth)
 	end
 end
 clear j
@@ -245,7 +246,7 @@ clear j
 th = findall(axesHandles,'type','text');
 for j = 1:length(th)
 	set(th(j),'FontUnits',options.font_units)
-	set(th(j),'FontSize',options.fs)
+	set(th(j),'FontSize',options.FontSize)
 	set(th(j),'FontUnits','points')
 end
 clear j
@@ -301,6 +302,40 @@ for i = 1:length(legend_handles)
 		legend_handles(i).Box = 'off';
 	end
 end 
+
+
+% add a prefix if the labels are using a latex interpreter
+for i = 1:length(axesHandles)
+	if strcmp(axesHandles(i).YLabel.Interpreter,'latex')
+		if isempty(strfind(axesHandles(i).YLabel.String,options.LatexPrefix))
+			% first strip all $ signs
+			S = axesHandles(i).YLabel.String;
+			S = strrep(S,'$','');
+
+			% append the prefix 
+			S = ['$' options.LatexPrefix '{' S '}$'];
+
+			axesHandles(i).YLabel.String = S;
+
+		end
+	end
+
+	if strcmp(axesHandles(i).XLabel.Interpreter,'latex')
+		if isempty(strfind(axesHandles(i).XLabel.String,options.LatexPrefix))
+			% first strip all $ signs
+			S = axesHandles(i).XLabel.String;
+			S = strrep(S,'$','');
+
+			% append the prefix 
+			S = ['$' options.LatexPrefix '{' S '}$'];
+
+			axesHandles(i).XLabel.String = S;
+
+		end
+	end
+
+
+end
 
 
 warning on
