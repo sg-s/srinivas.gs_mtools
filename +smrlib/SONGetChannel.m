@@ -82,15 +82,15 @@ switch Info.kind
         [data,header]=smrlib.SONGetMarkerChannel(fid,chan,varargin{:});
     case {6}
         [data,header]=smrlib.SONGetADCMarkerChannel(fid,chan,varargin{:});
-        data.adc=data.adc';
+        data.adc=(data.adc');
         header.transpose=1;
     case {7}
         [data,header]=smrlib.SONGetRealMarkerChannel(fid,chan,varargin{:});
-        data.real=data.real';
+        data.real=(data.real');
         header.transpose=1;
     case {8}
         [data,header]=smrlib.SONGetTextMarkerChannel(fid,chan,varargin{:});
-        data.text=data.text';
+        data.text=(data.text');
         header.transpose=1;
     case {9}
         [data,header]=smrlib.SONGetRealWaveChannel(fid,chan,varargin{:});
@@ -99,7 +99,7 @@ switch Info.kind
         data=[];
         header=[];
         return;
-end;
+end
 
 if MatFlag==1 && ~isempty(data)
     switch Info.kind
@@ -114,8 +114,8 @@ switch Info.kind
     case {6,7}
         if isempty(header)==0
             header.transpose=0;
-        end;
-end;
+        end
+end
 
 % Uncomment this if you want the header stored also (do not do this if
 % using sigTOOL)
