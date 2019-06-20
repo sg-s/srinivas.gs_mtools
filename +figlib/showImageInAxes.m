@@ -10,7 +10,7 @@
 
 function showImageInAxes(ax, I)
 
-I = imglib.crop(I);
+I = imglib.crop(I, 5);
 
 image(ax,I);
 
@@ -19,8 +19,8 @@ axis(ax,'off')
 
 % this actually does something--
 % it sets the mode to manual so it sticks
-ax.XLim = [-3 size(I,2)+3];
-ax.YLim = [-3 size(I,1)+3];
+ax.XLim = [1 size(I,2)];
+ax.YLim = [1 size(I,1)];
 
 ax.YDir = 'reverse';
 ax.XDir = 'normal';

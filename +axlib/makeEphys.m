@@ -34,21 +34,28 @@ for i = 1:length(ax)
 	% add some X-padding 
 	ax(i).XLim(1) = ax(i).XLim(1) -diff(ax(i).XLim)/10;
 
+
+	xlim = ax(i).XLim;
+	ylim = ax(i).YLim;
+
 	% put only one tick on the YAxes
 	ax(i).YTick = ax(i).YLim(1) + options.voltage_scale/2;
 	ax(i).YTickLabel = [strlib.oval(options.voltage_scale) options.voltage_units];
 
 	% add a white line to mask the rest of the Y-axis
-	plot(ax(i),[ax(i).XLim(1) ax(i).XLim(1)],[ax(i).YLim(1) + options.voltage_scale ax(i).YLim(2)],'Color','w','LineWidth',4)
+	plot(ax(i),[ax(i).XLim(1) ax(i).XLim(1)],[ax(i).YLim(1) + options.voltage_scale ax(i).YLim(2)*1.1],'Color','w','LineWidth',4)
 
 	% put only one tick on the XAxes
 	ax(i).XTick = ax(i).XLim(1) + options.time_scale/2;
 	ax(i).XTickLabel = [strlib.oval(options.time_scale) options.time_units];
 
 	% add a white line to mask the rest of the X-axis
-	plot(ax(i),[ax(i).XLim(1) + options.time_scale ax(i).XLim(2)],[ax(i).YLim(1) ax(i).YLim(1)],'Color','w','LineWidth',4)
+	plot(ax(i),[ax(i).XLim(1) + options.time_scale ax(i).XLim(2)*1.1],[ax(i).YLim(1) ax(i).YLim(1)],'Color','w','LineWidth',4)
 
 
 	ax(i).TickLength = [0 0];
+
+	ax(i).XLim = xlim;
+	ax(i).YLim = ylim;
 
 end
