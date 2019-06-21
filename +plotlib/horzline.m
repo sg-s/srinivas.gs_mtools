@@ -9,7 +9,8 @@ else
 end
 
 Y = varargin{1};
+varargin(1) = [];
 
 X = ax.XLim;
 
-lh = plot(ax,X,[Y,Y]);
+lh = plot(ax,X,[Y,Y],varargin{:});
