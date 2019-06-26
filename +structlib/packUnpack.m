@@ -1,9 +1,9 @@
-%% v2struct
-% v2struct Pack/Unpack Variables to/from a scalar structure.
-function varargout = v2struct(varargin)
+%% packUnpack
+% packUnpack Pack/Unpack Variables to/from a scalar structure.
+function varargout = packUnpack(varargin)
 
 %% Description
-%    v2struct has dual functionality in packing & unpacking variables into structures and
+%    packUnpack has dual functionality in packing & unpacking variables into structures and
 %    vice versa, according to the syntax and inputs.
 %
 %    Function features:
@@ -23,22 +23,22 @@ function varargout = v2struct(varargin)
 %
 %% Syntax
 %    Pack
-%      S = v2struct
-%      S = v2struct(x,y,z,...)
-%      S = v2struct(fieldNames)
-%      S = v2struct(A,B,C,..., fieldNames)
-%      S = v2struct(x,..., nameOfStruct2Update, fieldNames)
-%      v2struct
-%      v2struct(x,y,z,...)
-%      v2struct(fieldNames)
-%      v2struct(A,B,C,..., fieldNames)
-%      v2struct(x,..., nameOfStruct2Update, fieldNames)
+%      S = packUnpack
+%      S = packUnpack(x,y,z,...)
+%      S = packUnpack(fieldNames)
+%      S = packUnpack(A,B,C,..., fieldNames)
+%      S = packUnpack(x,..., nameOfStruct2Update, fieldNames)
+%      packUnpack
+%      packUnpack(x,y,z,...)
+%      packUnpack(fieldNames)
+%      packUnpack(A,B,C,..., fieldNames)
+%      packUnpack(x,..., nameOfStruct2Update, fieldNames)
 %
 %    Unpack
-%      v2struct(S)
-%      [a,b,c,...] = v2struct(S)
-%      v2struct(S,fieldNames)
-%      [a,b,c,...] = v2struct(S,fieldNames)
+%      packUnpack(S)
+%      [a,b,c,...] = packUnpack(S)
+%      packUnpack(S,fieldNames)
+%      [a,b,c,...] = packUnpack(S,fieldNames)
 %
 %% Inputs & Outputs
 %    Pack - inputs
@@ -48,7 +48,7 @@ function varargout = v2struct(varargin)
 %                            with the string 'fieldNames' and must be the last input.
 %    Pack - outputs 
 %      S - the packed structure. If there is no output argument then a structure named
-%          Sv2struct would be created in the caller workspace.
+%          SpackUnpack would be created in the caller workspace.
 %
 %    Unpack - inputs
 %      S          - name of structure to be unpacked.
@@ -77,19 +77,19 @@ function varargout = v2struct(varargin)
 %       % structure's field names are defined differently in every syntax. 
 %      % Example 1.
 %      % structure field names defined by variables names.
-%       S = v2struct(x,y,z) 
+%       S = packUnpack(x,y,z) 
 %      % Example 2.
 %      % structure field names defined according to the cell array fieldNames. 
 %       % NOTE: variables with the names in fieldNames1 must exist in the caller workspace.
-%       S = v2struct(fieldNames1) 
+%       S = packUnpack(fieldNames1) 
 %      % Example 3.
 %      % same as #1. but arguments are passed explicitly
-%       S = v2struct(zeros(3), 'Testing123', cell(2,3), fieldNames1) 
+%       S = packUnpack(zeros(3), 'Testing123', cell(2,3), fieldNames1) 
 %      % Example 4.
 %      % field names defined by content of fieldNames2 while
 %      % the values are set according to the passed arguments. In this case the structure
 %      % S returned would be: S.a=x, S.b=y, S.c=z
-%       S = v2struct(x,y,z, fieldNames2) 
+%       S = packUnpack(x,y,z, fieldNames2) 
 %
 %      % Example 5.
 %      % update structure S. The fields that would be updated are according to content
@@ -100,28 +100,28 @@ function varargout = v2struct(varargin)
 %      % nameOfStruct2Update a new structure would be created and the structure that was
 %      % meant to be updated would not get updated.
 %       S.oldField = 'field to be saved for future use'
-%       S = v2struct(x2, nameOfStruct2Update, fieldNames3)
+%       S = packUnpack(x2, nameOfStruct2Update, fieldNames3)
 %
 %      % Example 6.
 %      % pack all variables in caller workspace. Call without input arguments.
-%        S = v2struct
+%        S = packUnpack
 %
 %      % The following examples return the same results as the examples above but the
-%      % structure would be returned with the default name 'Sv2struct'. Be cautious as
+%      % structure would be returned with the default name 'SpackUnpack'. Be cautious as
 %      % this might lead to overriding of arguments.
 %      % Example 7.
-%       v2struct(x,y,z)
+%       packUnpack(x,y,z)
 %      % Example 8.
-%       v2struct(fieldNames1)
+%       packUnpack(fieldNames1)
 %      % Example 9.
-%       v2struct(zeros(3), 'Testing123', cell(2,3), fieldNames1)
+%       packUnpack(zeros(3), 'Testing123', cell(2,3), fieldNames1)
 %      % Example 10.
-%       v2struct(x,y,z, fieldNames2)
+%       packUnpack(x,y,z, fieldNames2)
 %      % Example 11.
 %       S.oldField = 'field to be saved for future use'
-%       v2struct(x2, nameOfStruct2Update, fieldNames3)
+%       packUnpack(x2, nameOfStruct2Update, fieldNames3)
 %      % Example 12.
-%       v2struct
+%       packUnpack
 %
 %  % Unpack
 %      clear S x x2 y z fieldNames1 fieldNames2 fieldNames3 nameOfStruct2Update
@@ -131,26 +131,26 @@ function varargout = v2struct(varargin)
 %      % Example 1.
 %      % This example creates or overwrites variables x, y, z in the caller with the
 %      % contents of the corresponding named fields.
-%       v2struct(S)
+%       packUnpack(S)
 %
 %      % Example 2.
 %      % This example assigns the contents of the fields of the scalar structure
 %      % S to the variables a,b,c rather than overwriting variables in the caller. If
 %      % there are fewer output variables than there are fields in S, the remaining fields
 %      % are not extracted.
-%       [a,b,c] = v2struct(S)
+%       [a,b,c] = packUnpack(S)
 %
 %      % Example 3.
 %      % This example creates or overwrites variables x and z in the caller with the
 %      % contents of the corresponding named fields.
-%       v2struct(S, fieldNames3)
+%       packUnpack(S, fieldNames3)
 %
 %      % Example 4.
 %      % This example assigns the contents of the fields 'x' and 'z' defined by
 %      % fieldNames3 of the scalar structure S to the variables a and b rather than
 %      % overwriting variables in the caller. If there are fewer output variables than
 %      % there are fields in S, the remaining fields are not extracted.
-%       [a,b] = v2struct(S, fieldNames3)
+%       [a,b] = packUnpack(S, fieldNames3)
 %
 %       % This example unpacks variables 'y' and 'z' only without overwriting variable 'x'. 
 %       % NOTE the addition of the field named 'avoidOverWrite' to the structure to be
@@ -158,12 +158,12 @@ function varargout = v2struct(varargin)
 %       % contents of this field can be anything, it does not matter. 
 %      S.avoidOverWrite = '';
 %      x = 'do not overwrite me';
-%      v2struct(S)
+%      packUnpack(S)
 %
 %% Usage example (includes sub-functions)
-%    1. run attached v2structDemo1.m file for on screen presentation of examples.
-%    2. run attached v2structDemo2.m file and read comments in file for a suggestion of
-%       how to use v2struct in managing input to other functions with improved usability.
+%    1. run attached packUnpackDemo1.m file for on screen presentation of examples.
+%    2. run attached packUnpackDemo2.m file and read comments in file for a suggestion of
+%       how to use packUnpack in managing input to other functions with improved usability.
 %
 %% Revision history
 %    2011-05-19, Adi N., Creation
@@ -321,14 +321,14 @@ else
             else
                msgStr = [name, ''' was'];
             end
-            warnMsg = ['V2STRUCT - ''%s packed in the structure.'...
-               '\nTo avoid this warning do not put ''%s'' as last v2struct input.'...
+            warnMsg = ['packUnpack - ''%s packed in the structure.'...
+               '\nTo avoid this warning do not put ''%s'' as last packUnpack input.'...
                '\nIf you want to pack (or unpack) using ''%s'' as designated names'...
                ' of the'...
                '\nstructure''s fields, add a cell with the string ''fieldNames'' to'...
                ' ''%s''.'];
             fprintf('\n')
-            warning('MATLAB:V2STRUCT:cellArrayOfStringNotFieldNames',warnMsg,msgStr,...
+            warning('MATLAB:packUnpack:cellArrayOfStringNotFieldNames',warnMsg,msgStr,...
                      name,name,name)
          end
       end
@@ -354,7 +354,7 @@ else
    end % if ~gotFieldNames
 
 if nargout == 0
-   assignin( 'caller', 'Sv2struct',S );
+   assignin( 'caller', 'SpackUnpack',S );
 else
    varargout{1} = S;
 end
