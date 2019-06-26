@@ -3,8 +3,13 @@
 
 function C = redula(N)
 
+
+
 if nargin == 0
 	N = 100;
+else
+	assert(isnumeric(N) && isscalar(N) && isreal(N) && N > 50,'N must be a +ve integer > 50');
+	N = round(N);
 end
 
 
