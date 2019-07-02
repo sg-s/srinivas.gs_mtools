@@ -1,10 +1,10 @@
-function Y = sortCell(X, DIM)
-% SORTCELL    Sort a cell array in ascending order.
+function Y = sort(X, DIM)
+% celllib.sort    Sort a cell array in ascending order.
 %
-% Description: SORTCELL sorts the input cell array according to the
+% Description: celllib.sort sorts the input cell array according to the
 %   dimensions (columns) specified by the user.
 %
-% Usage: Y = sortCell(X, DIM)
+% Usage: Y = celllib.sort(X, DIM)
 %
 % Input:
 %	   X: the cell array to be sorted.
@@ -17,7 +17,7 @@ function Y = sortCell(X, DIM)
 % Output:
 %     Y: the sorted cell array.
 %
-% Example:    Y = sortCell(X, [3 2])
+% Example:    Y = celllib.sort(X, [3 2])
 %
 % Note that this function has only been tested on mixed cell arrays
 % containing character strings and numeric values.
@@ -62,14 +62,14 @@ elseif nargin > 2
 end
 
 % Now find out if the cell array is being sorted on more than one column.
-% If it is then use recursion to call the sortCell function again to sort
-% the less important columns first. Repeat calls to sortCell until only one
+% If it is then use recursion to call the celllib.sort function again to sort
+% the less important columns first. Repeat calls to celllib.sort until only one
 % column is left to be sorted. Then return the sorted cell array to the
 % calling function to continue with the higher priority sorting.
 ndim = length(DIM);
 if ndim > 1
 	col = DIM(2:end);
-	X = sortCell(X, col);
+	X = celllib.sort(X, col);
 end
 
 % Get the dimensions of the input cell array.

@@ -9,7 +9,22 @@ else
 end
 
 X = varargin{1};
+varargin(1) = [];
+X = X(:);
 
-Y = ax.YLim;
 
-lh = plot(ax,[X,X],Y);
+if length(X) > 1
+	X = veclib.interleave(X,X,X*NaN);
+	Y = NaN*X;
+	Y(1:3:end) = ax.YLim(1);
+	Y(2:3:end) = ax.YLim(2);
+	lh = plot(ax,X,Y, varargin{:});
+
+else
+	Y = ax.YLim;
+	lh = plot(ax,[X,X],Y, varargin{:});
+	
+end
+
+
+

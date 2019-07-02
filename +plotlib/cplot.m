@@ -105,20 +105,25 @@ else
 	% discretize the colormap and make N different plots
 	% with those colors
 
-	assert(~isnan(options.n_colors),'n_colors must be specified')
 
 	% discretize colors
-	C = Z - min(Z);
-	C = C/max(C);
-	C = floor(C*(options.n_colors-1))+1;
-	c = parula(options.n_colors);
+	NColors = length(options.colormap);
+	C = Z - options.clim(1);
+	C = C/(diff(options.clim));
+	C = floor(C*NColors);
+	C(C<1) = 1;
+	C(C>NColors) = NColors;
 
-	for i = options.n_colors:-1:1
-		plot_handles(i) = plot(X(C==i),Y(C==i),'.','Color',c(i,:));
+	
+	clear plot_handles
+	for i = NColors:-1:1
+		if any(C==i)
+			plot_handles(i) = plot(X(C==i),Y(C==i),'.','Color',options.colormap(i,:));
+		end
 	end
 
 	chandle = colorbar(ax);
-	caxis(ax,[min(Z) max(Z)])
+	caxis(ax,options.clim)
 
 	if nargout == 0
 	elseif nargout == 1
