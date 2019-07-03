@@ -28,17 +28,27 @@ if ~nargin
     return
 end
 
+if nargin == 1
+    X = [];
+    labels = {};
+end
+
 % orient data correctly 
 if ~isvector(R)
-
+    % R is a matrix
+    if size(R,2) < size(R,1)
+        R = R';
+    end
 else
     R = R(:);
     R = [R randn(length(R),1)];
     R = R';
 end
 
+if ~isempty(X)
+    assert(length(R) == size(X,2),'reduced and full data should be of equal lengths')
 
-assert(length(R) == size(X,2),'reduced and full data should be of equal lengths')
+end
 assert(iscell(labels),'Labels should be cell array')
 
 idx = zeros(1,length(R)); % stores the cluster ID
@@ -54,8 +64,11 @@ end
 handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@closeManualCluster); hold on,axis off
 handles.ax(1) = axes('parent',handles.main_fig,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');axis square, hold on ; title('Reduced Data')
 handles.ax(2) = axes('parent',handles.main_fig,'position',[0.6 0.1 0.3 0.3],'box','on','TickDir','out');axis square, hold on  ; title('Raw data'), set(gca,'YLim',[min(min(R)) max(max(R))]);
-uicontrol(handles.main_fig,'Units','normalized','position',[.6 .55 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
-uicontrol(handles.main_fig,'Units','normalized','position',[.6 .70 .1 .05],'Style','text','FontSize',24,'String','Add to:');
+handles.select_class_control = uicontrol(handles.main_fig,'Units','normalized','position',[.6 .50 .35 .15],'Style','popupmenu','FontSize',24,'String',labels,'Callback',@addToCallback);
+uicontrol(handles.main_fig,'Units','normalized','position',[.6 .65 .1 .05],'Style','text','FontSize',24,'String','Add to:','BackgroundColor','w');
+
+handles.new_class_control = uicontrol(handles.main_fig,'Units','normalized','position',[.6 .8 .2 .05],'Style','edit','FontSize',24,'String','','BackgroundColor','w');
+uicontrol(handles.main_fig,'Units','normalized','position',[.82 .8 .15 .05],'Style','pushbutton','FontSize',24,'String','Add class','Callback',@addClass);
 
 handles.reduced_data = [];
 
@@ -69,30 +82,53 @@ clusterPlot;
 
 uiwait(handles.main_fig);
 
-    function closeManualCluster(~,~)
-        % first make sure that there are no unassigned data points
-        if min(idx) == 0
-            unassigned_data = find(idx==0);
-            assignations = NaN*unassigned_data;
-            % create a duplicate dataset with unassigned data at Infinity
-            
-            for i = 1:length(unassigned_data)
-                % find closest assigned point
-                R2 = R;
-                R2(:,setdiff(unassigned_data,unassigned_data(i))) = NaN;
-                % find distance to all points
-                d=((R2(1,unassigned_data(i))-R2(1,:)).^2 + (R2(2,unassigned_data(i))-R2(2,:)).^2); 
-                % set self distance to Inf
-                d(unassigned_data(i)) = NaN;
-                [~,loc]=min(d);
-                assignations(i) = idx(loc);            
-            end
-            idx(idx==0) = assignations;
-            clusterPlot;
-        end
-        delete(handles.main_fig)
-        return
+
+
+
+
+
+
+
+
+% begin subfunctions
+
+
+function addClass(~,~)
+    labels = [labels handles.new_class_control.String];
+    handles.select_class_control.String = labels;
+    c = parula(length(labels) + 1);
+
+    for i = 1:length(labels)
+        handles.reduced_data(i+1) = plot(NaN,NaN);
+        handles.sorted_full_data(i) = plot(handles.ax(2),NaN,NaN,'Color',c(i,:),'LineWidth',2);
     end
+end
+
+
+function closeManualCluster(~,~)
+    % first make sure that there are no unassigned data points
+    if min(idx) == 0
+        unassigned_data = find(idx==0);
+        assignations = NaN*unassigned_data;
+        % create a duplicate dataset with unassigned data at Infinity
+        
+        for i = 1:length(unassigned_data)
+            % find closest assigned point
+            R2 = R;
+            R2(:,setdiff(unassigned_data,unassigned_data(i))) = NaN;
+            % find distance to all points
+            d=((R2(1,unassigned_data(i))-R2(1,:)).^2 + (R2(2,unassigned_data(i))-R2(2,:)).^2); 
+            % set self distance to Inf
+            d(unassigned_data(i)) = NaN;
+            [~,loc]=min(d);
+            assignations(i) = idx(loc);            
+        end
+        idx(idx==0) = assignations;
+        clusterPlot;
+    end
+    delete(handles.main_fig)
+    return
+end
 
     function addToCallback(src,~)
         editon = 1;
@@ -123,6 +159,7 @@ uiwait(handles.main_fig);
             end
             % plot unassigned data
             handles.reduced_data(1) = plot(handles.ax(1),R(1,:),R(2,:),'+','Color',[.5 .5 .5]);
+
             
             if length(X) > 100
                 plotX = X(:,1:floor(length(X)/100):end);
@@ -131,19 +168,24 @@ uiwait(handles.main_fig);
             end
             plot(handles.ax(2),plotX,'Color',[.5 .5 .5]);
             handles.current_pt_raw_data = plot(handles.ax(2),NaN,NaN);
-            set(handles.ax(2),'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
+            if ~isempty(X)
+                set(handles.ax(2),'YLim',[min(min(X)) max(max(X))],'XLim',[1 size(X,1)])
+            end
         else
             set(handles.reduced_data(1),'XData',R(1,idx==0),'YData',R(2,idx==0),'Parent',handles.ax(1),'Marker','+','LineStyle','none','MarkerFaceColor','none','Color',[.5 .5 .5]);
+
             for i = 2:length(labels)+1
                 set(handles.reduced_data(i),'XData',R(1,idx==i-1),'YData',R(2,idx==i-1),'Parent',handles.ax(1),'Marker','o','LineStyle','none','MarkerFaceColor',c(i-1,:),'MarkerEdgeColor',c(i-1,:));
             end
 
             % average the raw data over the sorted clusters and plot those
-            for i = 1:length(labels)
-                plotX = X(:,idx == i);
-                handles.sorted_full_data(i).XData = 1:size(plotX,1);
-                handles.sorted_full_data(i).YData = nanmean(plotX,2);
-                uistack(handles.sorted_full_data(i),'top')
+            if ~isempty(X)
+                for i = 1:length(labels)
+                    plotX = X(:,idx == i);
+                    handles.sorted_full_data(i).XData = 1:size(plotX,1);
+                    handles.sorted_full_data(i).YData = nanmean(plotX,2);
+                    uistack(handles.sorted_full_data(i),'top')
+                end
             end
             drawnow
             
