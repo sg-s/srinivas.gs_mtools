@@ -37,3 +37,10 @@ if isempty(self.DisplayFcn)
 else
 	keyboard
 end
+
+
+
+if ~isempty(self.MouseCallback)
+    self.CurrentPoint = cp;
+    self.MouseCallback(self)
+end

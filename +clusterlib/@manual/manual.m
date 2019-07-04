@@ -22,6 +22,10 @@ properties (Access = protected)
     DrawingClusters@logical = false;
 end
 
+properties (SetAccess = protected)
+    CurrentPoint@double = NaN
+end
+
 
 methods 
 
