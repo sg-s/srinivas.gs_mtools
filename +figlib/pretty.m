@@ -85,10 +85,17 @@ for i = 1:length(axesHandles)
 	ph = findall(axesHandles(i),'type','line');
 	xlimits = NaN(2,length(ph));
 	ylimits = NaN(2,length(ph));
+
 	for j = 1:length(ph)
 		temp=get(ph(j),'XData');
+		if isempty(temp)
+			continue
+		end
 		xlimits(1,j) = min(temp); xlimits(2,j) = max(temp); clear temp
 		temp=get(ph(j),'YData');
+		if isempty(temp)
+			continue
+		end
 		ylimits(1,j) = min(temp); ylimits(2,j) = max(temp); clear temp
 	end
 	clear j
