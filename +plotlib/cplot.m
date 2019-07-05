@@ -80,7 +80,7 @@ if options.use_scatter
 	scatter_handle = scatter(ax,X,Y,24,c(C,:),'filled');
 
 
-	scatter_handle.Marker = 's';
+	scatter_handle.Marker = 'o';
 
 	colormap(ax,options.colormap);
 	chandle = colorbar(ax);
