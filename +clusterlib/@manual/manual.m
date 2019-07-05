@@ -61,6 +61,21 @@ methods
     end
 
 
+    function self = set.idx(self, value)
+
+        self.idx = value;
+        
+        d = dbstack;
+        if any(strcmp({d.name},'manual.set.ReducedData'))
+            
+            return
+        end
+
+        self.labels = [self.labels; categorical(categories(value))];
+
+    end
+
+
 end % methods 
 
 

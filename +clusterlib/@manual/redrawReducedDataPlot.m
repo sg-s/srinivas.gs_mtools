@@ -19,7 +19,6 @@ end
 
 
 % populate handles for every class
-
 for i = 1:length(unique_labels)
 
 	plot_this = self.idx == unique_labels(i);
@@ -31,9 +30,6 @@ for i = 1:length(unique_labels)
 	end
 
 end
-
-
-
 
 % now also plot the raw data
 if isempty(self.DisplayFcn)
@@ -48,8 +44,6 @@ if isempty(self.DisplayFcn)
 	self.handles.RawData(plot_idx).YData = mean(self.RawData,2);
 
 	self.handles.RawData(plot_idx).Color = [.5 .5 .5];
-
-
 
 
 else
