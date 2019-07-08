@@ -1,17 +1,19 @@
 function redrawReducedDataPlot(self,~,~)
 
 unique_labels =  unique(self.labels);
+C = colormaps.linspecer(length(unique_labels));
+
 
 % create plots if needed
 if length(self.handles.ReducedData) < length(unique_labels)
 	for i = length(self.handles.ReducedData)+1:length(unique_labels)
-		self.handles.ReducedData(i) = plot(self.handles.ax(1),NaN,NaN,'.');
+		self.handles.ReducedData(i) = plot(self.handles.ax(1),NaN,NaN,'.','MarkerFaceColor',C(i,:),'MarkerEdgeColor',C(i,:),'MarkerSize',20);
 	end
 end
 
 if length(self.handles.RawData) < length(unique_labels)
 	for i = length(self.handles.RawData)+1:length(unique_labels)
-		self.handles.RawData(i) = plot(self.handles.ax(2),NaN,NaN);
+		self.handles.RawData(i) = plot(self.handles.ax(2),NaN,NaN,'MarkerFaceColor',C(i,:),'MarkerEdgeColor',C(i,:),'MarkerSize',20);
 	end
 end
 
