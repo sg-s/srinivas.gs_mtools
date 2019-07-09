@@ -17,7 +17,7 @@
 %
 % This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [ons,offs] = computeOnsOffs(x, threshold)
+function [ons,offs] = computeOnsOffs(x)
 if ~nargin
 	help computeOnsOffs
 	return
@@ -26,16 +26,9 @@ else
 	x = double(x);
 end
 
-if nargin < 2
-	% normalize and threshold by the half-maximum
-	x= x/max(x);
-	x(x<.5) = 0;
-	x(x>0) = 1;
-else
-	% use a threshold parameter
-	x(x < threshold) = 0;
-	x(x > threshold) = 1;
-end
+x= x/max(x);
+x(x<.5) = 0;
+x(x>0) = 1;
 
 ons = find(diff(x)==1);
 offs = find(diff(x)==-1);
