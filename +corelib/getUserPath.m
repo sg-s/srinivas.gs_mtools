@@ -1,11 +1,17 @@
 % returns the user path of the path
 % you would imagine userpath does this, but it doesn't
 % 
-function [p] = getUserPath()
+% usage:
+% p = corelib.getUserPath()
+% 
+% A more readable version:
+% strsplit(corelib.getUserPath,pathsep)'
+
+function p = getUserPath()
 
 % get MATLAB name and version
 v = version;
-v  = v(strfind(v,'(')+1:strfind(v,')')-1);
+v = v(strfind(v,'(')+1:strfind(v,')')-1);
 
 p = path;
 p = [pathsep p pathsep];
