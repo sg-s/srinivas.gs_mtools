@@ -2,7 +2,7 @@ classdef manual < ConstructableHandle
 
 properties
 
-    labels@categorical = categorical({'Undefined'});
+    labels@categorical = categorical(NaN);
     idx@categorical
     
     RawData
@@ -50,14 +50,14 @@ methods
 
         self.ReducedData = value;
 
-        self.idx = repmat(categorical({'Undefined'}),N,1);
+        self.idx = repmat(categorical(NaN),N,1);
 
     end
 
 
 
     function self = set.labels(self, value)
-        self.labels = [value(:); categorical({'Undefined'})];
+        self.labels = [value(:); categorical(NaN)];
     end
 
 

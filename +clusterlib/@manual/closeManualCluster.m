@@ -1,13 +1,10 @@
 function closeManualCluster(self,~,~)
 
 
-UNDF = categorical({'Undefined'});
-
-
-undefined_pts = self.idx == UNDF;
+undefined_pts = isundefined(self.idx);
 
 % first make sure that there are no unassigned data points
-if any(self.idx ~= UNDF)
+if any(undefined_pts)
 
 	for i = 1:length(self.idx)
 		 R2 = self.ReducedData;

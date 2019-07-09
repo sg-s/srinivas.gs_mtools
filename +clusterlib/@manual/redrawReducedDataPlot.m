@@ -27,7 +27,7 @@ for i = 1:length(unique_labels)
 	self.handles.ReducedData(i).XData = self.ReducedData(plot_this,1);
 	self.handles.ReducedData(i).YData = self.ReducedData(plot_this,2);
 
-	if unique_labels(i) == categorical({'Undefined'})
+	if unique_labels(i) == categorical(NaN)
 		self.handles.ReducedData(i).Color = [.5 .5 .5];
 	end
 
@@ -39,13 +39,15 @@ if isempty(self.DisplayFcn)
 
 
 	% first plot the unsorted data
-	plot_this = self.idx == categorical({'Undefined'});
-	plot_idx = find(unique_labels == categorical({'Undefined'}));
+	plot_this = self.idx == categorical(NaN);
+	plot_idx = find(unique_labels == categorical(NaN));
 
-	self.handles.RawData(plot_idx).XData = 1:size(self.RawData,1);
-	self.handles.RawData(plot_idx).YData = mean(self.RawData,2);
+	if ~isempty(plot_idx)
+		self.handles.RawData(plot_idx).XData = 1:size(self.RawData,1);
+		self.handles.RawData(plot_idx).YData = mean(self.RawData,2);
 
-	self.handles.RawData(plot_idx).Color = [.5 .5 .5];
+		self.handles.RawData(plot_idx).Color = [.5 .5 .5];
+	end
 
 
 else
