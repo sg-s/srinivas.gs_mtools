@@ -15,10 +15,10 @@
 %
 %   crossings = thresholdCrossings(V, -50);
 %   crossings = thresholdCrossings(V, -50, 'first');
-%   crossings = thresholdCrossings(V, -50, 'first', 7);
+%   crossings = thresholdCrossings(V, -50, 7, 'first');
 %
 
-function crossings = thresholdCrossings(V, threshold, mode, k)
+function crossings = thresholdCrossings(V, threshold, k, mode)
 
   if ~exist('threshold', 'var')
     threshold = 0;
