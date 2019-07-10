@@ -6,48 +6,47 @@
 %     'all': all crossings (default)
 %     'first': only the first crossing
 %     'last': only the last crossing
+%   k: a positive integer
+%     returns at most the first k threshold crossings
 %% Outputs:
 %   crossings: indices of upwards crossings as an n x 1 vector, where n is the number of saved crossings
 %
 %% Examples:
 %
-%   [ons, offs] = thresholdCrossings(V, -50);
-%   [ons, offs] = thresholdCrossings(V, -50, 'all');
+%   crossings = thresholdCrossings(V, -50);
+%   crossings = thresholdCrossings(V, -50, 'first');
+%   crossings = thresholdCrossings(V, -50, 'first', 7);
 %
 
-function [ons, offs] = thresholdCrossings(V, threshold, mode)
+function crossings = thresholdCrossings(V, threshold, mode, k)
 
-  if nargin < 2
+  if ~exist('threshold', 'var')
     threshold = 0;
   end
 
-  if nargin < 3
+  if ~exist('mode', 'var')
     mode = 'all';
   end
 
-  % output containers
-  ons = [];
-  offs = [];
-
-  % check crossings in both directions, for each index
-  for ii = 1:length(V)-1
-    if V(ii) < threshold & V(ii+1) >= threshold
-      ons(end+1) = ii+1;
-    end
-    if V(ii) > threshold & V(ii+1) <= threshold
-      offs(end+1) = ii+1;
-    end
+  if ~exist('k', 'var')
+    k = Inf;
   end
 
+  % output containers
+  crossings = [];
+  % offs = [];
+
+  % check crossings in both directions, as specified by mode
   switch mode
   case 'all'
-    return
+    crossings   = find(diff(V > threshold) ~= 0, k) + 1;
+    % offs  = find(diff(V < threshold) ~= 0, k) + 1;
   case 'first'
-    ons = ons(1);
-    offs = offs(1);
+    crossings   = find(diff(V > threshold) ~= 0, k, 'first') + 1;
+    % offs  = find(diff(V < threshold) ~= 0, k, 'first') + 1;
   case 'last'
-    ons = ons(end);
-    offs = offs(end);
+    crossings   = find(diff(V > threshold) ~= 0, k, 'last') + 1;
+    % offs  = find(diff(V < threshold) ~= 0, k, 'last') + 1;
   otherwise
     error('unknown mode: please specify ''all'', ''first'', or ''last''');
   end
