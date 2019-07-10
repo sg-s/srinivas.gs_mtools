@@ -2,12 +2,12 @@
 %% Arguments:
 %   V: the time-series as a vector
 %   threshold: the threshold as a scalar, defaults to 0
+%   k: a positive integer
+%     returns at most the first k threshold crossings, defaults to Inf
 %   mode: a character vector that determines whether to collect the first, last, or all  upward crossings
 %     'all': all crossings (default)
-%     'first': only the first crossing
-%     'last': only the last crossing
-%   k: a positive integer
-%     returns at most the first k threshold crossings
+%     'first': only the first crossings
+%     'last': only the last crossings
 %% Outputs:
 %   crossings: indices of upwards crossings as an n x 1 vector, where n is the number of saved crossings
 %
