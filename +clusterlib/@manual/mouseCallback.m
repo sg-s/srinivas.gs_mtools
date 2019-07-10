@@ -19,7 +19,7 @@ if length(cp) > 1
 end
 
 
-self.handles.main_fig.Name = ['This point has been assigned to class: ' char(self.idx(cp))];
+self.handles.main_fig.Name = ['This point ('  mat2str(cp)   ') has been assigned to class: ' char(self.idx(cp))];
 
 
 % show the clicked point
