@@ -13,7 +13,7 @@ properties
     AllowNewClasses@logical = true
 
 
-    MouseCallback@function_handle
+    MouseCallbackFcn@function_handle
 
     handles
 end % props

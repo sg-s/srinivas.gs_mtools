@@ -49,7 +49,7 @@ end
 
 
 
-if ~isempty(self.MouseCallback)
+if ~isempty(self.MouseCallbackFcn)
     self.CurrentPoint = cp;
-    self.MouseCallback(self)
+    self.MouseCallbackFcn(self)
 end
