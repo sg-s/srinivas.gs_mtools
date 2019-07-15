@@ -37,6 +37,9 @@ if isempty(self.DisplayFcn)
         self.handles.CurrentPointRaw.XData = 1:length(self.RawData(:,cp));
         self.handles.CurrentPointRaw.YData = self.RawData(:,cp);
 
+
+        set(self.handles.ax(2),'XLim',[1 size(self.RawData,1)],'YLim',[min(self.RawData(:,cp)) max(self.RawData(:,cp))])
+
    	end
 
 

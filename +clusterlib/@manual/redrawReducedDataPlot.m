@@ -23,33 +23,43 @@ end
 % populate handles for every class
 for i = 1:length(unique_labels)
 
-	plot_this = self.idx == unique_labels(i);
-	self.handles.ReducedData(i).XData = self.ReducedData(plot_this,1);
-	self.handles.ReducedData(i).YData = self.ReducedData(plot_this,2);
-
-	if unique_labels(i) == categorical(NaN)
-		self.handles.ReducedData(i).Color = [.5 .5 .5];
+	if isundefined(unique_labels(i))
+		plot_this = isundefined(self.idx);
+		self.handles.ReducedData(i).MarkerEdgeColor = [.5 .5 .5];
+		self.handles.ReducedData(i).MarkerFaceColor = [.5 .5 .5];
+	else
+		plot_this = self.idx == unique_labels(i);
+		
 	end
 
+	self.handles.ReducedData(i).XData = self.ReducedData(plot_this,1);
+	self.handles.ReducedData(i).YData = self.ReducedData(plot_this,2);
 end
+
 
 % now also plot the raw data
 if isempty(self.DisplayFcn)
 	% just plot the data and hope for the best
 
 
-	% first plot the unsorted data
-	plot_this = self.idx == categorical(NaN);
-	plot_idx = find(unique_labels == categorical(NaN));
+	for i = 1:length(unique_labels)
 
-	if ~isempty(plot_idx)
-		self.handles.RawData(plot_idx).XData = 1:size(self.RawData,1);
-		self.handles.RawData(plot_idx).YData = mean(self.RawData,2);
+		if isundefined(unique_labels(i))
+			plot_this = isundefined(self.idx);
+			self.handles.RawData(i).MarkerEdgeColor = [.5 .5 .5];
+			self.handles.RawData(i).MarkerFaceColor = [.5 .5 .5];
+		else
+			plot_this = self.idx == unique_labels(i);
+			
+		end
 
-		self.handles.RawData(plot_idx).Color = [.5 .5 .5];
+		self.handles.RawData(i).XData = nanmean(self.RawData(:,plot_this),2);
+		self.handles.RawData(i).YData = nanmean(self.RawData(:,plot_this),2);
 	end
+
+	set(self.handles.ax(2),'XLim',[1 size(self.RawData,1)],'YLim',[min(self.RawData(:)) max(self.RawData(:))])
 
 
 else
-	keyboard
+	error('Custom DisplayFcn not supported as of yet')
 end
