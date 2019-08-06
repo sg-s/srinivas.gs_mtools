@@ -11,8 +11,13 @@ function pairwise(X, labels, varargin)
 
 
 options.Symmetric = true; % if true, top-right of matrix if not plotted
-options.Color = 'k';
+options.MarkerFaceColor = 'k';
+options.MarkerEdgeColor = 'k';
 options.HistLineAlpha = 0; 
+options.Marker = '.';
+options.NumBins = 10;
+options.MarkerSize = 10;
+
 
 
 assert(isnumeric(X),'X must be a numeric matrix')
@@ -33,6 +38,10 @@ options = corelib.parseNameValueArguments(options, varargin{:});
 
 [S, a, bigAx, h] = plotmatrix(X);
 
+for i = 1:length(h)
+	h(i).NumBins = options.NumBins;
+end
+
 if options.Symmetric
 	for i = 1:length(labels)-1
 		for j = i+1:length(labels)
@@ -40,6 +49,31 @@ if options.Symmetric
 		end
 	end
 end
+
+
+
+for i = 2:length(labels)
+	ylabel(a(i,1),labels{i})
+end
+
+for i = 1:length(labels)
+	xlabel(a(length(labels),i),labels{i})
+end
+
+
+for i = 1:size(S,1)
+	for j = 1:size(S,2)
+		if ~isvalid(S(i,j))
+			continue
+		end
+		S(i,j).MarkerSize = options.MarkerSize;
+		S(i,j).MarkerFaceColor = options.MarkerFaceColor;
+		S(i,j).MarkerEdgeColor = options.MarkerEdgeColor;
+		S(i,j).Marker = options.Marker;
+	end
+end
+
+return
 
 bigAx.XLim = [0 length(labels)];
 bigAx.YLim = [0 length(labels)];
@@ -55,3 +89,6 @@ x_offset = old_position(3)*.05;
 y_offset = old_position(4)*.05;
 
 bigAx.Position = [old_position(1) - x_offset, old_position(2) - y_offset, old_position(3) + x_offset, old_position(4) + y_offset];
+
+
+keyboard
