@@ -65,7 +65,7 @@ methods
 			self.PlotHere = gca;
 		end
 		self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
-		self.handles.title_handle = title(self.PlotHere,['itereration = ' mat2str(0)]);
+		self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
 
 		self.data.values = [];
 		self.SamplePoints = [];
@@ -144,7 +144,13 @@ methods
 
 		S = V.*A;
 
-		S(isnan(S)) = 3*min(S(~isnan(S)));
+
+		if all(isnan(S))
+			% all values are NaN
+			S = rand(length(S),1);
+		else
+			S(isnan(S)) = 3*min(S(~isnan(S)));
+		end
 
 
 
@@ -184,7 +190,10 @@ methods
 		% self.handles.DT = triplot(self.DT);
 		% self.handles.DT.Color  = [.5 .5 .5];
 
-		self.handles.title_handle.String = ['itereration = ' mat2str(i)];
+
+		plot_this = isnan(self.data.values);
+		self.handles.NaNpts.XData = self.SamplePoints(plot_this,1);
+		self.handles.NaNpts.YData = self.SamplePoints(plot_this,2);
 		drawnow
 
 	end % update plot
