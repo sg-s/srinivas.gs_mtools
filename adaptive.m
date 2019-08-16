@@ -7,11 +7,12 @@ properties
 	Lower
 	Upper
 
-	MaxIter@double = 200
+	MaxIter@double = 40
 
 	MakePlot@logical = true
 
-	BatchSize@double = 12
+	BatchSize@double = 36
+
 
 	UseParallel@logical = false
 
@@ -38,12 +39,14 @@ methods
 	function self = adaptive(varargin)
 
 	
-		% if self.UseParallel
-		% 	pool = gcp;
-		% 	self.BatchSize = 2*pool.NumWorkers;
-		% end
+		
 
 		self = self@ConstructableHandle(varargin{:});  
+
+		if self.UseParallel && isempty(self.BatchSize)
+			pool = gcp;
+			self.BatchSize = 2*pool.NumWorkers;
+		end
 
 
 		
@@ -55,8 +58,6 @@ methods
 		self.Upper = self.Upper(:);
 		self.Lower = self.Lower(:);
 
-		% number of dimensions
-		N = length(self.Upper);
 
 		% make the figure
 		if isempty(self.PlotHere)
@@ -64,6 +65,7 @@ methods
 			self.PlotHere = gca;
 		end
 		self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
+		self.handles.title_handle = title(self.PlotHere,['itereration = ' mat2str(0)]);
 
 		self.data.values = [];
 		self.SamplePoints = [];
@@ -72,8 +74,8 @@ methods
 		x_space = linspace(self.Lower(1),self.Upper(1),5);
 		y_space = linspace(self.Lower(2),self.Upper(2),5);
 		z = x_space*0;
-		x_rand = x_space(1) + (x_space(end) - x_space(1))*rand(1,2*self.BatchSize);
-		y_rand = y_space(1) + (y_space(end) - y_space(1))*rand(1,2*self.BatchSize);
+		x_rand = x_space(1) + (x_space(end) - x_space(1))*rand(1,self.BatchSize);
+		y_rand = y_space(1) + (y_space(end) - y_space(1))*rand(1,self.BatchSize);
 		params = [x_space, x_space, z + x_space(1), z + x_space(end), x_rand; z + y_space(1), z + y_space(end), y_space, y_space, y_rand];
 
 		params = unique(params','rows');
@@ -82,7 +84,7 @@ methods
 
 		params = self.pickNewPoints;
 
-		self.updatePlot;
+		self.updatePlot(0);
 
 		for i = 1:self.MaxIter
 			
@@ -91,7 +93,7 @@ methods
 			params = self.pickNewPoints;
 
 			% update graphics
-			self.updatePlot;
+			self.updatePlot(i);
 
 		end
 
@@ -100,8 +102,15 @@ methods
 
 	function evaluate(self, params)
 		values = NaN(size(params,1),1);
-		for j = 1:size(params,1)
-			values(j) = self.SampleFcn(params(j,:));
+
+		if self.UseParallel
+			parfor j = 1:size(params,1)
+				values(j) = self.SampleFcn(params(j,:));
+			end
+		else
+			for j = 1:size(params,1)
+				values(j) = self.SampleFcn(params(j,:));
+			end
 		end
 		self.data.values = [self.data.values(:); values(:)];
 		self.SamplePoints = [self.SamplePoints; params];
@@ -110,7 +119,7 @@ methods
 	end % evaluate
 
 
-	function A = scoreTriangles(self, X, Y)
+	function S = scoreTriangles(self, X, Y)
 
 
 		% find areas of all triangles
@@ -119,7 +128,6 @@ methods
 
 		for i = 1:size(A,1)
 
-			% OK, at least one different
 
 			x1 = X(self.DT.ConnectivityList(i,1));
 			x2 = X(self.DT.ConnectivityList(i,2));
@@ -134,7 +142,11 @@ methods
 
 		V = abs(max(self.data.values(self.DT.ConnectivityList),[],2) - min(self.data.values(self.DT.ConnectivityList),[],2));
 
-		A = V.*A;
+		S = V.*A;
+
+		S(isnan(S)) = 3*min(S(~isnan(S)));
+
+
 
 
 
@@ -160,19 +172,21 @@ methods
 
 	end % pick new points
 
-	function updatePlot(self)
+	function updatePlot(self, i)
 		self.handles.dots.XData = self.SamplePoints(:,1);
 		self.handles.dots.YData = self.SamplePoints(:,2);
 		self.handles.dots.CData = self.data.values;
 
-		try
-			delete(self.handles.DT)
-		catch
-		end
-		self.handles.DT = triplot(self.DT);
-		self.handles.DT.Color  = [.5 .5 .5];
+		% try
+		% 	delete(self.handles.DT)
+		% catch
+		% end
+		% self.handles.DT = triplot(self.DT);
+		% self.handles.DT.Color  = [.5 .5 .5];
 
+		self.handles.title_handle.String = ['itereration = ' mat2str(i)];
 		drawnow
+
 	end % update plot
 
 end % methods
@@ -184,13 +198,23 @@ methods (Static)
 
 	function test()
 
-		figure('outerposition',[300 300 601 600],'PaperUnits','points','PaperSize',[601 600]); hold on
+		close all
+		figure('outerposition',[300 300 1200 600],'PaperUnits','points','PaperSize',[1200 600]); hold on
+
+		subplot(1,2,1); hold on
 
 		[X,Y] = meshgrid(linspace(-1,2,100),linspace(-1,2,100));
 
 		X = X(:); Y = Y(:);
 
 		f = @adaptive.radialFcn;
+
+		Z = f([X,Y]);
+
+		h = scatter(X,Y,'filled');
+		h.CData = Z;
+
+		subplot(1,2,2); hold on
 
 
 
@@ -214,8 +238,12 @@ methods (Static)
 
 		r  = (2*x).^2 + (y+.1).^2;
 
+		r = r(:);
 		f = r.^2;
-		f(r > 1) = f(r > 1).*exp(-r);
+		
+		f(r > 1) = f(r > 1).*exp(-r(r>1));
+
+		f(r>4) = NaN;
 
 	end
 
