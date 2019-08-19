@@ -111,10 +111,16 @@ double findClosestSpikeCost(double X, double *Y, int lY) {
     int idx = 0;
     for (int i = 0; i < lY; i++) {
         if (abs(X - Y[i]) < val) {
-            val = abs(X - Y[i]);
+            
+            // L 1 distance
+            // val = abs(X - Y[i]);
+
+            // L2 norm
+            val = (X - Y[i])*(X - Y[i]);
+
             idx = i;
         }
     }
-    return val/(X +Y[idx]);
+    return val/(X*X + Y[idx]*Y[idx]);
 
 }
