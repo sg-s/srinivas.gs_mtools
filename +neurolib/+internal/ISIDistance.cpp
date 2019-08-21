@@ -121,6 +121,6 @@ double findClosestSpikeCost(double X, double *Y, int lY) {
             idx = i;
         }
     }
-    return val/(X*X + Y[idx]*Y[idx]);
+    return val/X;
 
 }
