@@ -5,8 +5,11 @@ if nargin == 0
 	fmt = 'epsc';
 end
 
+
 switch fmt
 case 'epsc'
+	ext = 'eps';
+case 'eps'
 	ext = 'eps';
 case 'png'
 	ext = 'png';
