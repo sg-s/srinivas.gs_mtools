@@ -2,9 +2,10 @@
 function saveall(fmt)
 
 if nargin == 0
-	fmt = 'epsc';
+	fmt = 'pdf';
 end
 
+make_pdf = false;
 
 switch fmt
 case 'epsc'
@@ -13,6 +14,10 @@ case 'eps'
 	ext = 'eps';
 case 'png'
 	ext = 'png';
+case 'pdf'
+	ext = 'eps';
+	fmt = 'epsc';
+	make_pdf = true;
 otherwise
 	error('Unknown format')
 end
@@ -33,6 +38,11 @@ for i = 1:length(all_figs)
 		savename = strlib.oval(all_figs(i).Number);
 	end
 
-	saveas(all_figs(i),['~/Desktop/ ' savename '.' ext],fmt)
+	saveas(all_figs(i),['~/Desktop/' savename '.' ext],fmt)
+
+	if make_pdf && ismac
+		system(['pstopdf ~/Desktop/' savename '.' ext])
+
+	end
 
 end

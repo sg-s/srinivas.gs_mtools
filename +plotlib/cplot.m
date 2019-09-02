@@ -118,7 +118,7 @@ else
 	clear plot_handles
 	for i = NColors:-1:1
 		if any(C==i)
-			plot_handles(i) = plot(X(C==i),Y(C==i),'.','Color',options.colormap(i,:));
+			plot_handles(i) = plot(ax,X(C==i),Y(C==i),'.','Color',options.colormap(i,:));
 		end
 	end
 
