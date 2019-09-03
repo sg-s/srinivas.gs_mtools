@@ -95,7 +95,7 @@ methods
 			if isfield(self.handles,'response') && isvalid(self.handles.response)
 				self.handles.response.YData = self.Response;
 			else
-				self.handles.response = plot(self.Response,'k','LineWidth',2)
+				self.handles.response = plot(self.Response,'k','LineWidth',2);
 			end
 		end
 
@@ -104,7 +104,7 @@ methods
 		if isfield(self.handles,'prediction') && isvalid(self.handles.prediction)
 			self.handles.prediction.YData = self.Prediction;
 		else
-			self.handles.prediction = plot(self.Prediction,'r','LineWidth',2)
+			self.handles.prediction = plot(self.Prediction,'r','LineWidth',2);
 		end
 
 
