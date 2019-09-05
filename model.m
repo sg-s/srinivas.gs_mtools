@@ -12,6 +12,8 @@ properties
 	Lower
 	Upper
 
+	FitOptions = optimoptions('particleswarm');
+
 
 
 end % props
@@ -52,17 +54,12 @@ methods
 			end
 		end
 
-		psoptions = optimoptions('particleswarm');
-		psoptions.UseParallel = true;
-		psoptions.MaxIterations = 50;
 
-		psoptions.Display = 'final';
-
-		psoptions.InitialSwarmMatrix = structlib.vectorise(self.Parameters)';
+		self.FitOptions.InitialSwarmMatrix = structlib.vectorise(self.Parameters)';
 
 	
 
-		x = particleswarm(@(x) self.fitEvaluate(x),length(psoptions.InitialSwarmMatrix), lb,ub, psoptions);
+		x = particleswarm(@(x) self.fitEvaluate(x),length(self.FitOptions.InitialSwarmMatrix), lb,ub, self.FitOptions);
 
 		for i = 1:length(self.ParameterNames)
 			self.Parameters.(self.ParameterNames{i}) = x(i);
