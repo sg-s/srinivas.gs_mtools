@@ -91,7 +91,7 @@ persistent is_compiled
 if isempty(is_compiled)
 
    % compile
-   hashlib.m5compile;
+   hashlib.md5compile;
 
 
 end
