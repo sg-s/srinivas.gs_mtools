@@ -121,7 +121,7 @@ else
 
 
 	% discretize colors
-	bin_edges = unique([options.CLim(:); options.BinCenters(:)]);
+	bin_edges = unique([options.CLim options.BinCenters(1:end-1) + diff(options.BinCenters)/2]);
 	idx = discretize(Z,bin_edges);
 
 	% to do: handle NaN  idx
