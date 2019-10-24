@@ -1,8 +1,19 @@
 % exports all open figures to .eps on the desktop
-function saveall(fmt)
+function saveall(varargin)
 
-if nargin == 0
-	fmt = 'pdf';
+
+options.Format = 'pdf';
+options.Location = '~/Desktop/';
+options.SaveName = 'auto';
+
+options = corelib.parseNameValueArguments(options, varargin{:});
+
+
+fmt = options.Format;
+
+
+if ~strcmp(options.Location(end),filesep)
+	options.Location = [options.Location filesep];
 end
 
 make_pdf = false;
@@ -32,16 +43,21 @@ all_figs = get(0,'Children');
 
 for i = 1:length(all_figs)
 
-	savename = all_figs(i).Name;
 
-	if isempty(savename)
-		savename = strlib.oval(all_figs(i).Number);
+	if strcmp(options.SaveName,'auto')
+		savename = all_figs(i).Name;
+
+		if isempty(savename)
+			savename = strlib.oval(all_figs(i).Number);
+		end
+	else
+		savename = options.SaveName;
 	end
 
-	saveas(all_figs(i),['~/Desktop/' savename '.' ext],fmt)
+	saveas(all_figs(i),[options.Location savename '.' ext],fmt)
 
 	if make_pdf && ismac
-		system(['pstopdf ~/Desktop/' savename '.' ext])
+		system(['pstopdf ' options.Location savename '.' ext])
 
 	end
 
