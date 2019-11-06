@@ -18,6 +18,8 @@ properties
 
 	PlotHere
 
+	CategoricalResults = false
+
 end
 
 
@@ -67,7 +69,12 @@ methods
 		self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
 		self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
 
-		self.data.values = [];
+		% determine class of values
+		self.data.values = self.SampleFcn(self.Lower);
+		self.data.values(1) = [];
+		if iscategorical(self.data.values)
+			self.CategoricalResults = true;
+		end
 		self.SamplePoints = [];
 
 		% pick some random points within bounds
@@ -101,7 +108,18 @@ methods
 
 
 	function evaluate(self, params)
-		values = NaN(size(params,1),1);
+
+
+		if self.CategoricalResults
+			values = self.data.values;
+			if ~isempty(values)
+				values = values(1);
+			end
+			values(1) = categorical(NaN);
+			values = repmat(values,size(params,1),1);
+		else
+			values = NaN(size(params,1),1);
+		end
 
 		if self.UseParallel
 			parfor j = 1:size(params,1)
@@ -140,8 +158,17 @@ methods
 
 		end
 
-		V = abs(max(self.data.values(self.DT.ConnectivityList),[],2) - min(self.data.values(self.DT.ConnectivityList),[],2));
 
+		if self.CategoricalResults
+			% we're comparing categories in each node. 
+			temp = self.data.values(self.DT.ConnectivityList);
+			V = (temp(:,1) == temp(:,2)) - 1 + ((temp(:,1) == temp(:,3)) - 1 ) + ((temp(:,2) == temp(:,3)) - 1);
+			V = abs(V);
+		else
+			V = abs(max(self.data.values(self.DT.ConnectivityList),[],2) - min(self.data.values(self.DT.ConnectivityList),[],2));
+
+			
+		end
 		S = V.*A;
 
 
@@ -179,21 +206,24 @@ methods
 	end % pick new points
 
 	function updatePlot(self, i)
-		self.handles.dots.XData = self.SamplePoints(:,1);
-		self.handles.dots.YData = self.SamplePoints(:,2);
-		self.handles.dots.CData = self.data.values;
-
-		% try
-		% 	delete(self.handles.DT)
-		% catch
-		% end
-		% self.handles.DT = triplot(self.DT);
-		% self.handles.DT.Color  = [.5 .5 .5];
+		
 
 
-		plot_this = isnan(self.data.values);
-		self.handles.NaNpts.XData = self.SamplePoints(plot_this,1);
-		self.handles.NaNpts.YData = self.SamplePoints(plot_this,2);
+
+		if self.CategoricalResults
+			self.handles.dots.XData = self.SamplePoints(:,1);
+			self.handles.dots.YData = self.SamplePoints(:,2);
+			self.handles.dots.CData = grp2idx(self.data.values);
+		else
+
+			self.handles.dots.XData = self.SamplePoints(:,1);
+			self.handles.dots.YData = self.SamplePoints(:,2);
+			self.handles.dots.CData = self.data.values;
+
+			plot_this = isnan(self.data.values);
+			self.handles.NaNpts.XData = self.SamplePoints(plot_this,1);
+			self.handles.NaNpts.YData = self.SamplePoints(plot_this,2);
+		end
 		drawnow
 
 	end % update plot
