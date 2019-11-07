@@ -47,14 +47,16 @@ for i = 1:size(DT,1)
 end
 
 
-% fill in NaNs using nearest neighbors
+% fill in NaNs using interpolation
+
+
+R = -grp2idx(R(:));
+
+R0 = -grp2idx(self.data.values);
 
 
 
-R = grp2idx(R(:));
-
-R0 = grp2idx(self.data.values);
-
+Vq = interp2(X,Y,R0,all_x,all_y);
 
 
 R = reshape(R,1e3,1e3);
@@ -62,15 +64,15 @@ all_x = linspace(0,1,1e3);
 all_y = linspace(0,1,1e3);
 
 
-% for i = 1:1e3
-% 	for j = 1:1e3
-% 		if ~isnan(R(i,j))
-% 			continue
-% 		end
-% 		[~,idx]=min((X - all_x(j)).^2 + (Y - all_y(i)).^2);
-% 		R(i,j) = R0(idx);
-% 	end
-% end
+for i = 1:1e3
+	for j = 1:1e3
+		if ~isnan(R(i,j))
+			continue
+		end
+		[~,idx]=min((X - all_x(j)).^2 + (Y - all_y(i)).^2);
+		R(i,j) = R0(idx);
+	end
+end
 
 R = R';
 

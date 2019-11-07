@@ -267,7 +267,7 @@ methods
 		if self.CategoricalResults
 			self.handles.dots.XData = self.SamplePoints(:,1);
 			self.handles.dots.YData = self.SamplePoints(:,2);
-			self.handles.dots.CData = grp2idx(self.data.values);
+			self.handles.dots.CData = -grp2idx(self.data.values);
 		else
 
 			self.handles.dots.XData = self.SamplePoints(:,1);
