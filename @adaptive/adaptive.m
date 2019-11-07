@@ -77,12 +77,11 @@ methods
 		self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
 
 		% determine class of values
-		self.data.values = self.SampleFcn(self.Lower);
-		self.data.values(1) = [];
+		[self.data.values, self.data.results] = self.SampleFcn(self.Lower');
+		self.SamplePoints = transpose(self.Lower);
 		if iscategorical(self.data.values)
 			self.CategoricalResults = true;
 		end
-		self.SamplePoints = [];
 
 		% pick some random points within bounds
 		x_space = linspace(self.Lower(1),self.Upper(1),self.SeedSize);
@@ -93,6 +92,9 @@ methods
 		params = [x_space, x_space, z + x_space(1), z + x_space(end), x_rand; z + y_space(1), z + y_space(end), y_space, y_space, y_rand];
 
 		params = unique(params','rows');
+
+		% remove the probe point we sampled
+		params(sum(self.Lower' - params,2) == 0,:) = [];
 
 		self.evaluate(params);
 
@@ -116,13 +118,11 @@ methods
 
 	function evaluate(self, params)
 
+		results = repmat(self.data.results(1),size(params,1),1);
 
 		if self.CategoricalResults
-			values = self.data.values;
-			if ~isempty(values)
-				values = values(1);
-			end
-			values(1) = categorical(NaN);
+			values = self.data.values(1);
+			values = categorical(NaN);
 			values = repmat(values,size(params,1),1);
 		else
 			values = NaN(size(params,1),1);
@@ -130,14 +130,17 @@ methods
 
 		if self.UseParallel
 			parfor j = 1:size(params,1)
-				values(j) = self.SampleFcn(params(j,:));
+				[values(j), results(j)] = self.SampleFcn(params(j,:));
 			end
 		else
 			for j = 1:size(params,1)
-				values(j) = self.SampleFcn(params(j,:));
+				[values(j), results(j)] = self.SampleFcn(params(j,:));
+
 			end
 		end
+
 		self.data.values = [self.data.values(:); values(:)];
+		self.data.results = [self.data.results(:); results(:)];
 		self.SamplePoints = [self.SamplePoints; params];
 
 
@@ -259,10 +262,8 @@ methods
 
 	end % pick new points
 
-	function updatePlot(self, i)
+	function updatePlot(self,i)
 		
-
-
 
 		if self.CategoricalResults
 			self.handles.dots.XData = self.SamplePoints(:,1);
@@ -325,7 +326,10 @@ methods (Static)
 	end 
 
 
-	function f = radialFcn(p)
+	function [f, dummy] = radialFcn(p)
+
+
+
 		x = p(:,1);
 		y = p(:,2);
 
@@ -337,6 +341,8 @@ methods (Static)
 		f(r > 1) = f(r > 1).*exp(-r(r>1));
 
 		f(r>4) = NaN;
+
+		dummy = struct;
 
 	end
 
