@@ -20,6 +20,11 @@ properties
 
 	CategoricalResults = false
 
+	XScale = 'linear';
+	YScale = 'linear';
+
+	SeedSize = 20;
+
 end
 
 
@@ -31,6 +36,8 @@ properties (SetAccess = private)
 	SamplePoints
 	data
 	handles
+
+	boundaries
 end
 
 
@@ -78,11 +85,11 @@ methods
 		self.SamplePoints = [];
 
 		% pick some random points within bounds
-		x_space = linspace(self.Lower(1),self.Upper(1),5);
-		y_space = linspace(self.Lower(2),self.Upper(2),5);
+		x_space = linspace(self.Lower(1),self.Upper(1),self.SeedSize);
+		y_space = linspace(self.Lower(2),self.Upper(2),self.SeedSize);
 		z = x_space*0;
-		x_rand = x_space(1) + (x_space(end) - x_space(1))*rand(1,self.BatchSize);
-		y_rand = y_space(1) + (y_space(end) - y_space(1))*rand(1,self.BatchSize);
+		x_rand = x_space(1) + (x_space(end) - x_space(1))*rand(1,self.SeedSize);
+		y_rand = y_space(1) + (y_space(end) - y_space(1))*rand(1,self.SeedSize);
 		params = [x_space, x_space, z + x_space(1), z + x_space(end), x_rand; z + y_space(1), z + y_space(end), y_space, y_space, y_rand];
 
 		params = unique(params','rows');
@@ -137,39 +144,83 @@ methods
 	end % evaluate
 
 
-	function S = scoreTriangles(self, X, Y)
+	function S = scoreTriangles(self)
+
+
+		% normalize X and Y
+		[X,Y] = self.normalize;
 
 
 		% find areas of all triangles
 		A = zeros(size(self.DT,1),1);
 
 
-		for i = 1:size(A,1)
-
-
-			x1 = X(self.DT.ConnectivityList(i,1));
-			x2 = X(self.DT.ConnectivityList(i,2));
-			x3 = X(self.DT.ConnectivityList(i,3));
-			y1 = Y(self.DT.ConnectivityList(i,1));
-			y2 = Y(self.DT.ConnectivityList(i,2));
-			y3 = Y(self.DT.ConnectivityList(i,3));
-
-			A(i) = 1/2*abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
-
-		end
-
 
 		if self.CategoricalResults
-			% we're comparing categories in each node. 
-			temp = self.data.values(self.DT.ConnectivityList);
-			V = (temp(:,1) == temp(:,2)) - 1 + ((temp(:,1) == temp(:,3)) - 1 ) + ((temp(:,2) == temp(:,3)) - 1);
-			V = abs(V);
-		else
-			V = abs(max(self.data.values(self.DT.ConnectivityList),[],2) - min(self.data.values(self.DT.ConnectivityList),[],2));
 
-			
+			% we score triangles in the categorical case as follows:
+			% the sum of every edge length, scaled by a number
+			% which is 1 if the nodes are different, and .1 o/w
+
+
+
+			S = 0*A;
+			for i = 1:size(A,1)
+
+				x1 = X(self.DT.ConnectivityList(i,1));
+				x2 = X(self.DT.ConnectivityList(i,2));
+				x3 = X(self.DT.ConnectivityList(i,3));
+				y1 = Y(self.DT.ConnectivityList(i,1));
+				y2 = Y(self.DT.ConnectivityList(i,2));
+				y3 = Y(self.DT.ConnectivityList(i,3));
+
+				C = ones(3,1);
+
+				if length(unique(self.data.values(self.DT.ConnectivityList(i,1:2)))) == 1
+					C(1) = .1;
+				end
+				if length(unique(self.data.values(self.DT.ConnectivityList(i,2:3)))) == 1
+					C(2) = .1;
+				end
+				if length(unique(self.data.values(self.DT.ConnectivityList(i,[1 3])))) == 1
+					C(3) = .1;
+				end
+
+				D = pdist([X(self.DT.ConnectivityList(i,:)) Y(self.DT.ConnectivityList(i,:))]);
+
+				
+				S(i) = sum(D(:).*C(:));
+
+
+
+
+			end
+
+
+		else
+
+
+			for i = 1:size(A,1)
+
+
+				x1 = X(self.DT.ConnectivityList(i,1));
+				x2 = X(self.DT.ConnectivityList(i,2));
+				x3 = X(self.DT.ConnectivityList(i,3));
+				y1 = Y(self.DT.ConnectivityList(i,1));
+				y2 = Y(self.DT.ConnectivityList(i,2));
+				y3 = Y(self.DT.ConnectivityList(i,3));
+
+				A(i) = 1/2*abs((x2-x1)*(y3-y1)-(x3-x1)*(y2-y1));
+
+			end
+
+			V = abs(max(self.data.values(self.DT.ConnectivityList),[],2) - min(self.data.values(self.DT.ConnectivityList),[],2));
+			S = V.*A;
 		end
-		S = V.*A;
+
+
+
+
 
 
 		if all(isnan(S))
@@ -189,11 +240,10 @@ methods
 
 	function params = pickNewPoints(self)
 
-		X = self.SamplePoints(:,1);
-		Y = self.SamplePoints(:,2);
+		[X,Y] = self.normalize;
 		self.DT = delaunayTriangulation(X,Y);
 
-		S = self.scoreTriangles(X,Y);
+		S = self.scoreTriangles();
 
 		[~,idx] = sort(S,'descend');
 		ic = incenter(self.DT);
@@ -201,6 +251,10 @@ methods
 		idx = idx(1:(self.BatchSize));
 
 		params = ic(idx,:);
+
+		% denormalize
+		[params(:,1),params(:,2)] = self.denormalize(params(:,1),params(:,2));
+
 
 
 	end % pick new points
