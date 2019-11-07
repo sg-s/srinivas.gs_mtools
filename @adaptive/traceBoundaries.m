@@ -25,6 +25,7 @@ for i = 1:n_classes
 	% check if there are multiple connected components
 	% in this map
 	L = bwlabel(this_R);
+
 	n_comp = length(unique(L(:))) - 1;
 
 	
