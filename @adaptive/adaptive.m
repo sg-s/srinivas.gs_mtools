@@ -69,17 +69,21 @@ methods
 
 
 		% make the figure
-		if isempty(self.PlotHere)
-			self.handles.fig = figure('outerposition',[300 300 1200 600],'PaperUnits','points','PaperSize',[1200 600]); hold on
-			self.PlotHere = gca;
-		end
-		self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
-		self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
+		if self.MakePlot
+			if isempty(self.PlotHere)
+				self.handles.fig = figure('outerposition',[300 300 1200 600],'PaperUnits','points','PaperSize',[1200 600]); hold on
+				self.PlotHere = gca;
+			end
+			self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
+			self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
 
+			self.PlotHere.XScale = self.XScale;
+			self.PlotHere.YScale = self.YScale;
+
+		end
 
 		
-		self.PlotHere.XScale = self.XScale;
-		self.PlotHere.YScale = self.YScale;
+
 
 
 		% determine class of values
@@ -114,7 +118,10 @@ methods
 
 		params = self.pickNewPoints;
 
-		self.updatePlot(0);
+
+		if self.MakePlot
+			self.updatePlot(0);
+		end
 
 		for i = 1:self.MaxIter
 			
@@ -123,7 +130,9 @@ methods
 			params = self.pickNewPoints;
 
 			% update graphics
-			self.updatePlot(i);
+			if self.MakePlot
+				self.updatePlot(i);
+			end
 
 		end
 
