@@ -76,6 +76,12 @@ methods
 		self.handles.dots = scatter(self.PlotHere,NaN,NaN,'filled');
 		self.handles.NaNpts = plot(self.PlotHere,NaN,NaN,'r+');
 
+
+		
+		self.PlotHere.XScale = self.XScale;
+		self.PlotHere.YScale = self.YScale;
+
+
 		% determine class of values
 		[self.data.values, self.data.results] = self.SampleFcn(self.Lower');
 		self.SamplePoints = transpose(self.Lower);
@@ -84,8 +90,16 @@ methods
 		end
 
 		% pick some random points within bounds
-		x_space = linspace(self.Lower(1),self.Upper(1),self.SeedSize);
-		y_space = linspace(self.Lower(2),self.Upper(2),self.SeedSize);
+		if strcmp(self.XScale,'log')
+			x_space = logspace(log10(self.Lower(1)),log10(self.Upper(1)),self.SeedSize);
+		else
+			x_space = linspace(self.Lower(1),self.Upper(1),self.SeedSize);
+		end
+		if strcmp(self.YScale,'log')
+			y_space = logspace(log10(self.Lower(2)),log10(self.Upper(2)),self.SeedSize);
+		else
+			y_space = linspace(self.Lower(2),self.Upper(2),self.SeedSize);
+		end
 		z = x_space*0;
 		x_rand = x_space(1) + (x_space(end) - x_space(1))*rand(1,self.SeedSize);
 		y_rand = y_space(1) + (y_space(end) - y_space(1))*rand(1,self.SeedSize);
