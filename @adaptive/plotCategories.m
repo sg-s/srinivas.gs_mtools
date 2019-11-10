@@ -1,4 +1,7 @@
 % plots categories using a triangulation-based plot
+% This is purely for visualization -- this is not
+% helpful if you want to actually segment the space
+% and find the points in each category 
 
 function patch_handle = plotCategories(self, plot_here)
 

@@ -1,4 +1,7 @@
 % normalizes the co-ordinates to be b/w 0 and 1
+% Normalize is used internally for almost everything,
+% as it allows for uniform sampling in the space,
+% whether you have a log scale or not
 
 function [X,Y] = normalize(self)
 	

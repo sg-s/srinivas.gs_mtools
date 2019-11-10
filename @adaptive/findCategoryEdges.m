@@ -4,6 +4,8 @@
 %
 % it also returns index vectors to map these points
 % onto the nodes of the edges they came from
+% This can find the points, but will not find lines,
+% because you may have disconnected components
 
 function [BX,BY, Nodes] = findCategoryEdges(self, make_plot)
 

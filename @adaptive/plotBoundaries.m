@@ -29,6 +29,8 @@ if strcmp(self.YScale,'log')
 	set(plot_here,'YScale','log')
 end
 
+keyboard
+
 for i = 1:n_classes
 	for j = 1:length(self.boundaries(i).regions)
 		bx = self.boundaries(i).regions(j).x;

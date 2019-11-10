@@ -313,14 +313,18 @@ methods (Static)
 
 
 
+	% This static method (called used adaptive.test)
+	% shows how adaptive works, and can be used as a template for your
+	% own use. 
+
 	function test()
 
 		close all
-		figure('outerposition',[300 300 1200 600],'PaperUnits','points','PaperSize',[1200 600]); hold on
+		figure('outerposition',[300 300 901 902],'PaperUnits','points','PaperSize',[901 902]); hold on
 
-		subplot(1,2,1); hold on
+		subplot(2,2,1); hold on
 
-		[X,Y] = meshgrid(linspace(-1,2,100),linspace(-1,2,100));
+		[X,Y] = meshgrid(linspace(-1,2,1e3),linspace(-1,2,1e3));
 
 		X = X(:); Y = Y(:);
 
@@ -331,7 +335,9 @@ methods (Static)
 		h = scatter(X,Y,'filled');
 		h.CData = Z;
 
-		subplot(1,2,2); hold on
+		title('True function (potentially expensive to evaluate)')
+
+		subplot(2,2,2); hold on
 
 
 
@@ -341,9 +347,12 @@ methods (Static)
    		a.SampleFcn = f;
 
    		a.PlotHere = gca;
-
+   		title(a.PlotHere,'Evaluated points')
    		a.sample()
 
+
+   		subplot(2,2,3); hold on
+   		a.plotCategories(gca);
 
 
 	end 
