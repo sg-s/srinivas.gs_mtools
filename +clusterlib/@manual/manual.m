@@ -56,11 +56,6 @@ methods
 
 
 
-    function self = set.labels(self, value)
-        self.labels = [value(:); categorical(NaN)];
-    end
-
-
     function self = set.idx(self, value)
 
         self.idx = value;
@@ -70,8 +65,6 @@ methods
             
             return
         end
-
-        self.labels = [self.labels; categorical(categories(value))];
 
     end
 

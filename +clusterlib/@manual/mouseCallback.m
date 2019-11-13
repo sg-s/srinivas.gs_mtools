@@ -18,8 +18,13 @@ if length(cp) > 1
     cp = min(cp);
 end
 
+self.CurrentPoint = cp;
 
 self.handles.main_fig.Name = ['This point ('  mat2str(cp)   ') has been assigned to class: ' char(self.idx(cp))];
+
+
+self.handles.CurrentPointReduced.XData = self.ReducedData(cp,1);
+self.handles.CurrentPointReduced.YData = self.ReducedData(cp,2);
 
 
 % show the clicked point
@@ -30,8 +35,7 @@ if isempty(self.DisplayFcn)
 
 	if gca == self.handles.ax(1)
 
-        self.handles.CurrentPointReduced.XData = self.ReducedData(cp,1);
-        self.handles.CurrentPointReduced.YData = self.ReducedData(cp,2);
+
         
 
         self.handles.CurrentPointRaw.XData = 1:length(self.RawData(:,cp));
@@ -44,12 +48,13 @@ if isempty(self.DisplayFcn)
 
 
 else
-	keyboard
+	if ~isnan(self.CurrentPoint)
+        self.DisplayFcn(self.handles.ax(2),self.RawData(self.CurrentPoint,:))
+    end
 end
 
 
 
 if ~isempty(self.MouseCallbackFcn)
-    self.CurrentPoint = cp;
     self.MouseCallbackFcn(self)
 end

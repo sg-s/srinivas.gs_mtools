@@ -18,7 +18,7 @@ if length(self.handles.RawData) < length(unique_labels)
 end
 
 
-
+C = lines;
 
 % populate handles for every class
 for i = 1:length(unique_labels)
@@ -29,6 +29,8 @@ for i = 1:length(unique_labels)
 		self.handles.ReducedData(i).MarkerFaceColor = [.5 .5 .5];
 	else
 		plot_this = self.idx == unique_labels(i);
+		self.handles.ReducedData(i).MarkerEdgeColor = C(i,:);
+		self.handles.ReducedData(i).MarkerFaceColor = C(i,:);
 		
 	end
 
@@ -50,6 +52,8 @@ if isempty(self.DisplayFcn)
 			self.handles.RawData(i).MarkerFaceColor = [.5 .5 .5];
 		else
 			plot_this = self.idx == unique_labels(i);
+			self.handles.ReducedData(i).MarkerEdgeColor = C(i,:);
+			self.handles.ReducedData(i).MarkerFaceColor = C(i,:);
 			
 		end
 
@@ -61,5 +65,10 @@ if isempty(self.DisplayFcn)
 
 
 else
-	error('Custom DisplayFcn not supported as of yet')
+	if ~isnan(self.CurrentPoint)
+		self.DisplayFcn(self.handles.ax(2),self.RawData(self.CurrentPoint,:))
+	end
+	
 end
+
+uistack(self.handles.ReducedData(end),'bottom')

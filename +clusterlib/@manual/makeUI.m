@@ -31,4 +31,4 @@ self.redrawReducedDataPlot();
 
 figlib.pretty('font_units','points');
 
-
+uistack(self.handles.CurrentPointReduced,'top')
