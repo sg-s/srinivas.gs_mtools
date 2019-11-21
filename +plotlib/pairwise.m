@@ -6,7 +6,7 @@
 % 
 % plotlib.pairwise(X, labels)
 
-function pairwise(X, labels, varargin)
+function [S, a, bigAx, h] = pairwise(X, labels, varargin)
 
 
 
@@ -17,7 +17,6 @@ options.HistLineAlpha = 0;
 options.Marker = '.';
 options.NumBins = 10;
 options.MarkerSize = 10;
-
 
 
 assert(isnumeric(X),'X must be a numeric matrix')
@@ -61,6 +60,7 @@ for i = 1:length(labels)
 end
 
 
+
 for i = 1:size(S,1)
 	for j = 1:size(S,2)
 		if ~isvalid(S(i,j))
@@ -72,6 +72,8 @@ for i = 1:size(S,1)
 		S(i,j).Marker = options.Marker;
 	end
 end
+
+
 
 return
 
@@ -91,4 +93,3 @@ y_offset = old_position(4)*.05;
 bigAx.Position = [old_position(1) - x_offset, old_position(2) - y_offset, old_position(3) + x_offset, old_position(4) + y_offset];
 
 
-keyboard
