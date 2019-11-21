@@ -1,31 +1,23 @@
-% measures the distance between pairs of ISI sets
-% 
-function D = ISIDistance(X, Y)
+% wrapper function to compute distances between ISI
+% sets given by X and Y
+%
+% Usage:
+% D = neurolib.ISIDistance(X,Y,1);
+% D = neurolib.ISIDistance(X,[],1);
+function D = ISIDistance(X, Y, Variant)
 
-% check that the binary is up-to-date
-cpp_file = [fileparts(which('neurolib.ISIDistance')) filesep '+internal' filesep 'ISIDistance.cpp'];
-hash = hashlib.md5hash(cpp_file,'File');
 
-if isempty(getpref('ISIDistance'))
-	% compile
-	mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
-	setpref('ISIDistance','hash',hash)
-else
-	if isfield(getpref('ISIDistance'),'hash')
-		old_hash = getpref('ISIDistance','hash');
-		if ~strcmp(old_hash,hash)
-			% recompile
-			mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
-			setpref('ISIDistance','hash',hash)
-		end
-	else
-		% recompile
-		mex(cpp_file,'-output',[fileparts(cpp_file) filesep 'ISIDistance'])
-		setpref('ISIDistance','hash',hash)
-	end
-end
+cpp_file = [fileparts(which('neurolib.ISIDistance')) filesep '+internal' filesep 'ISIDistance' mat2str(Variant) '.cpp'];
 
-if nargin == 1
+% check that binary is up-to-date
+corelib.compile(cpp_file);
+
+assert(nargin == 3,'3 arguments required. If you want to compute all distances between all observations, specify "Y=[]"')
+
+
+FuncHandle = str2func(['neurolib.internal.ISIDistance' mat2str(Variant)]);
+
+if isempty(Y)
 
 	% compute a square matrix of distances
 	% assume that the input contains different rows
@@ -37,13 +29,11 @@ if nargin == 1
 
 	if N > 300
 		parfor i = 1:N
-
-			D(:,i) = neurolib.internal.ISI_parallel(X,i);
+			D(:,i) = neurolib.internal.ISI_parallel(X,i,FuncHandle);
 		end
 	else
 		for i = 1:N
-
-			D(:,i) = neurolib.internal.ISI_parallel(X,i);
+			D(:,i) = neurolib.internal.ISI_parallel(X,i,FuncHandle);
 		end
 	end
 
@@ -60,7 +50,7 @@ else
 	D = NaN(N_X,N_Y);
 
 	parfor i = 1:N_X
-		D(i,:) = neurolib.internal.ISI_parallel2(X(:,i),Y);
+		D(i,:) = neurolib.internal.ISI_parallel2(X(:,i),Y,FuncHandle);
 	end
 
 end
