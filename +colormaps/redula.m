@@ -1,4 +1,4 @@
-% like parula, but becomes red and high values intead
+% like parula, but becomes red and high values instead
 % of yellow
 
 function C = redula(N)

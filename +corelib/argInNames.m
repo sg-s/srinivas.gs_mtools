@@ -4,12 +4,11 @@
 % names=argInNames('function_name')
 % 
 % names is a cell containing the names of the arguments as defined in the function
-% Note that argoutnames won't work for most MATLAB functions as their code is obfuscated. 
+% Note that argInNames won't work for most MATLAB functions as their code is obfuscated. 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [names] = argInNames(fname)
+
+function names = argInNames(fname)
 if ~nargin 
 	help argInNames
 	return

@@ -1,14 +1,15 @@
 % Find names of outputs of function
 % returns a cell containing the names of the variables that are returned by a function, as defined in the function. 
+%
 % Usage:
-% names=argoutnames('function_name')
+%
+% names = argoutnames('function_name')
 % 
 % names is a cell containing the names of the arguments as defined in the function
 % Note that argoutnames won't work for most MATLAB functions as their code is obfuscated. 
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 % 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+
 function names = argOutNames(fname)
 if ~nargin 
 	help corelib.argoutnames
@@ -24,7 +25,7 @@ end
 names = cell(1,nargout(fname));
 
 % first find out where it is 
-funcfile=which(fname);
+funcfile = which(fname);
 
 % read the file
 fid = fopen(funcfile, 'rt'); 
