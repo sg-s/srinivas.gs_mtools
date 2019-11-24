@@ -7,13 +7,14 @@
 function D = ISIDistance(X, Y, Variant)
 
 
+
+
+assert(nargin == 3,['3 arguments required. If you want to compute all distances between all observations, specify "Y=[]". A correct usage is' newline  newline 'neurolib.ISIDistance(X,Y,Variant)'])
+
 cpp_file = [fileparts(which('neurolib.ISIDistance')) filesep '+internal' filesep 'ISIDistance' mat2str(Variant) '.cpp'];
 
 % check that binary is up-to-date
 corelib.compile(cpp_file);
-
-assert(nargin == 3,'3 arguments required. If you want to compute all distances between all observations, specify "Y=[]"')
-
 
 FuncHandle = str2func(['neurolib.internal.ISIDistance' mat2str(Variant)]);
 
