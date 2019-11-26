@@ -33,6 +33,6 @@ end
 
 
 try
-	delete([folder_name filesep 'test']);
+	delete([folder_name filesep 'filelib_is_writable.temp']);
 catch
 end
