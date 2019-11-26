@@ -20,7 +20,7 @@ warning('on','MATLAB:DELETE:Permission')
 warning('on','MATLAB:DELETE:FileNotFound')
 
 try
-	f = fopen([folder_name filesep 'test'],'w');
+	f = fopen([folder_name filesep 'filelib_is_writable.temp'],'w');
 	l = fwrite(f,42);
 	assert(l == 1,'Write failure');
 	TF = true;
