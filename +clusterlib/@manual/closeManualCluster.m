@@ -1,6 +1,5 @@
 function closeManualCluster(self,~,~)
 
-
 % if all points are unassigned, just quit
 if all(isundefined(self.idx))
 	delete(self.handles.main_fig)

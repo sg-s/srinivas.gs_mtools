@@ -1,6 +1,5 @@
 function mouseCallback(self, src, ~)
 
-
 if self.DrawingClusters
 	return
 end

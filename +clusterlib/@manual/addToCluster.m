@@ -32,3 +32,4 @@ self.DrawingClusters = false;
 
 set(self.handles.main_fig,'Color','w');
 set(self.handles.main_fig,'Name',[mat2str(length(find(inp))) ' points added to ' this_cluster_name]);
+

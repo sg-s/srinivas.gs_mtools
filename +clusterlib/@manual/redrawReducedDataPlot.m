@@ -1,6 +1,6 @@
 function redrawReducedDataPlot(self,~,~)
 
-unique_labels =  unique(self.labels);
+unique_labels =  unique([self.labels categorical(NaN)]);
 C = colormaps.linspecer(length(unique_labels));
 
 
@@ -57,7 +57,7 @@ if isempty(self.DisplayFcn)
 			
 		end
 
-		self.handles.RawData(i).XData = nanmean(self.RawData(:,plot_this),2);
+		self.handles.RawData(i).XData = 1:size(self.RawData,1);
 		self.handles.RawData(i).YData = nanmean(self.RawData(:,plot_this),2);
 	end
 
@@ -71,4 +71,4 @@ else
 	
 end
 
-uistack(self.handles.ReducedData(end),'bottom')
+% uistack(self.handles.ReducedData(end),'bottom')
