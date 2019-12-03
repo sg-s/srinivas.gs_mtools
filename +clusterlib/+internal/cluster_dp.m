@@ -65,13 +65,13 @@ d2 = d2 - nanmin(d2);
 d2 = d2/nanmax(d2);
 temp = d2.*r2;
 
-if isinf(options.n_clusters )
+if isinf(options.NClusters )
     % automatically pick number of clusters
     center_idxs = find(temp > (mean(temp) + options.sigma*std(temp)));
 else
     % find the requested number of clusters
     [~,idx] = sort(temp,'descend');
-    center_idxs = idx(1:options.n_clusters);
+    center_idxs = idx(1:options.NClusters);
 end
 
 
