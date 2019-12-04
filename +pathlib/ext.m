@@ -1,8 +1,5 @@
 % ext.m
-% returns the terminal bit of a path, e.g.
-% the last folder or file in a path
-% usage:
-% file_name = pathEnd('path/to/file_name')
+% returns the terminal bit of a path
 % 
 function ext_name = ext(p)
 
