@@ -1,4 +1,4 @@
-function D = ISI_parallel(X,i, FuncHandle)
+function D = ISI_parallel(X,i, Variant)
 
 
 A = X(:,i);
@@ -10,6 +10,6 @@ for j = i+1:N
 
 
 	B = X(:,j);
-	D(j) = FuncHandle(A,B);
+	D(j) = neurolib.internal.ISIDistance(A,B,Variant);
 
 end
