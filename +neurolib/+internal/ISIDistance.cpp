@@ -55,29 +55,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     int lB = 0;
 
 
-    // for (int i = 0; i < NA; i++) {
-
-    //     if (std::isnan(AA[i])) {
-    //         lA = i;
-    //         break;
-    //     }
-    // }
-
-    // for (int i = 0; i < NB; i++) {
-
-    //     if (std::isnan(BB[i])) {
-    //         lB = i;
-    //         break;
-    //     }
-    // }
-
     lA = findNumberOfNonNaNElements(AA,NA);
     lB = findNumberOfNonNaNElements(BB,NB);
 
-    
-
-    // mexPrintf("lA=%i\n",lA);
-    // mexPrintf("lB=%i\n",lB);
 
     // early exits
     if (lA == 0 && lB == 0){
@@ -169,38 +149,83 @@ double findClosestSpikeCost(double X, double *Y, int lY, int Variant) {
 
     switch (Variant) {
         case 1:
+            // L2 cost, normalized by X 
             {
-                for (int i = 0; i < lY; i++) {
-                    if ((X - Y[i])*(X - Y[i]) < val) {
-                        val = (X - Y[i])*(X - Y[i]);
+                int idx = findPositionInSortedArray(Y, lY, X);
+
+                if (idx == 0) {
+                    // first element
+                    return (X - Y[idx])*(X - Y[idx])/X;
+
+
+                } else {
+                    // some other element, so need to determine the
+                    // closest element b/w idx and idx - 1
+                    double cost1 = (X - Y[idx])*(X - Y[idx]);
+                    double cost2 = (X - Y[idx-1])*(X - Y[idx-1]);
+
+                    if (cost1 < cost2) {
+                        return cost1/X;
+                    } else {
+                        return cost2/X;
                     }
+
                 }
-                return val/X;
             }
             break;
 
         case 2:
+            // L1 cost, normalized by X 
             {
-                for (int i = 0; i < lY; i++) {
-                    if (abs(X - Y[i]) < val) {
-                        val = abs(X - Y[i]);
+                int idx = findPositionInSortedArray(Y, lY, X);
+
+                if (idx == 0) {
+                    // first element
+                    return abs(X - Y[idx])/(X);
+
+
+                } else {
+                    // some other element, so need to determine the
+                    // closest elemenb b/w idx and idx - 1
+                    double cost1 = abs(X - Y[idx]);
+                    double cost2 = abs(X - Y[idx-1]);
+
+                    if (cost1 < cost2) {
+                        return cost1/X;
+                    } else {
+                        return cost2/X;
                     }
+
                 }
-                return val/X;
             }
             break;
         case 3:
+            // L2 cost, normalized by X and Y
             {
-                for (int i = 0; i < lY; i++) {
-                    if ((X - Y[i])*(X - Y[i]) < val) {
-                        val = (X - Y[i])*(X - Y[i]);
-                        idx = i;
+                int idx = findPositionInSortedArray(Y, lY, X);
+
+                if (idx == 0) {
+                    // first element
+                    return (X - Y[idx])*(X - Y[idx])/(X + Y[idx]);
+
+
+                } else {
+                    // some other element, so need to determine the
+                    // closest elemenb b/w idx and idx - 1
+                    double cost1 = (X - Y[idx])*(X - Y[idx]);
+                    double cost2 = (X - Y[idx-1])*(X - Y[idx-1]);
+
+                    if (cost1 < cost2) {
+                        return cost1/(X + Y[idx]);
+                    } else {
+                        return cost2/(X + Y[idx-1]);
                     }
+
                 }
-                return val/(X + Y[idx]);
             }
             break;
         case 4:
+            // L1 cost, normalzied by X + Y
             {
                 int idx = findPositionInSortedArray(Y, lY, X);
 
@@ -211,7 +236,7 @@ double findClosestSpikeCost(double X, double *Y, int lY, int Variant) {
 
                 } else {
                     // some other element, so need to determine the
-                    // closest elemenb b/w idx and idx + 1
+                    // closest element b/w idx and idx - 1
                     double cost1 = abs(X - Y[idx]);
                     double cost2 = abs(X - Y[idx-1]);
 
