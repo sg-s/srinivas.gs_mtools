@@ -1,7 +1,14 @@
 function makeUI(self)
 
 % make the UI
-self.handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@self.closeManualCluster); hold on,axis off
+self.handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@self.closeManualCluster,'ResizeFcn',@self.resize); hold on,axis off
+
+try getpref('clusterlib','ManualPosition');
+	self.handles.main_fig.Position =  getpref('clusterlib','ManualPosition');
+
+catch
+
+end
 
 
 self.handles.ax(1) = axes('parent',self.handles.main_fig,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');

@@ -9,6 +9,7 @@
 // 2. L1 cost, normalized by X
 // 3. L2 cost, normalized by X + Y
 // 4. L1 cost, normalzied by X + Y
+// 5. L1 cost, not normalized by anything
 
 
 #include <cmath>
@@ -244,6 +245,33 @@ double findClosestSpikeCost(double X, double *Y, int lY, int Variant) {
                         return cost1/(X + Y[idx]);
                     } else {
                         return cost2/(X + Y[idx-1]);
+                    }
+
+                }
+                
+            }
+            break;
+
+        case 5:
+            // L1 cost, not normalized by anything
+            {
+                int idx = findPositionInSortedArray(Y, lY, X);
+
+                if (idx == 0) {
+                    // first element
+                    return abs(X - Y[idx]);
+
+
+                } else {
+                    // some other element, so need to determine the
+                    // closest element b/w idx and idx - 1
+                    double cost1 = abs(X - Y[idx]);
+                    double cost2 = abs(X - Y[idx-1]);
+
+                    if (cost1 < cost2) {
+                        return cost1;
+                    } else {
+                        return cost2;
                     }
 
                 }
