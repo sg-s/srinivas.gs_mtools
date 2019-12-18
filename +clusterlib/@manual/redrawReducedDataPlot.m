@@ -1,6 +1,7 @@
 function redrawReducedDataPlot(self,~,~)
 
-unique_labels =  unique([self.labels categorical(NaN)]);
+
+unique_labels =  unique([self.labels(:); categorical(NaN)]);
 C = colormaps.linspecer(length(unique_labels));
 
 
