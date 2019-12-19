@@ -31,7 +31,7 @@ end
 
 self.handles.ReducedData = matlab.graphics.GraphicsPlaceholder.empty;
 self.handles.RawData = matlab.graphics.GraphicsPlaceholder.empty;
-self.handles.CurrentPointReduced = plot(self.handles.ax(1),NaN,NaN,'o','MarkerFaceColor','r','MarkerEdgeColor','r');
+self.handles.CurrentPointReduced = plot(self.handles.ax(1),NaN,NaN,'+','MarkerFaceColor','r','MarkerEdgeColor','r','MarkerSize',24);
 self.handles.CurrentPointRaw = plot(self.handles.ax(2),NaN,NaN,'r-','LineWidth',2);
 
 self.redrawReducedDataPlot();
@@ -39,3 +39,4 @@ self.redrawReducedDataPlot();
 figlib.pretty('font_units','points');
 
 uistack(self.handles.CurrentPointReduced,'top')
+drawnow

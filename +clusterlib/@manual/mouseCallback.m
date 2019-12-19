@@ -57,3 +57,6 @@ end
 if ~isempty(self.MouseCallbackFcn)
     self.MouseCallbackFcn(self)
 end
+
+uistack(self.handles.CurrentPointReduced,'top')
+drawnow
