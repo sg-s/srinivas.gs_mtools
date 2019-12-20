@@ -2,7 +2,7 @@ function redrawReducedDataPlot(self,~,~)
 
 
 unique_labels =  unique([self.labels(:); categorical(NaN)]);
-C = colormaps.linspecer(length(unique_labels));
+C = colormaps.dcol(length(unique_labels));
 
 
 % create plots if needed
@@ -18,8 +18,6 @@ if length(self.handles.RawData) < length(unique_labels)
 	end
 end
 
-
-C = lines;
 
 % populate handles for every class
 for i = 1:length(unique_labels)
