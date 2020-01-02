@@ -2,7 +2,11 @@ function redrawReducedDataPlot(self,~,~)
 
 
 unique_labels =  unique([self.labels(:); categorical(NaN)]);
-C = colormaps.dcol(length(unique_labels));
+if isempty(self.Colormap)
+	C = colormaps.dcol(length(unique_labels));
+else
+	C = self.Colormap;
+end
 
 
 % create plots if needed

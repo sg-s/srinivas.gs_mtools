@@ -16,6 +16,8 @@ properties
     MouseCallbackFcn@function_handle
 
     handles
+
+    Colormap
 end % props
 
 properties (Access = protected)
