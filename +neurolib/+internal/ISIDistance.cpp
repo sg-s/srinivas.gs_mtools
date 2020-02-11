@@ -1,15 +1,15 @@
 
 // ISIDistance.cpp
 // measures the distance between two sets of ISIs
-// that are entered here as vectors (NaN padded)
-// The file allows for four different variants
+// that are entered here as sorted vectors (NaN padded)
+// The file allows for different variants
 // of the distance function:
 //
 // 1. L2 cost, normalized by X
 // 2. L1 cost, normalized by X
 // 3. L2 cost, normalized by X + Y
-// 4. L1 cost, normalzied by X + Y
-// 5. L1 cost, not normalized by anything
+// 4. L1 cost, normalized by X + Y
+// 5. L1 cost, normalized by X + Y, but only the biggest value
 
 
 #include <cmath>
@@ -26,7 +26,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     // define helper functions
     double findClosestSpikeCost(double, double*, int, int);
     int findPositionInSortedArray(double*, int, double);
-    int findNumberOfNonNaNElements(double*, int);
+    int findIndexOfFirstNaNValue(double*, int);
 
     plhs[0] = mxCreateDoubleMatrix(1, 1, mxREAL);
     double *D;
@@ -56,8 +56,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     int lB = 0;
 
 
-    lA = findNumberOfNonNaNElements(AA,NA);
-    lB = findNumberOfNonNaNElements(BB,NB);
+    lA = findIndexOfFirstNaNValue(AA,NA);
+    lB = findIndexOfFirstNaNValue(BB,NB);
 
 
     // early exits
@@ -77,6 +77,33 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
     double DA = 0;
     double DB = 0;
+
+
+    // special case for Variant == 5
+
+    if (Variant == 5) {
+        double this_cost = 0;
+        for (int i = 0; i < lA; i ++) {
+            this_cost = findClosestSpikeCost(AA[i],BB, lB, 4);
+            mexPrintf("this_cost = %f\n",this_cost);
+            if (this_cost > DA) {
+                DA = this_cost;
+            }
+        }
+
+
+        // now the same deal for B
+        for (int i = 0; i < lB; i ++) {
+            this_cost = findClosestSpikeCost(BB[i],AA, lA, 4);
+            mexPrintf("this_cost = %f\n",this_cost);
+            if (this_cost > DB) {
+                DB = this_cost;
+            }
+        }  
+
+        D[0] = DA + DB;
+        return;
+    }
 
     // find closest spike to each spike in A
     for (int i = 0; i < lA; i ++) {
@@ -99,21 +126,19 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 
 
 
-int findNumberOfNonNaNElements(double* A, int lA) {
+int findIndexOfFirstNaNValue(double* A, int lA) {
 
-    int a = 0;
-    int z  = lA - 1; 
-    while (a != z) {
-        int idx = (a + z) / 2; // Or a fancy way to avoid int overflow
-        if (!isnan(A[idx])) {
-            a = idx + 1;
+    for (int idx = 0; idx < lA; idx++ ) {
+        if (isnan(A[idx])) {
+            return idx;
         }
-        else {
-            z = idx;
-        }
+
     }
 
-    return z;
+    return lA;
+
+
+
 
 }
 
@@ -125,7 +150,7 @@ int findPositionInSortedArray(double* A, int lA, double X) {
 
 
     int a = 0;
-    int z  = lA - 1; 
+    int z  = lA - 1; // the last non-NaN value position in A is lA-1
     while (a != z) {
         int idx = (a + z) / 2; // Or a fancy way to avoid int overflow
         if (A[idx] <= X) {

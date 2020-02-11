@@ -3,7 +3,8 @@
 
 function feeder_nodes = sankeyMatrix(J, end_here, n_layers, cutoff)
 
-set(gca,'XLim',[-n_layers - 1, 1],'YLim',[0 9]);
+
+set(gca,'XLim',[-n_layers - 1, 1],'YLim',[0 length(J)+1]);
 
 
 % draw lines to indicate prev states
