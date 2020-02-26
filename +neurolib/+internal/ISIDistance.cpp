@@ -85,7 +85,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
         double this_cost = 0;
         for (int i = 0; i < lA; i ++) {
             this_cost = findClosestSpikeCost(AA[i],BB, lB, 4);
-            mexPrintf("this_cost = %f\n",this_cost);
+            //mexPrintf("this_cost = %f\n",this_cost);
             if (this_cost > DA) {
                 DA = this_cost;
             }
@@ -95,7 +95,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
         // now the same deal for B
         for (int i = 0; i < lB; i ++) {
             this_cost = findClosestSpikeCost(BB[i],AA, lA, 4);
-            mexPrintf("this_cost = %f\n",this_cost);
+            //mexPrintf("this_cost = %f\n",this_cost);
             if (this_cost > DB) {
                 DB = this_cost;
             }

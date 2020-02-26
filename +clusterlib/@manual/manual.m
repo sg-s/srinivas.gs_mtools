@@ -18,15 +18,15 @@ properties
     handles
 
     Colormap
+
+    CurrentPoint@double = NaN
 end % props
 
 properties (Access = protected)
     DrawingClusters@logical = false;
 end
 
-properties (SetAccess = protected)
-    CurrentPoint@double = NaN
-end
+
 
 
 methods 
@@ -69,6 +69,18 @@ methods
         end
 
     end
+
+
+    function set.CurrentPoint(self,value)
+
+        assert(isscalar(value),'Value must be scalar')
+
+        self.handles.CurrentPointReduced.XData = self.ReducedData(value,1);
+        self.handles.CurrentPointReduced.YData = self.ReducedData(value,2);
+
+        self.CurrentPoint = value;
+
+    end 
 
 
 end % methods 
