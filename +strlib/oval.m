@@ -1,10 +1,10 @@
 % round off a number and convert to a string
-% oval is a version of round, which rounds to how many ever significant digits you want and returns a string. supports fractions. 
-% 
-% 
+% oval is a version of round, which rounds to how many ever significant digits you want and returns a string. supports fractions.
+%
+%
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
+%
+% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 % To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
 function r = oval(a,s)
 switch nargin
@@ -46,7 +46,7 @@ else
 	end
 	a= abs(a);
 	powerbase = round(log10(a));
-	if powerbase > s  
+	if powerbase > s
 	else
 	    s = s - powerbase;
 	end
