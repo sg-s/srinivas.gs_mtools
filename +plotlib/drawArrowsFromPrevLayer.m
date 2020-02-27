@@ -36,7 +36,8 @@ steepnees = 25;
 opacity = .35;
 
 
-c = [lines(7); 1 0 0; 0 0 0; 1 0 .7843];
+c = lines;
+cidx = 1;
 
 % draw lines to each of these previous nodes
 for i = 1:length(prev_nodes)
@@ -51,7 +52,9 @@ for i = 1:length(prev_nodes)
 
 	% go back in layers
 	if this_layer == 0
-		Color = c(prev_nodes(i),:);
+		%Color = c(prev_nodes(i),:);
+		Color = c(cidx,:);
+		cidx = cidx+1;
 		preW = W(i);
 	end
 

@@ -4,26 +4,30 @@
 function [ph, arrows] = trajectory(varargin)
 
 
-options.n_arrows = 3;
-options.arrow_size = 3;
-options.size = .1;
+options.NArrows = 3;
+options.ArrowSize = 3;
 options.LineWidth = .5;
 options.Color = 'k';
-options.draw_base = false;
-options.log_x = true;
-options.log_y = true;
-options.norm_x = true;
-options.norm_y = true;
+options.LogX = true;
+options.LogY = true;
+options.NormX = true;
+options.NormY = true;
 options.ArrowAngle = 30; % degrees
 options.ArrowLength = .1;
 options.TerminalArrow = true;
 options.MinTrajLength = .01;
+options.LineStyle = '-';
+
 
 [ax, varargin] = axlib.grabAxHandleFromArguments(varargin{:});
 
 xx = varargin{1};
 yy = varargin{2};
 varargin(1:2) = [];
+
+
+assert(~any(isnan(xx)),'NaNs detected in inputs, cannot continue')
+assert(~any(isnan(yy)),'NaNs detected in inputs, cannot continue')
 
 options = corelib.parseNameValueArguments(options,varargin{:});
 
@@ -35,17 +39,18 @@ yy = yy(:);
 
 assert(length(xx) == length(yy),'xx and yy must be of equal lengths')
 
-ph = plot(ax,xx,yy,'LineWidth',options.LineWidth,'Color',options.Color);
+ph = plot(ax,xx,yy,'LineWidth',options.LineWidth,'Color',options.Color,'LineStyle',options.LineStyle);
 hold on
 
+
 % normalize xx and yy 
-if options.norm_x
+if options.NormX
 	XLim = [min(xx) max(xx)];
 else
 	XLim = ax.XLim;
 end
 
-if options.norm_y
+if options.NormY
 	YLim = [min(yy) max(yy)];
 else
 	YLim = ax.YLim;
@@ -53,14 +58,14 @@ end
 
 
 if diff(XLim) > eps & diff(YLim) > eps
-	xx = plotlib.normalize(xx,XLim,options.log_x);
-	yy = plotlib.normalize(yy,YLim,options.log_y);
+	xx = plotlib.normalize(xx,XLim,options.LogX);
+	yy = plotlib.normalize(yy,YLim,options.LogY);
 	heading = atan2(diff(yy),diff(xx));
 
 elseif diff(XLim) > eps & ~(diff(YLim) > eps)
-	disp('horizontal line, not coded')
-	yy = plotlib.normalize(yy,ax.YLim,options.log_y);
-	xx = plotlib.normalize(xx,XLim,options.log_x);
+	% horizontal line
+
+	xx = plotlib.normalize(xx,XLim,options.LogX);
 	if xx(1) > xx(end)
 		heading = 0*xx;
 	else
@@ -69,9 +74,7 @@ elseif diff(XLim) > eps & ~(diff(YLim) > eps)
 
 elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 	% vertical line
-
-	xx = plotlib.normalize(xx,ax.XLim,options.log_x);
-	yy = plotlib.normalize(yy,YLim,options.log_y);
+	yy = plotlib.normalize(yy,YLim,options.LogY);
 	if yy(1) > yy(end)
 		heading = (3*pi/2)*(1 + 0*yy);
 	else
@@ -99,12 +102,12 @@ if D(end) < options.MinTrajLength
 end
 
 % find points to put arrows in
-arrow_spacing = D(end)/(options.n_arrows+1);
+arrow_spacing = D(end)/(options.NArrows+1);
 
 
 
 % if only one arrow is requested, put that arrow at the end of the line
-if options.n_arrows == 1 && options.TerminalArrow
+if options.NArrows == 1 && options.TerminalArrow
 	arrow_spacing = D(end-2);
 
 	% use an average heading
@@ -113,13 +116,12 @@ if options.n_arrows == 1 && options.TerminalArrow
 end
 
 
-for i = 1:options.n_arrows
+for i = 1:options.NArrows
 	idx = find(D>arrow_spacing*i,1,'first');
 
 
 
 	orientation = rad2deg(heading(idx));
-
 
 	b(1) = yy(idx) - options.ArrowLength*sin(deg2rad(orientation - options.ArrowAngle));
 	a(1) = xx(idx) - options.ArrowLength*cos(deg2rad(orientation - options.ArrowAngle));
@@ -131,34 +133,34 @@ for i = 1:options.n_arrows
 	if diff(XLim) > eps & diff(YLim) > eps
 
 		% normal
-		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.LogX);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.LogY);
 
 
 		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
-		this_x = plotlib.deNormalize([xx(idx) a(2)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([yy(idx) b(2)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(2)], XLim, options.LogX);
+		this_y = plotlib.deNormalize([yy(idx) b(2)], YLim, options.LogY);
 
 
-		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
+		arrows(i,2) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
 
 
 	elseif diff(XLim) > eps & ~(diff(YLim) > eps)
-		disp('horizontal line, not coded')
+		% horizontal line
 		
 
-		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.LogX);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.LogY);
 
 		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);
 
 	elseif diff(YLim) > eps & ~(diff(XLim) > eps)
 		% vertical line
 
-		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.log_x);
-		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.log_y);
+		this_x = plotlib.deNormalize([xx(idx) a(1)], XLim, options.LogX);
+		this_y = plotlib.deNormalize([yy(idx) b(1)], YLim, options.LogY);
 
 
 		arrows(i,1) = line(ax,this_x,this_y,'Color',options.Color,'LineWidth',options.LineWidth);

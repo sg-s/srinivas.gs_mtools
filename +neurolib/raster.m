@@ -60,6 +60,7 @@ if options.split_rows
         end
     end
     options.split_rows = false;
+
     neurolib.raster(ax,new_spiketimes{:},options);
     return
     

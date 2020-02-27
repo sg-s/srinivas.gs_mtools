@@ -13,18 +13,20 @@ properties
     AllowNewClasses@logical = true
 
 
-    MouseCallback@function_handle
+    MouseCallbackFcn@function_handle
 
     handles
+
+    Colormap
+
+    CurrentPoint@double = NaN
 end % props
 
 properties (Access = protected)
     DrawingClusters@logical = false;
 end
 
-properties (SetAccess = protected)
-    CurrentPoint@double = NaN
-end
+
 
 
 methods 
@@ -56,11 +58,6 @@ methods
 
 
 
-    function self = set.labels(self, value)
-        self.labels = [value(:); categorical(NaN)];
-    end
-
-
     function self = set.idx(self, value)
 
         self.idx = value;
@@ -71,9 +68,19 @@ methods
             return
         end
 
-        self.labels = [self.labels; categorical(categories(value))];
-
     end
+
+
+    function set.CurrentPoint(self,value)
+
+        assert(isscalar(value),'Value must be scalar')
+
+        self.handles.CurrentPointReduced.XData = self.ReducedData(value,1);
+        self.handles.CurrentPointReduced.YData = self.ReducedData(value,2);
+
+        self.CurrentPoint = value;
+
+    end 
 
 
 end % methods 

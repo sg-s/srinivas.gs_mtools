@@ -1,4 +1,4 @@
-% like parula, but becomes red and high values intead
+% like parula, but becomes red and high values instead
 % of yellow
 
 function C = redula(N)
@@ -8,7 +8,7 @@ function C = redula(N)
 if nargin == 0
 	N = 100;
 else
-	assert(isnumeric(N) && isscalar(N) && isreal(N) && N >= 20,'N must be a +ve integer >= 20');
+	assert(isnumeric(N) && isscalar(N) && isreal(N) ,'N must be a +ve integer');
 	N = round(N);
 end
 

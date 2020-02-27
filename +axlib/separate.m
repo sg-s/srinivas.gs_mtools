@@ -5,9 +5,9 @@
 % ```matlab
 % axlib.axlib.separate()
 % axlib.separate(ax_handle)
-% axlib.separate(ax_handle,'mask_y',true)
-% axlib.separate(ax_handle,'mask_x',true)
-% axlib.separate(ax_handle,'mask_x',true,'offset',.1)
+% axlib.separate(ax_handle,'MaskY',true)
+% axlib.separate(ax_handle,'MaskX',true)
+% axlib.separate(ax_handle,'MaskX',true,'Offset',.1)
 % axlib.separate(ax_handle,options)
 % ```
 %
@@ -26,9 +26,9 @@ function mask_handles = separate(varargin)
 
 
 % options and defaults
-options.offset = .1;
-options.mask_x = true;
-options.mask_y = true;
+options.Offset = .1;
+options.MaskX = true;
+options.MaskY = true;
 
 
 if nargout && ~nargin 
@@ -70,7 +70,7 @@ end
 options = corelib.parseNameValueArguments(options, varargin{:});
 
 
-assert(options.offset > 0,'Offset must be positive')
+assert(options.Offset > 0,'Offset must be positive')
 
 hold(ax,'on')
 
@@ -90,20 +90,20 @@ y_range = abs(diff(old_ylim));
 
 % resize X and Y Lims
 if strcmp(ax.XScale,'linear')
-	ax.XLim = [old_xlim(2) - (1+options.offset)*x_range old_xlim(2)];
+	ax.XLim = [old_xlim(2) - (1+options.Offset)*x_range old_xlim(2)];
 else
 	% work in log space
 	temp = log(old_xlim);
 	temp_range = abs(diff(temp));
-	ax.XLim = [exp(temp(2) - temp_range*(1+options.offset)) old_xlim(2)];
+	ax.XLim = [exp(temp(2) - temp_range*(1+options.Offset)) old_xlim(2)];
 end
 if strcmp(ax.YScale,'linear')
-	ax.YLim = [old_ylim(2) - (1+options.offset)*y_range old_ylim(2)];
+	ax.YLim = [old_ylim(2) - (1+options.Offset)*y_range old_ylim(2)];
 else
 	% work in log space
 	temp = log(old_ylim);
 	temp_range = abs(diff(temp));
-	ax.YLim = [exp(temp(2) - temp_range*(1+options.offset)) old_ylim(2)];
+	ax.YLim = [exp(temp(2) - temp_range*(1+options.Offset)) old_ylim(2)];
 end
 
 % force ticks to be where they should be
@@ -113,9 +113,9 @@ ax.XTickLabels = xlabels;
 ax.YTickLabels = ylabels;
 
 % draw white lines to hide the offending parts of the axes
-if options.mask_x
+if options.MaskX
 	mask_handles.x = plot(ax,[ax.XLim(1) min(xtick)],[ax.YLim(1) ax.YLim(1)],'Color','w','LineWidth',ax.LineWidth+1,'HandleVisibility','off');
 end
-if options.mask_y
+if options.MaskY
 	mask_handles.y = plot(ax,[ax.XLim(1) ax.XLim(1)],[ax.YLim(1) min(ytick)],'Color','w','LineWidth',ax.LineWidth+1,'HandleVisibility','off');
 end

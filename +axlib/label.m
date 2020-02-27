@@ -19,14 +19,14 @@
 %
 
  
-function label_handle = label(ax_handle,label,varargin)
+function varargout = label(ax_handle,label,varargin)
 
 % options and defaults
-options.capitalise = false;
-options.x_offset = -.06;
-options.y_offset = .01;
-options.font_size = 20;
-options.font_weight = 'bold';
+options.Capitalize = false;
+options.XOffset = -.06;
+options.YOffset = .01;
+options.FontSize = 20;
+options.FontWeight = 'bold';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -36,9 +36,13 @@ end
 options = corelib.parseNameValueArguments(options, varargin{:});
 
 
+if options.Capitalize
+	label = upper(label);
+end
+
 p = ax_handle.Position;
-x = p(1) + options.x_offset - ax_handle.TightInset(1)/2;
-y = p(2) + p(4) + options.y_offset + ax_handle.TightInset(4)/2;
+x = p(1) + options.XOffset - ax_handle.TightInset(1)/2;
+y = p(2) + p(4) + options.YOffset + ax_handle.TightInset(4)/2;
 label_handle = uicontrol('style','text');
 label_handle.Units = 'normalized';
 
@@ -54,9 +58,12 @@ else
 end
 
 label_handle.String = label;
-label_handle.FontSize = options.font_size;
-label_handle.FontWeight = options.font_weight;
+label_handle.FontSize = options.FontSize;
+label_handle.FontWeight = options.FontWeight;
 label_handle.BackgroundColor = get(gcf,'Color');
 label_handle.Tag = 'axes-label';
 uistack(label_handle,'top')
 
+if nargout == 1
+	varargout{1} = label_handle;
+end

@@ -8,7 +8,7 @@ function [L,center_idxs] = densityPeaks(X,varargin)
 
 switch nargin
 case 0
-	help densityPeaks
+	help clusterlib.densityPeaks
 	return
 end
 
@@ -23,9 +23,10 @@ options.method = 'gaussian';
 options.percent = 2;
 options.sigma = 20;
 options.trim_halo = false;
-options.n_clusters = Inf;
-options.show_plot = false;
+options.NClusters = Inf;
+options.ShowPlot = false;
 options.M = 10;
+options.Distance = 'euclidean';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -34,11 +35,15 @@ end
 
 options = corelib.parseNameValueArguments(options, varargin{:});
 
-d = pdist2(X,X);
+if strcmp(options.Distance,'precomputed')
+    d = X;
+else
+    d = pdist2(X,X,options.Distance);
+end
 
-[L, center_idxs] = cluster_dp(d, options);
+[L, center_idxs] = clusterlib.internal.cluster_dp(d, options);
 
-if options.show_plot
+if options.ShowPlot
     temp = figure; hold on
     c = lines(max(L));
     for i = 1:max(L)

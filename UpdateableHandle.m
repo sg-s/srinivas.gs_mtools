@@ -70,12 +70,18 @@ methods (Static)
 
 				websave([repo_name '.mltbx'],tbx_url);
 
-				assert(exist([repo_name '.mltbx']) == 2,'Failed to download toolbox')
+				assert(exist([repo_name '.mltbx'],'file') == 2,'Failed to download toolbox')
 
 				t = matlab.addons.toolbox.installToolbox([repo_name '.mltbx']);
 
 				disp('Installed version:')
 				disp(t.Version)
+
+				% delete the downloaded toolbox installer file
+				try
+					delete([repo_name '.mltbx'])
+				catch
+				end
 
 
 			else

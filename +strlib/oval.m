@@ -9,7 +9,7 @@
 function r = oval(a,s)
 switch nargin
 case 0
-	help oval
+	help strlib.oval
 	return
 case 1
 	if isvector(a) && length(a) > 1

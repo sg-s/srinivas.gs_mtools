@@ -1,10 +1,7 @@
 % name.m
-% returns the terminal bit of a path, e.g.
-% the last folder or file in a path
-% usage:
-% file_name = pathEnd('path/to/file_name')
+% returns the name from fileparts
 % 
-function [file_name] = ext(p)
+function [file_name] = name(p)
 
 if iscell(p)
 	file_name = p;

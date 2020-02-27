@@ -33,10 +33,10 @@ Z(rm_this) = [];
 varargin(1:3) = [];
 
 % options and defaults
-options.clim = [NaN NaN];
-options.use_scatter = true;
-options.n_colors = NaN;
-options.colormap = 'parula';
+options.CLim = [NaN NaN];
+options.BinCenters = NaN;
+options.UseScatter = true;
+options.colormap = @parula;
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -44,6 +44,15 @@ if nargout && ~nargin
 end
 
 options = corelib.parseNameValueArguments(options, varargin{:});
+
+
+if ~isnan(options.BinCenters)
+	% override UseScatter
+	options.UseScatter = false;
+end
+
+
+assert(isa(options.colormap,'function_handle'),'colormap should be a function handle')
 
 assert(length(X) == length(Y),'Vectors not of equal length')
 assert(length(X) == length(Z),'Vectors not of equal length')
@@ -55,26 +64,26 @@ if length(X) == 0
 	return
 end
 
-if options.use_scatter
+if options.UseScatter
 	% make color scheme
-	if isnan(options.clim(1))
+	if isnan(options.CLim(1))
 		C = Z - min(Z);
 		C = C/max(C);
 		C = floor(C*999 + 1);
 	else
-		C = Z - options.clim(1);
-		C = C/(options.clim(2)-options.clim(1));
+		C = Z - options.CLim(1);
+		C = C/(options.CLim(2)-options.CLim(1));
 		C = floor(C*999 + 1);
 
-		assert(min(C) > 0,'Using the clim you specified leads to out of range array elements. Choose a better clim, or specify NaN to use automatic range detection')
+		assert(min(C) > 0,'Using the CLim you specified leads to out of range array elements. Choose a better CLim, or specify NaN to use automatic range detection')
 
 
 	end
 
-	eval(['c = ' options.colormap '(1e3);']);
+	c = options.colormap(1e3);
 
 	% force to bounds
-	C(C>1e3)  =1e3;
+	C(C>1e3) = 1e3;
 	C(C<1) = 1;
 
 	scatter_handle = scatter(ax,X,Y,24,c(C,:),'filled');
@@ -84,10 +93,10 @@ if options.use_scatter
 
 	colormap(ax,options.colormap);
 	chandle = colorbar(ax);
-	if isnan(options.clim(1))
+	if isnan(options.CLim(1))
 		caxis(ax,[min(Z) max(Z)])
 	else
-		caxis(ax,options.clim)
+		caxis(ax,options.CLim)
 	end
 
 
@@ -105,25 +114,44 @@ else
 	% discretize the colormap and make N different plots
 	% with those colors
 
+	if isnan(options.BinCenters)
+		disp('BinCenters not specified')
+		keyboard
+	end
+
 
 	% discretize colors
-	NColors = length(options.colormap);
-	C = Z - options.clim(1);
-	C = C/(diff(options.clim));
-	C = floor(C*NColors);
-	C(C<1) = 1;
-	C(C>NColors) = NColors;
+	bin_edges = unique([options.CLim options.BinCenters(1:end-1) + diff(options.BinCenters)/2]);
+	idx = discretize(Z,bin_edges);
 
+	% to do: handle NaN  idx
+	if any(isnan(idx))
+		warning('NaNs in idx, which will be ignored')
+	end
+
+	% create a discrete colormap from whatever colormap
+	% we are given 
+	C = options.colormap(1e3);
+
+	plot_colors_idx = floor(1+999*((options.BinCenters - options.CLim(1))/(diff(options.CLim))));
+	plot_colors = C(plot_colors_idx,:);
+
+
+	temp = discretize(1:1e3,unique([1 plot_colors_idx(1:end-1) + diff(plot_colors_idx)/2 1e3]));
+	temp(temp>length(plot_colors)) = length(plot_colors);
+	C = C(plot_colors_idx(temp),:);
 	
 	clear plot_handles
-	for i = NColors:-1:1
-		if any(C==i)
-			plot_handles(i) = plot(X(C==i),Y(C==i),'.','Color',options.colormap(i,:));
+	for i = length(plot_colors):-1:1
+		if any(idx==i)
+			plot_handles(i) = plot(ax,X(idx==i),Y(idx==i),'.','Color',plot_colors(i,:));
 		end
 	end
 
 	chandle = colorbar(ax);
-	caxis(ax,options.clim)
+	caxis(ax,options.CLim)
+	colormap(ax,C)
+	chandle.Ticks = options.BinCenters;
 
 	if nargout == 0
 	elseif nargout == 1

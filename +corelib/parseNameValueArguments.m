@@ -1,6 +1,5 @@
 function options = parseNameValueArguments(options, varargin)
 
-
 % validate and accept options
 if mathlib.iseven(length(varargin))
 	for ii = 1:2:length(varargin)-1

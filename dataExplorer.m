@@ -34,7 +34,7 @@ methods
 		self.handles.main_fig = figure('Name','dataExplorer','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Color','w'); hold on,axis off
 
 		self.handles.menu_name(1) = uimenu('Label','Cluster');
-		uimenu(self.handles.menu_name(1),'Label','Add to cluster...','Callback',@clusterlib.interactive);
+		uimenu(self.handles.menu_name(1),'Label','Add to cluster...','Callback',@clusterlib.manual);
 
 		if self.make_axes
 			self.handles.main_ax(1) = axes('parent',self.handles.main_fig,'position',[-0.1 0.1 0.85 0.85],'box','on','TickDir','out');axis square, hold on ; title('Reduced Data'); hold on
@@ -66,6 +66,10 @@ methods
 	function mouseCallback(self,~,~)
 
 
+		% check that the reduced data and the full data are the 
+		% same size
+		assert(size(self.reduced_data,1) == size(self.full_data,1),'[FATAL] Full data and reduced data are not the same size.')
+
 		pp = get(self.handles.main_ax,'CurrentPoint');
         p(1) = (pp(1,1)); p(2) = pp(1,2);
 
@@ -82,7 +86,7 @@ methods
 
         title(self.handles.main_ax,strlib.oval(cp));
 
-        self.callback_function(self.handles.ax(1),self.full_data(:,cp))
+        self.callback_function(self.handles.ax(1),self.full_data(cp,:))
 
 
 
