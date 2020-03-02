@@ -8,7 +8,7 @@ function [x, names] = vectorise(obj)
 
 names = {};
 
-if isa(obj,'double')
+if isa(obj,'double') || isa(obj, 'logical')
 	x = obj(:);
 
 	return
