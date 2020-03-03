@@ -19,6 +19,9 @@ function [filepath, name, ext] = strip(varargin)
     %   [filepath, name, ext] = pathlib.strip(n);
     %   [filepath, name, ext] = pathlib.strip(this_filepath, n);
     %
+    %% Notes:
+    %   for best results, use with mfilename('fullpath') or which, e.g.
+    %   pathlib.strip(mfilename('fullpath'), n)
 
     %% Preamble
 
