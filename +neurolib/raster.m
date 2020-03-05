@@ -81,6 +81,13 @@ for i = 1:length(spiketimes)
 end
 
 
+if size(options.Color,1)  == 1
+
+    options.Color = repmat(options.Color,size(spiketimes,2),1);
+
+end
+
+
 for i = 1:length(spiketimes)
 
 
