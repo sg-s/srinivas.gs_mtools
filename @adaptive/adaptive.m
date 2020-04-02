@@ -31,7 +31,7 @@ end
 properties (SetAccess = private) 
 
 	% stores the triangulation
-	DT@delaunayTriangulation
+	DT delaunayTriangulation = delaunayTriangulation
 
 	SamplePoints
 	data
