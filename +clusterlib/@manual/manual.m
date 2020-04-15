@@ -17,13 +17,13 @@ properties
 
     handles
 
-    Colormap
+    ColorMap
 
     CurrentPoint (1,1) double = NaN
 end % props
 
 properties (Access = protected)
-    DrawingClusters@logical = false;
+    DrawingClusters (1,1) logical = false;
 end
 
 

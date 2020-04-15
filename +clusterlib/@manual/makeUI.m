@@ -1,5 +1,10 @@
 function makeUI(self)
 
+cats = categories(self.idx);
+if isempty(self.ColorMap)
+	self.ColorMap = colormaps.dcol(length(cats));
+end
+
 % make the UI
 self.handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@self.closeManualCluster,'ResizeFcn',@self.resize); hold on,axis off
 
@@ -29,8 +34,19 @@ if self.AllowNewClasses
 	uicontrol(self.handles.main_fig,'Units','normalized','position',[.82 .9 .15 .05],'Style','pushbutton','FontSize',24,'String','Add class','Callback',@self.addClass);
 end
 
+% make a plot for all the data 
+self.handles.AllReducedData = plot(self.handles.ax(1),self.ReducedData(:,1),self.ReducedData(:,2),'.','Color',[.5 .5 .5],'MarkerSize',15);
 self.handles.ReducedData = matlab.graphics.GraphicsPlaceholder.empty;
+
+% make a new plot for each of the categories 
+
+for i = 1:length(cats)
+	self.handles.ReducedData(i) = plot(self.handles.ax(1),NaN,NaN,'.','MarkerFaceColor',self.ColorMap(i,:),'MarkerEdgeColor',self.ColorMap(i,:),'MarkerSize',20,'Tag',cats{i});
+end
+
 self.handles.RawData = matlab.graphics.GraphicsPlaceholder.empty;
+
+
 self.handles.CurrentPointReduced = plot(self.handles.ax(1),NaN,NaN,'+','MarkerFaceColor','r','MarkerEdgeColor','r','MarkerSize',24);
 self.handles.CurrentPointRaw = plot(self.handles.ax(2),NaN,NaN,'r-','LineWidth',2);
 

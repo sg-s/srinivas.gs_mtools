@@ -31,5 +31,5 @@ drawnow;
 self.DrawingClusters = false;
 
 set(self.handles.main_fig,'Color','w');
-set(self.handles.main_fig,'Name',[mat2str(length(find(inp))) ' points added to ' this_cluster_name]);
+set(self.handles.main_fig,'Name',[mat2str(length(find(inp))) ' points added to ' this_cluster_name '. ' mat2str(100*mean(~isundefined(self.idx)),2) '% of points have been labeled']);
 
