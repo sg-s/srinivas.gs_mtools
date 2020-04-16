@@ -1,6 +1,6 @@
 function makeUI(self)
 
-cats = categories(self.idx);
+cats =categories([self.idx; self.labels(:)]);
 if isempty(self.ColorMap)
 	self.ColorMap = colormaps.dcol(length(cats));
 end
@@ -36,15 +36,18 @@ end
 
 % make a plot for all the data 
 self.handles.AllReducedData = plot(self.handles.ax(1),self.ReducedData(:,1),self.ReducedData(:,2),'.','Color',[.5 .5 .5],'MarkerSize',15);
+
 self.handles.ReducedData = matlab.graphics.GraphicsPlaceholder.empty;
+self.handles.RawData = matlab.graphics.GraphicsPlaceholder.empty;
 
 % make a new plot for each of the categories 
 
 for i = 1:length(cats)
 	self.handles.ReducedData(i) = plot(self.handles.ax(1),NaN,NaN,'.','MarkerFaceColor',self.ColorMap(i,:),'MarkerEdgeColor',self.ColorMap(i,:),'MarkerSize',20,'Tag',cats{i});
+	self.handles.RawData(i) = plot(self.handles.ax(2),NaN,NaN,'MarkerFaceColor',self.ColorMap(i,:),'MarkerEdgeColor',self.ColorMap(i,:),'Tag',cats{i});
 end
 
-self.handles.RawData = matlab.graphics.GraphicsPlaceholder.empty;
+
 
 
 self.handles.CurrentPointReduced = plot(self.handles.ax(1),NaN,NaN,'+','MarkerFaceColor','r','MarkerEdgeColor','r','MarkerSize',24);
@@ -61,7 +64,11 @@ self.handles.CategoryPicker.Callback = @self.showCategory;
 self.handles.CategoryPicker.String = categories(self.labels);
 self.handles.CategoryPicker.FontSize = 24;
 
+
 figlib.pretty('font_units','points');
+
+
+
 
 uistack(self.handles.CurrentPointReduced,'top')
 drawnow

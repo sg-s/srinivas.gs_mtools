@@ -1,11 +1,15 @@
 function redrawReducedDataPlot(self,~,~)
 
 
-
 cats = categories(self.idx);
+
+% update reduced data
 for i = 1:length(cats)
-	self.handles.ReducedData(i).XData = self.ReducedData(self.idx == cats{i},1);
-	self.handles.ReducedData(i).YData = self.ReducedData(self.idx == cats{i},2);
+	this_one = find(strcmp({self.handles.ReducedData.Tag},cats{i}));
+	self.handles.ReducedData(this_one).XData = self.ReducedData(self.idx == cats{i},1);
+	self.handles.ReducedData(this_one).YData = self.ReducedData(self.idx == cats{i},2);
+	self.handles.ReducedData(this_one).MarkerEdgeColor = self.ColorMap(i,:);
+	self.handles.ReducedData(this_one).MarkerFaceColor = self.ColorMap(i,:);
 end
 
 
@@ -15,14 +19,9 @@ if isempty(self.DisplayFcn)
 
 
 	for i = 1:length(cats)
-
-		plot_this = self.idx == cats{i};
-		self.handles.ReducedData(i).MarkerEdgeColor = C(i,:);
-		self.handles.ReducedData(i).MarkerFaceColor = C(i,:);
-			
-
-		self.handles.RawData(i).XData = 1:size(self.RawData,1);
-		self.handles.RawData(i).YData = nanmean(self.RawData(:,plot_this),2);
+		this_one = find(strcmp({self.handles.RawData.Tag},cats{i}));
+		self.handles.RawData(this_one).XData = 1:size(self.RawData,1);
+		self.handles.RawData(this_one).YData = mean(self.RawData(:,self.idx==cats{i}),2);
 	end
 
 	set(self.handles.ax(2),'XLim',[1 size(self.RawData,1)],'YLim',[min(self.RawData(:)) max(self.RawData(:))])

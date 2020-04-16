@@ -17,9 +17,12 @@ if ~isempty(self.handles.ReducedData)
 end
 self.handles.ReducedData(end+1) = plot(self.handles.ax(1),NaN,NaN,'.','Tag',self.handles.new_class_control.String,'MarkerSize',20);
 
+self.handles.RawData(end+1) = plot(self.handles.ax(2),NaN,NaN,'Tag',self.handles.new_class_control.String);
+
 if size(self.ColorMap,1) < length(self.handles.ReducedData)
 	self.ColorMap = colormaps.dcol(length(self.handles.ReducedData));
 end
 self.handles.ReducedData(end).Color = self.ColorMap(length(self.handles.ReducedData),:);
+self.handles.RawData(end).Color = self.ColorMap(length(self.handles.RawData),:);
 
 self.handles.new_class_control.String = '';

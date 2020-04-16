@@ -7,13 +7,14 @@ R = self.ReducedData;
 
 self.DrawingClusters = true;
 
-c = lines;
 
 src_string = get(src,'String');
 src_value = get(src,'Value');
 this_cluster_name = src_string{src_value};
 set(self.handles.main_fig,'Name',['Circle points to add to ' this_cluster_name]);
-set(self.handles.main_fig,'Color',c(src_value,:));
+
+
+set(self.handles.main_fig,'Color',self.handles.ReducedData(strcmp({self.handles.ReducedData.Tag},this_cluster_name)).Color);
 
 
 ifh = imfreehand(self.handles.ax(1));
