@@ -17,6 +17,7 @@ options.deltat = 1e-4;
 options.fill_fraction = .95;
 options.split_rows = false;
 options.center = true;
+options.RowHeight = 1;
 
 fn = fieldnames(options);
 
@@ -88,13 +89,16 @@ if size(options.Color,1)  == 1
 end
 
 
+
+RowHeight = options.RowHeight;
+
 for i = 1:length(spiketimes)
 
 
     st = (spiketimes{i});
     st = st(:)';
     x = reshape([st;st;NaN(1,length(st))],1,[]);
-    y = reshape([(options.yoffset+i-1+zeros(1,length(st))); (options.yoffset+i-1+ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
+    y = reshape([(options.yoffset+(i*RowHeight)-1+zeros(1,length(st))); (options.yoffset+(i*RowHeight)-1+RowHeight*ones(1,length(st))) ; (NaN(1,length(st))) ],1,[]);
     y(y==max(y)) = min(y)+options.fill_fraction*(max(y)-min(y));
 
     if options.center

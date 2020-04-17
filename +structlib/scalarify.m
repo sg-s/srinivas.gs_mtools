@@ -20,4 +20,6 @@ for i = 1:length(fn)
 	catch
 		X.(fn{i}) = cat(1,S.(fn{i}));
 	end
+
+	X.(fn{i}) = X.(fn{i})(:);
 end
