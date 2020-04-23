@@ -52,8 +52,6 @@ methods
 
         self.ReducedData = value;
 
-        self.idx = repmat(categorical(NaN),N,1);
-
     end
 
 

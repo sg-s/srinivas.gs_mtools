@@ -6,7 +6,7 @@ if isempty(self.ColorMap)
 end
 
 % make the UI
-self.handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@self.closeManualCluster,'ResizeFcn',@self.resize); hold on,axis off
+self.handles.main_fig = figure('Name','manualCluster','WindowButtonDownFcn',@self.mouseCallback,'NumberTitle','off','position',[50 150 1200 700], 'Toolbar','figure','Menubar','none','CloseRequestFcn',@self.closeManualCluster,'ResizeFcn',@self.resize,'KeyPressFcn',@self.keyPressCallback); hold on,axis off
 
 try getpref('clusterlib','ManualPosition');
 	self.handles.main_fig.Position =  getpref('clusterlib','ManualPosition');
@@ -25,8 +25,7 @@ axis square, hold on;
 title('Raw data');
 
 
-self.handles.select_class_control = uicontrol(self.handles.main_fig,'Units','normalized','position',[.6 .68 .35 .15],'Style','popupmenu','FontSize',24,'String',categories(self.labels),'Callback',@self.addToCluster);
-uicontrol(self.handles.main_fig,'Units','normalized','position',[.6 .82 .1 .05],'Style','text','FontSize',24,'String','Add to:','BackgroundColor','w');
+self.handles.add_to_class_toggle = uicontrol(self.handles.main_fig,'Units','normalized','position',[.6 .8 .35 .05],'Style','togglebutton','FontSize',24,'String','Add to cluster');
 
 
 if self.AllowNewClasses
@@ -61,7 +60,9 @@ self.handles.CategoryPicker = uicontrol(self.handles.main_fig,'Style','listbox')
 self.handles.CategoryPicker.Units = 'normalized';
 self.handles.CategoryPicker.Position = [.6 .55 .3 .2];
 self.handles.CategoryPicker.Callback = @self.showCategory;
-self.handles.CategoryPicker.String = categories(self.labels);
+temp = categories(self.labels);
+[~,sort_idx]=sort(cellfun(@lower,temp,'UniformOutput',false));
+self.handles.CategoryPicker.String = temp(sort_idx);
 self.handles.CategoryPicker.FontSize = 24;
 
 

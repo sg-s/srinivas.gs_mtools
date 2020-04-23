@@ -7,7 +7,11 @@ end
 
 
 self.labels = unique([categorical(NaN); categorical(categories(self.labels)); categorical({self.handles.new_class_control.String})]);
-self.handles.select_class_control.String = categories(self.labels);
+
+
+temp = categories(self.labels);
+[~,sort_idx]=sort(cellfun(@lower,temp,'UniformOutput',false));
+self.handles.CategoryPicker.String = temp(sort_idx);
 
 if ~isempty(self.handles.ReducedData)
 	if	any(strcmp({self.handles.ReducedData.Tag},self.handles.new_class_control.String)) 
