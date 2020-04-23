@@ -44,14 +44,14 @@ methods
 			keyhash = ['h' hashlib.md5hash(key)];
 			self.addprop(keyhash);
 			self.(keyhash) = varargin{i+1};
-			self.keys = [self.keys; varargin{i}];
+			self.keys{end+1} = varargin{i};
 		end
 
 	end
 
 
 	function value = subsref(self,key)
-
+		value = [];
 		if iscell(key.subs)
 			key.subs = key.subs{1};
 		end
@@ -74,6 +74,10 @@ methods
 
 	function self = subsasgn(self,key, value)
 
+		if iscell(key.subs)
+			key.subs = key.subs{1};
+		end
+
 		if iscategorical(key.subs)
 			key.subs = char(key.subs);
 		end
@@ -81,7 +85,7 @@ methods
 		keyhash = ['h' hashlib.md5hash(key.subs)];
 		if ~isprop(self,keyhash)
 			self.addprop(keyhash);
-			self.keys = [self.keys; key.subs];
+			self.keys{end+1} = key.subs;
 		end
 		self.(keyhash) = value;
 	end
