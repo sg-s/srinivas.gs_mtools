@@ -37,9 +37,10 @@ methods (Static)
 			% .git exists
 			[~,o] = system('git');
 
-			if any(strfind(o,'checkout'))
+			if any(strfind(o,'clone'))
 				% git is installed
 				% attempt to pull
+				cd([code_dir filesep])
 				!git stash
 				!git clean -f -d
 				!git pull
