@@ -46,8 +46,8 @@ if ischar(fid)==1
     warning('smrlib.SONGetChannel: expecting a file handle from fopen(), not a string "%s" on input',fid );
     data=[];
     header=[];
-    return;
-end;
+    return
+end
 
 
 [path, name, ext]=fileparts(fopen(fid));
@@ -56,7 +56,7 @@ if strcmpi(ext,'.smr') ~=1 && strcmpi(ext,'.son') ~=1
     data=[];
     header=[];
     return;
-end;
+end
 
 
 Info=smrlib.SONChannelInfo(fid,chan);

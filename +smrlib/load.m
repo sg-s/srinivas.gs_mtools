@@ -4,7 +4,7 @@
 % it was pretty hard to use and a number of baroque
 % conventions, left open files, and had a number of 
 % other issues
-% I've slimmed it down, made some simplygind assumptions
+% I've slimmed it down, made some simplifying assumptions
 % and removed a bunch of evals 
 % -- Srinivas Gorur-Shandilya (https://srinivas.gs)
 % original readme follows:

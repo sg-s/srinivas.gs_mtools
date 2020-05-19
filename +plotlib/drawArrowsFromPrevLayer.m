@@ -1,7 +1,7 @@
-function feeder_nodes = drawArrowsFromPrevLayer(J, this_layer, this_node, n_layers, cutoff, Color, preW, feeder_nodes)
+function feeder_nodes = drawArrowsFromPrevLayer(J, this_layer, this_node, n_layers, cutoff, colors, preW, feeder_nodes)
 
-if ~exist('Color','var')
-	Color = [.5 .5 .5];
+if isa(colors,'dictionary')
+	keys = colors.keys;
 end
 
 if ~exist('preW','var')
@@ -33,11 +33,9 @@ prev_nodes = find(prev_nodes > cutoff);
 max_width = 20;
 min_width = 3;
 steepnees = 25;
-opacity = .35;
+opacity = .5;
 
 
-c = lines;
-cidx = 1;
 
 % draw lines to each of these previous nodes
 for i = 1:length(prev_nodes)
@@ -52,11 +50,13 @@ for i = 1:length(prev_nodes)
 
 	% go back in layers
 	if this_layer == 0
-		%Color = c(prev_nodes(i),:);
-		Color = c(cidx,:);
-		cidx = cidx+1;
+		Color = colors(keys{prev_nodes(i)});
 		preW = W(i);
+	else
+		Color = colors;
 	end
+
+
 
 	ph = plot(xx, yy, 'Color', Color);
 	ph.LineWidth = W(i)*(max_width-min_width)*preW + min_width;
@@ -66,6 +66,8 @@ for i = 1:length(prev_nodes)
 	if this_layer == n_layers - 1
 		feeder_nodes = [feeder_nodes; prev_nodes(i)];
 	end
+
+
 	
 	feeder_nodes = plotlib.drawArrowsFromPrevLayer(J, this_layer+1, prev_nodes(i), n_layers, cutoff, Color, preW, feeder_nodes);
 

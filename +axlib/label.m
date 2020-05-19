@@ -46,6 +46,7 @@ y = p(2) + p(4) + options.YOffset + ax_handle.TightInset(4)/2;
 label_handle = uicontrol('style','text');
 label_handle.Units = 'normalized';
 
+
 label_handle.Position(1) = x;
 label_handle.Position(2) = y;
 % trim the position -- they're always too wide
@@ -60,7 +61,7 @@ end
 label_handle.String = label;
 label_handle.FontSize = options.FontSize;
 label_handle.FontWeight = options.FontWeight;
-label_handle.BackgroundColor = get(gcf,'Color');
+label_handle.BackgroundColor = [1 1 1];
 label_handle.Tag = 'axes-label';
 uistack(label_handle,'top')
 

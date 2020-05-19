@@ -3,27 +3,27 @@ classdef adaptive < ConstructableHandle
 
 properties
 
-	SampleFcn@function_handle
+	SampleFcn function_handle
 	Lower
 	Upper
 
-	MaxIter@double = 40
+	MaxIter (1,1) double = 40
 
-	MakePlot@logical = true
+	MakePlot (1,1) logical = true
 
-	BatchSize@double = 36
+	BatchSize (1,1) double = 36
 
 
-	UseParallel@logical = false
+	UseParallel (1,1) logical = false
 
 	PlotHere
 
-	CategoricalResults = false
+	CategoricalResults (1,1) logical = false
 
 	XScale = 'linear';
 	YScale = 'linear';
 
-	SeedSize = 20;
+	SeedSize (1,1) double {mustBeInteger(SeedSize)}= 20;
 
 end
 
@@ -31,7 +31,7 @@ end
 properties (SetAccess = private) 
 
 	% stores the triangulation
-	DT@delaunayTriangulation
+	DT delaunayTriangulation = delaunayTriangulation
 
 	SamplePoints
 	data

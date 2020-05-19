@@ -1,7 +1,12 @@
 function mouseCallback(self, src, ~)
 
-if self.DrawingClusters
-	return
+
+if (self.handles.add_to_class_toggle.Value)
+    if self.DrawingClusters
+	   return
+    else
+        self.addToCluster;
+    end
 end
 
 R = self.ReducedData;

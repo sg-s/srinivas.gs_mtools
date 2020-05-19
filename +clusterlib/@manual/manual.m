@@ -2,28 +2,28 @@ classdef manual < ConstructableHandle
 
 properties
 
-    labels@categorical = categorical(NaN);
-    idx@categorical
+    labels categorical = categorical(NaN);
+    idx categorical
     
     RawData
     ReducedData
 
-    DisplayFcn@function_handle
+    DisplayFcn function_handle
 
-    AllowNewClasses@logical = true
+    AllowNewClasses (1,1) logical = true
 
 
     MouseCallbackFcn@function_handle
 
     handles
 
-    Colormap
+    ColorMap
 
-    CurrentPoint@double = NaN
+    CurrentPoint (1,1) double = NaN
 end % props
 
 properties (Access = protected)
-    DrawingClusters@logical = false;
+    DrawingClusters (1,1) logical = false;
 end
 
 
@@ -51,8 +51,6 @@ methods
         N = size(value,1);
 
         self.ReducedData = value;
-
-        self.idx = repmat(categorical(NaN),N,1);
 
     end
 
