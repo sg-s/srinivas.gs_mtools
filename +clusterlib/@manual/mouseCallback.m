@@ -24,7 +24,11 @@ end
 
 self.CurrentPoint = cp;
 
-self.handles.main_fig.Name = ['This point ('  mat2str(cp)   ') has been assigned to class: ' char(self.idx(cp))];
+
+
+if ~isempty(self.idx)
+    self.handles.main_fig.Name = ['This point ('  mat2str(cp)   ') has been assigned to class: ' char(self.idx(cp))];
+end
 
 
 self.handles.CurrentPointReduced.XData = self.ReducedData(cp,1);
