@@ -18,7 +18,7 @@ assert(length(unique({files.folder})) == 1,'All files should be in the same fold
 
 
 if length(files) < 10
-	keyboard
+	error('Not coded yet')
 
 	% single shot
 
