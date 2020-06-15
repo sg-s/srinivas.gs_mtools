@@ -4,6 +4,15 @@
 %
 function folder_name = lowestFolder(p)
 
+if iscell(p)
+
+	for i = length(p):-1:1
+		folder_name{i} = pathlib.lowestFolder(p{i});
+	end
+
+	return
+end
+
 assert(exist(p,'file') ~= 0 ,'Path does not resolve')
 
 p = strsplit(p,filesep);

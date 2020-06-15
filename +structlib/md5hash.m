@@ -6,7 +6,7 @@ function H = md5hash(S)
 assert(isstruct(S),'Input must be a structure')
 assert(isscalar(S),'Input must be a scalar structure')
 
-
+S = orderfields(S);
 
 fn = fieldnames(S);
 
