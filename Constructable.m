@@ -17,7 +17,7 @@ classdef (Abstract) Constructable
 			% validate and accept options
 			options = struct;
 			prop_names = properties(self);
-			if mathlib.iseven(length(varargin))
+			if rem(length(varargin),2)==0
 				for ii = 1:2:length(varargin)-1
 					temp = varargin{ii};
 			    	if ischar(temp)

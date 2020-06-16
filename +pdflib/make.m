@@ -31,7 +31,7 @@ options.dirty = false;
 options.filename = '';
 
 % validate and accept options
-if mathlib.iseven(length(varargin))
+if rem(length(varargin),2)==0
 	for ii = 1:2:length(varargin)-1
 	temp = varargin{ii};
     if ischar(temp)
