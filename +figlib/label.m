@@ -7,6 +7,7 @@
 
 function [varargout] = label(varargin)
 
+
 % options and defaults
 options.Capitalize = false;
 options.XOffset = -.06;
