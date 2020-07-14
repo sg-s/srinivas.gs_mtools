@@ -40,6 +40,7 @@ options.legend_box = false;
 options.TickDir = 'out';
 options.AxisBox = 'on';
 options.LatexPrefix = '\mathrm';
+options.AxesColor = [.4 .4 .4];
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -70,6 +71,12 @@ longest_axes_length = NaN(length(axesHandles),1);
 
 % for each axis
 for i = 1:length(axesHandles)
+
+	% set color 
+	axesHandles(i).XColor = options.AxesColor;
+	axesHandles(i).YColor = options.AxesColor;
+
+
 	% get the old limits
 	oldx = get(axesHandles(i),'XLim');
 	oldy = get(axesHandles(i),'YLim');
@@ -352,6 +359,35 @@ for i = 1:length(axesHandles)
 	end
 
 
+end
+
+
+% clean up X and Y ticks
+
+for i = 1:length(axesHandles)
+	X = axesHandles(i).XTickLabels;
+	XT = axesHandles(i).XTick;
+
+	for j = 1:length(X)
+		if any(strfind(X{j},'.')) & strcmp(X{j}(1),'0')
+			X{j}(1) = '';
+		end
+	end
+	axesHandles(i).XTickLabels = X;
+
+
+	Y = axesHandles(i).YTickLabels;
+	YT = axesHandles(i).YTick;
+
+	for j = 1:length(Y)
+		if any(strfind(Y{j},'.')) & strcmp(Y{j}(1),'0')
+			Y{j}(1) = '';
+		end
+	end
+	axesHandles(i).YTickLabels = Y;
+
+	axesHandles(i).YTickLabelMode = 'auto';
+	axesHandles(i).XTickLabelMode = 'auto';
 end
 
 
