@@ -69,6 +69,7 @@ axesHandles = findall(use_this_figure,'type','axes');
 
 longest_axes_length = NaN(length(axesHandles),1);
 
+
 % for each axis
 for i = 1:length(axesHandles)
 
@@ -307,7 +308,7 @@ end
 
 set(use_this_figure,'Color','w')
 
-% adjsut legend boxes
+% adjust legend boxes
 legend_handles = findobj('-regexp','Tag','[^'']','-and','type','legend');
 for i = 1:length(legend_handles)
 	if options.legend_box 
@@ -364,9 +365,18 @@ end
 
 % clean up X and Y ticks
 
+
 for i = 1:length(axesHandles)
 	X = axesHandles(i).XTickLabels;
 	XT = axesHandles(i).XTick;
+
+	if length(X) == 0 
+		continue
+	end
+
+	if isnan(str2double(X{1}))
+		continue
+	end
 
 	for j = 1:length(X)
 		if any(strfind(X{j},'.')) & strcmp(X{j}(1),'0')
