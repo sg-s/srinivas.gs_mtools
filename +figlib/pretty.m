@@ -365,7 +365,6 @@ end
 
 % clean up X and Y ticks
 
-
 for i = 1:length(axesHandles)
 	X = axesHandles(i).XTickLabels;
 	XT = axesHandles(i).XTick;
@@ -388,6 +387,10 @@ for i = 1:length(axesHandles)
 
 	Y = axesHandles(i).YTickLabels;
 	YT = axesHandles(i).YTick;
+
+	if isnan(str2double(Y{1}))
+		continue
+	end
 
 	for j = 1:length(Y)
 		if any(strfind(Y{j},'.')) & strcmp(Y{j}(1),'0')
