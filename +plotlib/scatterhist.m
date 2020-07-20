@@ -10,6 +10,10 @@ options.AxisColor = color.aqua('gray');
 options.Color = color.aqua('pink');
 options.LineWidth = 2;
 options.IgnoreBelow = .01;
+options.NumBins = 100;
+
+
+options = corelib.parseNameValueArguments(options,varargin{:});
 
 structlib.packUnpack(options)
 
@@ -26,20 +30,21 @@ assert(length(X) == length(Y),'Size mismatch')
 rm_this = isnan(X) | isnan(Y);
 X(rm_this) = [];
 Y(rm_this) = [];
- 
+
+
 % first make the simple scatter plot
 plot(X,Y,'.','Color',Color)
 
 
 % estimate densities by binning
-S = histcounts2(X,Y,1e3);
-S = (imgaussfilt(S,10));
-[XX,YY] = meshgrid(linspace(min(X),max(X),1000),linspace(min(Y),max(Y),1000));
+% S = histcounts2(X,Y,1e3);
+% S = (imgaussfilt(S,10));
+% [XX,YY] = meshgrid(linspace(min(X),max(X),1000),linspace(min(Y),max(Y),1000));
 % [C,h]=contour(XX,YY,S',logspace(-2,0,7),'EdgeColor','k');
 % h.LineStyle = 'none';
 % h.Fill = 'on';
 
-
+hold on
 % get the percentiles
 qX = prctile(X,0:20:100);
 qY = prctile(Y,0:20:100);
@@ -65,10 +70,10 @@ ax.YLim(1) = x_pos;
 
 
 % marginal X
-[hX, edges] = histcounts(X,1e2);
+[hX, edges] = histcounts(X,options.NumBins);
 bincenters = edges(1:end-1) + (edges(2)-edges(1))/2;
-bincenters = [bincenters bincenters(1)];
-hX = [hX 0];
+bincenters = [bincenters(1) bincenters bincenters(end)];
+hX = [0 hX 0];
 
 
 hX = hX/max(hX);
@@ -80,11 +85,12 @@ ph.FaceAlpha = .35;
 
 
 
+
 % marginal Y
-[hY, edges] = histcounts(Y,1e2);
+[hY, edges] = histcounts(Y,options.NumBins);
 bincenters = edges(1:end-1) + (edges(2)-edges(1))/2;
-bincenters = [bincenters bincenters(1)];
-hY = [hY 0];
+bincenters = [bincenters(1) bincenters bincenters(end)];
+hY = [0 hY 0];
 hY = hY/max(hY);
 hY = hY*y_height;
 
@@ -132,3 +138,4 @@ plot([ax.XLim(1) ax.XLim(1)],[ax.YLim(1) min(Y)],'w','LineWidth',3)
 
 plot([max(X) ax.XLim(2)],[ax.YLim(1) ax.YLim(1)],'w','LineWidth',3)
 plot([ax.XLim(1) ax.XLim(1)],[ max(Y) ax.YLim(2)],'w','LineWidth',3)
+box off
