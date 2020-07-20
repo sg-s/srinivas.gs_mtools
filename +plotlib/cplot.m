@@ -91,7 +91,7 @@ if options.UseScatter
 
 	scatter_handle.Marker = 'o';
 
-	colormap(ax,options.colormap);
+	colormap(ax,c);
 	chandle = colorbar(ax);
 	if isnan(options.CLim(1))
 		caxis(ax,[min(Z) max(Z)])
