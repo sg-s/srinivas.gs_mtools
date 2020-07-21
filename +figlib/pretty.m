@@ -384,9 +384,15 @@ for i = 1:length(axesHandles)
 	end
 	axesHandles(i).XTickLabels = X;
 
+end
 
+for i = 1:length(axesHandles)
 	Y = axesHandles(i).YTickLabels;
 	YT = axesHandles(i).YTick;
+
+	if length(Y) == 0 
+		continue
+	end
 
 	if isnan(str2double(Y{1}))
 		continue
