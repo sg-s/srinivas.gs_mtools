@@ -9,7 +9,22 @@ if isempty(S)
 end
 
 assert(isstruct(S),'Input must be a structure')
-assert(isscalar(S),'Input must be a scalar structure')
+
+S = S(:);
+if length(S) > 1
+
+	H = cell(length(S),1);
+
+	for i = 1:length(S)
+		H{i} = structlib.md5hash(S(i));
+	end
+
+	H = hashlib.md5hash([H{:}]);
+
+	return
+
+end
+
 
 S = orderfields(S);
 
