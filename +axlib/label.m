@@ -27,6 +27,7 @@ options.XOffset = -.06;
 options.YOffset = .01;
 options.FontSize = 20;
 options.FontWeight = 'bold';
+options.Color = 'k';
 
 if nargout && ~nargin 
 	varargout{1} = options;
@@ -62,6 +63,7 @@ label_handle.String = label;
 label_handle.FontSize = options.FontSize;
 label_handle.FontWeight = options.FontWeight;
 label_handle.BackgroundColor = [1 1 1];
+label_handle.ForegroundColor = options.Color;
 label_handle.Tag = 'axes-label';
 uistack(label_handle,'top')
 

@@ -17,6 +17,7 @@ options.FontWeight = 'bold';
 options.DeleteAll = false;
 options.ColumnFirst = false;
 options.IgnoreThese = [];
+options.Color = 'k';
 
 if ~nargin && nargout == 1
 	varargout{1} = options;
