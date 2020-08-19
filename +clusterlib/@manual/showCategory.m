@@ -1,15 +1,17 @@
 function showCategory(self,src,event)
 
+self.handles.AllReducedData.Color = [.8 .8 .8];
+
 show_these = self.idx == categorical(src.String(src.Value));
 
 if isfield(self.handles,'CurrentClass')
 	delete(self.handles.CurrentClass)
 end
 
-XY =  self.ReducedData(show_these,:);
+uistack(self.handles.AllReducedData,'top')
 
-self.handles.CurrentClass = plot(self.handles.ax(1),XY(:,1),XY(:,2),'o','Color',[.8 .8 .8],'MarkerSize',12,'MarkerFaceColor',[.8 .8 .8]);
-uistack(self.handles.CurrentClass,'bottom')
+
+uistack(self.handles.ReducedData(find(strcmp({self.handles.ReducedData.Tag},src.String{src.Value}))),'top')
 drawnow
 
 self.handles.main_fig.Name = ['This class has ' strlib.oval(sum(show_these)) ' points'];

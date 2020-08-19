@@ -11,7 +11,7 @@ options.Color = color.aqua('pink');
 options.LineWidth = 2;
 options.IgnoreBelow = .01;
 options.NumBins = 100;
-
+options.TickPrecision = 2;
 
 options = corelib.parseNameValueArguments(options,varargin{:});
 
@@ -36,13 +36,7 @@ Y(rm_this) = [];
 plot(X,Y,'.','Color',Color)
 
 
-% estimate densities by binning
-% S = histcounts2(X,Y,1e3);
-% S = (imgaussfilt(S,10));
-% [XX,YY] = meshgrid(linspace(min(X),max(X),1000),linspace(min(Y),max(Y),1000));
-% [C,h]=contour(XX,YY,S',logspace(-2,0,7),'EdgeColor','k');
-% h.LineStyle = 'none';
-% h.Fill = 'on';
+
 
 hold on
 % get the percentiles
@@ -139,3 +133,17 @@ plot([ax.XLim(1) ax.XLim(1)],[ax.YLim(1) min(Y)],'w','LineWidth',3)
 plot([max(X) ax.XLim(2)],[ax.YLim(1) ax.YLim(1)],'w','LineWidth',3)
 plot([ax.XLim(1) ax.XLim(1)],[ max(Y) ax.YLim(2)],'w','LineWidth',3)
 box off
+
+
+
+Precision = options.TickPrecision;
+for i = 1:length(ax.YTickLabel)
+	ax.YTickLabel{i} = mat2str(ax.YTick(i),Precision);
+end
+
+for i = 1:length(ax.XTickLabel)
+	ax.XTickLabel{i} = mat2str(ax.XTick(i),Precision);
+end
+
+ax.YTickLabelMode = 'auto';
+ax.XTickLabelMode = 'auto';

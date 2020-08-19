@@ -8,4 +8,8 @@ if strcmp(value.Key,'space')
 	self.redrawReducedDataPlot;
 
 
+elseif strcmp(value.Key,'escape')
+
+	uistack(self.handles.AllReducedData,'bottom')
+
 end

@@ -74,8 +74,12 @@ longest_axes_length = NaN(length(axesHandles),1);
 for i = 1:length(axesHandles)
 
 	% set color 
-	axesHandles(i).XColor = options.AxesColor;
-	axesHandles(i).YColor = options.AxesColor;
+	if ~min(axesHandles(i).XColor)  == 1
+		axesHandles(i).XColor = options.AxesColor;
+	end
+	if ~min(axesHandles(i).YColor)  == 1
+		axesHandles(i).YColor = options.AxesColor;
+	end
 
 
 	% get the old limits
