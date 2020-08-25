@@ -98,6 +98,19 @@ for i = 1:length(axesHandles)
 	xlimits = NaN(2,length(ph));
 	ylimits = NaN(2,length(ph));
 
+
+	% find the length of the longest axis
+	pos_temp = get(axesHandles(i),'Position');
+	longest_axes_length(i) = max(pos_temp(3:4).*use_this_figure.Position(3:4));
+
+	if isa(axesHandles(i).XAxis,'matlab.graphics.axis.decorator.DatetimeRuler')
+		continue
+	end
+
+	if isa(axesHandles(i).YAxis,'matlab.graphics.axis.decorator.DatetimeRuler')
+		continue
+	end
+
 	for j = 1:length(ph)
 		temp=get(ph(j),'XData');
 		if isempty(temp)
@@ -232,9 +245,7 @@ for i = 1:length(axesHandles)
 		end
 	end
 
-	% find the length of the longest axis
-	pos_temp = get(axesHandles(i),'Position');
-	longest_axes_length(i) = max(pos_temp(3:4).*use_this_figure.Position(3:4));
+	
 
 end
 clear i
@@ -244,6 +255,7 @@ tl = options.TickLength;
 for i = 1:length(axesHandles)
 	tl_temp = get(axesHandles(i),'TickLength');
 	tl_temp(1) =  tl/longest_axes_length(i);
+
 	set(axesHandles(i),'TickLength',tl_temp);
 
 end
