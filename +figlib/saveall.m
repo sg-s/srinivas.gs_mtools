@@ -48,7 +48,13 @@ for i = 1:length(all_figs)
 		savename = all_figs(i).Name;
 
 		if isempty(savename)
-			savename = strlib.oval(all_figs(i).Number);
+
+			d = dbstack;
+			try
+				savename = [d(2).name '_' mat2str(all_figs(i).Number)];
+			catch
+				savename = mat2str(all_figs(i).Number);
+			end
 		end
 	else
 		savename = options.SaveName;
