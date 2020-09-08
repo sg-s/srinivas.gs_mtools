@@ -9,7 +9,10 @@ assert(ischar(file_name),'First argument should be a string')
 assert(iscell(lines),'2nd argument should be a cell array')
 
 
-fileID = fopen(file_name,'w');
+fileID = fopen(file_name,'w+');
+
+assert(fileID>2,['Cannot open a file for reading at: ' file_name '. Are you sure you have write permissions here?'])
+
 if ispc
 	for i = 1:length(lines)
 		this_line = strrep(lines{i},'%','%%');

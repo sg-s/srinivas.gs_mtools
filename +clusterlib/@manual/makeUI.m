@@ -1,5 +1,6 @@
 function makeUI(self)
 
+
 cats =categories([self.idx; self.labels(:)]);
 if isempty(self.ColorMap)
 	self.ColorMap = colormaps.dcol(length(cats));
