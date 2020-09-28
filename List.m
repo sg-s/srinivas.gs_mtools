@@ -59,6 +59,10 @@ methods
 
 		value = builtin('subsref',self,key);
 		value = value.item;
+		if iscell(value)
+			value = value{1};
+		end
+
 	end
 
 end % methods
