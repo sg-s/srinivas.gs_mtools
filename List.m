@@ -16,7 +16,7 @@ classdef List < matlab.mixin.CustomDisplay
 
 
 properties (Access = private)
-	elements (:,1) cell 
+	item 
 end % private props
 
 properties
@@ -27,19 +27,38 @@ end % props
 
 methods 
 
-	function self = List(elements)
-		self.elements = elements(:);
+	function self = List(item)
+
+		if nargin == 0
+			return
+		end
+
+		assert(isa(item,'cell'),'Expected argument to be a cell array')
+		item = item(:);
+
+		if numel(item) > 1
+			self = List.empty(numel(item));
+			for i = 1:length(item)
+				self(i).item = item{i};
+			end
+		else
+			self.item = item;
+		end
+
+		
+		
 	end % constructor
 
 
-
+	% this effectively force-unwraps a list
 	function value = subsref(self,key)
-		if strcmp(key.type,'()')
-			value = self.elements{key.subs{1}};
-		else
-			error('Access List elements using ()')
+		if numel(self) == 1 && isempty(self.item)
+			value = self;
+			return
 		end
 
+		value = builtin('subsref',self,key);
+		value = value.item;
 	end
 
 end % methods
@@ -51,13 +70,22 @@ end % methods
 methods (Access = protected)
 
 	function displayScalarObject(self)
-		disp(self.elements)
+		disp(self.item)
+	end
+
+
+	function displayNonScalarObject(self)
+		disp({self.item})
 	end
 
 end
 
 
 methods (Static)
+
+	function list = empty(N)
+		list = repmat(List({}),N,1);
+	end
 
 end % static methods
 
