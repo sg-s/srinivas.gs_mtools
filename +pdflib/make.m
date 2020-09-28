@@ -1,13 +1,13 @@
-% makePDF.m
+% pdflib.make.m
 % a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex that MATLAB creates and cleans up afterwards.
 % needs pdflatex installed. Will not work on Windows.
 % usage:
-% makePDF  % automatically builds PDF from last modified .m file
-% makePDF --dirty % or
-% makePDF -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.)
-% makePDF --force % or
-% makePDF -f      % overrides warnings about git status
-% makePDF -f -d filename.m % builds PDF from filename.m
+% pdflib.make  % automatically builds PDF from last modified .m file
+% pdflib.make --dirty % or
+% pdflib.make -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.)
+% pdflib.make --force % or
+% pdflib.make -f      % overrides warnings about git status
+% pdflib.make -f -d filename.m % builds PDF from filename.m
 %
 % created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
 %
@@ -16,7 +16,7 @@
 function [] = make(varargin)
 
 
-assert(~ispc,'makePDF cannot run on a Windows computer')
+assert(~ispc, 'pdflib.make cannot run on a Windows computer')
 
 orig_dir = cd;
 close all
@@ -24,7 +24,7 @@ close all
 % defaults
 options.showCode = false;
 options.format = 'latex';
-options.imageFormat= 'pdf';
+options.imageFormat = 'pdf';
 options.figureSnapMethod=  'print';
 options.force = false;
 options.dirty = false;
@@ -71,7 +71,7 @@ switch length(a)
 		% use this!
 		publish_options.stylesheet = a.name;
 	case 2
-		error('Too many custom stylesheets in working directory. makePDF does not know what to do. Make sure there is only one .xsl file in the working directory.')
+		error('Too many custom stylesheets in working directory. pdflib.make does not know what to do. Make sure there is only one .xsl file in the working directory.')
 end
 
 % check to make sure all changes are committed to git
@@ -187,7 +187,7 @@ end
 		try
 			filename = d(idx).name;
 		catch
-			error('MakePDF could not figure out which document you want to publish. Specify explicitly.')
+			error('pdflib.make could not figure out which document you want to publish. Specify explicitly.')
 		end
 
 	end

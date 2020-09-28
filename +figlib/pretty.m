@@ -421,9 +421,13 @@ for i = 1:length(axesHandles)
 	end
 	axesHandles(i).YTickLabels = Y;
 
+	
+end
+
+% turn back tick labels to auto to allow zooming
+for i = 1:length(axesHandles)
 	axesHandles(i).YTickLabelMode = 'auto';
 	axesHandles(i).XTickLabelMode = 'auto';
 end
-
 
 warning on
