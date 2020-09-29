@@ -37,28 +37,25 @@ methods
 		item = item(:);
 
 		if numel(item) > 1
-			self = List.empty(numel(item));
-			for i = 1:length(item)
-				self(i).item = item{i};
+			for j = numel(item):-1:1
+				self(j).item = item{j};
 			end
+		elseif numel(item) == 0
+			self = List.empty;
 		else
 			self.item = item;
 		end
-
-		
 		
 	end % constructor
 
 
-	% this effectively force-unwraps a list
+	
 	function value = subsref(self,key)
-		if numel(self) == 1 && isempty(self.item)
-			value = self;
-			return
-		end
-
+		
 		value = builtin('subsref',self,key);
 		value = value.item;
+
+		% this effectively force-unwraps a list
 		if iscell(value)
 			value = value{1};
 		end
@@ -87,8 +84,17 @@ end
 
 methods (Static)
 
-	function list = empty(N)
-		list = repmat(List({}),N,1);
+	function test()
+
+		disp('Creating an empty list:')
+		disp(List({}))
+
+		disp('Creating a list with 1 element:')
+		disp(List({'a'}))
+
+		disp('Creating a list with many elements:')
+		disp(List({'a','b',1}))
+
 	end
 
 end % static methods
