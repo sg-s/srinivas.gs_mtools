@@ -13,9 +13,9 @@ properties
     AllowNewClasses (1,1) logical = true
 
 
-    MouseCallbackFcn@function_handle
+    MouseCallbackFcn function_handle
 
-    handles
+    handles struct
 
     ColorMap
 
