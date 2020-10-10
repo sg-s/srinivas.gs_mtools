@@ -15,7 +15,7 @@ properties
 
     MouseCallbackFcn function_handle
 
-    handles struct
+    handles
 
     ColorMap
 
