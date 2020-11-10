@@ -1,4 +1,4 @@
-function scatterhist(X,Y,varargin)
+function sh = scatterhist(X,Y,varargin)
 
 assert(isvector(X),'X should be a vector')
 assert(isvector(Y),'Y should be a vector')
@@ -33,8 +33,12 @@ Y(rm_this) = [];
 
 
 % first make the simple scatter plot
-plot(X,Y,'.','Color',Color)
-
+sh = scatter(X,Y,1,Color,'filled');
+sh.MarkerFaceColor = Color;
+sh.Marker = '.';
+sh.MarkerFaceAlpha = .1;
+sh.MarkerEdgeAlpha = .2;
+sh.MarkerEdgeColor = Color;
 
 
 

@@ -3,12 +3,11 @@
 
 function Y = subSample(X, N, func_handle)
 
-if nargin == 2
-	func_handle = @max;
+arguments
+	X (:,1) double 
+	N (1,1) double 
+	func_handle (1,1) function_handle 
 end
-
-assert(isvector(X),'X must be a vector')
-X = X(:);
 
 X_chunks = veclib.chunk(X,N);
 

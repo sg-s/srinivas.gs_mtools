@@ -382,6 +382,11 @@ end
 % clean up X and Y ticks
 
 for i = 1:length(axesHandles)
+
+	if strcmp(axesHandles(i).XTickLabelMode,'manual')
+		continue
+	end
+
 	X = axesHandles(i).XTickLabels;
 	XT = axesHandles(i).XTick;
 
@@ -399,12 +404,16 @@ for i = 1:length(axesHandles)
 		end
 	end
 	axesHandles(i).XTickLabels = X;
-
+	axesHandles(i).XTickLabelMode = 'auto';
 end
 
 for i = 1:length(axesHandles)
 	Y = axesHandles(i).YTickLabels;
 	YT = axesHandles(i).YTick;
+
+	if strcmp(axesHandles(i).YTickLabelMode,'manual')
+		continue
+	end
 
 	if length(Y) == 0 
 		continue
@@ -420,14 +429,10 @@ for i = 1:length(axesHandles)
 		end
 	end
 	axesHandles(i).YTickLabels = Y;
-
+	axesHandles(i).YTickLabelMode = 'auto';
 	
 end
 
-% turn back tick labels to auto to allow zooming
-for i = 1:length(axesHandles)
-	axesHandles(i).YTickLabelMode = 'auto';
-	axesHandles(i).XTickLabelMode = 'auto';
-end
+
 
 warning on
