@@ -14,6 +14,6 @@
 function y = fastFiltFilt(K,d,x)
 
 x = x(:);
-x3 = fastFilter(K,d,x);
-x4 = flipud(fastFilter(K,d,flipud(x)));
+x3 = veclib.fastFilter(K,d,x);
+x4 = flipud(veclib.fastFilter(K,d,flipud(x)));
 y = mean([x3 x4],2);

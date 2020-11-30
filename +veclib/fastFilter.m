@@ -12,7 +12,7 @@ options.GPU = true;
 options.Power2Flag = true;
 
 if length(K) > 5e3
-	y = convnfft(S(:),K(:),[],[],options);
+	y = veclib.convnfft(S(:),K(:),[],[],options);
 	y = y(1:length(S));
 	y = y/sum(K);
 else

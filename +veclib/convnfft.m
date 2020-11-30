@@ -163,7 +163,7 @@ if GPU
     clear B
 else
     % inplace product to save 1/3 of the memory
-    inplaceprod(A,B);
+    veclib.inplaceprod(A,B);
 end
 
 % Back to the non-Fourier space
