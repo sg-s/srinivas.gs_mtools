@@ -23,7 +23,7 @@ else
 	sz = size(X);
 	XS = X; idx = X;
 	for i = 1:sz(2)
-		[XS(:,i), idx(:,i)] = shuffle(X(:,i));
+		[XS(:,i), idx(:,i)] = veclib.shuffle(X(:,i));
 	end
 	if flip
 		XS = XS';

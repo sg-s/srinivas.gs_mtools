@@ -1,30 +1,13 @@
 % a fast error-shading plot function
-% it's (really) fast because it doesn't use patch (for large datasets, see note below). 
-% it also creates only 2 plot objects, irrespective of the size of the data. 
-% alternatives spawn as many patch objects as there are data points, making them useless for large
-% datasets
 % 
 % usage:
-% errorShade(x,y,y_error)
-% 
-% or if you want to plot on a particular axes, use
-% errorShade(handle,x,y,y_error)
-% 
-% other options:
-% errorShade(...,'SubSample',ss) % where ss is an integer. dices the data before plotting
-% errorShade(...,'Color',[1 0 0]) % you need to specify a 3-element color, not 'r'
-% errorShade(...,'LineWidth',2) 
-% errorShade(...,'Shading',.4) % must be between 0 and 1
-% 
-% there is also a minimal usage of errorShade:
-% errorShade(Y) % where Y is a matrix will automatically compute the SEM and use that as the error
-%
-% for small datasets and short vectors, errorShade falls back to shadedErrorBar (which uses patch objects, because it looks prettier). 
-% 
-% created by Srinivas Gorur-Shandilya at 10:48 , 04 June 2015. Contact me at http://srinivas.gs/contact/
-% 
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. 
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+% plotlib.errorShade(X)
+% plotlib.errorShade(gca, X)
+% plotlib.errorShade(gca, X, Y, E)
+% plotlib.errorShade(gca, X, Y, E, 'Shading',.6)
+% plotlib.errorShade(gca, X, Y, E, 'Color',[1 0 0])
+% plotlib.errorShade(gca, X, Y, E, 'LineWidth',2)
+% plotlib.errorShade(gca, X, Y, E, 'SubSample',10)
 
 function [line_handle, shade_handle] = errorShade(varargin)
 
@@ -45,27 +28,36 @@ end
 hold(h,'on');
 
 
-if nargin == 1 && width(varargin{1}) > 1
+switch length(varargin) 
+
+case 1
 	y = varargin{1};
-	x = 1:length(y); x = x(:);
+	x = 1:size(y,2);
 	e = corelib.sem(y);
-	y = mean2(y);
-	varargin(1)= [];
-else
+	y = nanmean(y);
+	varargin(1) = [];
+case 2
 	x = varargin{1};
-	x = x(:);
 	y = varargin{2};
-	y = y(:);
+	e = corelib.sem(y);
+	y = nanmean(y);
+	varargin(1:2) = [];
+case 3
+	x = varargin{1};
+	y = varargin{2};
 	e = varargin{3};
-	e = e(:);
 	varargin(1:3) = [];
+
 end
+
 
 % defensive programming
 if isempty(x)
 	x = 1:length(y);
 	x = x(:);
 end
+
+
 assert(length(x)==length(y),'All inputs must have the same length')
 assert(length(x)==length(e),'All inputs must have the same length')
 

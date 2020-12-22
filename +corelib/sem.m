@@ -1,6 +1,6 @@
 function S = sem(X)
 
-X = X(:);
-X = X(~isnan(X));
 
-S = std(X)/sqrt(length(X));
+N = sqrt(sum(~isnan(X)));
+
+S = nanstd(X)./N;
