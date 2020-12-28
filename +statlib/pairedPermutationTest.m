@@ -5,7 +5,7 @@
 % permutation test to test if the means of A and B are
 % significantly different, and what the effect size is
 
-function p = pairedPermutationTest(A,B,N, MakePlot)
+function [p, handles] = pairedPermutationTest(A,B,N, MakePlot)
 
 
 arguments
@@ -37,12 +37,12 @@ for i = 1:N
 end
 
 
-D = nanmean(D);
+DM = nanmean(D);
 
-if D < 0
-	p = mean(D_shuffled<D);
+if DM < 0
+	p = mean(D_shuffled<DM);
 else
-	p = mean(D_shuffled>D);
+	p = mean(D_shuffled>DM);
 end
 
 
@@ -55,36 +55,21 @@ end
 K(XX>max(D_shuffled) | XX<min(D_shuffled)) = [];
 XX(XX>max(D_shuffled) | XX<min(D_shuffled)) = [];
 
+K = K/max(K);
+K = K*nanmax([A; B])/10;
 
-h = area(XX,K);
-h.FaceColor = [.8 .8 .8];
-h.EdgeAlpha = 0;
-h.FaceAlpha = .5
+offset = nanmax([A; B])*.8;
 
+[th, r] = cart2pol(XX, K);
+[nx, ny] = pol2cart(th-pi/4, r);
 
-if D > 0
-
-	if D < XX(end)
-		K(XX<D) = [];
-		XX(XX<D) = [];
-		h = area(XX,K);
-		h.LineWidth = 2;
-		h.FaceAlpha = .5;
-	else
-		plot([D D],[0 max(K)],'LineWidth',2)
-	end
-
-else
-	if D > XX(1)
-		K(XX>D) = [];
-		XX(XX>D) = [];
-		h = area(XX,K);
-		h.LineWidth = 2;
-		h.FaceAlpha = .5;
-	else
-		plot([D D],[0 max(K)],'LineWidth',2)
-	end
+handles.shape = plot(polyshape(offset+nx,offset+ny));
 
 
-end
+handles.shape.FaceColor = [.8 .8 .8];
+
+
+% plot the line of the data
+XX = [nanmin(A); nanmax(A)];
+handles.line = plot(XX,XX-DM,'LineWidth',2);
 
