@@ -1,8 +1,11 @@
-% exports all open figures to .eps on the desktop
+% exports all open figures disk
+% usage:
+% figlib.saveall
+% 
 function saveall(varargin)
 
 
-options.Format = 'pdf';
+options.Format = 'png';
 options.Location = '~/Desktop/';
 options.SaveName = 'auto';
 
