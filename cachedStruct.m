@@ -48,6 +48,19 @@ methods
 	end
 
 
+	function value = subsref(self,S)
+		if ~strcmp(S.type,'.')
+			error('Only dot notation is supported')
+		end
+
+		if ~isfield(self,S.subs)
+			value = false;
+			return
+		end
+
+		value = self.(S.subs);
+	end
+
 end % methods
 
 
