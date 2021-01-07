@@ -1,5 +1,5 @@
-% Two-sample Two-diensional Kolmogorov-Smirnov 
-% kstest_2s_2d - FUNCTION Two-sample Two-diensional Kolmogorov-Smirnov Test
+% Two-sample Two-dimensional Kolmogorov-Smirnov 
+% kstest_2s_2d - FUNCTION Two-sample Two-dimensional Kolmogorov-Smirnov Test
 %
 % Usage:[H, pValue, KSstatistic] = kstest_2s_2d(x1, x2 <, alpha>)
 %
