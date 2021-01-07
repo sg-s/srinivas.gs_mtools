@@ -36,7 +36,7 @@ methods
 			error('Only dot notation is supported')
 		end
 
-		if ~isfield(self,S.subs)
+		if ~isprop(self,S.subs)
 			self.addprop(S.subs);
 		end
 
@@ -53,8 +53,8 @@ methods
 			error('Only dot notation is supported')
 		end
 
-		if ~isfield(self,S.subs)
-			value = false;
+		if ~isprop(self,S.subs)
+			value = [];
 			return
 		end
 
