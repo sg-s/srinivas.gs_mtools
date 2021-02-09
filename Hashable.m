@@ -33,6 +33,9 @@ methods
 				% cast into char
 				this_value = char(self.(props{i}));
 				char_values = [char_values; this_value(:)];
+			elseif isa(self.(props{i}),'timetable')
+				this_hash = hashlib.md5hash(self.(props{i}).Variables);
+				char_values = [char_values; this_hash(:)];
 			end
 		end
 		h1 = hashlib.md5hash(double_values);
