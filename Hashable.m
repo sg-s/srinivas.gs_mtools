@@ -5,43 +5,68 @@ classdef (Abstract) Hashable
 
 
 methods
-
-
 	function H = hash(self)
+		H = Hashable.hashObj(self);
+	end
+end
 
 
+methods (Static)
 
-		props = properties(self);
-		double_values = [];
-		char_values = [];
+
+	% this implements the actual logic
+	function H = hashObj(object)
+
+		props = properties(object);
+		hashes = '';
 
 
 		for i = 1:length(props)
-			s = superclasses(self.(props{i}));
+			s = superclasses(object.(props{i}));
 
-			if isa(self.(props{i}),'double') || isa(self.(props{i}),'logical')
-				this_value = double(self.(props{i}));
-				double_values = [double_values; this_value(:)];
-			elseif isa(self.(props{i}),'char')
-				this_value = (self.(props{i}));
-				char_values = [char_values; this_value(:)];
+			if isa(object.(props{i}),'double') || isa(object.(props{i}),'logical') || isa(object.(props{i}),'char')
+				x = object.(props{i});
+				x = x(:);
+				this_hash = hashlib.md5hash(x);
+				hashes = [hashes this_hash];
 			elseif any(strcmp(s,'Hashable'))
 				% check if this object inherits from Hashable
-				this_hash = self.(props{i}).hash;
+				this_hash = object.(props{i}).hash;
 				char_values = [char_values; this_hash(:)];
-			elseif isenum(self.(props{i}))
+			elseif isenum(object.(props{i}))
 				% cast into char
-				this_value = char(self.(props{i}));
-				char_values = [char_values; this_value(:)];
-			elseif isa(self.(props{i}),'timetable')
-				this_hash = hashlib.md5hash(self.(props{i}).Variables);
-				char_values = [char_values; this_hash(:)];
+				x = char(object.(props{i}));
+				x = x(:);
+				this_hash = hashlib.md5hash(x);
+				hashes = [hashes this_hash];
+			elseif isa(object.(props{i}),'timetable') || isa(object.(props{i}),'table')
+				x = object.(props{i}).Variables;
+				x = x(:);
+				this_hash = hashlib.md5hash(x);
+				hashes = [hashes this_hash];
+			elseif isa(object.(props{i}),'datetime')
+				x = datenum(object.(props{i}));
+				x = x(:);
+				this_hash = hashlib.md5hash(x);
+				hashes = [hashes this_hash];
+			elseif isa(object.(props{i}),'cell')
+				% TODO
+				% this won't work for cell arrays with heterogeneous types
+				this_hash =  hashlib.md5hash([object.(props{i}){:}]);
+				hashes = [hashes this_hash];
+			elseif isa(object.(props{i}),'Unhashable')
+				% do nothing
+			else
+				disp('Uncoded block')
+				keyboard
 			end
 		end
-		h1 = hashlib.md5hash(double_values);
-		h2 = hashlib.md5hash(char_values);
-		H = hashlib.md5hash([h1 h2]);
+
+		H = hashlib.md5hash(hashes);
+
+
 	end
+
 
 end
 
