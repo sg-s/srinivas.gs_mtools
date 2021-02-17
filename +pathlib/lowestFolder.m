@@ -13,12 +13,20 @@ if iscell(p)
 	return
 end
 
-assert(exist(p,'file') ~= 0 ,'Path does not resolve')
 
-p = strsplit(p,filesep);
 
-if isempty(p{end})
-	folder_name = p{end-1};
+if isdir(p)
+
+	p = strsplit(p,filesep);
+
+	if isempty(p{end})
+		folder_name = p{end-1};
+	else
+		folder_name = p{end};
+	end
+
+	assert(exist(folder_name,'file') ~= 0 ,'Path does not resolve')
+
 else
-	folder_name = p{end};
+	folder_name = fileparts(p);
 end
