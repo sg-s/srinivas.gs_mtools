@@ -25,7 +25,7 @@ if isdir(p)
 		folder_name = p{end};
 	end
 
-	assert(exist(folder_name,'file') ~= 0 ,'Path does not resolve')
+	assert(exist(strjoin(p(1:end-1),filesep),'file') ~= 0 ,'Path does not resolve')
 
 else
 	folder_name = fileparts(p);
