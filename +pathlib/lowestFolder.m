@@ -28,5 +28,6 @@ if isdir(p)
 	assert(exist(strjoin(p(1:end-1),filesep),'file') ~= 0 ,'Path does not resolve')
 
 else
-	folder_name = fileparts(p);
+	folder_name = pathlib.lowestFolder(fileparts(p));
+
 end
