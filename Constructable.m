@@ -1,5 +1,5 @@
 % An abstract class that allows creation of objects
-% using name value syntax
+% using name value syntax, or by passing in a structure
 
 classdef (Abstract) Constructable 
 
@@ -37,10 +37,8 @@ classdef (Abstract) Constructable
 			else
 				error('Inputs need to be name value pairs')
 			end
-
-
 			
-			field_names = fieldnames(options);
+			field_names = intersect(fieldnames(options),prop_names);
 
 			for i = 1:length(field_names)
 				self.(field_names{i}) = options.(field_names{i});
