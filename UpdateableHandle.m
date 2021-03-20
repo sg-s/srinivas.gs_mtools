@@ -99,23 +99,18 @@ methods (Static)
 
 
 
-	function uninstall(toolbox_name, toolbox_dir)
+	function uninstall(toolbox_name)
 
 		toolboxes = matlab.addons.toolbox.installedToolboxes;
 
 		% go somewhere safe
-		cd(matlabroot)
+		cd(userpath)
 
 		% remove all toolboxes with "toolbox_name" in it
 		for i = 1:length(toolboxes)
 			if strcmp(toolboxes(i).Name,toolbox_name)
 				matlab.addons.toolbox.uninstallToolbox(toolboxes(i));
 			end
-		end
-
-		% now nuke the toolbox_dir just to be safe
-		if exist(toolbox_dir,'file') == 7
-			rmdir(toolbox_dir,'s')
 		end
 
 	end
