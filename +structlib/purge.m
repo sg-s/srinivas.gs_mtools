@@ -3,10 +3,13 @@
 
 function S = purge(S, rm_this)
 
-assert(isstruct(S),'S must be a structure')
-assert(isscalar(S),'S must be scalar')
-assert(isvector(rm_this),'rm_this must be a logical vector')
-assert(islogical(rm_this),'rm_this must be a logical vector')
+arguments
+	S (1,1) struct
+	rm_this (:,1) logical
+
+end
+
+
 fn = fieldnames(S);
 
 Size = length(rm_this);

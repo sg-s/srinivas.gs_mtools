@@ -12,7 +12,8 @@ function showImageInAxes(ax, I)
 
 I = imglib.crop(I, 5);
 
-image(ax,I);
+im = image(ax,I);
+im.Interpolation = 'bilinear';
 
 axis(ax,'image')
 axis(ax,'off')

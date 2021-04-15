@@ -1,5 +1,5 @@
 % named colors in Apple's Aqua colorscheme
-function C = Color(name)
+function C = aqua(name)
 
 switch name
 case 'blue'

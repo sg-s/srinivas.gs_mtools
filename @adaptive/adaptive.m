@@ -144,7 +144,6 @@ methods
 		results = repmat(self.data.results(1),size(params,1),1);
 
 		if self.CategoricalResults
-			values = self.data.values(1);
 			values = categorical(NaN);
 			values = repmat(values,size(params,1),1);
 		else
