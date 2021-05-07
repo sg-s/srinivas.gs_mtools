@@ -8,8 +8,7 @@ arguments
 end
 
 
-y = repmat(f(x(1)),numel(x),1);
-for i = 2:numel(x)
+for i = numel(x):-1:1
 	y(i) = f(x(i));
 end
 
