@@ -1,25 +1,17 @@
 % plots a histogram that also serves as a colorbar
-function p = colorhist(varargin)
+function p = colorhist(ax, X, options)
 
-ax = gca;
-
-if isa(varargin{1},'matlab.graphics.axis.Axes')
-	ax = varargin{1};
-	varargin(1) = [];
+arguments
+	ax (1,1) matlab.graphics.axis.Axes
+	X (:,1) double
+	options.BinLimits = [];
+	options.NumBins = 50;
 end
 
-X = varargin{1};
-varargin(1) = [];
-assert(isvector(X),'Expected data to be a vector')
-X = X(:);
-assert(isnumeric(X),'Expected data to be numeric')
 
-assert(length(varargin)>0,'Not enough input arguments')
-
-options.BinLimits = [];
-options.NumBins = 50;
-
-options = corelib.parseNameValueArguments(options,varargin{:});
+if isempty(options.BinLimits)
+	options.BinLimits = [min(X) max(X)];
+end
 
 [hy,hx] = histcounts(X,'BinLimits',options.BinLimits,'NumBins',options.NumBins,'Normalization','pdf');
 

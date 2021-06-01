@@ -44,7 +44,7 @@ x = x(1:options.SubSample:end);
 y = y(1:options.SubSample:end);
 e = e(1:options.SubSample:end);
 
-if length(x) < 1e3
+if length(x) < 1e2
 	% fall back to shadedErrorBar
 	axes(ax)
 	h = plotlib.shadedErrorBar(x,y,e,{'Color',options.Color,'LineWidth',options.LineWidth});
