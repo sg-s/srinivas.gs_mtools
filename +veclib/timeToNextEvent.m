@@ -1,7 +1,10 @@
 % for a given input binary vector,
 % returns a vector of equal length with 
 % times to the next non-zero value
-
+% 
+% usage: 
+% time = veclib.timeToNextEvent(X);
+% 
 function time = timeToNextEvent(X)
 
 arguments

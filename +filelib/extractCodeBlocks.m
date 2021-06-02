@@ -5,15 +5,17 @@
 % 
 function code_blocks = extractCodeBlocks(path_to_file, code_fence_syntax)
 
-if nargin < 2
-	code_fence_syntax = '```matlab';
+arguments
+	path_to_file char
+	code_fence_syntax = '```matlab'
 end
+
 
 assert(exist(path_to_file,'file') == 2,'File does not exist')
 
 lines = filelib.read(path_to_file);
 
-code_block_starts = find(cellfun(@(x) strcmp(x,'```matlab'),lines));
+code_block_starts = find(cellfun(@(x) strcmp(x,code_fence_syntax),lines));
 code_block_stops = find(cellfun(@(x) strcmp(x,'```'),lines));
 
 if isempty(code_block_starts)
