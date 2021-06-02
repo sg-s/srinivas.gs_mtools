@@ -1,5 +1,5 @@
 
-# tp44bec12c_99e3_4643_b040_2f3a3a0eba4d
+# veclib
 
 
 The purpose of this document is to test veclib, and also to provide some documentation for it
@@ -9,7 +9,8 @@ The purpose of this document is to test veclib, and also to provide some documen
 ## Contents
 
             
-- veclib.interleave
+- veclib.interleave        
+- veclib.chunk
 
 ## veclib.interleave
 
@@ -24,6 +25,14 @@ Y = zeros(50,1);
 Z = ones(50,1)*2;
 
 I = veclib.interleave(X,Y,Z);
+```
+
+
+and we get:
+
+
+
+```matlab
 I(1:10)
 ```
 
@@ -44,6 +53,41 @@ ans =
      0
      2
      1
+
+
+```
+
+
+
+## veclib.chunk
+
+
+Let's imagine you have a long vector, and you want to chunk it into smaller bits for analysis. You can't simply use reshape, because the length of the vector may not be an integer multiple of your bin size. That's where `veclib.chunk` comes to the rescue.
+
+
+
+```matlab
+X = randn(129,1);
+Y = veclib.chunk(X,10);
+```
+
+
+If we inspect the size of Y we see:
+
+
+
+```matlab
+size(Y)
+```
+
+
+
+
+```
+
+ans =
+
+    10    12
 
 
 ```
