@@ -17,13 +17,19 @@ arguments
 	S (:,1) logical
 	options.Color = 'k'
 	options.offset = .1
+	options.LineWidth = 2
+	options.ax = gca
 end
 
-errors = errorbar(X,Y,E,'LineStyle','none','Color', options.Color);
-bars = bar(X,Y);
+neg_E = E;
+pos_E = E;
+neg_E(Y>0) = 0;
+pos_E(Y<0) = 0;
+errors = errorbar(options.ax, X,Y,neg_E,pos_E,'LineStyle','none','Color', options.Color,'LineWidth',options.LineWidth);
+bars = bar(options.ax,X,Y);
 bars.FaceColor = options.Color;
 bars.EdgeColor = options.Color;
 
 offset = mean(Y+E)*options.offset;
 
-stars = plot(X(S),Y(S)+E(S)+offset,'*','LineStyle','none','Color',options.Color,'MarkerSize',10);
+stars = plot(options.ax, X(S),Y(S)+E(S)+offset,'*','LineStyle','none','Color',options.Color,'MarkerSize',10,'LineWidth',options.LineWidth);
