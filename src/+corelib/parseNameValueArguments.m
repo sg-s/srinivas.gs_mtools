@@ -1,9 +1,9 @@
-function options = parseNameValueArguments(options, varargin)
+unction options = parseNameValueArguments(options, vargs)
 
 % validate and accept options
-if rem(length(varargin),2)==0
-	for ii = 1:2:length(varargin)-1
-	temp = varargin{ii};
+if rem(length(vargs),2)==0
+	for ii = 1:2:length(vargs)-1
+	temp = vargs{ii};
     if ischar(temp)
     	if ~any(find(strcmp(temp,fieldnames(options))))
     		disp(['Unknown option: ' temp])
@@ -11,13 +11,13 @@ if rem(length(varargin),2)==0
     		disp(fieldnames(options))
     		error('UNKNOWN OPTION')
     	else
-    		options.(temp) = varargin{ii+1};
+    		options.(temp) = vargs{ii+1};
     	end
     end
 end
-elseif isstruct(varargin{1})
+elseif isstruct(vargs{1})
 	% should be OK...
-	options = varargin{1};
+	options = vargs{1};
 else
 	error('Inputs need to be name value pairs')
 end
