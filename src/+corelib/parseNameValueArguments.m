@@ -1,4 +1,4 @@
-unction options = parseNameValueArguments(options, vargs)
+function options = parseNameValueArguments(options, vargs)
 
 % validate and accept options
 if rem(length(vargs),2)==0
