@@ -20,6 +20,7 @@ arguments
 	options.Color = [1 0 0]
 	options.LineWidth = 2
 	options.SubSample = 1 
+	options.UseRealShading = false
 end
 
 if ~nargin
@@ -44,13 +45,15 @@ x = x(1:options.SubSample:end);
 y = y(1:options.SubSample:end);
 e = e(1:options.SubSample:end);
 
-if length(x) < 1e2
+if length(x) < 1e2 || options.UseRealShading
 	% fall back to shadedErrorBar
 	axes(ax)
 	h = plotlib.shadedErrorBar(x,y,e,{'Color',options.Color,'LineWidth',options.LineWidth});
 	line_handle = [h.mainLine h.edge(1) h.edge(2)];
 	shade_handle = h.patch;
 	set(line_handle,'LineWidth',options.LineWidth);
+	shade_handle.FaceAlpha = 1 - options.Shading;
+
 else
 	% first plot the error
 	ee = [y-e y+e NaN*e]';

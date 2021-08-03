@@ -18,13 +18,19 @@ arguments
 	options.Color = 'k'
 	options.offset = .1
 	options.LineWidth = 2
-	options.ax = gca
+	options.ax (1,1) matlab.graphics.axis.Axes = gca
 end
+
+assert(length(X) == length(Y),'X and Y should be of equal length')
+assert(length(X) == length(E),'X and E should be of equal length')
+assert(length(X) == length(S),'X and S should be of equal length')
+
 
 neg_E = E;
 pos_E = E;
 neg_E(Y>0) = 0;
 pos_E(Y<0) = 0;
+
 errors = errorbar(options.ax, X,Y,neg_E,pos_E,'LineStyle','none','Color', options.Color,'LineWidth',options.LineWidth);
 bars = bar(options.ax,X,Y);
 bars.FaceColor = options.Color;

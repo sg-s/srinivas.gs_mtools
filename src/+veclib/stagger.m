@@ -35,7 +35,6 @@ p = gcp('nocreate');
 
 if isempty(p)
 	for i = 1:M
-		corelib.textbar(i,M)
 		Y(:,i) = X(step_starts(i):step_starts(i) - 1 + bin_size);
 	end
 else

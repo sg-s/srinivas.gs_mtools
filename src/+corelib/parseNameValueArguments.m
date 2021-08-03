@@ -1,5 +1,9 @@
 function options = parseNameValueArguments(options, vargs)
 
+if nargin == 1
+	return
+end
+
 % validate and accept options
 if rem(length(vargs),2)==0
 	for ii = 1:2:length(vargs)-1
