@@ -16,3 +16,4 @@ if length(length(calling_func)) > 1
 	pdflib.showDependencyHash(calling_func);
 end
 
+being_published = false;
