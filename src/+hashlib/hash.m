@@ -30,3 +30,13 @@ if isa(thing,'categorical')
 	H = hashlib.md5hash(double(thing));
 	return
 end
+
+% generic type based fallback
+T = class(thing);
+T = strrep(T,'.','_');
+f = str2func(strcat("hashlib.",T));
+try
+	H = f(thing);
+catch
+
+end
