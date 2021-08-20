@@ -13,40 +13,43 @@ assert(exist(this_file,'file')==2,'file not found.')
 
 d = dbstack;
 
-if ~any(strcmp({d.name},'publish'))
+if ~strcmp(d(end).file,'make.m')
 	disp('Not being published, skipping...')
 	return
 end
 
 original_folder = pwd;
 
-[f,p]=matlab.codetools.requiredFilesAndProducts(this_file);
+f = matlab.codetools.requiredFilesAndProducts(this_file);
 git_hashes = {};
 git_urls = {};
 % check each dep for whether it lives within a git repo
 
 for i = length(f):-1:1
 	cd(fileparts(f{i}))
-	[s,m] = system('git rev-parse --show-toplevel');
-	if s == 0
-		repo_name{i} = strtrim(m);
-		[status,m] = system('git rev-parse HEAD');
-		if ~status
+	[status, msg] = system('git rev-parse --show-toplevel');
+	if status == 0
+		repo_name{i} = strtrim(msg);
+		[status,msg] = system('git rev-parse HEAD');
+		if status == 0
 			
 			% also get the url
-			[s,url]=system('git remote');
+			[~,url]=system('git remote');
 			url = strsplit(url);
 			url = url{1};
 			url= strtrim(url);
-			[s,url] = system(['git remote get-url ' url]);
+			[~,url] = system(['git remote get-url ' url]);
 			git_urls{i} = strtrim(url);
 
-			git_hashes{i} = m(1:end-1);
+			git_hashes{i} = msg(1:end-1);
 		end
 	end
 end
 
-
+rm_this = cellfun(@isempty,repo_name);
+repo_name = repo_name(~rm_this);
+git_hashes = git_hashes(~rm_this);
+git_urls = git_urls(~rm_this);
 [urepos, idx] = unique(repo_name);
 
 for i = 1:length(urepos)
@@ -55,7 +58,7 @@ for i = 1:length(urepos)
 end
 
 for i = 1:length(idx)
-	disp(['git clone ' git_urls{idx(i)} ' ' repo_name{idx(i)}])
+	disp(['git clone ' git_urls{idx(i)} ])
 	disp(['git checkout  ' git_hashes{idx(i)}])
 end
 
