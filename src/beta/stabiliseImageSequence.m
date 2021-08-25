@@ -16,7 +16,7 @@ stabilised_images = images;
 [o,m] = imregconfig('monomodal');
 
 for i = 2:size(images,3)
-	textbar(i - 1,size(images,3) - 1);
+	corelib.textbar(i - 1,size(images,3) - 1);
 	b = squeeze(images(:,:,i));
 	threshold = prctile(reshape(b,1,[]),60);
 	b = single(b > threshold);

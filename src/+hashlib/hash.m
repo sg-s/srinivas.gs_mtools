@@ -9,6 +9,12 @@ function H = hash(thing)
 
 H = 'unhashed';
 
+
+if isstruct(thing)
+	H = hashlib.md5hash(getByteStreamFromArray(thing));
+	return
+end
+
 if iscell(thing)
 	H = {};
 	for i = length(thing):-1:1
