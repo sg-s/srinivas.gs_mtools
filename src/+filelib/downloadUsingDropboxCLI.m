@@ -28,11 +28,13 @@ for i = 1:length(patterns)
 
 		thisfile = strcat(filename,ext);
 
+		% skip if file already exists 
 		if any(contains(allfiles,thisfile))
 			continue
 		end
 
 		eval_str = strcat("dbxcli get " ,' "',file,'"'," ",destination);
+		system(eval_str)
 	end
 
 	

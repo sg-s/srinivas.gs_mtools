@@ -13,6 +13,23 @@ function require()
 % data
 % sources
 % destination
+%
+% An example data.json looks like this:
+% {
+%     "data":
+%     [
+%         "2021-05-19-10-55-17",
+%         "2021-05-11-12-55-16",
+%     ],
+
+%     "sources":
+%     [
+%     	"/path/to/some/local/folder",
+%     	"dropbox"
+%     ],
+
+%     "destination": "/path/to/some/local/folder"
+% }
 
 
 allfiles = dir('*.json');
