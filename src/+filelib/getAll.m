@@ -16,7 +16,7 @@ dirIndex = [dirData.isdir];  % Find the index for directories
 fileList = string(transpose({dirData(~dirIndex).name}));
 
 if ~isempty(fileList)
-	fileList = strcat(dirName,fileList);
+	fileList = fullfile(dirName,fileList);
 end
 subDirs = {dirData(dirIndex).name};  % Get a list of the subdirectories
 validIndex = ~ismember(subDirs,{'.','..'});  % Find index of subdirectories

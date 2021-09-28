@@ -1,56 +1,26 @@
 % pdflib.make.m
 % a wrapper for MATLAB's publish() function, it makes a PDF directly from the .tex that MATLAB creates and cleans up afterwards.
 % needs pdflatex installed. Will not work on Windows.
-% usage:
-% pdflib.make  % automatically builds PDF from last modified .m file
-% pdflib.make --dirty % or
-% pdflib.make -d      % leaves all auxillary files in the publish folder (.aux, .tex, etc.)
-% pdflib.make --force % or
-% pdflib.make -f      % overrides warnings about git status
-% pdflib.make -f -d filename.m % builds PDF from filename.m
-%
-% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
-%
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
-function [] = make(varargin)
 
+function make(options)
+
+
+arguments
+	% defaults
+	options.showCode (1,1) logical = false;
+	options.format = 'latex';
+	options.imageFormat = 'pdf';
+	options.figureSnapMethod=  'print';
+	options.force (1,1) logical  = false;
+	options.dirty (1,1) logical  = false;
+	options.filename = '';
+end
 
 assert(~ispc, 'pdflib.make cannot run on a Windows computer')
 
 orig_dir = cd;
 close all
 
-% defaults
-options.showCode = false;
-options.format = 'latex';
-options.imageFormat = 'pdf';
-options.figureSnapMethod=  'print';
-options.force = false;
-options.dirty = false;
-options.filename = '';
-
-% validate and accept options
-if rem(length(varargin),2)==0
-	for ii = 1:2:length(varargin)-1
-	temp = varargin{ii};
-    if ischar(temp)
-    	if ~any(find(strcmp(temp,fieldnames(options))))
-    		disp(['Unknown option: ' temp])
-    		disp('The allowed options are:')
-    		disp(fieldnames(options))
-    		error('UNKNOWN OPTION')
-    	else
-    		options.(temp) = varargin{ii+1};
-    	end
-    end
-end
-elseif isstruct(varargin{1})
-	% should be OK...
-	options = varargin{1};
-else
-	error('Inputs need to be name value pairs')
-end
 
 if isempty(options.filename)
 	options.filename = findFileToPublish;
@@ -73,6 +43,7 @@ switch length(a)
 	case 2
 		error('Too many custom stylesheets in working directory. pdflib.make does not know what to do. Make sure there is only one .xsl file in the working directory.')
 end
+
 
 % check to make sure all changes are committed to git
 [~,m] = unix('git status | grep "modified" | wc -l');
@@ -125,7 +96,7 @@ system(['xelatex "' f '"']);
 % clean up
 cd(orig_dir)
 if ~options.dirty
-	pdflib.cleanPublish;
+	pdflib.clean;
 end
 close all
 
