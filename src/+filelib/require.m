@@ -27,7 +27,7 @@ for i = 1:length(args.sources)
 
 
 	if strcmp(source,'dropbox')
-		keyboard
+		filelib.downloadUsingDropboxCLI(args.data, args.destination)
 	end
 
 
