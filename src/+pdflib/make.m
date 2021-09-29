@@ -47,7 +47,7 @@ end
 
 % check to make sure all changes are committed to git
 [~,m] = unix('git status | grep "modified" | wc -l');
-if str2double(m) > 0 & ~options.force
+if str2double(m) > 0 && ~options.force
 	error('You have unmodified files that have not been committed to your git repo. Cowardly refusing to proceed till you commit all files.')
 end
 
