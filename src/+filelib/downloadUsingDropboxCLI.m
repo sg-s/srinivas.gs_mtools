@@ -33,8 +33,10 @@ for i = 1:length(patterns)
 			continue
 		end
 
+
+		disp(file)
 		eval_str = strcat("dbxcli get " ,' "',file,'"'," ",destination);
-		system(eval_str)
+		system(eval_str);
 	end
 
 	
