@@ -4,8 +4,6 @@
 
 function ax = imageSubplots(n_rows, n_cols)
 
-figure('outerposition',[300 300 801 1001],'PaperUnits','points','PaperSize',[801 1001]); hold on
-
 n_axes = n_rows*n_cols;
 
 for i = n_axes:-1:1
@@ -14,7 +12,6 @@ for i = n_axes:-1:1
 	axis image
 	ax(i).XTick = [];
 	ax(i).YTick = [];
-	text(ax(i),.5,.5,mat2str(i))
 
 end
 
