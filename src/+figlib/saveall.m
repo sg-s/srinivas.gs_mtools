@@ -54,7 +54,7 @@ for i = 1:length(all_figs)
 
 			d = dbstack;
 			try
-				savename = [d(2).name '_' mat2str(all_figs(i).Number)];
+				savename = [d(end).name '_' mat2str(all_figs(i).Number)];
 			catch
 				savename = mat2str(all_figs(i).Number);
 			end
