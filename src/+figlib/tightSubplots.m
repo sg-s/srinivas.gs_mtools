@@ -3,7 +3,7 @@
 % for use lots of plots that share a common
 % X or Y axes
 
-function ax =  tightSubplots(n_rows, n_cols, args)
+function [ax, left_edge, bottom_edge] =  tightSubplots(n_rows, n_cols, args)
 
 arguments
 	n_rows (1,1) double = 2
@@ -75,3 +75,12 @@ elseif args.ShareY
 elseif args.ShareX
 	linkaxes(ax,'x')
 end
+
+
+
+% figure out the left edge
+left_edge = ax(rem(1:length(ax),n_cols) == 1);
+
+
+% figure out the bottom edge
+bottom_edge = ax((1:length(ax)) - n_cols > 0);
