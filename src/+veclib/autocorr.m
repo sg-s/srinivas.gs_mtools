@@ -6,6 +6,8 @@ arguments
     X (:,1) double
 end
 
+X = zscore(X);
+
 % figure out size
 n_lags = length(X)-1; % so that output is same size as input
 nfft = 2^(nextpow2(length(X)) + 1);

@@ -1,7 +1,7 @@
 % draw a diagonal line on a plot
 function ph = drawDiag(ax, varargin)
 
-if nargin == 0
+if nargin == 0 || ~ishandle(ax)
 	ax = gca;
 end
 
