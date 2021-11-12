@@ -37,6 +37,26 @@ if isa(thing,'categorical')
 	return
 end
 
+if isstring(thing)
+	temp = char(thing);
+	temp = temp(:);
+	H = hashlib.hash(temp);
+	return
+end
+
+% generic method hash
+if ismember('hash',methods(thing))
+	H = thing.hash;
+	if ischar(H)
+		return
+	else
+		H = hashlib.hash(H);
+	end
+	return
+end
+
+
+
 % generic type based fallback
 T = class(thing);
 T = strrep(T,'.','_');
