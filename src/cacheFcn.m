@@ -35,6 +35,7 @@ cache_path = fullfile(filelib.cachePath('cache'),[fname '_' first_hash '.mat']);
 if filelib.cacheOK(cache_path,hash)
 	load(cache_path,'varargout')
 else
+
 	disp('Cache miss, this may take a while...')
 	varargout = cell(1,nargout(fcn));
 	[varargout{:}] = fcn(varargin{:});

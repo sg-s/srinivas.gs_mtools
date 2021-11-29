@@ -9,13 +9,11 @@
 
 function Y = chunk(X, ChunkSize)
 
-assert(isvector(X),'X must be a vector')
-assert(isnumeric(X),'X must be a vector')
+arguments
+	X (:,1) double
+	ChunkSize (1,1) double {mustBeInteger, mustBePositive}
+end
 
-assert(length(ChunkSize) == 1,'ChunkSize must be a scalar integer')
-assert(isnumeric(ChunkSize),'ChunkSize must be a scalar integer')
-assert(ChunkSize > 0,'ChunkSize must be a scalar integer')
-assert(ChunkSize == round(ChunkSize),'ChunkSize == round(ChunkSize)')
 
 X = X(:);
 

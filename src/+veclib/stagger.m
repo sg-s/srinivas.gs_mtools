@@ -17,10 +17,13 @@
 
 function Y = stagger(X, bin_size, slide_step)
 
-assert(isvector(X),'first argument should be a vector')
-X = X(:);
-assert(isscalar(bin_size) && mathlib.isint(bin_size),' bin_size should be a scalar integer')
-assert(isscalar(slide_step) && mathlib.isint(slide_step),' slide_step should be a scalar integer')
+
+arguments
+	X (:,1) double
+	bin_size (1,1) double {mustBePositive, mustBeInteger}
+	slide_step (1,1) double {mustBePositive, mustBeInteger}
+end
+
 
 step_starts = 1:slide_step:(length(X) - bin_size);
 M = length(step_starts);
