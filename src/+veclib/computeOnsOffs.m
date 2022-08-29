@@ -1,22 +1,23 @@
-% find rising and falling edges in a logical vector
-% given a logical vector x, this function returns the on and off times of the logical vector
-%
-%% Arguments:
-% 	x: a numeric vector
-% 	threshold: an optional scalar, numeric threshold parameter
-% 		if no threshold is given, the half-maximum of the normalized vector is used
-%% Outputs:
-% 	ons: a vector of indices where the vector crosses the threshold upwards
-% 	offs: a vector of indices where the vector crosses the threshold downwards
-% Usage:
-% 	veclib.computeOnsOffs
-% 	[ons, offs] = veclib.computeOnsOffs(x)
-% 	[ons, offs] = veclib.computeOnsOffs(x, threshold)
 
-% created by Srinivas Gorur-Shandilya at 10:20 , 09 April 2014. Contact me at http://srinivas.gs/contact/
+% 
+% ### computeOnsOffs
 %
-% This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
-% To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+% **Syntax**
+%
+% ```matlab
+% [ons,offs]=computeOnsOffs(x)
+% ```
+%
+% **Description**
+%
+% function finds rising and falling edges in a (assumed discrete)
+% vector. If the vector is real valued, the rising and falling
+% edges will be computed when vector is above/below median
+%
+% ons and offs are guaranteed to be the same length. For every 
+% on, there will be a off after it. 
+
+
 function [ons,offs] = computeOnsOffs(x)
 if ~nargin
 	help computeOnsOffs
