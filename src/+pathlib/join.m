@@ -8,7 +8,12 @@
 function c = join(varargin)
 
 for i = 1:length(varargin)
-	assert(ischar(varargin{i}),'argument must be a string')
+	% assert(ischar(varargin{i}),'argument must be a string')
+	try 
+		varargin{i} = char(varargin{i});
+	catch
+		error(['could not convert argument #' num2str(i), ' to a character vector.'])
+	end
 end
 
 c = [];
